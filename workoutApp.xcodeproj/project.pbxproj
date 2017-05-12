@@ -8,19 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D461EC4D53900962B19 /* AppDelegate.swift */; };
-		DD585D491EC4D53900962B19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D481EC4D53900962B19 /* ViewController.swift */; };
+		DD585D491EC4D53900962B19 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D481EC4D53900962B19 /* TestViewController.swift */; };
 		DD585D4C1EC4D53900962B19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD585D4A1EC4D53900962B19 /* Main.storyboard */; };
 		DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */; };
 		DD585D511EC4D53900962B19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD585D501EC4D53900962B19 /* Assets.xcassets */; };
 		DD585D541EC4D53900962B19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */; };
 		DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D5C1EC4D7CC00962B19 /* Colors.swift */; };
 		DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D5E1EC4DC3400962B19 /* Fonts.swift */; };
+		DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */; };
+		DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */; };
+		DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6C1EC5E39F00962B19 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DD585D431EC4D53900962B19 /* workoutApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = workoutApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD585D461EC4D53900962B19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DD585D481EC4D53900962B19 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DD585D481EC4D53900962B19 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		DD585D4B1EC4D53900962B19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DD585D4E1EC4D53900962B19 /* workoutApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = workoutApp.xcdatamodel; sourceTree = "<group>"; };
 		DD585D501EC4D53900962B19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -28,6 +31,9 @@
 		DD585D551EC4D53900962B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD585D5C1EC4D7CC00962B19 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		DD585D5E1EC4DC3400962B19 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tabBarSelectionIndicatorView.swift; sourceTree = "<group>"; };
+		DD585D6C1EC5E39F00962B19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,11 +67,13 @@
 			isa = PBXGroup;
 			children = (
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
-				DD585D481EC4D53900962B19 /* ViewController.swift */,
+				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,
 				DD585D501EC4D53900962B19 /* Assets.xcassets */,
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
 				DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */,
+				DD585D481EC4D53900962B19 /* TestViewController.swift */,
+				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
 			);
@@ -79,6 +87,15 @@
 				DD585D5E1EC4DC3400962B19 /* Fonts.swift */,
 			);
 			name = Style;
+			sourceTree = "<group>";
+		};
+		DD585D671EC5B24500962B19 /* Tab bar */ = {
+			isa = PBXGroup;
+			children = (
+				DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */,
+				DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */,
+			);
+			name = "Tab bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,9 +173,12 @@
 			files = (
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
+				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
+				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
-				DD585D491EC4D53900962B19 /* ViewController.swift in Sources */,
+				DD585D491EC4D53900962B19 /* TestViewController.swift in Sources */,
 				DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */,
+				DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

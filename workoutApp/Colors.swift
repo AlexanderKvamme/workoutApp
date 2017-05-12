@@ -15,6 +15,7 @@ extension UIColor {
     static let dark = UIColor(hexString: "43405E")
     static let medium = UIColor(hexString: "88828C")
     static let light = UIColor(hexString: "EFDAD5")
+    static let lighter = UIColor(hexString: "F5EDED")
     
     static let primary = UIColor(hexString: "F6A623")
     static let secondary = UIColor(hexString: "BC4553")
