@@ -14,4 +14,8 @@ enum Constant {
         static let width = UIScreen.main.bounds.width
         static let height = UIScreen.main.bounds.height
     }
+    
+    enum Alpha {
+        static let faded: CGFloat = 0.5
+    }
 }

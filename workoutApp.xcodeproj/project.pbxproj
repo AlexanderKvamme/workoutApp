@@ -18,6 +18,9 @@
 		DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */; };
 		DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */; };
 		DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6C1EC5E39F00962B19 /* Constants.swift */; };
+		DD585D701EC5F43B00962B19 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6F1EC5F43A00962B19 /* SelectionViewController.swift */; };
+		DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */; };
+		DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D941EC6734100962B19 /* SelectionViewHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tabBarSelectionIndicatorView.swift; sourceTree = "<group>"; };
 		DD585D6C1EC5E39F00962B19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DD585D6F1EC5F43A00962B19 /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButton.swift; sourceTree = "<group>"; };
+		DD585D941EC6734100962B19 /* SelectionViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
+				DD585D6E1EC5F41200962B19 /* Selection View */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,
 				DD585D501EC4D53900962B19 /* Assets.xcassets */,
@@ -96,6 +103,16 @@
 				DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */,
 			);
 			name = "Tab bar";
+			sourceTree = "<group>";
+		};
+		DD585D6E1EC5F41200962B19 /* Selection View */ = {
+			isa = PBXGroup;
+			children = (
+				DD585D6F1EC5F43A00962B19 /* SelectionViewController.swift */,
+				DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */,
+				DD585D941EC6734100962B19 /* SelectionViewHeader.swift */,
+			);
+			name = "Selection View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,10 +188,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
+				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
+				DD585D701EC5F43B00962B19 /* SelectionViewController.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
 				DD585D491EC4D53900962B19 /* TestViewController.swift in Sources */,
 				DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */,

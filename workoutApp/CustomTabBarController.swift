@@ -16,7 +16,7 @@ class CustomTabBarController: UITabBarController {
         super.viewDidLoad()
 
         let profileController = TestViewController()
-        let progressController = TestViewController()
+        let progressController = SelectionViewController()
         let historyController = TestViewController()
         let workoutController = TestViewController()
         
