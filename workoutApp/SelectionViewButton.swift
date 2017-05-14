@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class selectionViewButton: UIView {
+class SelectionViewButton: UIView {
     
     var button = UIButton()
     var label = UILabel()
@@ -21,7 +21,6 @@ class selectionViewButton: UIView {
         
         // Prosjekt: - Stack og usynlig button
         
-        let labelStack = UIStackView()
         let headerLabel = UILabel()
         let subheaderLabel = UILabel()
         
@@ -63,7 +62,7 @@ class selectionViewButton: UIView {
         addSubview(button)
         button.addTarget(self, action: #selector(doSomething), for: .touchUpInside)
         
-//        backgroundColor = UIColor.medium
+        backgroundColor = UIColor.medium
     }
     
     required init?(coder aDecoder: NSCoder) {

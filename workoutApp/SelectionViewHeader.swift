@@ -9,11 +9,14 @@
 import Foundation
 import UIKit
 
-class selectionViewHeader: UIView {
+class SelectionViewHeader: UIView {
     
     var button = UIButton()
     var label = UILabel()
     
+    init() {
+        super.init(frame: CGRect.zero)
+    }
     
     init(header: String, subheader: String) {
         let headerLabel = UILabel()
@@ -48,8 +51,6 @@ class selectionViewHeader: UIView {
         
         subheaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor).isActive = true
         subheaderLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-//        backgroundColor = UIColor.medium
     }
     
     required init?(coder aDecoder: NSCoder) {

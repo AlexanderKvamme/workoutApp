@@ -18,4 +18,16 @@ enum Constant {
     enum Alpha {
         static let faded: CGFloat = 0.5
     }
+    
+    enum Layout {
+        enum Selection {
+            enum Header {
+                static let spacingTop: CGFloat = 100
+            }
+            
+            enum Stack {
+                static let spacing: CGFloat = 50
+            }
+        }
+    }
 }

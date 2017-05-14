@@ -15,8 +15,11 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // setup 
         let profileController = TestViewController()
-        let progressController = SelectionViewController()
+        
+        // progress
+        let progressController = SelectionViewController(header: SelectionViewHeader(header: "SELECT", subheader: "DEVELOPMENT"), buttons: [SelectionViewButton(header: "STATISTICS", subheader: "20 EXERCISES"), SelectionViewButton(header: "WORKOUT HISTORY", subheader: "292 WORKOUTS"), ])
         let historyController = TestViewController()
         let workoutController = TestViewController()
         
