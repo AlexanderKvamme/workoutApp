@@ -19,7 +19,7 @@ class tabBarSelectionIndicatorView: UIView {
         
         self.frame.size = CGSize(width: indicatorWidth, height: indicatorHeight)
         self.frame.origin = CGPoint(x: -200, y: tabBarHeight-indicatorHeight/2)
-        self.backgroundColor = UIColor.dark
+        self.backgroundColor = UIColor.darkest
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     

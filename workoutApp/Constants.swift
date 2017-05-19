@@ -20,13 +20,13 @@ enum Constant {
     }
     
     enum Layout {
-        enum Selection {
+        enum SelectionVC {
             enum Header {
                 static let spacingTop: CGFloat = 100
             }
             
             enum Stack {
-                static let spacing: CGFloat = 50
+                static let spacing: CGFloat = 15
             }
         }
     }

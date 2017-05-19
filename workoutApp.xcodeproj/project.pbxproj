@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
 		DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */; };
 		DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C111EC8616800BD313B /* SelectionViewController.swift */; };
@@ -20,12 +21,15 @@
 		DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */; };
 		DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */; };
 		DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6C1EC5E39F00962B19 /* Constants.swift */; };
-		DD585D701EC5F43B00962B19 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6F1EC5F43A00962B19 /* ProgressViewController.swift */; };
 		DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */; };
 		DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D941EC6734100962B19 /* SelectionViewHeader.swift */; };
+		DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */; };
+		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
+		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
 		DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		DD4B1C111EC8616800BD313B /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
@@ -41,9 +45,11 @@
 		DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tabBarSelectionIndicatorView.swift; sourceTree = "<group>"; };
 		DD585D6C1EC5E39F00962B19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		DD585D6F1EC5F43A00962B19 /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButton.swift; sourceTree = "<group>"; };
 		DD585D941EC6734100962B19 /* SelectionViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewHeader.swift; sourceTree = "<group>"; };
+		DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalMessageController.swift; sourceTree = "<group>"; };
+		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
+		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +66,6 @@
 		DD4B1C0E1EC85E8600BD313B /* Progress Tab */ = {
 			isa = PBXGroup;
 			children = (
-				DD585D6F1EC5F43A00962B19 /* ProgressViewController.swift */,
 			);
 			name = "Progress Tab";
 			sourceTree = "<group>";
@@ -84,6 +89,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DD5ED8391ECA5F5800D3EB1A /* Modal */,
 				DD4B1C0E1EC85E8600BD313B /* Progress Tab */,
 				DD585D6E1EC5F41200962B19 /* Selection View */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
@@ -122,11 +128,22 @@
 			isa = PBXGroup;
 			children = (
 				DD4B1C111EC8616800BD313B /* SelectionViewController.swift */,
+				DDF95B381ECA453A009E6925 /* StackView.swift */,
 				DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */,
 				DD585D941EC6734100962B19 /* SelectionViewHeader.swift */,
 				DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */,
+				DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */,
 			);
 			name = "Selection View";
+			sourceTree = "<group>";
+		};
+		DD5ED8391ECA5F5800D3EB1A /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */,
+				DD0437401ECCF29F0016EFBB /* Modal.swift */,
+			);
+			name = Modal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,16 +222,19 @@
 				DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */,
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
+				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
-				DD585D701EC5F43B00962B19 /* ProgressViewController.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
 				DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */,
+				DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */,
 				DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */,
 				DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */,
+				DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */,
+				DDF95B391ECA453A009E6925 /* StackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

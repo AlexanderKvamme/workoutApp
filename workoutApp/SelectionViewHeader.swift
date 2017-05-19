@@ -37,23 +37,23 @@ class SelectionViewHeader: UIView {
         subheaderLabel.sizeToFit()
         subheaderLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let combinedLabelHeight = subheaderLabel.frame.height + headerLabel.frame.height
-        let width = Constant.UI.width
-        let newFrame = CGRect(x: 0, y: 0, width: width, height: combinedLabelHeight)
-        
-        super.init(frame: newFrame)
+        super.init(frame: CGRect.zero)
         
         addSubview(headerLabel)
         addSubview(subheaderLabel)
         
         headerLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
         headerLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
         subheaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor).isActive = true
         subheaderLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        let combinedLabelHeight = subheaderLabel.frame.height + headerLabel.frame.height
+        heightAnchor.constraint(equalToConstant: combinedLabelHeight).isActive = true
+        widthAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

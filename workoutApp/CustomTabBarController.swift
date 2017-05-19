@@ -15,13 +15,27 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // setup 
+        // Tabs of the tab bar
+        // TODO: - populate from Core Data
+        let progressController = SelectionViewController(
+            header: SelectionViewHeader(header: "Which kind of", subheader: "Progress?"),
+            buttons: [SelectionViewButton(header: "Statistics", subheader: "Workout History"),
+                      SelectionViewButton(header: "Workout History", subheader: "292 Workouts")
+            ])
+        let historyController = SelectionViewController(
+            header: SelectionViewHeader(header: "History", subheader: "Of which style?"),
+            buttons: [SelectionViewButton(header: "Normal", subheader: "9 Workouts"),
+                      SelectionViewButton(header: "Pyramid", subheader: "4 Workouts"),
+                      SelectionViewButton(header: "Drop set", subheader: "3 Workouts"),
+                      SelectionViewButton(header: "Cardio", subheader: "2 Workouts"),
+            ])
+        let workoutController = SelectionViewController(
+            header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"),
+            buttons: [SelectionViewButton(header: "Normal", subheader: "4 exercises"),
+                      SelectionViewButton(header: "Pyramid", subheader: "2 exercises"),
+                      SelectionViewButton(header: "Drop Set", subheader: "8 exercises"),
+                      SelectionViewButton(header: "Cardio", subheader: "3 exercises")])
         let profileController = TestViewController()
-        
-        // progress
-        let progressController = SelectionViewController(header: SelectionViewHeader(header: "SELECT", subheader: "DEVELOPMENT"), buttons: [SelectionViewButton(header: "STATISTICS", subheader: "20 EXERCISES"), SelectionViewButton(header: "WORKOUT HISTORY", subheader: "292 WORKOUTS"), ])
-        let historyController = TestViewController()
-        let workoutController = TestViewController()
         
         viewControllers = [progressController, historyController, workoutController, profileController]
         
@@ -35,13 +49,12 @@ class CustomTabBarController: UITabBarController {
             item.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         }
         
-        tabBar.tintColor = UIColor.light
+        tabBar.tintColor = UIColor.lighter
         tabBar.unselectedItemTintColor = UIColor.light
-        tabBar.barTintColor = UIColor.dark
+        tabBar.barTintColor = UIColor.darkest
         tabBar.isTranslucent = false
         
         // SelectionView
-        
         selectionIndicator.setup(selectableItemsCount: 4, atHeight: tabBar.frame.minY)
         view.addSubview(selectionIndicator)
     }
