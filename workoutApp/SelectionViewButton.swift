@@ -37,7 +37,7 @@ public class SelectionViewButton: UIView {
         subheaderLabel.isUserInteractionEnabled = false
         
         button = UIButton(frame: frame)
-        button.addTarget(self, action: #selector(doSomething), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
         
         addSubview(button)
         addSubview(headerLabel)
@@ -76,16 +76,14 @@ public class SelectionViewButton: UIView {
     }
     
     // UI components
-    func doSomething() {
+    func handleButtonTap() {
         print("something")
-        
-        let alert = CustomAlertView(messageContent: "That was fucken amazing tho!\n Sick moves for sure!\nNow back to your important life!")
-        alert.show(animated: true)
+        showModal()
     }
     
     func showModal() {
-//        let modalViewController = ModalMessageViewController()
-//        modalViewController.modalPresentationStyle = .overCurrentContext
-//        presentViewController(modalViewController, anioverCurrentContextetion: nil)
+        let alert = CustomAlertView(type: .error, messageContent: "this feature is not yet implemented!")
+        //        let alert = CustomAlertView(type: .message, messageContent: "this feature is not yet implemented!")
+        alert.show(animated: true)
     }
 }

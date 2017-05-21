@@ -19,10 +19,15 @@ class CustomAlertView: UIView, isModal {
     private let spaceOverContent: CGFloat = 5
     private let spaceOverCheckmark: CGFloat = 30
     
-    convenience init(messageContent:String) {
-        self.init(frame: UIScreen.main.bounds)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setBackground()
+    }
+    
+    convenience init(type: ModalType, messageContent:String) {
+        self.init(frame: UIScreen.main.bounds)
+        
         
         // Message View
         let ModalWidth = UIScreen.main.bounds.width - spaceFromSides
@@ -30,21 +35,64 @@ class CustomAlertView: UIView, isModal {
         // "Error" and errorNumber - Switch på CustomModalStyle... case "Message" eller "Error". Følgende er case Message
         
         // Message
-        let messageLabel = UILabel()
-        messageLabel.text = "Important Message".uppercased()
-        messageLabel.textAlignment = .left
-        messageLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
-        messageLabel.textColor = UIColor.medium
-        modalView.addSubview(messageLabel)
         
-        messageLabel.sizeToFit()
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        messageLabel.topAnchor.constraint(equalTo: modalView.topAnchor, constant: insetToComponents).isActive = true
-        messageLabel.leftAnchor.constraint(equalTo: modalView.leftAnchor, constant: insetToComponents).isActive = true
-        messageLabel.heightAnchor.constraint(equalToConstant: messageLabel.frame.height).isActive = true
-        messageLabel.widthAnchor.constraint(equalToConstant: messageLabel.frame.width).isActive = true
+        // Pseudo: make a stack... fill with either "message"/"error"... position stack
         
-        // X
+        
+        
+        let typeStack = UIStackView() // message or error
+        var typeStackHeight: CGFloat = 0
+        typeStack.axis = UILayoutConstraintAxis.vertical
+        typeStack.distribution = UIStackViewDistribution.equalCentering
+        typeStack.alignment = UIStackViewAlignment.top
+        typeStack.spacing = 0
+        modalView.addSubview(typeStack)
+        
+        switch type {
+        case .message:
+            let messageLabel = UILabel()
+            messageLabel.text = "Important Message".uppercased()
+            messageLabel.textAlignment = .left
+            messageLabel.font = .custom(style: .bold, ofSize: .medium)
+            messageLabel.textColor = .medium
+            messageLabel.sizeToFit()
+            typeStackHeight += messageLabel.frame.height
+            modalView.addSubview(messageLabel)
+            typeStack.addArrangedSubview(messageLabel)
+        
+        case .error:
+            let errorNameLabel = UILabel()
+            errorNameLabel.text = "Error".uppercased()
+            errorNameLabel.textAlignment = .left
+            errorNameLabel.font = .custom(style: .bold, ofSize: .medium)
+            errorNameLabel.textColor = .medium
+            errorNameLabel.sizeToFit()
+            modalView.addSubview(errorNameLabel)
+            
+            let errorNumberLabel = UILabel()
+            errorNumberLabel.text = "42"
+            errorNumberLabel.textAlignment = .center
+            errorNumberLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
+            errorNumberLabel.textColor = .secondary
+            errorNumberLabel.sizeToFit()
+            modalView.addSubview(errorNumberLabel)
+            
+            typeStackHeight += errorNameLabel.frame.height
+            typeStackHeight += errorNumberLabel.frame.height
+            
+            typeStack.addArrangedSubview(errorNameLabel)
+            typeStack.addArrangedSubview(errorNumberLabel)
+        }
+        
+        // Arrange stack
+        typeStack.translatesAutoresizingMaskIntoConstraints = false
+        typeStack.sizeToFit()
+        typeStack.topAnchor.constraint(equalTo: modalView.topAnchor, constant: insetToComponents).isActive = true
+        typeStack.leftAnchor.constraint(equalTo: modalView.leftAnchor, constant: insetToComponents).isActive = true
+        typeStack.heightAnchor.constraint(equalToConstant: typeStackHeight).isActive = true
+        typeStack.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        
+        // top right x mark
         let xView = UIImageView()
         xView.image = UIImage(named: "xmarkDarkBlue")
         xView.sizeToFit()
@@ -68,7 +116,7 @@ class CustomAlertView: UIView, isModal {
         headerLabel.sizeToFit()
         modalView.addSubview(headerLabel)
         headerLabel.centerXAnchor.constraint(equalTo: modalView.centerXAnchor).isActive = true
-        headerLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: spaceOverHeader).isActive = true
+        headerLabel.topAnchor.constraint(equalTo: xView.bottomAnchor, constant: spaceOverHeader).isActive = true
         headerLabel.heightAnchor.constraint(equalToConstant: headerLabel.frame.height).isActive = true
         headerLabel.widthAnchor.constraint(equalToConstant: headerLabel.frame.width).isActive = true
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -124,9 +172,7 @@ class CustomAlertView: UIView, isModal {
         backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedOnBackgroundView)))
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
+
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -147,4 +193,9 @@ class CustomAlertView: UIView, isModal {
     @objc private func checkmarkButtonhandler() {
         dismiss(animated: true)
     }
+}
+
+enum ModalType {
+    case message
+    case error
 }
