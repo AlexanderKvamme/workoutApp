@@ -132,7 +132,7 @@ fileprivate class StandardBoxHeader: BoxHeader {
 
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .bigger)
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.textColor = .darkest
         label.text = "some header"
         label.sizeToFit()
@@ -163,7 +163,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
     
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = UIColor.medium
         label.text = "Some subheader"
         label.sizeToFit()
@@ -181,86 +181,38 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
 // Content
 
 public class BoxContent: UIView {
-    var contentStack = UIStackView()
+    var contentStack: ThreeColumnStack!
 }
 
 fileprivate class HistoryBoxContent: BoxContent {
     
-    var totalStack = UIStackView()
-    var timeStack = UIStackView()
-    var personalRecordStack = UIStackView()
+    var totalStack: TwoRowStack!
+    var timeStack: TwoRowStack!
+    var personalRecordStack: TwoRowStack!
     
     var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
     
     init() {
         super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         
-        // totalStack
-        let totalHeader = UILabel()
-        totalHeader.font = stackFont
-        totalHeader.textColor = .light
-        totalHeader.text = "TOTAL"
-        totalHeader.sizeToFit()
+        let totalStack = TwoRowStack(topText: "Total", sets: 13, reps: 92)
+        let timeStack = TwoRowStack(topText: "Time", bottomText: "1H")
+        let PRStack = TwoRowStack(topText: "PRS", bottomText: "13")
         
-        // - Bottom stack
-        let totalText = UILabel()
-        totalText.font = stackFont
-        totalText.textColor = .light
-        totalText.text = "92 x 92"
-        totalText.sizeToFit()
-//        let totalBottomStack = UIStackView()
-//        totalBottomStack.distribution = .equalCentering
-//        totalBottomStack.alignment = .center
-//        totalBottomStack.axis = .horizontal
+        contentStack = ThreeColumnStack(withSubstacks: totalStack, timeStack, PRStack)
         
-//        let totalSets = UILabel()
-//        let totalReps = UILabel()
-//        let xmark = UIImageView(image: UIImage(named: "xmarkBeige"))
+        // content Stack - Fills entire box and arranges the 3 stacks horzontally
+        contentStack.frame.size = CGSize(width: Constant.layout.Box.Standard.width, height: Constant.layout.Box.Standard.height)
+        contentStack.distribution = .equalCentering
+        contentStack.alignment = .center
+        contentStack.axis = .horizontal
+        contentStack.spacing = 10
         
-//        totalSets.text = "15"
-//        totalSets.sizeToFit()
-//        totalSets.font = stackFont
-//        totalSets.textColor = .light
-//        
-//        totalReps.text = "92"
-//        totalReps.sizeToFit()
-//        totalReps.textColor = .light
-//        totalReps.font = stackFont
-        
-        // begynner med totalbottom
-//        totalBottomStack.addArrangedSubview(totalSets)
-//        totalBottomStack.addArrangedSubview(xmark)
-//        totalBottomStack.addArrangedSubview(totalReps)
-        
-        
-        //addSubview(totalBottomStack)
-        
-        totalStack.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        totalStack.addArrangedSubview(totalHeader)
-        totalStack.addArrangedSubview(totalText)
-        addSubview(totalStack)
-        
-        totalStack.distribution = .equalCentering
-        totalStack.alignment = .center
-        totalStack.axis = .vertical
-        totalStack.spacing = 10
-        totalStack.sizeToFit()
-        totalStack.drawBackground()
-        
-        
-//        addSubview(totalSets)
-//        print("totalsets: ", totalSets)
-//        
-//        let test = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-//        test.text = "bam"
-//        
-//        //addSubview(test) // funker
-//        
-//        totalBottomStack.addArrangedSubview(test)
-//        addSubview(totalBottomStack)
-//        
-//        totalBottomStack.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
-//        totalBottomStack.makeBackground()
+        addSubview(contentStack)
+    
+        // Left and right margins
+        contentStack.isLayoutMarginsRelativeArrangement = true
+        contentStack.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
     }
     
     required init?(coder aDecoder: NSCoder) {

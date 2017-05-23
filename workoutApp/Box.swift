@@ -53,11 +53,16 @@ public class Box: UIView {
         
         
         
+        
         // FIXME: - Content
         addSubview(content)
         content.frame = boxFrame.frame
-        content.contentStack.drawBackground()
-        print("content frame:", content.frame)
+        
+        
+        
+        
+        
+        
         
         // subheader
         if let subheader = subheader {

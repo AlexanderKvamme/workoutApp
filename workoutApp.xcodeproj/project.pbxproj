@@ -27,6 +27,9 @@
 		DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */; };
 		DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D941EC6734100962B19 /* SelectionViewHeader.swift */; };
 		DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */; };
+		DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */; };
+		DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */; };
+		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +57,9 @@
 		DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButton.swift; sourceTree = "<group>"; };
 		DD585D941EC6734100962B19 /* SelectionViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewHeader.swift; sourceTree = "<group>"; };
 		DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalMessageController.swift; sourceTree = "<group>"; };
+		DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowStack.swift; sourceTree = "<group>"; };
+		DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
+		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,6 +81,7 @@
 				DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */,
 				DD151DFE1ED2DD310014DBC1 /* Box.swift */,
 				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
+				DDEE859D1ED4921000A3F81C /* Helper Classes */,
 			);
 			name = "Box Abstract Factory";
 			sourceTree = "<group>";
@@ -83,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */,
+				DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */,
 			);
 			name = "Native Extension";
 			sourceTree = "<group>";
@@ -171,6 +179,15 @@
 			name = Modal;
 			sourceTree = "<group>";
 		};
+		DDEE859D1ED4921000A3F81C /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+				DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */,
+				DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */,
+			);
+			name = "Helper Classes";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -246,12 +263,15 @@
 			files = (
 				DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */,
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
+				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
+				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
+				DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */,
 				DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */,
 				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,

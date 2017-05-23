@@ -32,6 +32,8 @@ class TestViewController: UIViewController {
             
             box.center.y = box.center.y + 100
             view.addSubview(box)
+            
+            boxContent.contentStack.highlightBottomRow()
         }
     }
 }
