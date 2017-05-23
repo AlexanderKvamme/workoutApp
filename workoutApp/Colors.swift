@@ -16,7 +16,7 @@ extension UIColor {
     static let medium = UIColor(hexString: "BEA098")
     static let faded = UIColor(hexString: "88828C")
     static let light = UIColor(hexString: "E8DFD9")
-    static let lighter = UIColor(hexString: "F5EDED")
+    static let lightest = UIColor(hexString: "F5EDED")
     
     static let primary = UIColor(hexString: "F6A623")
     static let secondary = UIColor(hexString: "BC4553")

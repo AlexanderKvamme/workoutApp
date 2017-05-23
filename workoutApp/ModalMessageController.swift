@@ -164,7 +164,7 @@ class CustomAlertView: UIView, isModal {
         let dialogViewHeight = contentLabel.frame.height + 180
         modalView.frame.origin = CGPoint(x: 32, y: frame.height)
         modalView.frame.size = CGSize(width: frame.width - spaceFromSides, height: dialogViewHeight)
-        modalView.backgroundColor = UIColor.lighter
+        modalView.backgroundColor = UIColor.lightest
         modalView.layoutIfNeeded()
         addSubview(modalView)
         

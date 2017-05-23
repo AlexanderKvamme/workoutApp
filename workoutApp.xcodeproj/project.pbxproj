@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
+		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
+		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
+		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
 		DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */; };
 		DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C111EC8616800BD313B /* SelectionViewController.swift */; };
@@ -30,6 +33,9 @@
 
 /* Begin PBXFileReference section */
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
+		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
+		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
 		DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		DD4B1C111EC8616800BD313B /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +69,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */ = {
+			isa = PBXGroup;
+			children = (
+				DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */,
+				DD151DFE1ED2DD310014DBC1 /* Box.swift */,
+				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
+			);
+			name = "Box Abstract Factory";
+			sourceTree = "<group>";
+		};
+		DD151E001ED47C200014DBC1 /* Native Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */,
+			);
+			name = "Native Extension";
+			sourceTree = "<group>";
+		};
 		DD4B1C0E1EC85E8600BD313B /* Progress Tab */ = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +113,8 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DD151E001ED47C200014DBC1 /* Native Extension */,
+				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
 				DD4B1C0E1EC85E8600BD313B /* Progress Tab */,
 				DD585D6E1EC5F41200962B19 /* Selection View */,
@@ -98,7 +124,6 @@
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
 				DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */,
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
-				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
 			);
@@ -227,7 +252,10 @@
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
+				DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */,
+				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
+				DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
 				DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */,
 				DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */,

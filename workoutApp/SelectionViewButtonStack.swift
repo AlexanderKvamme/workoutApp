@@ -24,7 +24,7 @@ class SelectionViewButtonStack: UIStackView {
         stack.axis = .vertical
         stack.alignment = .center
         stack.distribution = .equalSpacing
-        stack.spacing = Constant.Layout.SelectionVC.Stack.spacing
+        stack.spacing = Constant.layout.SelectionVC.Stack.spacing
     }
     
     required init(coder: NSCoder) {

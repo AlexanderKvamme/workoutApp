@@ -9,20 +9,30 @@
 import UIKit
 
 class TestViewController: UIViewController {
+    
+    /* Use this testviewcontroller to test the abstract factory */
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.light
         
-        // testlabel
+        // Produce boxes from the factory
         
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-        label.backgroundColor = UIColor.primary
-        view.addSubview(label)
-        label.text = "bam".uppercased()
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.textColor = UIColor.light
+        let historyBoxFactory = BoxFactory.makeFactory(type: .HistoryBox)
+        
+        if let header = historyBoxFactory.makeBoxHeader(),
+            let subheader = historyBoxFactory.makeBoxSubHeader(),
+            let bgFrame = historyBoxFactory.makeBoxFrame(),
+            let boxContent = historyBoxFactory.makeBoxContent() {
+            
+            let box = Box(header: header, subheader: subheader, bgFrame: bgFrame, content: boxContent)
+            box.setTitle("Biceps")
+            box.setSubHeader("Drop Set")
+            
+            box.center.y = box.center.y + 100
+            view.addSubview(box)
+        }
     }
 }
 
