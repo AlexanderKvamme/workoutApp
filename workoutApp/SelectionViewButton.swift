@@ -37,14 +37,13 @@ public class SelectionViewButton: UIView {
         subheaderLabel.isUserInteractionEnabled = false
         
         button = UIButton(frame: frame)
-        button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleButtonTap(_:)), for: .touchUpInside)
         
         addSubview(button)
         addSubview(headerLabel)
         addSubview(subheaderLabel)
         
         setupConstraints()
-//        addColorToFrames()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -69,21 +68,16 @@ public class SelectionViewButton: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    private func addColorToFrames() {
-        self.backgroundColor = .yellow
-        headerLabel.backgroundColor = .green
-        subheaderLabel.backgroundColor = .blue
-    }
-    
     // UI components
-    func handleButtonTap() {
+    func handleButtonTap(_ sender: SelectionViewButton) {
         print("something")
-        showModal()
+        
+        showNotYetImplementedModal()
     }
     
-    func showModal() {
+    func showNotYetImplementedModal() {
         let alert = CustomAlertView(type: .error, messageContent: "this feature is not yet implemented!")
-        //        let alert = CustomAlertView(type: .message, messageContent: "this feature is not yet implemented!")
+        //let alert = CustomAlertView(type: .message, messageContent: "this feature is not yet implemented!")
         alert.show(animated: true)
     }
 }

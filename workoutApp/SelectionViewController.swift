@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SelectionViewController: UIViewController {
+class SelectionViewController: UINavigationController {
     
     var header: SelectionViewHeader!
     var buttons: [SelectionViewButton]!
@@ -29,6 +29,8 @@ class SelectionViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .light
+        
+        navigationBar.isHidden = true
         
         //Stack View
         stack = StackView(frame: CGRect.zero)
