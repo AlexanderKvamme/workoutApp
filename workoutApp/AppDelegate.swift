@@ -21,6 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBar = CustomTabBarController()
         window?.rootViewController = tabBar
         
+        // seed Core Data with development Data
+        DatabaseController.clearCoreData()
+    
+        let dataSeeder = DataSeeder(context: DatabaseController.getContext())
+        dataSeeder.seedCoreData()
+        DatabaseController.saveContext()
+        
         return true
     }
 
@@ -47,7 +54,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         DatabaseController.saveContext()
     }
-
-    
 }
 

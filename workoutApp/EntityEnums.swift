@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+enum Entity: String {
+    case WorkoutDesign = "WorkoutDesign"
+    case ExerciseDesign = "ExerciseDesign"
+}

@@ -22,3 +22,4 @@ extension Lift {
     @NSManaged public var usedIn: ExerciseLog?
 
 }
+
