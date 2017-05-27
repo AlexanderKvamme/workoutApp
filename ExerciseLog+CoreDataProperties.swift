@@ -2,7 +2,7 @@
 //  ExerciseLog+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 25/05/2017.
+//  Created by Alexander Kvamme on 27/05/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -17,7 +17,7 @@ extension ExerciseLog {
     }
 
     @NSManaged public var date: NSDate?
-    @NSManaged public var design: ExerciseDesign?
+    @NSManaged public var design: Exercise?
     @NSManaged public var lifts: NSSet?
     @NSManaged public var usedIn: WorkoutLog?
 

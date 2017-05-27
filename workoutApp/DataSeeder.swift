@@ -11,109 +11,133 @@ import CoreData
 
 final class DataSeeder {
     
-    let context: NSManagedObjectContext!
+    typealias DummyWorkout = (name: String, muscle: String, type: String)
+    typealias DummyExercise = (name: String, muscle: String, plannedSets: Int16, type: String)
     
-    required init(context: NSManagedObjectContext) {
+    private let context: NSManagedObjectContext
+    
+    init(context: NSManagedObjectContext) {
         self.context = context
     }
     
-    // Seed
+    // MARK: - API
     
-    public func seed() {
-        let workouts = [
-            (name: "Biceps/Triceps", muscle: "Arms", type: "Drop Set"),
-            (name: "Back", muscle: "Back", type: "Drop Set"),]
-   
-        let exercises = [(name: "Pullup", muscle: "Back", plannedSets: 4, type: "Drop Set"),
-                         (name: "Chins", muscle: "Back", plannedSets: 9, type: "Drop Set"),
-                         (name: "Backflip", muscle: "Back", plannedSets: 3, type: "Drop Set"),]
-        
-        // Make managed objects outta workouts
-        for workout in workouts {
-            let newRecord = DatabaseController.createManagedObjectForEntity(Entity.WorkoutDesign) as! WorkoutDesign
-            newRecord.name = workout.name
-            newRecord.muscle = workout.muscle
-            newRecord.type = workout.type
-        }
-        
-        // Make managed objects outta exercises
-        for exercise in exercises {
-            let newRecord = DatabaseController.createManagedObjectForEntity(Entity.ExerciseDesign) as! ExerciseDesign
-            
-            newRecord.name = exercise.name
-            newRecord.muscle = exercise.muscle
-            newRecord.plannedSets = Int16(exercise.plannedSets)
-            newRecord.type = exercise.type
-        }
-        
-        let workouts = DatabaseController.fetchManagedObjectsForEntity(Entity.WorkoutDesign)
+    public func seedCoreData() {
+        seedWithExampleWorkoutsAndExercies()
     }
     
-    // Seed Workouts
+    // MARK: - Seeding
     
-    public func seedWorkouts() {
-        let workouts = [
-            (name: "Biceps/Triceps", muscle: "Arms", type: "Drop Set"),
-            (name: "Back", muscle: "Back", type: "Drop Set")]
+    private func seedWithExampleWorkoutsAndExercies() {
         
-        for workout in workouts {
-            let newRecord = DatabaseController.createManagedObjectForEntity(Entity.WorkoutDesign) as! WorkoutDesign
-            newRecord.name = workout.name
-            newRecord.muscle = workout.muscle
-            newRecord.type = workout.type
-        }
+        var typeString: String = CDModels.workout.type.normal.rawValue
+        var muscleString: String = CDModels.workout.type.normal.rawValue
+        
+        let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: "Back", type: "Drop Set")
+        let backWorkoutNormal: DummyWorkout = (name: "Back", muscle: "Back", type: "Normal")
+        
+        let bicepsTricepsWorkoutDropSet: DummyWorkout = (name: "Biceps and Triceps", muscle: "Arms", type: typeString)
+        
+        // Back - Drop set
+        typeString = CDModels.workout.type.normal.rawValue
+        muscleString = CDModels.workout.muscle.back.rawValue
+        
+        let exercisesForBackDropSet: [DummyExercise] = [
+            (name: "Pullup", muscle: muscleString, plannedSets: 4, type: typeString),
+            (name: "Backflip", muscle: muscleString, plannedSets: 3, type: typeString),
+            (name: "Muscleup", muscle: muscleString, plannedSets: 3, type: typeString),
+            (name: "Bridge", muscle: muscleString, plannedSets: 3, type: typeString),
+            (name: "Back Extension", muscle: muscleString, plannedSets: 3, type: typeString),
+            (name: "Inverted Flies", muscle: muscleString, plannedSets: 3, type: typeString),]
+        
+        // Back - Normal
+        typeString = CDModels.workout.type.normal.rawValue
+        muscleString = CDModels.workout.muscle.back.rawValue
+        
+        let exercisesForBackNormal: [DummyExercise] = [
+            (name: "Chins", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Head Bangers", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Australian Chins", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Bicep Pumps", muscle: muscleString, plannedSets: 1, type: typeString),]
+        
+        // Arms - Normal
+        muscleString = CDModels.workout.muscle.arms.rawValue
+        typeString = CDModels.workout.type.dropSet.rawValue
+        
+        let exercisesForBicepsAndTricepsDropSet: [DummyExercise] = [
+            (name: "Chins", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Head Bangers", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Australian Chins", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Bicep Pumps", muscle: muscleString, plannedSets: 1, type: typeString),]
+        
+        // Seed into Core Data
+        makeWorkout(backWorkoutDropSet, withExercises: exercisesForBackDropSet)
+        makeWorkout(bicepsTricepsWorkoutDropSet, withExercises: exercisesForBicepsAndTricepsDropSet)
+        makeWorkout(backWorkoutNormal, withExercises: exercisesForBackNormal)
+
+        printWorkouts()
         DatabaseController.saveContext()
     }
     
-    // Seed Exercises
+    // Helper Methods
     
-    public func seedExercises() {
-        let exercises = [(name: "Pullup", muscle: "Back", plannedSets: 4, type: "Drop Set"),
-                         (name: "Chins", muscle: "Back", plannedSets: 9, type: "Drop Set")]
+    private func makeWorkout(_ workout: DummyWorkout, withExercises exercises: [DummyExercise]) {
+        
+        // make and add back exercises
+        
+        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
+        workoutRecord.name = workout.name
+        workoutRecord.muscle = workout.muscle
+        workoutRecord.type = workout.type
         
         for exercise in exercises {
-            let newRecord = DatabaseController.createManagedObjectForEntity(Entity.ExerciseDesign) as! ExerciseDesign
             
-            newRecord.name = exercise.name
-            newRecord.muscle = exercise.muscle
-            newRecord.plannedSets = Int16(exercise.plannedSets)
-            newRecord.type = exercise.type
+            let exerciseRecord = DatabaseController.createManagedObjectForEntity(.Exercise) as! Exercise
+            
+            exerciseRecord.name = exercise.name
+            exerciseRecord.muscle = exercise.muscle
+            exerciseRecord.plannedSets = exercise.plannedSets
+            exerciseRecord.type = exercise.type
+            exerciseRecord.addToUsedInWorkouts(workoutRecord)
         }
-        DatabaseController.saveContext()
     }
+    
     
     // Print
     
-    public func printWorkouts() {
+    private func printWorkouts() {
 
         do {
-            let request = NSFetchRequest<WorkoutDesign>(entityName: "WorkoutDesign")
-            
+            let request = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
             let allWorkouts = try context.fetch(request)
             
             print("workout count: ", allWorkouts.count)
+            
             for workout in allWorkouts {
-//                print("\n\(workout)")
                 print()
                 print("Name: ", workout.name ?? "")
+                print("----------------------")
                 print("Muscle: ", workout.muscle ?? "")
                 print("Type: ", workout.type ?? "")
+                
+                if let exercises = workout.exercises?.allObjects as? [Exercise] {
+                    for exercise in exercises {
+                        print(" - \(exercise.name ?? "fail")")
+                    }
+                }
             }
-            
         } catch {
                 print("error in printing workouts")
         }
     }
     
-    public func printExercises() {
+    private func printExercises() {
         do {
-            let request = NSFetchRequest<ExerciseDesign>(entityName: Entity.ExerciseDesign.rawValue)
-            
+            let request = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
             let allExercises = try context.fetch(request)
             
             print("workout count: ", allExercises.count)
             for exercise in allExercises {
-//                print("\n\(exercise)")
                 print()
                 print("Name: ", exercise.name ?? "")
                 print("Muscle: ", exercise.muscle ?? "")
@@ -124,12 +148,5 @@ final class DataSeeder {
             print("error in printing exercises")
         }
     }
-    
-    public func seedCoreData() {
-        seedWorkouts()
-        printWorkouts()
-        
-        seedExercises()
-        printExercises()
-    }
 }
+

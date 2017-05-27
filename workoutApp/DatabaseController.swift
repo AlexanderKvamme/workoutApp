@@ -50,12 +50,11 @@ public class DatabaseController {
             
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil) //sender inn urlen vi laget til directory  og greier
             
-            //Hvis dette virker, uten error har vi en coordinator med en model, og en persistance, lagret som en SQLite database. Hvis vi får error kjører vi catch
-        } catch {//vatch statements inneholder alltid automatisk en error
+            //Hvis dette virker, uten error har vi en coordinator med en model, og en persistance, lagret som en SQLite database. Hvis vi får error trigges catch closuren
+        } catch { // Catch statements inneholder alltid automatisk en error
             
             let userInfo: [String: AnyObject] = [ NSLocalizedDescriptionKey: "Failed to initialize the application's saved data" as AnyObject, NSLocalizedFailureReasonErrorKey: "There was an error creating or loading the application's saved data" as AnyObject, NSUnderlyingErrorKey: error as NSError
             ]
-            
             
             let wrappedError = NSError(domain: "com.teambizniz.alexander", code: 9999, userInfo: userInfo)
             
@@ -130,7 +129,7 @@ public class DatabaseController {
     
     static func clearCoreData() {
         
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "WorkoutDesign")
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Workout.rawValue)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
         
         do {

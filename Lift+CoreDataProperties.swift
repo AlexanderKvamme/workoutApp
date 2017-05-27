@@ -2,7 +2,7 @@
 //  Lift+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 25/05/2017.
+//  Created by Alexander Kvamme on 27/05/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -18,8 +18,6 @@ extension Lift {
 
     @NSManaged public var reps: Int16
     @NSManaged public var weight: Int16
-    @NSManaged public var owner: ExerciseDesign?
-    @NSManaged public var usedIn: ExerciseLog?
+    @NSManaged public var owner: ExerciseLog?
 
 }
-

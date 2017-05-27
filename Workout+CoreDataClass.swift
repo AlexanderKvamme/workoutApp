@@ -1,5 +1,5 @@
 //
-//  ExerciseLog+CoreDataClass.swift
+//  Workout+CoreDataClass.swift
 //  workoutApp
 //
 //  Created by Alexander Kvamme on 27/05/2017.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(ExerciseLog)
-public class ExerciseLog: NSManagedObject {
+@objc(Workout)
+public class Workout: NSManagedObject {
 
 }
