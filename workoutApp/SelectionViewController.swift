@@ -52,7 +52,7 @@ class SelectionViewController: UINavigationController {
     
     private func drawDiagonalLineThrough(_ someView: UIView) {
         view.layoutSubviews()
-        let verticalShift: CGFloat = 24
+        let verticalShift: CGFloat = 0
         let verticalStretch: CGFloat = 30
         
         let path = UIBezierPath()

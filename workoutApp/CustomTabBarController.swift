@@ -29,12 +29,16 @@ class CustomTabBarController: UITabBarController {
                       SelectionViewButton(header: "Drop set", subheader: "3 Workouts"),
                       SelectionViewButton(header: "Cardio", subheader: "2 Workouts"),
             ])
+        
+        // workout
+        
         let workoutController = SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"),
             buttons: [SelectionViewButton(header: "Normal", subheader: "4 exercises"),
                       SelectionViewButton(header: "Pyramid", subheader: "2 exercises"),
                       SelectionViewButton(header: "Drop Set", subheader: "8 exercises"),
-                      SelectionViewButton(header: "Cardio", subheader: "3 exercises")])
+                      SelectionViewButton(header: "Cardio", subheader: "3 exercises"),
+                      ])
         let profileController = TestViewController()
         
         viewControllers = [progressController, historyController, workoutController, profileController]

@@ -123,13 +123,6 @@
 			name = "Native Extension";
 			sourceTree = "<group>";
 		};
-		DD4B1C0E1EC85E8600BD313B /* Progress Tab */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Progress Tab";
-			sourceTree = "<group>";
-		};
 		DD585D3A1EC4D53900962B19 = {
 			isa = PBXGroup;
 			children = (
@@ -165,7 +158,6 @@
 				DD151E001ED47C200014DBC1 /* Native Extension */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
-				DD4B1C0E1EC85E8600BD313B /* Progress Tab */,
 				DD585D6E1EC5F41200962B19 /* Selection View */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,

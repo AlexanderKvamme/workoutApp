@@ -33,15 +33,15 @@ final class DataSeeder {
         var typeString: String = CDModels.workout.type.normal.rawValue
         var muscleString: String = CDModels.workout.type.normal.rawValue
         
+        // Workouts
         let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: "Back", type: "Drop Set")
         let backWorkoutNormal: DummyWorkout = (name: "Back", muscle: "Back", type: "Normal")
-        
         let bicepsTricepsWorkoutDropSet: DummyWorkout = (name: "Biceps and Triceps", muscle: "Arms", type: typeString)
         
-        // Back - Drop set
         typeString = CDModels.workout.type.normal.rawValue
         muscleString = CDModels.workout.muscle.back.rawValue
         
+        // Back - Drop set
         let exercisesForBackDropSet: [DummyExercise] = [
             (name: "Pullup", muscle: muscleString, plannedSets: 4, type: typeString),
             (name: "Backflip", muscle: muscleString, plannedSets: 3, type: typeString),
