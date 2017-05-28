@@ -16,17 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // Override point for customization after application launch.
-        
-        let tabBar = CustomTabBarController()
-        window?.rootViewController = tabBar
-        
         // seed Core Data with development Data
         DatabaseController.clearCoreData()
-    
+        
         let dataSeeder = DataSeeder(context: DatabaseController.getContext())
         dataSeeder.seedCoreData()
         DatabaseController.saveContext()
+        
+        // Instantiate Tab Bar
+        
+        let tabBar = CustomTabBarController()
+        window?.rootViewController = tabBar
         
         return true
     }

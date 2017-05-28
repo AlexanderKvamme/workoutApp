@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CustomTabBarController: UITabBarController {
 
@@ -16,7 +17,6 @@ class CustomTabBarController: UITabBarController {
         super.viewDidLoad()
 
         // Tabs of the tab bar
-        // TODO: - populate from Core Data
         let progressController = SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of", subheader: "Progress?"),
             buttons: [SelectionViewButton(header: "Statistics", subheader: "Workout History"),
@@ -30,16 +30,47 @@ class CustomTabBarController: UITabBarController {
                       SelectionViewButton(header: "Cardio", subheader: "2 Workouts"),
             ])
         
-        // workout
+        // MARK: - Workout Tab
+        
+        let workoutRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
+        workoutRequest.resultType = .managedObjectResultType
+        workoutRequest.propertiesToFetch = ["type"]
+        
+        var workoutTypes = [String]()
+        
+        do {
+            let results = try DatabaseController.getContext().fetch(workoutRequest)
+            // Append all received types
+            for r in results {
+                if let type = r.type {
+                    workoutTypes.append(type)
+                }
+            }
+        } catch let err as NSError {
+            print(err.debugDescription)
+        }
+        
+        // make buttons from unique workout names
+        
+        var workoutButtons = [SelectionViewButton]()
+        let uniqueWorkoutTypes = Set(workoutTypes)
+        
+        for type in uniqueWorkoutTypes {
+            workoutButtons.append(
+                SelectionViewButton(
+                    header: type,
+                    subheader: "\(DatabaseFacade.countWorkoutsOfType(ofType: type)) exercises"))
+        }
         
         let workoutController = SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"),
-            buttons: [SelectionViewButton(header: "Normal", subheader: "4 exercises"),
-                      SelectionViewButton(header: "Pyramid", subheader: "2 exercises"),
-                      SelectionViewButton(header: "Drop Set", subheader: "8 exercises"),
-                      SelectionViewButton(header: "Cardio", subheader: "3 exercises"),
-                      ])
+            buttons: workoutButtons)
+        
+        // MARK: - Profile Tab
+        
         let profileController = TestViewController()
+        
+        // MARK: - Set up navbar
         
         viewControllers = [progressController, historyController, workoutController, profileController]
         
