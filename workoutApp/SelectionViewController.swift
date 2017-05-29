@@ -114,11 +114,10 @@ class SelectionViewController: UIViewController {
     // TODO: - Make work
     
     func processButton(button: UIButton) {
-        let string = buttonNames[button.tag]
+        let tappedWorkoutStyle = buttonNames[button.tag]
         // process string
         
-        print("\(string) tapped!")
-        let vc = BoxTableViewController(header: string)
+        let vc = BoxTableViewController(workoutStyle: tappedWorkoutStyle)
         navigationController?.pushViewController(vc, animated: true)
     }
     
