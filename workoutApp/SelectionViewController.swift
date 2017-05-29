@@ -9,29 +9,89 @@
 import UIKit
 import CoreData
 
-class SelectionViewController: UINavigationController {
+class SelectionViewController: UIViewController {
     
     var header: SelectionViewHeader!
     var buttons: [SelectionViewButton]!
     var alignmentRectangle = UIView() // Used to center stack between header and tab bar
     var stack: StackView!
     
+    // button creation
+    var buttonNames: [String] = []
+    var buttonIndex = 0
+    
+    // Main initializer
+    init(header: SelectionViewHeader) {
+        self.header = header
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    // Init with manually created buttons
     init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
         self.header = header
         self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
     }
     
+    // Init with fetchRequest
+    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<Workout>) {
+        self.init(header: header)
+        var workoutTypes = [String]()
+        
+        // Fetch from Core Data
+        do {
+            let results = try DatabaseController.getContext().fetch(fetchRequest)
+            // Append all received types
+            for r in results {
+                if let type = r.type {
+                    workoutTypes.append(type)
+                }
+            }
+        } catch let err as NSError {
+            print(err.debugDescription)
+        }
+        
+        // make buttons from unique workout names
+        var workoutButtons = [SelectionViewButton]()
+        let uniqueWorkoutTypes = Set(workoutTypes)
+        
+        for type in uniqueWorkoutTypes {
+            
+            let newButton = SelectionViewButton(header: type,
+                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofType: type)) exercises")
+        
+            // Set up button names etc
+            newButton.button.tag = buttonIndex
+            buttonIndex += 1
+            buttonNames.append(type)
+            
+            // Replace any default target action
+            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
+            newButton.button.addTarget(self, action: #selector(processButton), for: UIControlEvents.touchUpInside)
+
+            workoutButtons.append(newButton)
+        }
+        
+        buttons = workoutButtons
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        view.layoutIfNeeded()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .light
-        
-        navigationBar.isHidden = true
         
         //Stack View
         stack = StackView(frame: CGRect.zero)
@@ -49,6 +109,17 @@ class SelectionViewController: UINavigationController {
         
         setLayout()
         drawDiagonalLineThrough(stack)
+    }
+    
+    // TODO: - Make work
+    
+    func processButton(button: UIButton) {
+        let string = buttonNames[button.tag]
+        // process string
+        
+        print("\(string) tapped!")
+        let vc = BoxTableViewController(header: string)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func drawDiagonalLineThrough(_ someView: UIView) {

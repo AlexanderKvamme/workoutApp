@@ -1,4 +1,4 @@
-//
+ //
 //  AppDelegate.swift
 //  workoutApp
 //
@@ -23,8 +23,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         dataSeeder.seedCoreData()
         DatabaseController.saveContext()
         
-        // Instantiate Tab Bar
+        customizeUIAppearance()
+        UINavigationBar.appearance().barTintColor = UIColor.light
+//        UINavigationBar.appearance().tintColor = UIColor.purple
+        let backArrowImage = UIImage(named: "arrow-back-blue")
+        let renderedImage = backArrowImage?.withRenderingMode(.alwaysOriginal)
+        UINavigationBar.appearance().backIndicatorImage = renderedImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
         
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSFontAttributeName: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
+            NSForegroundColorAttributeName: UIColor.faded,
+            NSKernAttributeName: 0.7,
+        ]
+    
+        
+        // Instantiate Tab Bar
         let tabBar = CustomTabBarController()
         window?.rootViewController = tabBar
         
@@ -53,6 +68,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         DatabaseController.saveContext()
+    }
+    
+    // MARK: - Custom Methods
+    
+    private func customizeUIAppearance() {
+        print("cuztomizing")
     }
 }
 

@@ -10,10 +10,50 @@ import UIKit
 
 class BoxTableViewController: UITableViewController {
 
+    let headerLabel = UILabel(frame: CGRect(x: 100, y: 100, width: 200, height: 50))
+    
+    init(header: String) {
+        super.init(nibName: nil, bundle: nil)
+        headerLabel.text = header
+        view.addSubview(headerLabel)
+        
+        // Navigation
+        
+        // navBar Right button
+        let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
+        let rbi = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
+        self.navigationItem.rightBarButtonItem = rbi
+        // Navbar title
+        navigationController?.navigationBar.isHidden = false
+        self.title = "\(header) workouts".uppercased()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .secondary
+        view.backgroundColor = .light
+            
+            // Remove "Back" text
+            if let topItem = self.navigationController?.navigationBar.topItem {
+                topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            }
+        
+            
+            // Remove background
+//            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+//            self.navigationController?.navigationBar.shadowImage = UIImage()
+//            self.navigationController?.navigationBar.isTranslucent = true
+
+
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -94,4 +134,6 @@ class BoxTableViewController: UITableViewController {
     }
     */
 
+    
+    
 }

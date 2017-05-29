@@ -12,6 +12,7 @@
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
 		DD1DF75C1EDB637100CD3426 /* WorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75B1EDB637100CD3426 /* WorkoutTableViewController.swift */; };
+		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
 		DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD491B7B1ED7464E008A4619 /* DataSeeder.swift */; };
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
 		DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */; };
@@ -56,6 +57,7 @@
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
 		DD1DF75B1EDB637100CD3426 /* WorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewController.swift; sourceTree = "<group>"; };
+		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
 		DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
@@ -112,7 +114,6 @@
 			children = (
 				DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */,
 				DD151DFE1ED2DD310014DBC1 /* Box.swift */,
-				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
 				DDEE859D1ED4921000A3F81C /* Helper Classes */,
 			);
 			name = "Box Abstract Factory";
@@ -125,6 +126,14 @@
 				DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */,
 			);
 			name = "Native Extensions";
+			sourceTree = "<group>";
+		};
+		DD1DF75D1EDB77B100CD3426 /* NavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */,
+			);
+			name = NavigationController;
 			sourceTree = "<group>";
 		};
 		DD585D3A1EC4D53900962B19 = {
@@ -158,6 +167,8 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
+				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DDDE6E521ED4DF4900A03886 /* Table View */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
@@ -332,6 +343,7 @@
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
 				DDA54AFA1EDA0A05008C601C /* Lift+CoreDataClass.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
+				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				DDA54AF91EDA0A05008C601C /* ExerciseLog+CoreDataProperties.swift in Sources */,
 				DDA54AFC1EDA0A05008C601C /* Workout+CoreDataClass.swift in Sources */,
 				DDA54B001EDA0A05008C601C /* WorkoutLog+CoreDataClass.swift in Sources */,

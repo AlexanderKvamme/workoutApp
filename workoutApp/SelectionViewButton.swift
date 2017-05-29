@@ -70,14 +70,14 @@ public class SelectionViewButton: UIView {
     
     // UI components
     func handleButtonTap(_ sender: SelectionViewButton) {
-        print("something")
+        print("Button was tapped")
+        
         
         showNotYetImplementedModal()
     }
     
     func showNotYetImplementedModal() {
         let alert = CustomAlertView(type: .error, messageContent: "this feature is not yet implemented!")
-        //let alert = CustomAlertView(type: .message, messageContent: "this feature is not yet implemented!")
         alert.show(animated: true)
     }
 }

@@ -35,36 +35,18 @@ class CustomTabBarController: UITabBarController {
         let workoutRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
         workoutRequest.resultType = .managedObjectResultType
         workoutRequest.propertiesToFetch = ["type"]
+
         
-        var workoutTypes = [String]()
+        // FIXME: - Do it
         
-        do {
-            let results = try DatabaseController.getContext().fetch(workoutRequest)
-            // Append all received types
-            for r in results {
-                if let type = r.type {
-                    workoutTypes.append(type)
-                }
-            }
-        } catch let err as NSError {
-            print(err.debugDescription)
-        }
+//        let workoutController = SelectionViewController(
+//            header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest)
         
-        // make buttons from unique workout names
-        
-        var workoutButtons = [SelectionViewButton]()
-        let uniqueWorkoutTypes = Set(workoutTypes)
-        
-        for type in uniqueWorkoutTypes {
-            workoutButtons.append(
-                SelectionViewButton(
-                    header: type,
-                    subheader: "\(DatabaseFacade.countWorkoutsOfType(ofType: type)) exercises"))
-        }
-        
-        let workoutController = SelectionViewController(
-            header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"),
-            buttons: workoutButtons)
+//        let workoutNav = CustomNavigationViewController(rootViewController: workoutController)
+//        let navigationController = UINavigationController(rootViewController: TestViewController())
+//        let workoutNavigationController = CustomNavigationViewController(rootViewController: TestViewController())
+        let workoutNavigationController = CustomNavigationViewController(rootViewController: SelectionViewController(
+            header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
         
         // MARK: - Profile Tab
         
@@ -72,11 +54,12 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - Set up navbar
         
-        viewControllers = [progressController, historyController, workoutController, profileController]
+        viewControllers = [progressController, historyController, workoutNavigationController, profileController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
         historyController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
-        workoutController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
+//        workoutController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
+        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
         profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
@@ -97,16 +80,5 @@ class CustomTabBarController: UITabBarController {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         selectionIndicator.moveToItem(item.tag, ofItemCount: (tabBar.items?.count)!)
     }
-
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
