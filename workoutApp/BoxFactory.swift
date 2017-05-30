@@ -110,8 +110,6 @@ fileprivate class SuggestionBoxFactory: BoxFactory {
     }
 }
 
-
-
 // MARK: - Box parts
 
 // Headers
@@ -137,7 +135,7 @@ fileprivate class StandardBoxHeader: BoxHeader {
         label.text = "some header"
         label.sizeToFit()
         addSubview(label)
-        self.frame = CGRect(x: 0, y: 0, width: Constant.layout.Box.Standard.width, height: label.frame.height)
+        self.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Standard.width, height: label.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -169,7 +167,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
         label.sizeToFit()
         label.textAlignment = .right
         addSubview(label)
-        self.frame = CGRect(x: 0, y: 0, width: Constant.layout.Box.Standard.width, height: label.frame.height)
+        self.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Standard.width, height: label.frame.height)
         label.frame = self.frame
     }
     
@@ -202,7 +200,7 @@ fileprivate class HistoryBoxContent: BoxContent {
         contentStack = ThreeColumnStack(withSubstacks: totalStack, timeStack, PRStack)
         
         // content Stack - Fills entire box and arranges the 3 stacks horzontally
-        contentStack.frame.size = CGSize(width: Constant.layout.Box.Standard.width, height: Constant.layout.Box.Standard.height)
+        contentStack.frame.size = CGSize(width: Constant.components.Box.Standard.width, height: Constant.components.Box.Standard.height)
         contentStack.distribution = .equalCentering
         contentStack.alignment = .center
         contentStack.axis = .horizontal
@@ -241,15 +239,20 @@ fileprivate class StandardBoxFrame: BoxFrame {
     override init(){
         super.init()
         background.backgroundColor = .primary
-        background.frame = CGRect(x: 0, y: 0, width: Constant.UI.width - 2*Constant.layout.Box.spacingFromSides, height: Constant.layout.Box.Standard.height)
+        background.frame = CGRect(x: 0, y: 0, width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides, height: Constant.components.Box.Standard.height)
         
-        let shimmerInset = Constant.layout.Box.shimmerInset
+        let shimmerInset = Constant.components.Box.shimmerInset
         shimmer.backgroundColor = .white
         shimmer.alpha = 0.1
         shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
         
         addSubview(background)
         addSubview(shimmer)
+        
+        print()
+        print("I Box boxFactory:")
+//        print("- boxFrame:", boxFrame.frame)
+        print("- frame:", frame)
     }
     
     required public init?(coder aDecoder: NSCoder) {

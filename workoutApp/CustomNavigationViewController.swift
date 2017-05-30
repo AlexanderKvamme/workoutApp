@@ -8,38 +8,85 @@
 
 import UIKit
 
-class CustomNavigationViewController: UINavigationController {
+final class CustomNavigationViewController: UINavigationController {
 
-    override func viewWillAppear(_ animated: Bool) {
-//        setupNavBar()
+    // MARK: - Lifecycle
+    
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+        delegate = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        // This needs to be in here, not in init
+        interactivePopGestureRecognizer?.delegate = self
     }
     
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
+    
+    deinit {
+        delegate = nil
+        interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    // MARK: - Overrides
+    
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        duringPushAnimation = true
+        
+        super.pushViewController(viewController, animated: animated)
+    }
+    
+    // MARK: - Private Properties
+    
+    fileprivate var duringPushAnimation = false
+    
+    // MARK: - Unsupported Initializers
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Methods
-    
     
     func buttonDidTap() {
         print("tapped")
     }
+}
 
-    /*
-    // MARK: - Navigation
+// MARK: - UINavigationControllerDelegate
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+extension CustomNavigationViewController: UINavigationControllerDelegate {
+    
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        guard let swipeNavigationController = navigationController as? CustomNavigationViewController else { return }
+        
+        swipeNavigationController.duringPushAnimation = false
     }
-    */
+    
+}
 
+// MARK: - UIGestureRecognizerDelegate
+
+extension CustomNavigationViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard gestureRecognizer == interactivePopGestureRecognizer else {
+            return true // default value
+        }
+        
+        // Disable pop gesture in two situations:
+        // 1) when the pop animation is in progress
+        // 2) when user swipes quickly a couple of times and animations don't have time to be performed
+        return viewControllers.count > 1 && duringPushAnimation == false
+    }
 }

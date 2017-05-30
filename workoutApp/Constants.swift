@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Constant.layout.Box.spacingFromSides
+fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Constant.components.Box.spacingFromSides
 fileprivate let standardBoxHeight: CGFloat = 80
 
 enum Constant {
@@ -18,11 +18,11 @@ enum Constant {
         static let height = UIScreen.main.bounds.height
     }
     
-    enum Alpha {
+    enum alpha {
         static let faded: CGFloat = 0.5
     }
     
-    enum layout {
+    enum components {
         enum Box {
             static let spacingFromSides: CGFloat = 10
             static let shimmerInset: CGFloat = 7

@@ -11,7 +11,6 @@
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
-		DD1DF75C1EDB637100CD3426 /* WorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75B1EDB637100CD3426 /* WorkoutTableViewController.swift */; };
 		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
 		DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD491B7B1ED7464E008A4619 /* DataSeeder.swift */; };
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
@@ -43,10 +42,12 @@
 		DDA54B011EDA0A05008C601C /* WorkoutLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54AF71EDA0A05008C601C /* WorkoutLog+CoreDataProperties.swift */; };
 		DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54B021EDB426D008C601C /* DatabaseFacade.swift */; };
 		DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */; };
+		DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */; };
 		DDDE6E511ED4DED400A03886 /* BoxTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */; };
 		DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */; };
 		DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */; };
 		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
+		DDEEA9F81EDCD99A003360CD /* BoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEEA9F71EDCD99A003360CD /* BoxCell.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 /* End PBXBuildFile section */
@@ -56,7 +57,6 @@
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
-		DD1DF75B1EDB637100CD3426 /* WorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewController.swift; sourceTree = "<group>"; };
 		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
@@ -90,10 +90,12 @@
 		DDA54AF71EDA0A05008C601C /* WorkoutLog+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WorkoutLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DDA54B021EDB426D008C601C /* DatabaseFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFacade.swift; sourceTree = "<group>"; };
 		DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
+		DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxTableViewController.swift; sourceTree = "<group>"; };
 		DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowStack.swift; sourceTree = "<group>"; };
 		DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
 		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
+		DDEEA9F71EDCD99A003360CD /* BoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxCell.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -167,7 +169,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
-				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
+				DDD290A61EDCCD1500048BC9 /* TestViewController */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DDDE6E521ED4DF4900A03886 /* Table View */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
@@ -246,11 +248,20 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		DDD290A61EDCCD1500048BC9 /* TestViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */,
+			);
+			name = TestViewController;
+			sourceTree = "<group>";
+		};
 		DDDE6E521ED4DF4900A03886 /* Table View */ = {
 			isa = PBXGroup;
 			children = (
 				DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */,
-				DD1DF75B1EDB637100CD3426 /* WorkoutTableViewController.swift */,
+				DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */,
+				DDEEA9F71EDCD99A003360CD /* BoxCell.swift */,
 			);
 			name = "Table View";
 			sourceTree = "<group>";
@@ -342,6 +353,7 @@
 				DDA54AFD1EDA0A05008C601C /* Workout+CoreDataProperties.swift in Sources */,
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
 				DDA54AFA1EDA0A05008C601C /* Lift+CoreDataClass.swift in Sources */,
+				DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				DDA54AF91EDA0A05008C601C /* ExerciseLog+CoreDataProperties.swift in Sources */,
@@ -350,7 +362,6 @@
 				DDA54AFB1EDA0A05008C601C /* Lift+CoreDataProperties.swift in Sources */,
 				DDA54AF81EDA0A05008C601C /* ExerciseLog+CoreDataClass.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
-				DD1DF75C1EDB637100CD3426 /* WorkoutTableViewController.swift in Sources */,
 				DDA54AFE1EDA0A05008C601C /* Exercise+CoreDataClass.swift in Sources */,
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
@@ -368,6 +379,7 @@
 				DDDE6E511ED4DED400A03886 /* BoxTableViewController.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
 				DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */,
+				DDEEA9F81EDCD99A003360CD /* BoxCell.swift in Sources */,
 				DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */,
 				DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */,
 				DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */,

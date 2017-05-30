@@ -23,6 +23,7 @@ public class Box: UIView {
         self.content = content
         boxFrame.clipsToBounds = true
         
+        print(" Box sender frame til super med height: ", bgFrame.frame.height)
         super.init(frame: CGRect(x: 0, y: 0, width: bgFrame.frame.width, height: bgFrame.frame.height))
         
         setup()
@@ -33,36 +34,24 @@ public class Box: UIView {
     }
     
     fileprivate func setup() {
-        backgroundColor = .yellow
 
         // header
         if let header = header {
             header.label.text = "Some header"
             header.label.sizeToFit()
-            header.frame.origin.x = header.frame.origin.x + Constant.layout.Box.spacingFromSides
+            header.frame.origin.x = header.frame.origin.x + Constant.components.Box.spacingFromSides
             addSubview(header)
         }
         
         // frame
-        boxFrame.frame = CGRect(x: Constant.layout.Box.spacingFromSides, y: header?.frame.height ?? 0, width: Constant.layout.Box.Standard.width, height: Constant.layout.Box.Standard.height)
+        boxFrame.frame = CGRect(x: Constant.components.Box.spacingFromSides, y: header?.frame.height ?? 0, width: Constant.components.Box.Standard.width, height: Constant.components.Box.Standard.height)
         boxFrame.clipsToBounds = true
-
+        
         addSubview(boxFrame)
         
-        
-        
-        
-        
-        
         // FIXME: - Content
-        addSubview(content)
         content.frame = boxFrame.frame
-        
-        
-        
-        
-        
-        
+        addSubview(content)
         
         // subheader
         if let subheader = subheader {
@@ -74,6 +63,21 @@ public class Box: UIView {
             bringSubview(toFront: header)
         }
         setNeedsLayout()
+        
+//        frame = boxFrame.frame
+        var totalheight: CGFloat = 0
+
+        if let header = self.header {
+            totalheight = header.frame.height
+        }
+        totalheight += boxFrame.frame.height
+        
+        frame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: totalheight)
+        
+        print()
+        print("I :")
+        print("- boxFrame:", boxFrame.frame)
+        print("- frame in Box:", frame)
     }
     
     // Box functions

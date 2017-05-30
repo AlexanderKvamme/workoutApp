@@ -98,7 +98,7 @@ class SelectionViewController: UIViewController {
         stack.axis = UILayoutConstraintAxis.vertical
         stack.distribution = UIStackViewDistribution.equalSpacing
         stack.alignment = UIStackViewAlignment.center
-        stack.spacing = Constant.layout.SelectionVC.Stack.spacing
+        stack.spacing = Constant.components.SelectionVC.Stack.spacing
 
         for button in buttons {
             stack.addArrangedSubview(button)
@@ -118,6 +118,8 @@ class SelectionViewController: UIViewController {
         // process string
         
         let vc = BoxTableViewController(workoutStyle: tappedWorkoutStyle)
+        //let vc = TestTableViewController(nibName: nil, bundle: nil)
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -158,7 +160,7 @@ class SelectionViewController: UIViewController {
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
         header.topAnchor.constraint(equalTo: view.topAnchor,
-                                    constant: Constant.layout.SelectionVC.Header.spacingTop).isActive = true
+                                    constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
         // stack
         stack.translatesAutoresizingMaskIntoConstraints = false
