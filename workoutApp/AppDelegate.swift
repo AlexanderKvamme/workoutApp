@@ -19,29 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // seed Core Data with development Data
         DatabaseController.clearCoreData()
         
+        // Core data
         let dataSeeder = DataSeeder(context: DatabaseController.getContext())
         dataSeeder.seedCoreData()
         DatabaseController.saveContext()
         
+        // Appearance()
         customizeUIAppearance()
-        UINavigationBar.appearance().barTintColor = UIColor.light
-//        UINavigationBar.appearance().tintColor = UIColor.purple
-        let backArrowImage = UIImage(named: "arrow-back-blue")
-        let renderedImage = backArrowImage?.withRenderingMode(.alwaysOriginal)
-        UINavigationBar.appearance().backIndicatorImage = renderedImage
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
         
-        UINavigationBar.appearance().titleTextAttributes = [
-            NSFontAttributeName: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
-            NSForegroundColorAttributeName: UIColor.faded,
-            NSKernAttributeName: 0.7,
-        ]
-    
-        
-        // Instantiate Tab Bar
-        let tabBar = CustomTabBarController()
-        window?.rootViewController = tabBar
+        // Instantiate master View Controller
+        let masterViewController = CustomTabBarController()
+        window?.rootViewController = masterViewController
         
         return true
     }
@@ -74,6 +62,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func customizeUIAppearance() {
         print("cuztomizing")
+        UINavigationBar.appearance().barTintColor = UIColor.light
+        //        UINavigationBar.appearance().tintColor = UIColor.purple
+        let backArrowImage = UIImage(named: "arrow-back-blue")
+        let renderedImage = backArrowImage?.withRenderingMode(.alwaysOriginal)
+        UINavigationBar.appearance().backIndicatorImage = renderedImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
+        
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSFontAttributeName: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
+            NSForegroundColorAttributeName: UIColor.faded,
+            NSKernAttributeName: 0.7,
+        ]
     }
 }
 

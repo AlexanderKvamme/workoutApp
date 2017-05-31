@@ -248,11 +248,6 @@ fileprivate class StandardBoxFrame: BoxFrame {
         
         addSubview(background)
         addSubview(shimmer)
-        
-        print()
-        print("I Box boxFactory:")
-//        print("- boxFrame:", boxFrame.frame)
-        print("- frame:", frame)
     }
     
     required public init?(coder aDecoder: NSCoder) {

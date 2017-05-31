@@ -23,7 +23,6 @@ public class Box: UIView {
         self.content = content
         boxFrame.clipsToBounds = true
         
-        print(" Box sender frame til super med height: ", bgFrame.frame.height)
         super.init(frame: CGRect(x: 0, y: 0, width: bgFrame.frame.width, height: bgFrame.frame.height))
         
         setup()
@@ -49,7 +48,7 @@ public class Box: UIView {
         
         addSubview(boxFrame)
         
-        // FIXME: - Content
+        // content
         content.frame = boxFrame.frame
         addSubview(content)
         
@@ -59,12 +58,12 @@ public class Box: UIView {
             setSubheaderAnchors(subheader)
         }
         
+        // header
         if let header = header {
             bringSubview(toFront: header)
         }
         setNeedsLayout()
         
-//        frame = boxFrame.frame
         var totalheight: CGFloat = 0
 
         if let header = self.header {
@@ -73,11 +72,6 @@ public class Box: UIView {
         totalheight += boxFrame.frame.height
         
         frame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: totalheight)
-        
-        print()
-        print("I :")
-        print("- boxFrame:", boxFrame.frame)
-        print("- frame in Box:", frame)
     }
     
     // Box functions
@@ -96,7 +90,6 @@ public class Box: UIView {
             setSubheaderAnchors(subheader)
         }
     }
-    
 }
 
 fileprivate extension Box {
@@ -108,10 +101,6 @@ fileprivate extension Box {
         subheader.bottomAnchor.constraint(equalTo: header!.bottomAnchor, constant: 0).isActive = true
         subheader.rightAnchor.constraint(equalTo: boxFrame.rightAnchor, constant: 0).isActive = true
         setNeedsLayout()
-        
-        /*
-         Noe er feil med at når jeg oppdaterer labelen, så er ikke dette det samme som å oppdatere viewen "subheader", siden denne bare inneholder labelen. Jeg må få til en ordentlig setup av disse.. Kanskje viewen skal være like lang som boksen, og så er texten bare alignet til venstre i den? Da holder det å oppdatere teksten, og jeg slipper å aligne boxviewne gang på gang... jeg kan flytte anchoringen inn i boxen.
-         */
     }
-    
 }
+

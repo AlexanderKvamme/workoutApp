@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+/*
+ SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts to show
+ */
+
 class SelectionViewController: UIViewController {
     
     var header: SelectionViewHeader!
@@ -34,6 +38,9 @@ class SelectionViewController: UIViewController {
     }
     
     // Init with fetchRequest
+    
+    // MARK: - Transition into using this as prime init
+    
     convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<Workout>) {
         self.init(header: header)
         var workoutTypes = [String]()

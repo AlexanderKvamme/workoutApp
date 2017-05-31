@@ -8,28 +8,66 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
     
     let cellIdentifier: String = "BoxCell"
     var workoutStyle: String!
     
+    private var fetchedWorkouts = [Workout]()
+    
+    // MARK: - Initializers
+    
+//    init(workoutStyle: String) {
+//        super.init()
+//        self.workoutStyle = workoutStyle
+//    }
+    
     init(workoutStyle: String) {
         super.init()
         self.workoutStyle = workoutStyle
-        print(" data source init")
+        
+        let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
+        let predicate = NSPredicate(format: "type = %@", workoutStyle)
+        fetchRequest.predicate = predicate
+        
+        // Fetch from Core Data
+        do {
+            let results = try DatabaseController.getContext().fetch(fetchRequest)
+            
+            fetchedWorkouts = results
+            
+            for result in results {
+                print(result.name)
+            }
+         
+        } catch let err as NSError {
+            print(err.debugDescription)
+        }
+
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return fetchedWorkouts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("making a cell")
+//        print("making a cell")
+//        var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell
+//        cell = WorkoutBoxCell(style: .default, reuseIdentifier: cellIdentifier)
+//        print(cell.frame)
+//        cell.box.setTitle("Bam")
+//        cell.box.setSubHeader(workoutStyle)
+//        return cell
+        print("indexpath", indexPath)
+        let wo = fetchedWorkouts[indexPath.row]
+        
         var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell
         cell = WorkoutBoxCell(style: .default, reuseIdentifier: cellIdentifier)
-        print(cell.frame)
-        cell.box.setTitle("Bam")
+        if let name = wo.name {
+            cell.box.setTitle(name)
+        }
         cell.box.setSubHeader(workoutStyle)
         return cell
     }
