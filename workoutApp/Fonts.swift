@@ -30,4 +30,5 @@ enum FontSize: CGFloat {
     case big = 24
     case bigger = 32
     case biggest = 40
+    case extreme = 72
 }

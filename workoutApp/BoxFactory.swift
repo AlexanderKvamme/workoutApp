@@ -17,6 +17,7 @@ public enum BoxType {
     case HistoryBox
     case WorkoutBox
     case SuggestionBox // mulig denne ikke passer inn
+    case SelectionBox
 }
 
 public class BoxFactory {
@@ -47,6 +48,8 @@ public class BoxFactory {
             factory = WorkoutBoxFactory()
         case .SuggestionBox:
             factory = SuggestionBoxFactory()
+        case .SelectionBox:
+            factory = SelectionBoxFactory()
         }
         return factory
     }
@@ -110,9 +113,29 @@ fileprivate class SuggestionBoxFactory: BoxFactory {
     }
 }
 
+// Selection Box Factory
+
+fileprivate class SelectionBoxFactory: BoxFactory {
+    public override func makeBoxHeader() -> BoxHeader? {
+        return SelectionBoxHeader()
+    }
+    
+    public override func makeBoxSubHeader() -> BoxSubHeader? {
+        return nil
+    }
+    
+    public override func makeBoxFrame() -> BoxFrame? {
+        return SelectionBoxFrame()
+    }
+    
+    public override func makeBoxContent() -> BoxContent? {
+        return SelectionBoxContent()
+    }
+}
+
 // MARK: - Box parts
 
-// Headers
+// MARK: - Headers
 
 public class BoxHeader: UIView {
     public var label = UILabel()
@@ -131,11 +154,25 @@ fileprivate class StandardBoxHeader: BoxHeader {
     override init() {
         super.init()
         label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.numberOfLines = 0
+        label.preferredMaxLayoutWidth = frame.width / 2
         label.textColor = .darkest
         label.text = "some header"
         label.sizeToFit()
         addSubview(label)
-        self.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Standard.width, height: label.frame.height)
+        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+                            y: 0,
+                            width: Constant.components.Box.Standard.width,
+                            height: label.frame.height)
+        
+//        translatesAutoresizingMaskIntoConstraints = false
+        
+//        NSLayoutConstraint.activate([
+//            topAnchor.constraint(equalTo: label.topAnchor),
+//            bottomAnchor.constraint(equalTo: label.bottomAnchor),
+//            heightAnchor.constraint(equalTo: label.heightAnchor),
+//            widthAnchor.constraint(equalToConstant: Constant.components.Box.Standard.width)
+//            ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -143,7 +180,24 @@ fileprivate class StandardBoxHeader: BoxHeader {
     }
 }
 
-// Sub Headers
+fileprivate class SelectionBoxHeader: BoxHeader {
+    override init() {
+        super.init()
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.textColor = .darkest
+        label.text = ""
+        label.backgroundColor = .yellow
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Selection.width, height: label.frame.height)
+        addSubview(label)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Subheaders
 
 public class BoxSubHeader: UIView {
     public var label = UILabel()
@@ -163,7 +217,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
         super.init()
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = UIColor.medium
-        label.text = "Some subheader"
+        label.text = ""
         label.sizeToFit()
         label.textAlignment = .right
         addSubview(label)
@@ -176,7 +230,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
     }
 }
 
-// Content
+// MARK: - Content
 
 public class BoxContent: UIView {
     var contentStack: ThreeColumnStack!
@@ -218,7 +272,35 @@ fileprivate class HistoryBoxContent: BoxContent {
     }
 }
 
-// Frame
+fileprivate class SelectionBoxContent: BoxContent {
+    
+    var label = UILabel()
+    var stack = UIStackView()
+    
+    init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        // label
+        label.font = UIFont.custom(style: .bold, ofSize: .bigger)
+        label.textColor = UIColor.white
+        label.text = "Bam"
+        
+        // stack for centering
+        stack.frame.size = CGSize(width: Constant.components.Box.Selection.width, height: Constant.components.Box.Selection.height)
+        stack.distribution = .equalCentering
+        stack.alignment = .center
+        stack.axis = .horizontal
+        stack.spacing = 0
+        
+        addSubview(stack)
+        stack.addArrangedSubview(label)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Frame
 
 public class BoxFrame: UIView {
     
@@ -254,6 +336,28 @@ fileprivate class StandardBoxFrame: BoxFrame {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+fileprivate class SelectionBoxFrame: BoxFrame {
+    override init(){
+        super.init()
+        background.backgroundColor = .primary
+        background.frame = CGRect(x: 0, y: 0, width: Constant.UI.width/2 - 2*Constant.components.Box.spacingFromSides, height: Constant.components.Box.Standard.height)
+        
+        let shimmerInset = Constant.components.Box.shimmerInset
+        shimmer.backgroundColor = .white
+        shimmer.alpha = 0.1
+        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
+        
+        addSubview(background)
+        addSubview(shimmer)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
 
 // The 3 components
 

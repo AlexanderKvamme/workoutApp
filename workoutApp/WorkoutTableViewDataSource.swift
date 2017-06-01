@@ -37,10 +37,6 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
             let results = try DatabaseController.getContext().fetch(fetchRequest)
             
             fetchedWorkouts = results
-            
-            for result in results {
-                print(result.name)
-            }
          
         } catch let err as NSError {
             print(err.debugDescription)

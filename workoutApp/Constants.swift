@@ -36,6 +36,10 @@ enum Constant {
                 static let width = standardBoxWidth
                 static let height = standardBoxHeight
             }
+            enum Selection {
+                static let width = standardBoxWidth / 2
+                static let height = standardBoxHeight / 2
+            }
         }
         
         enum SelectionVC {
