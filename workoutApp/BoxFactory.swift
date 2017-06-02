@@ -154,25 +154,16 @@ fileprivate class StandardBoxHeader: BoxHeader {
     override init() {
         super.init()
         label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.numberOfLines = 0
-        label.preferredMaxLayoutWidth = frame.width / 2
+        label.numberOfLines = 2
+        
         label.textColor = .darkest
-        label.text = "some header"
+        label.text = "header goes here"
         label.sizeToFit()
         addSubview(label)
         frame = CGRect(x: Constant.components.Box.spacingFromSides,
                             y: 0,
                             width: Constant.components.Box.Standard.width,
                             height: label.frame.height)
-        
-//        translatesAutoresizingMaskIntoConstraints = false
-        
-//        NSLayoutConstraint.activate([
-//            topAnchor.constraint(equalTo: label.topAnchor),
-//            bottomAnchor.constraint(equalTo: label.bottomAnchor),
-//            heightAnchor.constraint(equalTo: label.heightAnchor),
-//            widthAnchor.constraint(equalToConstant: Constant.components.Box.Standard.width)
-//            ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -186,7 +177,6 @@ fileprivate class SelectionBoxHeader: BoxHeader {
         label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.textColor = .darkest
         label.text = ""
-        label.backgroundColor = .yellow
         label.textAlignment = .center
         label.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Selection.width, height: label.frame.height)
         addSubview(label)
@@ -217,7 +207,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
         super.init()
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = UIColor.medium
-        label.text = ""
+        label.text = "SUBHEADER"
         label.sizeToFit()
         label.textAlignment = .right
         addSubview(label)
@@ -278,21 +268,28 @@ fileprivate class SelectionBoxContent: BoxContent {
     var stack = UIStackView()
     
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        super.init(frame: CGRect(x: 0, y: 0, width: Constant.components.Box.Selection.width, height: Constant.components.Box.Selection.height))
         // label
         label.font = UIFont.custom(style: .bold, ofSize: .bigger)
         label.textColor = UIColor.white
         label.text = "Bam"
         
-        // stack for centering
-        stack.frame.size = CGSize(width: Constant.components.Box.Selection.width, height: Constant.components.Box.Selection.height)
-        stack.distribution = .equalCentering
-        stack.alignment = .center
-        stack.axis = .horizontal
-        stack.spacing = 0
+        label.frame = frame
+        label.textAlignment = .center
         
+        print(label.frame)
+        
+        // stack for centering
+//        stack.frame.size = CGSize(width: Constant.components.Box.Selection.width,
+//                                  height: Constant.components.Box.Selection.height)
+//        stack.distribution = .equalCentering
+//        stack.alignment = .center
+//        stack.axis = .horizontal
+//        stack.spacing = 0
+        
+
         addSubview(stack)
-        stack.addArrangedSubview(label)
+//        stack.addArrangedSubview(label)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -309,6 +306,15 @@ public class BoxFrame: UIView {
     
     init() {
         super.init(frame: CGRect.zero)
+//        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        
+        // background properties
+        background.backgroundColor = .primary
+        
+        // shimmer properties
+        shimmer.backgroundColor = .white
+        shimmer.alpha = 0.1
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -320,13 +326,22 @@ fileprivate class StandardBoxFrame: BoxFrame {
 
     override init(){
         super.init()
-        background.backgroundColor = .primary
-        background.frame = CGRect(x: 0, y: 0, width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides, height: Constant.components.Box.Standard.height)
         
+        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
+                                     height: Constant.components.Box.Standard.height)
+        // Colored view behind shimmer
+        background.frame = CGRect(x: 0,
+                                  y: 0,
+                                  width: standardBoxSize.width,
+                                  height: standardBoxSize.height)
+        // Shimmer
         let shimmerInset = Constant.components.Box.shimmerInset
-        shimmer.backgroundColor = .white
-        shimmer.alpha = 0.1
-        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
+        shimmer.frame = CGRect(x: shimmerInset,
+                               y: shimmerInset,
+                               width: background.frame.width - 2*shimmerInset,
+                               height: background.frame.height - 2*shimmerInset)
+        
+        frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
         
         addSubview(background)
         addSubview(shimmer)
@@ -340,13 +355,23 @@ fileprivate class StandardBoxFrame: BoxFrame {
 fileprivate class SelectionBoxFrame: BoxFrame {
     override init(){
         super.init()
-        background.backgroundColor = .primary
-        background.frame = CGRect(x: 0, y: 0, width: Constant.UI.width/2 - 2*Constant.components.Box.spacingFromSides, height: Constant.components.Box.Standard.height)
+        // Smalled box used to display 1 short string representing selected time/weight
+        let selectionBoxSize = CGSize(width: Constant.components.Box.Selection.width - 2*Constant.components.Box.spacingFromSides,
+                                     height: Constant.components.Box.Selection.height)
         
+        // colored background
+        background.frame = CGRect(x: 0, y: 0,
+                                  width: selectionBoxSize.width,
+                                  height: selectionBoxSize.height)
+        // shimmer
         let shimmerInset = Constant.components.Box.shimmerInset
-        shimmer.backgroundColor = .white
-        shimmer.alpha = 0.1
-        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
+
+        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset,
+                               width: selectionBoxSize.width - 2*shimmerInset,
+                               height: selectionBoxSize.height - 2*shimmerInset)
+        
+        frame.size = selectionBoxSize
+        print("selectionbox frame: ", frame)
         
         addSubview(background)
         addSubview(shimmer)

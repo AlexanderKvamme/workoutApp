@@ -49,14 +49,6 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        print("making a cell")
-//        var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell
-//        cell = WorkoutBoxCell(style: .default, reuseIdentifier: cellIdentifier)
-//        print(cell.frame)
-//        cell.box.setTitle("Bam")
-//        cell.box.setSubHeader(workoutStyle)
-//        return cell
-        print("indexpath", indexPath)
         let wo = fetchedWorkouts[indexPath.row]
         
         var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell

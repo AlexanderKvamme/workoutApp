@@ -46,7 +46,6 @@ class BoxTableViewController: UITableViewController {
         // refreshControl
 //        setupRefreshControl()
         setupTestRefreshControl()
-        
     }
 
     // MARK: - helpers
@@ -64,7 +63,6 @@ class BoxTableViewController: UITableViewController {
         refreshControl?.addSubview(customRefreshView)
         
         refreshControl!.addTarget(self, action: #selector(BoxTableViewController.refreshControlHandler(sender:)), for: .valueChanged)
-        
     }
     
     @objc private func refreshControlHandler(sender: UIRefreshControl) {
@@ -125,7 +123,6 @@ class BoxTableViewController: UITableViewController {
         if customRefreshView.label.alpha == 0 {
             customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .biggest)
         }
-        
     }
 }
 

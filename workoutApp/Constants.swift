@@ -9,8 +9,12 @@
 import Foundation
 import UIKit
 
+// MARK: - Fileprivate
+
 fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Constant.components.Box.spacingFromSides
 fileprivate let standardBoxHeight: CGFloat = 80
+
+// MARK: - Globals
 
 enum Constant {
     enum UI {

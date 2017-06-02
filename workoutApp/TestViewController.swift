@@ -91,13 +91,15 @@ class TestViewController: UIViewController {
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         
-        let box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
-        box.setTitle("This is a\n split title")
-        view.addSubview(box)
-        box.center = CGPoint(x: 200, y: 300)
-        view.setNeedsLayout()
+        // top box
         
-        // History box with long title
+        let box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
+        box.setTitle("Test")
+        box.setSubHeader("Drop Set")
+        view.addSubview(box)
+        box.setDebugColors()
+        
+        // bot box factory
         
         let boxFactory2 = BoxFactory.makeFactory(type: .HistoryBox)
         let newboxHeader = boxFactory2.makeBoxHeader()
@@ -105,12 +107,23 @@ class TestViewController: UIViewController {
         let newboxFrame = boxFactory2.makeBoxFrame()
         let newboxContent = boxFactory2.makeBoxContent()
         
-        let newbox = Box(header: newboxHeader, subheader: newboxSubHeader, bgFrame: newboxFrame!, content: newboxContent!)
-        //        box.translatesAutoresizingMaskIntoConstraints = false
-//        newbox.setTitle("this is a really long title right")
-        view.addSubview(newbox)
-        newbox.center.x = 200
-        view.setNeedsLayout()
+        // bot box
+        
+        let botBox = Box(header: newboxHeader, subheader: newboxSubHeader, bgFrame: newboxFrame!, content: newboxContent!)
+        botBox.setTitle("this is a really long title right")
+        botBox.setSubHeader("Drop Set")
+        view.addSubview(botBox)
+        botBox.center.y = botBox.center.y + 300
+        
+        botBox.translatesAutoresizingMaskIntoConstraints = false
+        botBox.clipsToBounds = true
+        setBotBoxConstraints()
+    }
+    
+    private func setBotBoxConstraints() {
+        NSLayoutConstraint.activate([
+            
+            ])
     }
 }
 
