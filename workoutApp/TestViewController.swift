@@ -94,10 +94,16 @@ class TestViewController: UIViewController {
         // top box
         
         let box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
-        box.setTitle("Test")
-        box.setSubHeader("Drop Set")
+        box.setTitle("Weight in kg")
+        box.center.y = box.center.y + 100
         view.addSubview(box)
-        box.setDebugColors()
+        box.setContentLabel("40.1")
+        
+//        let attributedString = NSMutableAttributedString(string: box.content.label!.text!)
+//        attributedString.addAttribute(NSKernAttributeName,
+//                                      value: CGFloat(0.7),
+//                                      range: NSRange(location: 0, length: attributedString.length))
+//        box.content.label!.attributedText = attributedString
         
         // bot box factory
         

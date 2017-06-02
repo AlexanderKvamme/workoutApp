@@ -15,7 +15,7 @@ public class Box: UIView {
     public var subheader: BoxSubHeader?
     public var boxFrame: BoxFrame
     public var content: BoxContent
-
+    
     public init(header: BoxHeader?, subheader: BoxSubHeader?, bgFrame: BoxFrame, content: BoxContent) {
         self.header = header
         self.subheader = subheader
@@ -28,16 +28,11 @@ public class Box: UIView {
 //        setDebugColors()
     }
     
-    convenience init(header: BoxHeader?, subheader: BoxSubHeader?, bgFrame: BoxFrame, content: BoxContent, headerText: String, subheaderText: String) {
-        self.init(header: header, subheader: subheader, bgFrame: bgFrame, content: content)
-        setTitle(headerText)
-        setSubHeader(subheaderText)
-    }
-    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Debug methods
     public func setDebugColors() {
         backgroundColor = .red
         if let header = header {
@@ -48,41 +43,40 @@ public class Box: UIView {
             subheader.backgroundColor = .brown
             subheader.label.backgroundColor = .purple
         }
+        content.backgroundColor = .purple
     }
     
     fileprivate func setup() {
         
-        // header
-        if let header = header {
-            addSubview(header)
-        }
+        var totalHeight: CGFloat = 0
         
         // boxFrame
-        boxFrame.frame = CGRect(x: Constant.components.Box.spacingFromSides,
-                                y: header?.frame.height ?? 0,
-                                width: boxFrame.frame.width,
-                                height: boxFrame.frame.height)
-        
+        boxFrame.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides,
+                                        y: header?.frame.height ?? 0)
         addSubview(boxFrame)
         
         // content
         content.frame = boxFrame.frame
-//        content.backgroundColor = .purple
-        print(content.frame)
+        
         addSubview(content)
         
         // header
         if let header = header {
+            addSubview(header)
             bringSubview(toFront: header)
+            totalHeight += header.frame.height
         }
-
+        
         // Calculate the frame
-        frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides, height: 160)
+        totalHeight += boxFrame.frame.height
+        frame = CGRect(x: 0, y: 0,
+                       width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides,
+                       height: totalHeight)
         
         // subheader
         if let subheader = subheader {
             addSubview(subheader)
-//            subheader.sizeToFit()
+            //            subheader.sizeToFit()
             subheader.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides,
                                              y: header!.label.frame.maxY - subheader.frame.height)
             bringSubview(toFront: subheader)
@@ -108,31 +102,37 @@ public class Box: UIView {
         var totalHeight: CGFloat = 0
         
         guard let header = header else { return }
-            header.label.text = newText.uppercased()
-            header.label.sizeToFit()
         
+        // only adjust width if theres a subheader to avoid overlapping
         if let subheader = subheader {
             header.label.preferredMaxLayoutWidth = boxFrame.frame.width - subheader.label.frame.width
+        } else {
+            header.label.text = newText.uppercased()
+            print("headerLabel: ", header.label.frame)
+            print("headerFrame: ", header.frame)
+            return
         }
-
-            header.frame = CGRect(x: header.frame.minX,
-                                  y: header.frame.minY,
-                                  width: header.frame.width,
-                                  height: header.label.frame.height)
-            
-            totalHeight = header.label.frame.height + boxFrame.frame.height
-            
-            frame = CGRect(x: 0,
-                           y: 0,
-                           width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides,
-                           height: totalHeight)
-            clipsToBounds = true
-            
-            boxFrame.frame.origin.y = header.frame.height
-            content.frame.origin.y = header.frame.height
-            
-            // update Intrinsic content size to fit new height
-            invalidateIntrinsicContentSize()
+        
+        header.label.text = newText.uppercased()
+        header.label.sizeToFit()
+        
+        header.frame = CGRect(x: header.frame.minX,
+                              y: header.frame.minY,
+                              width: header.frame.width,
+                              height: header.label.frame.height)
+        
+        totalHeight = header.label.frame.height + boxFrame.frame.height
+        
+        frame = CGRect(x: 0,
+                       y: 0,
+                       width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides,
+                       height: totalHeight)
+        
+        boxFrame.frame.origin.y = header.frame.height
+        content.frame.origin.y = header.frame.height
+        
+        // update Intrinsic content size to fit new height
+        invalidateIntrinsicContentSize()
         
         // subheader
         if let subheader = subheader {
@@ -141,6 +141,19 @@ public class Box: UIView {
             
         }
         setNeedsLayout()
+    }
+    
+    public func setContentLabel(_ string: String) {
+        
+        if let label = content.label {
+            label.text = "ohh wee"
+        }
+        
+        guard let label = content.label else {
+            print("no label to set")
+            return
+        }
+        label.text = string.uppercased()
     }
     
     private func updateSubheaderPosition(_ subheader: BoxSubHeader) {

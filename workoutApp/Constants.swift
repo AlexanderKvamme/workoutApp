@@ -26,6 +26,13 @@ enum Constant {
         static let faded: CGFloat = 0.5
     }
     
+    enum Attributes {
+        enum letterSpacing {
+            case medium
+            case more
+        }
+    }
+    
     enum components {
         enum Box {
             static let spacingFromSides: CGFloat = 10
@@ -41,8 +48,8 @@ enum Constant {
                 static let height = standardBoxHeight
             }
             enum Selection {
-                static let width = standardBoxWidth / 2
-                static let height = standardBoxHeight / 2
+                static let width: CGFloat = standardBoxWidth / 2
+                static let height: CGFloat = 60
             }
         }
         

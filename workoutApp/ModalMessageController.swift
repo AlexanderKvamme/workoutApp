@@ -136,7 +136,9 @@ class CustomAlertView: UIView, isModal {
             guard text.characters.count > 0 else { return }
             
             let attributedString = NSMutableAttributedString(string: contentLabel.text!)
-            attributedString.addAttribute(NSKernAttributeName, value: CGFloat(0.7), range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSKernAttributeName,
+                                          value: CGFloat(0.7),
+                                          range: NSRange(location: 0, length: attributedString.length))
             contentLabel.attributedText = attributedString
         }
         

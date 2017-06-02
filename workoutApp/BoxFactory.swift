@@ -142,6 +142,10 @@ public class BoxHeader: UIView {
     
     init() {
         super.init(frame: CGRect.zero)
+        
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.textColor = .darkest
+        label.text = "header goes here"
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -153,17 +157,14 @@ fileprivate class StandardBoxHeader: BoxHeader {
 
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
+
         label.numberOfLines = 2
-        
-        label.textColor = .darkest
-        label.text = "header goes here"
         label.sizeToFit()
         addSubview(label)
         frame = CGRect(x: Constant.components.Box.spacingFromSides,
-                            y: 0,
-                            width: Constant.components.Box.Standard.width,
-                            height: label.frame.height)
+                       y: 0,
+                       width: Constant.components.Box.Standard.width,
+                       height: label.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -174,11 +175,22 @@ fileprivate class StandardBoxHeader: BoxHeader {
 fileprivate class SelectionBoxHeader: BoxHeader {
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.textColor = .darkest
-        label.text = ""
+
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
+        label.applyCustomAttributes(.medium)
+        
+        // temp label to set up boxheader height
+        let templabel = label
+        templabel.sizeToFit()
+        
         label.textAlignment = .center
-        label.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Selection.width, height: label.frame.height)
+        
+        let selectionBoxFrameWidth = Constant.components.Box.Selection.width - 2*Constant.components.Box.spacingFromSides
+        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+                       y: 0,
+                       width: selectionBoxFrameWidth,
+                       height: templabel.frame.height)
+        label.frame.size = frame.size
         addSubview(label)
     }
     
@@ -223,7 +235,8 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
 // MARK: - Content
 
 public class BoxContent: UIView {
-    var contentStack: ThreeColumnStack!
+    var contentStack: ThreeColumnStack?
+    var label: UILabel?
 }
 
 fileprivate class HistoryBoxContent: BoxContent {
@@ -242,7 +255,7 @@ fileprivate class HistoryBoxContent: BoxContent {
         let PRStack = TwoRowStack(topText: "PRS", bottomText: "13")
         
         contentStack = ThreeColumnStack(withSubstacks: totalStack, timeStack, PRStack)
-        
+        if let contentStack = contentStack {
         // content Stack - Fills entire box and arranges the 3 stacks horzontally
         contentStack.frame.size = CGSize(width: Constant.components.Box.Standard.width, height: Constant.components.Box.Standard.height)
         contentStack.distribution = .equalCentering
@@ -255,6 +268,7 @@ fileprivate class HistoryBoxContent: BoxContent {
         // Left and right margins
         contentStack.isLayoutMarginsRelativeArrangement = true
         contentStack.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -264,32 +278,28 @@ fileprivate class HistoryBoxContent: BoxContent {
 
 fileprivate class SelectionBoxContent: BoxContent {
     
-    var label = UILabel()
-    var stack = UIStackView()
-    
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: Constant.components.Box.Selection.width, height: Constant.components.Box.Selection.height))
+        let contentWidth = Constant.components.Box.Selection.width - 2*Constant.components.Box.spacingFromSides
+        
+        super.init(frame: CGRect(x: 0, y: 0,
+                                 width: contentWidth,
+                                 height: Constant.components.Box.Selection.height))
+        label = UILabel()
+        guard let label = label else {
+            print("error in selectionboxcontent with optional label creation")
+            return
+        }
+        
         // label
-        label.font = UIFont.custom(style: .bold, ofSize: .bigger)
-        label.textColor = UIColor.white
-        label.text = "Bam"
-        
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.textColor = UIColor.lightest
+        label.text = "content"
         label.frame = frame
+        
         label.textAlignment = .center
+        label.applyCustomAttributes(.more)
         
-        print(label.frame)
-        
-        // stack for centering
-//        stack.frame.size = CGSize(width: Constant.components.Box.Selection.width,
-//                                  height: Constant.components.Box.Selection.height)
-//        stack.distribution = .equalCentering
-//        stack.alignment = .center
-//        stack.axis = .horizontal
-//        stack.spacing = 0
-        
-
-        addSubview(stack)
-//        stack.addArrangedSubview(label)
+        addSubview(label)
     }
     
     required init?(coder aDecoder: NSCoder) {
