@@ -80,5 +80,13 @@ class CustomTabBarController: UITabBarController {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         selectionIndicator.moveToItem(item.tag, ofItemCount: (tabBar.items?.count)!)
     }
+    
+    public func hideSelectionIndicator() {
+        selectionIndicator.isHidden = true
+    }
+    public func showSelectionindicator() {
+        selectionIndicator.isHidden = false
+    }
 }
+
 

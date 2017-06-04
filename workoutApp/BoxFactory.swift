@@ -135,7 +135,7 @@ fileprivate class SelectionBoxFactory: BoxFactory {
 
 // MARK: - Box parts
 
-// MARK: - Headers
+// MARK: - Box Headers
 
 public class BoxHeader: UIView {
     public var label = UILabel()
@@ -191,6 +191,7 @@ fileprivate class SelectionBoxHeader: BoxHeader {
                        width: selectionBoxFrameWidth,
                        height: templabel.frame.height)
         label.frame.size = frame.size
+        label.applyCustomAttributes(.more)
         addSubview(label)
     }
     
@@ -199,7 +200,7 @@ fileprivate class SelectionBoxHeader: BoxHeader {
     }
 }
 
-// MARK: - Subheaders
+// MARK: - Box Subheaders
 
 public class BoxSubHeader: UIView {
     public var label = UILabel()
@@ -232,7 +233,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
     }
 }
 
-// MARK: - Content
+// MARK: - Box Content
 
 public class BoxContent: UIView {
     var contentStack: ThreeColumnStack?
@@ -307,7 +308,7 @@ fileprivate class SelectionBoxContent: BoxContent {
     }
 }
 
-// MARK: - Frame
+// MARK: - BoxFrames
 
 public class BoxFrame: UIView {
     
@@ -365,23 +366,29 @@ fileprivate class StandardBoxFrame: BoxFrame {
 fileprivate class SelectionBoxFrame: BoxFrame {
     override init(){
         super.init()
-        // Smalled box used to display 1 short string representing selected time/weight
-        let selectionBoxSize = CGSize(width: Constant.components.Box.Selection.width - 2*Constant.components.Box.spacingFromSides,
-                                     height: Constant.components.Box.Selection.height)
         
-        // colored background
-        background.frame = CGRect(x: 0, y: 0,
-                                  width: selectionBoxSize.width,
-                                  height: selectionBoxSize.height)
-        // shimmer
-        let shimmerInset = Constant.components.Box.shimmerInset
-
-        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset,
-                               width: selectionBoxSize.width - 2*shimmerInset,
-                               height: selectionBoxSize.height - 2*shimmerInset)
+        let boxWidth: CGFloat = 140
+        let boxHeight = Constant.components.Box.Selection.height
+        let spacingFromSides = 2*Constant.components.Box.spacingFromSides
         
-        frame.size = selectionBoxSize
-        print("selectionbox frame: ", frame)
+        let boxSize = CGSize(width: boxWidth-2*spacingFromSides,
+                             height: boxHeight)
+        
+        frame.size = CGSize(width: Constant.UI.width/2 - 2*Constant.components.Box.spacingFromSides,
+                            height: Constant.components.Box.Selection.height)
+        
+        // Colored background
+        background.frame.size = CGSize(width: boxSize.width, height: boxSize.height)
+        
+        // Shimmer
+        let shimmerInset = Constant.components.Box.shimmerInset * 2
+        shimmer.frame.size = CGSize(width: boxSize.width - shimmerInset,
+                                    height: boxSize.height - shimmerInset)
+        
+        // Positioning
+        center.y = center.y + 3 // spacing between this boxFrame and its selectionBoxHeaders
+        shimmer.center = center
+        background.center = center
         
         addSubview(background)
         addSubview(shimmer)

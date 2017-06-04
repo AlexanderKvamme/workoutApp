@@ -72,7 +72,6 @@ public class SelectionViewButton: UIView {
     func handleButtonTap(_ sender: SelectionViewButton) {
         print("Button was tapped")
         
-        
         showNotYetImplementedModal()
     }
     

@@ -12,6 +12,7 @@ class BoxTableViewController: UITableViewController {
     
     let cellIdentifier: String = "BoxCell"
     var workoutStyle = ""
+    var willPushVC = false
     
     var customRefreshView: RefreshControlView!
     
@@ -29,6 +30,11 @@ class BoxTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("viewWillAppear")
+        
+        
+        
+        viewDidLoad()
         removeBackButton()
     }
     
@@ -36,6 +42,7 @@ class BoxTableViewController: UITableViewController {
         view.backgroundColor = .light
         super.viewDidLoad()
         removeBackButton()
+
         
         // Data source setup
         setupDataSource()
@@ -44,13 +51,19 @@ class BoxTableViewController: UITableViewController {
         setupTableView()
         
         // refreshControl
-//        setupRefreshControl()
-        setupTestRefreshControl()
+        setupRefreshControl()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Show SelectionIndicator over tab bar
+        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+            customTabBarController.showSelectionindicator()
+        }
     }
 
     // MARK: - helpers
     
-    private func setupTestRefreshControl() {
+    private func setupRefreshControl() {
         
         refreshControl = UIRefreshControl()
         refreshControl?.backgroundColor = .clear
@@ -66,23 +79,17 @@ class BoxTableViewController: UITableViewController {
     }
     
     @objc private func refreshControlHandler(sender: UIRefreshControl) {
+        
         print("Hard pull -> *handle pull*")
         
         // Fontsize pops bigger
         customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .extreme)
-        sender.endRefreshing()
-    }
-    
-    private func setupRefreshControl() {
-        refreshControl = UIRefreshControl()
-        refreshControl?.backgroundColor = .clear
-        refreshControl?.tintColor = .clear
         
-        let v = UIView()
-        v.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        v.backgroundColor = .purple
-        v.frame = refreshControl!.bounds // <-- Why is this needed?
-        refreshControl?.addSubview(v)
+        willPushVC = true
+        sender.endRefreshing()
+        
+        let newWorkoutVC = NewWorkoutController()
+        navigationController?.pushViewController(newWorkoutVC, animated: false)
     }
     
     private func setupDataSource() {
@@ -118,10 +125,18 @@ class BoxTableViewController: UITableViewController {
     // MARK: - Delegate methods
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         customRefreshView.label.alpha = abs(scrollView.contentOffset.y + 64)/100
         
         if customRefreshView.label.alpha == 0 {
             customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .biggest)
+            
+            //if willPushVC && abs(scrollView.contentOffset.y + 64)/10 < 0.5 {
+//            if willPushVC{
+//                willPushVC = false
+//                let newWorkoutVC = newWorkoutController()
+//                navigationController?.pushViewController(newWorkoutVC, animated: true)
+//            }
         }
     }
 }

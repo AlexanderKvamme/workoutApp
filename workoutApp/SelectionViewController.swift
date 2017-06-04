@@ -46,6 +46,7 @@ class SelectionViewController: UIViewController {
         var workoutTypes = [String]()
         
         // Fetch from Core Data
+        
         do {
             let results = try DatabaseController.getContext().fetch(fetchRequest)
             // Append all received types
@@ -87,7 +88,9 @@ class SelectionViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Show TabBar selection indicator
         navigationController?.setNavigationBarHidden(true, animated: true)
+  
         view.layoutIfNeeded()
     }
     
@@ -126,13 +129,13 @@ class SelectionViewController: UIViewController {
         
         let vc = BoxTableViewController(workoutStyle: tappedWorkoutStyle)
         //let vc = TestTableViewController(nibName: nil, bundle: nil)
-        
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    
     private func drawDiagonalLineThrough(_ someView: UIView) {
         view.layoutSubviews()
-        let verticalShift: CGFloat = 0
+        let verticalShift: CGFloat = 24
         let verticalStretch: CGFloat = 30
         
         let path = UIBezierPath()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class twoLabelStack: UIView {
+class TwoLabelStack: UIView {
     
     /*
      Vertical label stack
@@ -21,28 +21,34 @@ class twoLabelStack: UIView {
 
     // MARK: - Init
     
-    init(topText: String, topFont: UIFont, topColor: UIColor, bottomText: String, bottomFont: UIFont, bottomColor: UIColor, faded: Bool) {
-        super.init(frame: CGRect.zero)
+    init(frame: CGRect, topText: String, topFont: UIFont, topColor: UIColor, bottomText: String, bottomFont: UIFont, bottomColor: UIColor, fadedBottomLabel: Bool) {
+        super.init(frame: frame)
+        
         topLabel = UILabel()
-        topLabel.text = topText
+        topLabel.text = topText.uppercased()
+        topLabel.applyCustomAttributes(.medium)
         topLabel.font = topFont
+        topLabel.applyCustomAttributes(.medium)
         topLabel.textColor = topColor
         topLabel.sizeToFit()
         addSubview(topLabel)
         
         bottomLabel = UILabel()
-        bottomLabel.text = bottomText
+        bottomLabel.text = bottomText.uppercased()
         bottomLabel.font = bottomFont
         bottomLabel.textColor = bottomColor
+        bottomLabel.applyCustomAttributes(.medium)
         bottomLabel.sizeToFit()
+        bottomLabel.numberOfLines = 2
+        bottomLabel.preferredMaxLayoutWidth = Constant.UI.width * 0.75
+        bottomLabel.textAlignment = .center
         addSubview(bottomLabel)
         
-        if faded == true {
+        if fadedBottomLabel == true {
             bottomLabel.alpha = Constant.alpha.faded
         }
         
         setup()
-        enableDebugColors()
         
         sizeToFit()
     }
@@ -66,23 +72,32 @@ class twoLabelStack: UIView {
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        
         verticalStack.addArrangedSubview(topLabel)
         verticalStack.addArrangedSubview(bottomLabel)
         
         addSubview(verticalStack)
         
+        // NSLayout
         verticalStack.translatesAutoresizingMaskIntoConstraints = false
         verticalStack.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         verticalStack.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-        frame = CGRect(x: 0, y: 0, width: 200, height: 100)
+        let marginGuide = layoutMarginsGuide
+        
+        NSLayoutConstraint.activate([
+            bottomLabel.leftAnchor.constraint(equalTo: marginGuide.leftAnchor),
+            bottomLabel.rightAnchor.constraint(equalTo: marginGuide.rightAnchor)
+            ])
+        
+//        frame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: 200)
         
         setNeedsLayout()
     }
     
-    private func enableDebugColors() {
+    public func setDebugColors() {
         topLabel.backgroundColor = .purple
         bottomLabel.backgroundColor = .green
-        backgroundColor = .yellow
+        backgroundColor = .red
     }
 }

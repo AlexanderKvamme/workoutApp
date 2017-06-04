@@ -35,6 +35,7 @@ public class Box: UIView {
     // Debug methods
     public func setDebugColors() {
         backgroundColor = .red
+        alpha = 0.8
         if let header = header {
             header.backgroundColor = .green
             header.label.backgroundColor = .yellow
@@ -43,7 +44,8 @@ public class Box: UIView {
             subheader.backgroundColor = .brown
             subheader.label.backgroundColor = .purple
         }
-        content.backgroundColor = .purple
+        boxFrame.backgroundColor = .green
+        boxFrame.alpha = 0.5
     }
     
     fileprivate func setup() {
@@ -108,8 +110,6 @@ public class Box: UIView {
             header.label.preferredMaxLayoutWidth = boxFrame.frame.width - subheader.label.frame.width
         } else {
             header.label.text = newText.uppercased()
-            print("headerLabel: ", header.label.frame)
-            print("headerFrame: ", header.frame)
             return
         }
         

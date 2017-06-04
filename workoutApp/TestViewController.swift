@@ -94,16 +94,11 @@ class TestViewController: UIViewController {
         // top box
         
         let box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
+        box.center.y = box.center.y + 200
         box.setTitle("Weight in kg")
-        box.center.y = box.center.y + 100
-        view.addSubview(box)
         box.setContentLabel("40.1")
-        
-//        let attributedString = NSMutableAttributedString(string: box.content.label!.text!)
-//        attributedString.addAttribute(NSKernAttributeName,
-//                                      value: CGFloat(0.7),
-//                                      range: NSRange(location: 0, length: attributedString.length))
-//        box.content.label!.attributedText = attributedString
+//        box.setDebugColors()
+        view.addSubview(box)
         
         // bot box factory
         
@@ -123,13 +118,11 @@ class TestViewController: UIViewController {
         
         botBox.translatesAutoresizingMaskIntoConstraints = false
         botBox.clipsToBounds = true
-        setBotBoxConstraints()
-    }
-    
-    private func setBotBoxConstraints() {
-        NSLayoutConstraint.activate([
-            
-            ])
+        
+        // Selection
+        
+        let footer = ButtonFooter()
+        view.addSubview(footer)
     }
 }
 

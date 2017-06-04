@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-// MARK: - Enum
-
-
-
 // MARK: - Typographic extension in UILabel
 
 extension UILabel {

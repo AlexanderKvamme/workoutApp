@@ -48,7 +48,7 @@ enum Constant {
                 static let height = standardBoxHeight
             }
             enum Selection {
-                static let width: CGFloat = standardBoxWidth / 2
+                static let width: CGFloat = Constant.UI.width/2
                 static let height: CGFloat = 60
             }
         }
