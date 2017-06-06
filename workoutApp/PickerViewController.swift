@@ -23,31 +23,14 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let tableVerticalInset: CGFloat = 102
     
-    let workoutStyles = ["Normal",
-                         "Bodyweight",
-                         "Weighted",
-                         "Assisted"]
-    
+    let workoutStyles: [String]!
+    var stringToSelect: String?
 //    let workoutStyles = ["Normal",
 //                         "Bodyweight",
 //                         "Weighted",
-//                         "Assisted",
-//                         "Cardio2",
-//                         "Extreme3",
-//                         "Relaxed4",
-//                         "Fucked up5",
-//                         "All biziz1",
-//                         "No stress workout12",
-//                         "Team workout13",
-//                         "Real-axed14",
-//                         "Cardio15",
-//                         "Extreme16",
-//                         "Relaxed23",
-//                         "Fucked up24",
-//                         "All bizniz25", // [16]
-//                         "No stress workout26",
-//                         "Team workout27",
-//                         "Real-axed28"]
+//                         "Assisted"]
+    
+
     
     let cellIdentifier = "cellIdentifier"
     
@@ -58,7 +41,11 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let screenWidth = UIScreen.main.bounds.width
     let inset: CGFloat = 20
     
-    init(){
+    
+    init(withChoices choices: [String], withPreselection selection: String?) {
+        workoutStyles = choices
+        stringToSelect = selection
+        
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
@@ -111,9 +98,14 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         view.addSubview(footer)
         
-        // table setup
         setupTable()
-
+        
+        // temp
+        if let stringToSelect = stringToSelect {
+            selectRow(withString: stringToSelect)
+        }
+        
+        table.reloadData()
         view.setNeedsLayout()
     }
     
@@ -124,6 +116,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PickerCell
         configure(cell, forIndexPath: indexPath)
         cell.label.text = workoutStyles[indexPath.row].uppercased()
+        cell.label.applyCustomAttributes(.more)
         cell.sizeToFit()
         
         return cell
@@ -131,13 +124,10 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func configure(_ cell: PickerCell, forIndexPath indexPath: IndexPath) {
      
-        print("IN CONFIGURE")
         if selectedIndexPath == indexPath {
-            print("- was same. Make look selected")
             cell.label.font = fontWhenSelected
             cell.label.textColor = textColorWhenSelected
         } else {
-            print("- was same. Make look selected")
             cell.label.font = fontWhenDeselected
             cell.label.textColor = textColorWhenDeselected
         }
@@ -150,7 +140,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("rows: ", workoutStyles.count)
         return workoutStyles.count
     }
     
@@ -220,6 +209,15 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    func selectRow(withString string: String) {
+        if let indexOfA = workoutStyles.index(of: string) {
+            
+            let ip = IndexPath(row: indexOfA, section: 0)
+            table.selectRow(at: ip, animated: true, scrollPosition: .none)
+            selectedIndexPath = ip
+        }
+    }
+    
     func setDebugColors() {
         table.backgroundColor = .green
         header.backgroundColor = .yellow
@@ -229,8 +227,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func drawDiagonalLineThroughTable() {
         let v = UIView(frame: table.frame)
         v.frame.size = CGSize(width: v.frame.height - 200, height:  v.frame.width - 200)
-        print("vframe:", v.frame)
-        //        v.center = table.center
         v.center.y = table.center.y + CGFloat(tableVerticalInset)
         v.center.x = table.center.x
         drawDiagonalLineThrough(v, inView: view)

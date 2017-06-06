@@ -54,7 +54,6 @@ class TwoLabelStack: UIView {
         button = UIButton(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
         addSubview(button)
         bringSubview(toFront: button)
-//        button.addTarget(self, action: #selector(doIt), for: .touchUpInside)
         
         setup()
         

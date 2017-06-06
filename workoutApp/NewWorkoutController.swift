@@ -8,11 +8,24 @@
 
 import UIKit
 
-class NewWorkoutController: UIViewController {
+protocol StringPickerDelegate {
+    func setValuePicked(_ string: String)
+}
+
+class NewWorkoutController: UIViewController, StringPickerDelegate {
+    
+    func setValuePicked(_ string: String) {
+        // set
+    }
 
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
     let selecterHeight: CGFloat = 150
+    var typeSelecter: TwoLabelStack!
+    var muscleSelecter: TwoLabelStack!
+    
+//    let workoutTypePicker: StringPickerDelegate!
+//    let muscleTypePicker: StringPickerDelegate!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -54,7 +67,7 @@ class NewWorkoutController: UIViewController {
         
         // Type and Muscle selectors
         
-        let typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
+        typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Type",
                                          topFont: darkHeaderFont,
                                          topColor: .dark,
@@ -64,7 +77,7 @@ class NewWorkoutController: UIViewController {
                                          fadedBottomLabel: false)
         typeSelecter.button.addTarget(self, action: #selector(typeSelectorHandler), for: .touchUpInside)
         
-        let muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
+        muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Muscle",
                                          topFont: darkHeaderFont,
                                          topColor: .dark,
@@ -72,6 +85,7 @@ class NewWorkoutController: UIViewController {
                                          bottomFont: darkSubHeaderFont,
                                          bottomColor: UIColor.dark,
                                          fadedBottomLabel: false)
+        muscleSelecter.button.addTarget(self, action: #selector(muscleSelectorHandler), for: .touchUpInside)
         
         // MARK: - Boxes
         
@@ -90,7 +104,7 @@ class NewWorkoutController: UIViewController {
         weightSelectionBox.setContentLabel("40.1")
 //        weightSelectionBox.setDebugColors()
         
-        // Weight selection box
+        // Rest selection box
         
         let restHeader = boxFactory.makeBoxHeader()
         let restSubHeader = boxFactory.makeBoxSubHeader()
@@ -138,7 +152,16 @@ class NewWorkoutController: UIViewController {
     }
     
     func typeSelectorHandler() {
-        let typePicker = PickerViewController()
+        let currentlySelectedType = typeSelecter.bottomLabel.text
+        let typePicker = PickerViewController(withChoices: fewWorkoutStyles, withPreselection: currentlySelectedType)
+        
         navigationController?.pushViewController(typePicker, animated: false)
+    }
+    
+    func muscleSelectorHandler() {
+        let currentlySelectedType = typeSelecter.bottomLabel.text
+        let musclePicker = PickerViewController(withChoices: manyWorkoutStyles, withPreselection: manyWorkoutStyles[2])
+        
+        navigationController?.pushViewController(musclePicker, animated: false)
     }
 }
