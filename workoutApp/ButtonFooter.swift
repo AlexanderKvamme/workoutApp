@@ -17,17 +17,22 @@ public class ButtonFooter: UIView {
     let footerHeight: CGFloat = 65
     let buttonWidth: CGFloat = Constant.UI.width/2
     
-    init() {
+    init(withColor color: UIColor) {
         super.init(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: footerHeight))
         
         // Approve button
         approveButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonWidth, height: footerHeight))
-        approveButton.setImage(UIImage(named: "checkmarkBlue"), for: .normal)
+        
+        let checkmark = UIImage(named: "checkmarkBlue")?.withRenderingMode(.alwaysTemplate)
+        approveButton.setImage(checkmark, for: .normal)
+        approveButton.tintColor = color
         addSubview(approveButton)
         
         // Cancel button
         cancelButton = UIButton(frame: CGRect(x: approveButton.frame.maxX, y: 0, width: buttonWidth, height: footerHeight))
-        cancelButton.setImage(UIImage(named: "xmarkDarkBlue"), for: .normal)
+        let xmark = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysTemplate)
+        cancelButton.setImage(xmark, for: .normal)
+        cancelButton.tintColor = color
         addSubview(cancelButton)
     }
     

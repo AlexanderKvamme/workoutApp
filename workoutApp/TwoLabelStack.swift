@@ -11,14 +11,14 @@ import UIKit
 class TwoLabelStack: UIView {
     
     /*
-     Vertical label stack
+     Stack of a topLabel and a bottomlabel, with a button
      */
-
+    
     var topLabel: UILabel!
     var bottomLabel: UILabel!
     var button: UIButton!
     var verticalStack = UIStackView()
-
+    
     // MARK: - Init
     
     init(frame: CGRect, topText: String, topFont: UIFont, topColor: UIColor, bottomText: String, bottomFont: UIFont, bottomColor: UIColor, fadedBottomLabel: Bool) {
@@ -31,6 +31,7 @@ class TwoLabelStack: UIView {
         topLabel.applyCustomAttributes(.medium)
         topLabel.textColor = topColor
         topLabel.sizeToFit()
+        topLabel.isUserInteractionEnabled = false
         addSubview(topLabel)
         
         bottomLabel = UILabel()
@@ -42,15 +43,26 @@ class TwoLabelStack: UIView {
         bottomLabel.numberOfLines = 2
         bottomLabel.preferredMaxLayoutWidth = Constant.UI.width * 0.75
         bottomLabel.textAlignment = .center
+        bottomLabel.isUserInteractionEnabled = false
         addSubview(bottomLabel)
         
         if fadedBottomLabel == true {
             bottomLabel.alpha = Constant.alpha.faded
         }
         
+        // Hidden button
+        button = UIButton(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
+        addSubview(button)
+        bringSubview(toFront: button)
+//        button.addTarget(self, action: #selector(doIt), for: .touchUpInside)
+        
         setup()
         
         sizeToFit()
+        print(button.frame)
+        isUserInteractionEnabled = true
+        bottomLabel.isUserInteractionEnabled = false
+        topLabel.isUserInteractionEnabled = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -68,17 +80,17 @@ class TwoLabelStack: UIView {
         verticalStack.alignment = .center
         verticalStack.axis = .vertical
         verticalStack.spacing = 0
+        verticalStack.isUserInteractionEnabled = false
         
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         
         verticalStack.addArrangedSubview(topLabel)
         verticalStack.addArrangedSubview(bottomLabel)
         
         addSubview(verticalStack)
         
-        // NSLayout
+        // Vertical stack cotaining top and bottom label
         verticalStack.translatesAutoresizingMaskIntoConstraints = false
         verticalStack.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         verticalStack.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -90,7 +102,15 @@ class TwoLabelStack: UIView {
             bottomLabel.rightAnchor.constraint(equalTo: marginGuide.rightAnchor)
             ])
         
-//        frame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: 200)
+        // Button
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: topAnchor),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor),
+            button.leftAnchor.constraint(equalTo: leftAnchor),
+            button.rightAnchor.constraint(equalTo: rightAnchor),
+            ])
         
         setNeedsLayout()
     }
@@ -98,6 +118,7 @@ class TwoLabelStack: UIView {
     public func setDebugColors() {
         topLabel.backgroundColor = .purple
         bottomLabel.backgroundColor = .green
+        button.backgroundColor = .yellow
         backgroundColor = .red
     }
 }

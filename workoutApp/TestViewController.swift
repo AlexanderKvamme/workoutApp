@@ -8,8 +8,9 @@
 
 import UIKit
 
-class TestViewController: UIViewController {
-    
+//class TestViewController: UIViewController {
+class TestViewController2: UIViewController {
+
     /* Use this testviewcontroller to test the abstract factory */
 
     override func viewDidLoad() {
@@ -121,7 +122,7 @@ class TestViewController: UIViewController {
         
         // Selection
         
-        let footer = ButtonFooter()
+        let footer = ButtonFooter(withColor: .green)
         view.addSubview(footer)
     }
 }

@@ -13,7 +13,6 @@ class NewWorkoutController: UIViewController {
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
     let selecterHeight: CGFloat = 150
-
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -21,8 +20,10 @@ class NewWorkoutController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Hide tab bar's selection indicator
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.hideSelectionIndicator()
+            navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }
     
@@ -36,8 +37,7 @@ class NewWorkoutController: UIViewController {
         view.backgroundColor = .light
         
         // Remove tab and navigationcontrollers
-        navigationController?.setNavigationBarHidden(true, animated: true)
-
+        
         let darkHeaderFont = UIFont.custom(style: .bold, ofSize: .medium)
         let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
         
@@ -52,6 +52,7 @@ class NewWorkoutController: UIViewController {
                                    bottomColor: UIColor.darkest,
                                    fadedBottomLabel: false)
         
+        // Type and Muscle selectors
         
         let typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Type",
@@ -61,6 +62,7 @@ class NewWorkoutController: UIViewController {
                                          bottomFont: darkSubHeaderFont,
                                          bottomColor: UIColor.dark,
                                          fadedBottomLabel: false)
+        typeSelecter.button.addTarget(self, action: #selector(typeSelectorHandler), for: .touchUpInside)
         
         let muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Muscle",
@@ -115,9 +117,9 @@ class NewWorkoutController: UIViewController {
                                    bottomColor: UIColor.dark,
                                    fadedBottomLabel: false)
         
-        let buttonFooter = ButtonFooter()
+        let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
-        buttonFooter.cancelButton.addTarget(self, action: #selector(discardChanges), for: .touchUpInside)
+        buttonFooter.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         
         view.addSubview(header)
         view.addSubview(typeSelecter)
@@ -131,8 +133,12 @@ class NewWorkoutController: UIViewController {
 //        typeSelecter.setDebugColors()
     }
     
-    func discardChanges() {
-        print("discarding")
-        navigationController?.popViewController(animated: true)
+    func dismissVC() {
+        navigationController?.popViewController(animated: false)
+    }
+    
+    func typeSelectorHandler() {
+        let typePicker = PickerViewController()
+        navigationController?.pushViewController(typePicker, animated: false)
     }
 }

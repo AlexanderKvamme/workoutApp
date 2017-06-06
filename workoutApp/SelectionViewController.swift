@@ -118,7 +118,7 @@ class SelectionViewController: UIViewController {
         view.addSubview(stack)
         
         setLayout()
-        drawDiagonalLineThrough(stack)
+        drawDiagonalLineThrough(stack, inView: view)
     }
     
     // TODO: - Make work
@@ -130,30 +130,6 @@ class SelectionViewController: UIViewController {
         let vc = BoxTableViewController(workoutStyle: tappedWorkoutStyle)
         //let vc = TestTableViewController(nibName: nil, bundle: nil)
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    
-    private func drawDiagonalLineThrough(_ someView: UIView) {
-        view.layoutSubviews()
-        let verticalShift: CGFloat = 24
-        let verticalStretch: CGFloat = 30
-        
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: someView.frame.minX, y: someView.frame.maxY + verticalStretch - verticalShift))
-        path.addLine(to: CGPoint(x: someView.frame.maxX, y: someView.frame.minY - verticalStretch - verticalShift))
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.primary.cgColor
-        shapeLayer.lineCap = "round"
-        shapeLayer.lineWidth = 3.0
-        
-        let line = UIView()
-        line.layer.addSublayer(shapeLayer)
-        view.addSubview(line)
-        view.sendSubview(toBack: line)
-        //view.layer.addSublayer(shapeLayer)
-        //view.sendSubview(toBack: shapeLayer)
     }
     
     private func drawRectAt(_ p: CGPoint) {
