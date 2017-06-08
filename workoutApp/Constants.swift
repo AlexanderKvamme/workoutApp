@@ -17,6 +17,12 @@ fileprivate let standardBoxHeight: CGFloat = 80
 // MARK: - Globals
 
 enum Constant {
+    
+    enum defaultValues {
+        static let muscle = "Legs"
+        static let exerciseType = "Normal"
+    }
+    
     enum UI {
         static let width = UIScreen.main.bounds.width
         static let height = UIScreen.main.bounds.height

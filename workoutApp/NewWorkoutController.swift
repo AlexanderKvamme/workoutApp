@@ -8,15 +8,9 @@
 
 import UIKit
 
-protocol StringPickerDelegate {
-    func setValuePicked(_ string: String)
-}
-
-class NewWorkoutController: UIViewController, StringPickerDelegate {
+class NewWorkoutController: UIViewController, isStringReceiver {
     
-    func setValuePicked(_ string: String) {
-        // set
-    }
+    var receiveHandler: ((String) -> Void) = { _ in }
 
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
@@ -39,7 +33,6 @@ class NewWorkoutController: UIViewController, StringPickerDelegate {
             navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -71,7 +64,7 @@ class NewWorkoutController: UIViewController, StringPickerDelegate {
                                          topText: "Type",
                                          topFont: darkHeaderFont,
                                          topColor: .dark,
-                                         bottomText: "Bodyweight",
+                                         bottomText: Constant.defaultValues.exerciseType,
                                          bottomFont: darkSubHeaderFont,
                                          bottomColor: UIColor.dark,
                                          fadedBottomLabel: false)
@@ -81,7 +74,7 @@ class NewWorkoutController: UIViewController, StringPickerDelegate {
                                          topText: "Muscle",
                                          topFont: darkHeaderFont,
                                          topColor: .dark,
-                                         bottomText: "Legs",
+                                         bottomText: Constant.defaultValues.muscle,
                                          bottomFont: darkSubHeaderFont,
                                          bottomColor: UIColor.dark,
                                          fadedBottomLabel: false)
@@ -123,7 +116,7 @@ class NewWorkoutController: UIViewController, StringPickerDelegate {
                                                               y: restSelectionBox.frame.maxY + 20,
                                                               width: Constant.UI.width,
                                                               height: 100),
-                                   topText: "Exercises Added",
+                                   topText: "Bodyweight Exercises Added",
                                    topFont: UIFont.custom(style: .bold, ofSize: .medium),
                                    topColor: UIColor.faded,
                                    bottomText: "0",
@@ -154,13 +147,24 @@ class NewWorkoutController: UIViewController, StringPickerDelegate {
     func typeSelectorHandler() {
         let currentlySelectedType = typeSelecter.bottomLabel.text
         let typePicker = PickerViewController(withChoices: fewWorkoutStyles, withPreselection: currentlySelectedType)
+        typePicker.delegate = self
+        
+        receiveHandler = { s in
+            self.typeSelecter.bottomLabel.text = s
+        }
         
         navigationController?.pushViewController(typePicker, animated: false)
     }
     
     func muscleSelectorHandler() {
-        let currentlySelectedType = typeSelecter.bottomLabel.text
-        let musclePicker = PickerViewController(withChoices: manyWorkoutStyles, withPreselection: manyWorkoutStyles[2])
+        let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
+        let musclePicker = PickerViewController(withChoices: manyWorkoutStyles, withPreselection: currentlySelectedMuscle)
+        musclePicker.delegate = self
+        
+        receiveHandler = {
+            s in
+            self.muscleSelecter.bottomLabel.text = s
+        }
         
         navigationController?.pushViewController(musclePicker, animated: false)
     }

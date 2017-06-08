@@ -11,7 +11,9 @@
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
+		DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */; };
 		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
+		DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1131EE9435A00EBB7B7 /* InputView.swift */; };
 		DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44A1EE45A9300C55453 /* PickerCell.swift */; };
 		DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */; };
 		DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD491B7B1ED7464E008A4619 /* DataSeeder.swift */; };
@@ -67,7 +69,9 @@
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
+		DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerProtocols.swift; sourceTree = "<group>"; };
 		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
+		DD1EA1131EE9435A00EBB7B7 /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		DD3AF44A1EE45A9300C55453 /* PickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerCell.swift; sourceTree = "<group>"; };
 		DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
@@ -159,11 +163,20 @@
 			name = NavigationController;
 			sourceTree = "<group>";
 		};
+		DD1EA1121EE9434800EBB7B7 /* InputView */ = {
+			isa = PBXGroup;
+			children = (
+				DD1EA1131EE9435A00EBB7B7 /* InputView.swift */,
+			);
+			name = InputView;
+			sourceTree = "<group>";
+		};
 		DD3AF4491EE45A7500C55453 /* CustomPickerView */ = {
 			isa = PBXGroup;
 			children = (
 				DD3AF44A1EE45A9300C55453 /* PickerCell.swift */,
 				DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */,
+				DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */,
 			);
 			name = CustomPickerView;
 			sourceTree = "<group>";
@@ -265,6 +278,7 @@
 		DD7600461EDF23E900871DD8 /* newWorkout */ = {
 			isa = PBXGroup;
 			children = (
+				DD1EA1121EE9434800EBB7B7 /* InputView */,
 				DD3AF4491EE45A7500C55453 /* CustomPickerView */,
 				DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */,
 				DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */,
@@ -415,6 +429,7 @@
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
 				DDA54AFC1EDA0A05008C601C /* Workout+CoreDataClass.swift in Sources */,
 				DDA54B001EDA0A05008C601C /* WorkoutLog+CoreDataClass.swift in Sources */,
+				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,
 				DDA54AFB1EDA0A05008C601C /* Lift+CoreDataProperties.swift in Sources */,
 				DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */,
 				DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */,
@@ -435,6 +450,7 @@
 				DDA54AFF1EDA0A05008C601C /* Exercise+CoreDataProperties.swift in Sources */,
 				DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */,
 				DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */,
+				DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */,
 				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
 				DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */,

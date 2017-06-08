@@ -8,28 +8,29 @@
 
 import Foundation
 
-let fewWorkoutStyles = ["Normal",
-                     "Bodyweight",
-                     "Weighted",
-                     "Assisted"]
+let fewWorkoutStyles = ["NORMAL",
+                     "Bodyweight".uppercased(),
+                     "Weighted".uppercased(),
+                     "Assisted".uppercased()]
 
-    let manyWorkoutStyles = ["Normal",
-                         "Bodyweight",
-                         "Weighted",
-                         "Assisted",
-                         "Cardio2",
-                         "Extreme3",
-                         "Relaxed4",
-                         "Fucked up5",
-                         "All biziz1",
-                         "No stress workout12",
-                         "Team workout13",
-                         "Real-axed14",
-                         "Cardio15",
-                         "Extreme16",
-                         "Relaxed23",
-                         "Fucked up24",
-                         "All bizniz25", // [16]
-                         "No stress workout26",
-                         "Team workout27",
-                         "Real-axed28"]
+    let manyWorkoutStyles = ["NORMAL".uppercased(),
+                         "BODYWEIGHT".uppercased(),
+                         "Weighted".uppercased(),
+                         "Assisted".uppercased(),
+                         "Cardio2".uppercased(),
+                         "Extreme3".uppercased(),
+                         "Relaxed4".uppercased(),
+                         "Fucked up5".uppercased(),
+                         "All biziz1".uppercased(),
+                         "No stress workout12".uppercased(),
+                         "Team workout13".uppercased(),
+                         "Real-axed14".uppercased(),
+                         "Cardio15".uppercased(),
+                         "Extreme16".uppercased(),
+                         "Relaxed23".uppercased(),
+                         "Fucked up24".uppercased(),
+                         "All bizniz25".uppercased(), // [16]
+                         "No stress workout26".uppercased(),
+                         "Team workout27".uppercased(),
+                         "Real-axed28".uppercased()]
+

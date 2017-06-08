@@ -14,7 +14,7 @@ import Foundation
 
 import UIKit
 
-class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, isStringSender {
     
     var table: UITableView!
     var header: TwoLabelStack!
@@ -25,14 +25,9 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let workoutStyles: [String]!
     var stringToSelect: String?
-//    let workoutStyles = ["Normal",
-//                         "Bodyweight",
-//                         "Weighted",
-//                         "Assisted"]
-    
-
     
     let cellIdentifier = "cellIdentifier"
+    var currentlySelectedString: String?
     
     let fontWhenSelected = UIFont.custom(style: .bold, ofSize: .big)
     let textColorWhenSelected = UIColor.darkest
@@ -41,10 +36,20 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let screenWidth = UIScreen.main.bounds.width
     let inset: CGFloat = 20
     
+    var delegate: isStringReceiver?
     
-    init(withChoices choices: [String], withPreselection selection: String?) {
+    func sendStringBack(_ string: String) {
+        delegate?.receive(string)
+    }
+    
+    init(withChoices choices: [String], withPreselection preselection: String?) {
+        print("received preselection \(preselection)")
+        if let preselection = preselection {
+            self.currentlySelectedString = preselection
+            print("stored \(preselection) in currentlySelected")
+        }
+        
         workoutStyles = choices
-        stringToSelect = selection
         
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
@@ -95,13 +100,14 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         footer = ButtonFooter(withColor: .secondary)
         footer.frame.origin.y = Constant.UI.height - footer.frame.height
         footer.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        footer.approveButton.addTarget(self, action: #selector(confirmAndDismiss), for: .touchUpInside)
         
         view.addSubview(footer)
         
         setupTable()
         
-        // temp
-        if let stringToSelect = stringToSelect {
+        // preselection
+        if let stringToSelect = currentlySelectedString {
             selectRow(withString: stringToSelect)
         }
         
@@ -160,6 +166,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         let selectedCell = tableView.cellForRow(at: indexPath)! as! PickerCell
         configure(selectedCell, forIndexPath: indexPath)
+        currentlySelectedString = selectedCell.label.text
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -210,10 +217,14 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func selectRow(withString string: String) {
+        
+        print("tryna select \(string) in selectRow")
+        print(" tryna find it in this array \(workoutStyles)")
+        
         if let indexOfA = workoutStyles.index(of: string) {
-            
+            print("found it in \(indexOfA)")
             let ip = IndexPath(row: indexOfA, section: 0)
-            table.selectRow(at: ip, animated: true, scrollPosition: .none)
+            table.selectRow(at: ip, animated: false, scrollPosition: .none)
             selectedIndexPath = ip
         }
     }
@@ -236,6 +247,16 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func dismissView() {
         print("selector triggered")
+        navigationController?.popViewController(animated: false)
+    }
+    
+    func confirmAndDismiss() {
+        if let currentlySelectedString = currentlySelectedString {
+            delegate?.receive(currentlySelectedString)
+        } else {
+            delegate?.receive("NORMAL")
+        }
+        
         navigationController?.popViewController(animated: false)
     }
 }
