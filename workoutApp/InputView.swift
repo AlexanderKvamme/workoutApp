@@ -12,12 +12,11 @@ import UIKit
 class InputView: UIView {
     
     var header = UILabel()
-    var textField = UITextField()
+    var textField = UITextField(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: 100))
     var stack = UIStackView()
     
     init(inputStyle: CustomInputStyle) {
         super.init(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: 200))
-        textField.frame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: 100)
         
         // Set Default texts
         switch inputStyle{
@@ -33,7 +32,6 @@ class InputView: UIView {
             header.preferredMaxLayoutWidth = Constant.UI.width * 0.65
             header.textAlignment = .center
             textField.text = "32.5"
-            textField.sizeToFit()
         }
         
         // TextField
@@ -41,6 +39,8 @@ class InputView: UIView {
         textField.clearsOnBeginEditing = true
         textField.font = UIFont.custom(style: .bold, ofSize: .biggest)
         textField.textColor = .darkest
+        textField.setContentCompressionResistancePriority(1000, for: .horizontal)
+        addSubview(textField)
         
         // Header
         header.font = UIFont.custom(style: .bold, ofSize: .medium)
@@ -48,23 +48,35 @@ class InputView: UIView {
         header.applyCustomAttributes(.medium)
         header.sizeToFit()
         
-        // Stack
+//         Stack
         stack = StackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
+        
         stack.axis = UILayoutConstraintAxis.vertical
-        stack.distribution = UIStackViewDistribution.equalSpacing
+        stack.distribution = UIStackViewDistribution.fill
         stack.alignment = UIStackViewAlignment.center
         stack.spacing = 10
         stack.addArrangedSubview(header)
         stack.addArrangedSubview(textField)
         
+        stack.autoresizesSubviews = false
+
         addSubview(stack)
         setupStack()
         layoutIfNeeded()
         
-        drawLine(throughView: textField)
+        // Draw diagonalLine and send to the back
+        let v = drawLine(throughView: textField)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            v.heightAnchor.constraint(equalToConstant: v.frame.height),
+            v.widthAnchor.constraint(equalToConstant: v.frame.width),
+            v.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            v.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
+                    ])
+        sendSubview(toBack: v)
         
-//        setDebugColors()
+        setDebugColors()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -87,8 +99,8 @@ class InputView: UIView {
             ])
     }
     
-    private func drawLine(throughView v: UIView) {
-//        drawDiagonalLineThrough(v, inView: self)
+    private func drawLine(throughView: UIView) -> UIView {
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: throughView.frame.width, height: throughView.frame.height))
         
         let path = UIBezierPath()
         path.move(to: CGPoint(x: v.frame.minX, y: v.frame.maxY))
@@ -99,28 +111,11 @@ class InputView: UIView {
         shapeLayer.strokeColor = UIColor.primary.cgColor
         shapeLayer.lineCap = "round"
         shapeLayer.lineWidth = 3.0
+        shapeLayer.backgroundColor = UIColor.red.cgColor
         
-        let line = UIView()
-        line.backgroundColor = .green
-        line.layer.addSublayer(shapeLayer)
-        addSubview(line)
+        v.layer.addSublayer(shapeLayer)
+        addSubview(v)
         
-        line.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            line.topAnchor.constraint(equalTo:  v.topAnchor),
-            line.bottomAnchor.constraint(equalTo: v.bottomAnchor),
-            line.leftAnchor.constraint(equalTo: v.leftAnchor),
-            line.rightAnchor.constraint(equalTo: v.rightAnchor),
-            ])
-        line.center = v.center
-        
-//        NSLayoutConstraint.activate([
-//            line.centerXAnchor.constraint(equalTo: v.centerXAnchor),
-//            line.centerYAnchor.constraint(equalTo: v.centerYAnchor),
-//            ])
-        
-        line.backgroundColor = .blue
-        line.sizeToFit()
+        return v
     }
 }

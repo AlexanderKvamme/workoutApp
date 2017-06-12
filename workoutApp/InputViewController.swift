@@ -40,7 +40,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         
         view.addSubview(v)
         tf = v.textField
-
         
         tf.inputView = kb
         
