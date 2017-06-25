@@ -18,7 +18,7 @@ protocol isStringSender {
     func sendStringBack(_ string: String)
 }
 
-protocol isStringReceiver {
+protocol isStringReceiver: class {
     var receiveHandler: ((String) -> Void) { get set }
 }
 

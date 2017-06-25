@@ -109,10 +109,10 @@ class TestViewController2: UIViewController {
         let newboxFrame = boxFactory2.makeBoxFrame()
         let newboxContent = boxFactory2.makeBoxContent()
         
-        // bot box
+        // bottom box
         
         let botBox = Box(header: newboxHeader, subheader: newboxSubHeader, bgFrame: newboxFrame!, content: newboxContent!)
-        botBox.setTitle("this is a really long title right")
+        botBox.setTitle("this is a really long title ")
         botBox.setSubHeader("Drop Set")
         view.addSubview(botBox)
         botBox.center.y = botBox.center.y + 300
@@ -120,7 +120,7 @@ class TestViewController2: UIViewController {
         botBox.translatesAutoresizingMaskIntoConstraints = false
         botBox.clipsToBounds = true
         
-        // Selection
+        // Selectionh
         
         let footer = ButtonFooter(withColor: .green)
         view.addSubview(footer)

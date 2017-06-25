@@ -392,6 +392,10 @@ fileprivate class SelectionBoxFrame: BoxFrame {
         
         addSubview(background)
         addSubview(shimmer)
+        
+        // Add a button to be placed over the BoxFrame, to allow user input
+        let button = UIButton(frame: frame)
+        addSubview(button)
     }
     
     required public init?(coder aDecoder: NSCoder) {

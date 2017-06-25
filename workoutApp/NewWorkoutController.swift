@@ -17,9 +17,7 @@ class NewWorkoutController: UIViewController, isStringReceiver {
     let selecterHeight: CGFloat = 150
     var typeSelecter: TwoLabelStack!
     var muscleSelecter: TwoLabelStack!
-    
-//    let workoutTypePicker: StringPickerDelegate!
-//    let muscleTypePicker: StringPickerDelegate!
+    var restSelectionBox: Box!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -104,10 +102,14 @@ class NewWorkoutController: UIViewController, isStringReceiver {
         let restFrame = boxFactory.makeBoxFrame()
         let restContent = boxFactory.makeBoxContent()
         
-        let restSelectionBox = Box(header: restHeader, subheader: restSubHeader, bgFrame: restFrame!, content: restContent!)
+        restSelectionBox = Box(header: restHeader, subheader: restSubHeader, bgFrame: restFrame!, content: restContent!)
         restSelectionBox.frame.origin = CGPoint(x: halfScreenWidth, y: weightSelectionBox.frame.origin.y)
         restSelectionBox.setTitle("Rest")
         restSelectionBox.setContentLabel("3:00")
+        
+        restSelectionBox.button.addTarget(self, action: #selector(restBoxTapHandler), for: .touchUpInside)
+        
+        
 //        restSelectionBox.setDebugColors()
         
         // Workout selection box
@@ -167,5 +169,18 @@ class NewWorkoutController: UIViewController, isStringReceiver {
         }
         
         navigationController?.pushViewController(musclePicker, animated: false)
+    }
+    
+    func restBoxTapHandler() {
+        let currentlySelectedRestTime = restSelectionBox.content.label?.text
+        let restInputViewController  = InputViewController(inputStyle: .time)
+        restInputViewController.delegate = self
+        
+        receiveHandler = {
+            s in
+            self.restSelectionBox.content.label?.text = s
+        }
+        
+        navigationController?.pushViewController(restInputViewController, animated: true)
     }
 }

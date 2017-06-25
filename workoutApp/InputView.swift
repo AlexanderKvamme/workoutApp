@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+/*
+    The InputView class is a view, visible to the user, which shows a header and a textField where the user can input either time, weight, sets, .etc.
+ */
+
 class InputView: UIView {
     
     var header = UILabel()
@@ -21,17 +25,18 @@ class InputView: UIView {
         // Set Default texts
         switch inputStyle{
         case .text:
-            header.text = "HOW MUCH DO YOU EVEN LIFT?"
-            textField.text = "03:00"
+            header.text = "WHAT IS THE NAME OF THAT WORKOUT?"
+            textField.text = "Workoutname"
         case .time:
-            header.text = "HOW MUCH DO YOU EVEN LIFT?"
-            textField.text = "WorkoutName"
+            header.text = "HOW MUCH TIME WILL YOU REST?"
+            textField.text = "03:00"
         case .weight:
             header.text = "HOW MUCH DO YOU EVEN LIFT?"
             header.numberOfLines = 2
             header.preferredMaxLayoutWidth = Constant.UI.width * 0.65
             header.textAlignment = .center
-            textField.text = "32.5"
+//            textField.text = "32.5"
+            textField.placeholder = "32.5"
         }
         
         // TextField
@@ -39,7 +44,9 @@ class InputView: UIView {
         textField.clearsOnBeginEditing = true
         textField.font = UIFont.custom(style: .bold, ofSize: .biggest)
         textField.textColor = .darkest
-        textField.setContentCompressionResistancePriority(1000, for: .horizontal)
+        textField.clipsToBounds = false
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.widthAnchor.constraint(equalToConstant: Constant.UI.width).isActive = true
         addSubview(textField)
         
         // Header
@@ -51,6 +58,7 @@ class InputView: UIView {
 //         Stack
         stack = StackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.setContentCompressionResistancePriority(0, for: .horizontal)
         
         stack.axis = UILayoutConstraintAxis.vertical
         stack.distribution = UIStackViewDistribution.fill
@@ -65,8 +73,12 @@ class InputView: UIView {
         setupStack()
         layoutIfNeeded()
         
+        // View to contain yellow diagonal line
+        let diagonalLineView = UIView(frame: CGRect(x: 0, y: 0, width: 125, height: textField.frame.height))
+        diagonalLineView.center = textField.center
+        
         // Draw diagonalLine and send to the back
-        let v = drawLine(throughView: textField)
+        let v = drawLine(throughView: diagonalLineView)
         v.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             v.heightAnchor.constraint(equalToConstant: v.frame.height),
@@ -76,7 +88,8 @@ class InputView: UIView {
                     ])
         sendSubview(toBack: v)
         
-        setDebugColors()
+        // default to showing keyboard
+        textField.becomeFirstResponder()
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -8,16 +8,22 @@
 
 import UIKit
 
+// MARK: - Enum
+
 enum CustomInputStyle {
     case weight
     case time
     case text
 }
 
-class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelegate {
+// MARK: - InputViewController
+
+class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelegate, isStringSender {
     
+    var kb: Keyboard!
     var tf: UITextField!
     var v: UIView!
+    weak var delegate: isStringReceiver?
     
     init(inputStyle: CustomInputStyle) {
         super.init(nibName: nil, bundle: nil)
@@ -33,9 +39,10 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         view.backgroundColor = .light
 
         let screenWidth = UIScreen.main.bounds.width
-        let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
+     
 
-        let v = InputView(inputStyle: .weight)
+        let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
+        let v = InputView(inputStyle: .time)
         v.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
         
         view.addSubview(v)
@@ -53,6 +60,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
             case "OK":
             print("pressed ok")
             tf.resignFirstResponder()
+            textFieldDidEndEditing(tf)
         case "B":
             print("pressed back")
             tf.deleteBackward()
@@ -64,12 +72,26 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     
     // MARK: - TextField Delegate Methods
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print("did end editing")
+        if let text = textField.text {
+            sendStringBack(text)
+        }
+        navigationController?.popViewController(animated: true)
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let text: NSString = (textField.text ?? "") as NSString
         let resultString = text.replacingCharacters(in: range, with: string)
         
         return true
+    }
+    
+    // MARK : - isStringSender protocol requirements
+    
+    func sendStringBack(_ string: String) {
+        delegate?.receive(string)
     }
 }
 

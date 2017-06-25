@@ -15,12 +15,14 @@ public class Box: UIView {
     public var subheader: BoxSubHeader?
     public var boxFrame: BoxFrame
     public var content: BoxContent
+    public var button: UIButton // All boxes gets a invisible button to allow for input
     
     public init(header: BoxHeader?, subheader: BoxSubHeader?, bgFrame: BoxFrame, content: BoxContent) {
         self.header = header
         self.subheader = subheader
         self.boxFrame = bgFrame
         self.content = content
+        self.button = UIButton()
         
         super.init(frame: CGRect.zero)
         
@@ -34,6 +36,10 @@ public class Box: UIView {
     
     // Debug methods
     public func setDebugColors() {
+        
+        button.backgroundColor = .blue
+        button.alpha = 0.5
+        
         backgroundColor = .red
         alpha = 0.8
         if let header = header {
@@ -51,7 +57,7 @@ public class Box: UIView {
     fileprivate func setup() {
         
         var totalHeight: CGFloat = 0
-        
+         
         // boxFrame
         boxFrame.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides,
                                         y: header?.frame.height ?? 0)
@@ -83,6 +89,11 @@ public class Box: UIView {
                                              y: header!.label.frame.maxY - subheader.frame.height)
             bringSubview(toFront: subheader)
         }
+        
+        // invisible button
+        button.frame = boxFrame.frame
+        addSubview(button)
+        
         setNeedsLayout()
     }
     
@@ -98,6 +109,8 @@ public class Box: UIView {
     }
     
     // Box functions
+    
+    // FIXME: - Refactor update of gui to a separate function and have setTitle() call it
     
     public func setTitle(_ newText: String) {
         
@@ -130,6 +143,7 @@ public class Box: UIView {
         
         boxFrame.frame.origin.y = header.frame.height
         content.frame.origin.y = header.frame.height
+        button.frame = boxFrame.frame
         
         // update Intrinsic content size to fit new height
         invalidateIntrinsicContentSize()

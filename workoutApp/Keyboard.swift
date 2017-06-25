@@ -35,4 +35,8 @@ class Keyboard: UIView {
     @IBAction func buttonDidTap(_ sender: UIButton) {
         delegate?.buttonDidTap(keyName: (sender.titleLabel?.text)!)
     }
+    
+    func setKeyboardType(style: CustomInputStyle) {
+        print("*set keyboarstyle to \(style)*")
+    }
 }
