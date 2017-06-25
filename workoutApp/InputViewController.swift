@@ -21,12 +21,14 @@ enum CustomInputStyle {
 class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelegate, isStringSender {
     
     var kb: Keyboard!
+    var inputStyle: CustomInputStyle!
     var tf: UITextField!
     var v: UIView!
     weak var delegate: isStringReceiver?
     
     init(inputStyle: CustomInputStyle) {
         super.init(nibName: nil, bundle: nil)
+        self.inputStyle = inputStyle
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -39,15 +41,16 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         view.backgroundColor = .light
 
         let screenWidth = UIScreen.main.bounds.width
-     
-
+        
+        // keyboard
         let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
+        kb.setKeyboardType(style: self.inputStyle)
+        
         let v = InputView(inputStyle: .time)
         v.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
         
         view.addSubview(v)
         tf = v.textField
-        
         tf.inputView = kb
         
         kb.delegate = self
@@ -73,7 +76,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     // MARK: - TextField Delegate Methods
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print("did end editing")
         if let text = textField.text {
             sendStringBack(text)
         }
@@ -82,6 +84,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
+        // FIXME: - Use this method to verify input
         let text: NSString = (textField.text ?? "") as NSString
         let resultString = text.replacingCharacters(in: range, with: string)
         

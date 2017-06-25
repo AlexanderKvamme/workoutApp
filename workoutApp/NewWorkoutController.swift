@@ -18,6 +18,7 @@ class NewWorkoutController: UIViewController, isStringReceiver {
     var typeSelecter: TwoLabelStack!
     var muscleSelecter: TwoLabelStack!
     var restSelectionBox: Box!
+    var weightSelectionBox: Box!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -89,10 +90,11 @@ class NewWorkoutController: UIViewController, isStringReceiver {
         let weightFrame = boxFactory.makeBoxFrame()
         let weightContent = boxFactory.makeBoxContent()
         
-        let weightSelectionBox = Box(header: weightHeader, subheader: weightSubHeader, bgFrame: weightFrame!, content: weightContent!)
+        weightSelectionBox = Box(header: weightHeader, subheader: weightSubHeader, bgFrame: weightFrame!, content: weightContent!)
         weightSelectionBox.frame.origin = CGPoint(x: 0, y: typeSelecter.frame.maxY)
         weightSelectionBox.setTitle("Weight in kg")
         weightSelectionBox.setContentLabel("40.1")
+        weightSelectionBox.button.addTarget(self, action: #selector(weightBoxTapHandler), for: .touchUpInside)
 //        weightSelectionBox.setDebugColors()
         
         // Rest selection box
@@ -171,16 +173,28 @@ class NewWorkoutController: UIViewController, isStringReceiver {
         navigationController?.pushViewController(musclePicker, animated: false)
     }
     
+    func weightBoxTapHandler() {
+        let weightInputViewController = InputViewController(inputStyle: .weight)
+        weightInputViewController.delegate = self
+        
+        receiveHandler = { s in
+            if s != "" {
+                self.weightSelectionBox.content.label?.text = s
+            }
+        }
+        navigationController?.pushViewController(weightInputViewController, animated: false)
+    }
+    
     func restBoxTapHandler() {
-        let currentlySelectedRestTime = restSelectionBox.content.label?.text
         let restInputViewController  = InputViewController(inputStyle: .time)
         restInputViewController.delegate = self
         
-        receiveHandler = {
-            s in
-            self.restSelectionBox.content.label?.text = s
+        receiveHandler = { s in
+            if s != "" {
+                self.restSelectionBox.content.label?.text = s
+            }
         }
         
-        navigationController?.pushViewController(restInputViewController, animated: true)
+        navigationController?.pushViewController(restInputViewController, animated: false)
     }
 }
