@@ -43,7 +43,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     init(withChoices choices: [String], withPreselection preselection: String?) {
-        print("received preselection \(preselection)")
+        // FIXME: - start out with multieple workouts selected, so make this an optional array
         if let preselection = preselection {
             self.currentlySelectedString = preselection
             print("stored \(preselection) in currentlySelected")
@@ -62,11 +62,11 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setup
+        // Setup
         view.backgroundColor = UIColor.light
         hidesBottomBarWhenPushed = true
         
-        // header
+        // Header
         let headerFrame = CGRect(x: 0, y: 50,
                                  width: Constant.UI.width,
                                  height: 100)
@@ -85,7 +85,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                           height: 200))
         table.reloadData()
         
-        // MARK - Table setup
+        // MARK: - Table setup
         
         // Table
         table.register(PickerCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -256,7 +256,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             delegate?.receive("NORMAL")
         }
-        
         navigationController?.popViewController(animated: false)
     }
 }

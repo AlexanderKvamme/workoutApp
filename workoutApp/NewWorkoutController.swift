@@ -19,6 +19,7 @@ class NewWorkoutController: UIViewController, isStringReceiver {
     var muscleSelecter: TwoLabelStack!
     var restSelectionBox: Box!
     var weightSelectionBox: Box!
+    var workoutSelectionBox: TwoLabelStack!
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -116,7 +117,7 @@ class NewWorkoutController: UIViewController, isStringReceiver {
         
         // Workout selection box
         
-        let workoutSelectionBox = TwoLabelStack(frame: CGRect(x: 0,
+        workoutSelectionBox = TwoLabelStack(frame: CGRect(x: 0,
                                                               y: restSelectionBox.frame.maxY + 20,
                                                               width: Constant.UI.width,
                                                               height: 100),
@@ -127,6 +128,7 @@ class NewWorkoutController: UIViewController, isStringReceiver {
                                    bottomFont: UIFont.custom(style: .bold, ofSize: .big),
                                    bottomColor: UIColor.dark,
                                    fadedBottomLabel: false)
+        workoutSelectionBox.button.addTarget(self, action: #selector(workoutsTapHandler), for: .touchUpInside)
         
         let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
@@ -156,7 +158,6 @@ class NewWorkoutController: UIViewController, isStringReceiver {
         receiveHandler = { s in
             self.typeSelecter.bottomLabel.text = s
         }
-        
         navigationController?.pushViewController(typePicker, animated: false)
     }
     
@@ -169,7 +170,6 @@ class NewWorkoutController: UIViewController, isStringReceiver {
             s in
             self.muscleSelecter.bottomLabel.text = s
         }
-        
         navigationController?.pushViewController(musclePicker, animated: false)
     }
     
@@ -194,7 +194,17 @@ class NewWorkoutController: UIViewController, isStringReceiver {
                 self.restSelectionBox.content.label?.text = s
             }
         }
-        
         navigationController?.pushViewController(restInputViewController, animated: false)
+    }
+    
+    func workoutsTapHandler() {
+        let workoutPickerViewController = WorkoutPickerViewController(withChoices: ["Extreme Flipovers",
+                                                                                    "Backstacked Tripleflips",
+                                                                                    "Underground Leg Flexers"], withPreselection: "shazam")
+        workoutPickerViewController.delegate = self
+        receiveHandler = { s in
+            self.workoutSelectionBox.bottomLabel.text = s
+        }
+        navigationController?.pushViewController(workoutPickerViewController, animated: false)
     }
 }

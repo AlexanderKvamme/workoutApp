@@ -13,7 +13,6 @@ import UIKit
 
 class PickerCell: UITableViewCell {
     
-    // alle klasser krever init
     var label: UILabel!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -58,6 +57,6 @@ class PickerCell: UITableViewCell {
             label.topAnchor.constraint(equalTo: topAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor),
             ])
-        
     }
 }
+
