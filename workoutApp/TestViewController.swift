@@ -120,7 +120,7 @@ class TestViewController2: UIViewController {
         botBox.translatesAutoresizingMaskIntoConstraints = false
         botBox.clipsToBounds = true
         
-        // Selectionh
+        // Selection
         
         let footer = ButtonFooter(withColor: .green)
         view.addSubview(footer)

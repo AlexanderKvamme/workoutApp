@@ -169,7 +169,7 @@
 			name = NavigationController;
 			sourceTree = "<group>";
 		};
-		DD1EA1121EE9434800EBB7B7 /* InputView */ = {
+		DD1EA1121EE9434800EBB7B7 /* Selection and keyboard */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1131EE9435A00EBB7B7 /* InputView.swift */,
@@ -177,17 +177,17 @@
 				DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */,
 				DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */,
 			);
-			name = InputView;
+			name = "Selection and keyboard";
 			sourceTree = "<group>";
 		};
-		DD3AF4491EE45A7500C55453 /* CustomPickerView */ = {
+		DD3AF4491EE45A7500C55453 /* Tableview and picker */ = {
 			isa = PBXGroup;
 			children = (
 				DD3AF44A1EE45A9300C55453 /* PickerCell.swift */,
 				DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */,
 				DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */,
 			);
-			name = CustomPickerView;
+			name = "Tableview and picker";
 			sourceTree = "<group>";
 		};
 		DD585D3A1EC4D53900962B19 = {
@@ -287,8 +287,8 @@
 		DD7600461EDF23E900871DD8 /* newWorkout */ = {
 			isa = PBXGroup;
 			children = (
-				DD1EA1121EE9434800EBB7B7 /* InputView */,
-				DD3AF4491EE45A7500C55453 /* CustomPickerView */,
+				DD1EA1121EE9434800EBB7B7 /* Selection and keyboard */,
+				DD3AF4491EE45A7500C55453 /* Tableview and picker */,
 				DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */,
 				DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */,
 				DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */,

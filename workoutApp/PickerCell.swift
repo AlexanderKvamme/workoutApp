@@ -7,16 +7,6 @@
 //
 
 import Foundation
-
-//
-//  cell.swift
-//  test
-//
-//  Created by Alexander Kvamme on 04/06/2017.
-//  Copyright © 2017 Alexander Kvamme. All rights reserved.
-//
-
-import Foundation
 import UIKit
 
 // MARK: - Cell
