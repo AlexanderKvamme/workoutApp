@@ -25,17 +25,17 @@ class InputView: UIView {
         // Set Default texts
         switch inputStyle{
         case .text:
-            header.text = "WHAT IS THE NAME OF THAT WORKOUT?"
-            textField.text = "Workoutname"
+            header.text = "NAME OF YOUR WORKOUT?"
+            textField.placeholder = "Fist Pumps"
+            
         case .time:
             header.text = "HOW MUCH TIME WILL YOU REST?"
-            textField.text = "03:00"
+            textField.placeholder = "03:00"
         case .weight:
             header.text = "HOW MUCH DO YOU EVEN LIFT?"
             header.numberOfLines = 2
             header.preferredMaxLayoutWidth = Constant.UI.width * 0.65
             header.textAlignment = .center
-//            textField.text = "32.5"
             textField.placeholder = "32.5"
         }
         

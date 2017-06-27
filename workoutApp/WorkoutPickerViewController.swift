@@ -10,59 +10,99 @@ import UIKit
 
 class WorkoutPickerViewController: PickerViewController {
 
-    var numberOfSelectedWorkouts = 0
+    var selectedWorkoutNames = [String]()
+    var selectedIndexPaths = [IndexPath]()
+    
+    weak var workoutDelegate: isWorkoutReceiver?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        for name in selectedWorkoutNames {
+            selectRow(withString: name)
+        }
+    }
+    
+    // Override initializer to take an [String] instead of just String.
+    
+    override init(withChoices choices: [String], withPreselection preselection: String?) {
+        super.init(withChoices: choices, withPreselection: preselection)
+        selectionChoices = choices
+        hidesBottomBarWhenPushed = true
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // Initializer with multiple preselections
+    
+    convenience init(choices: [String], withMultiplePreselections preselections: [String]?) {
+        self.init(withChoices: choices, withPreselection: nil)
+        
+        if let preselections = preselections {
+            self.selectedWorkoutNames = preselections
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Tableview Delegate Methods
     
     override func configure(_ cell: PickerCell, forIndexPath indexPath: IndexPath) {
-        if selectedIndexPath == indexPath {
+        // Takes a cell, and makes it look selected or not depending on if its located in the cache of selected indexPaths
+        if selectedIndexPaths.contains(indexPath) {
             cell.label.font = fontWhenSelected
             cell.label.textColor = textColorWhenSelected
         } else {
-//            cell.label.font = fontWhenDeselected
-//            cell.label.textColor = textColorWhenDeselected
+            cell.label.font = fontWhenDeselected
+            cell.label.textColor = textColorWhenDeselected
+        }
+    }
+    
+    override func selectRow(withString string: String) {
+        
+        // looks through the possible choices, finds the index of the one you want to select, retrieves the corresponding indexPath, and selects that indexPath
+        if let indexOfElement = selectionChoices.index(of: string) {
+            let indexPath = IndexPath(row: indexOfElement, section: 0)
+            table.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            selectedIndexPaths.append(indexPath)
+        } else {
+            print(selectionChoices)
         }
     }
     
     // Count selected rows to return to NewWorkoutViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedIndexPath == indexPath {
-            selectedIndexPath = nil
-            numberOfSelectedWorkouts -= 1
-        } else {
-            // remove previous selection
-//            if let previousSelectedIndexPath = selectedIndexPath {
-//                if let previousSelectedCell = tableView.cellForRow(at: previousSelectedIndexPath) as? PickerCell {
-//                    configure(previousSelectedCell, forIndexPath: indexPath)
-//                }
-//            }
-            // update selection
-            selectedIndexPath = indexPath
-        }
+        
         let selectedCell = tableView.cellForRow(at: indexPath)! as! PickerCell
+        
+        // if tapped indexPath is already contained, remove from cache and unselect it
+        if selectedIndexPaths.contains(indexPath){
+            if let location = selectedIndexPaths.index(of: indexPath){
+                selectedIndexPaths.remove(at: location)
+                selectedWorkoutNames.remove(at: location)
+            }
+        } else {
+            // is not already contained in the array, so append and make it look selected
+            selectedIndexPaths.append(indexPath)
+            selectedWorkoutNames.append(selectionChoices[indexPath.row])
+//            if let text = selectedCell.label.text {
+//                selectedWorkoutNames.append(text) // Denne finner "EXTREME FLIPOVERS"
+//            }
+
+        }
         configure(selectedCell, forIndexPath: indexPath)
-        currentlySelectedString = selectedCell.label.text
     }
     
+    // MARK: - Exit
     
     override func confirmAndDismiss() {
-        if let currentlySelectedString = currentlySelectedString {
-            delegate?.receive(currentlySelectedString)
+        if selectedWorkoutNames.count > 0 {
+            let selectedWorkoutCount = String(selectedWorkoutNames.count)
+            delegate?.receive(selectedWorkoutCount)
+            workoutDelegate?.receiveWorkout(selectedWorkoutNames)
         } else {
-            delegate?.receive("NORMAL")
+            delegate?.receive("0")
         }
         navigationController?.popViewController(animated: false)
     }
-    
 }
+

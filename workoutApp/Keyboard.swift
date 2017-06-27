@@ -46,7 +46,7 @@ class Keyboard: UIView {
             bottomLeftButton.setTitle(".", for: .normal)
         case .time:
             bottomLeftButton.setTitle(":", for: .normal)
-        default: break
+        default:
             bottomLeftButton.setTitle(".", for: .normal)
         }
     }

@@ -23,7 +23,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let tableVerticalInset: CGFloat = 102
     
-    let workoutStyles: [String]!
+    var selectionChoices = [String]()
     var stringToSelect: String?
     
     let cellIdentifier = "cellIdentifier"
@@ -36,7 +36,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let screenWidth = UIScreen.main.bounds.width
     let inset: CGFloat = 20
     
-    var delegate: isStringReceiver?
+    weak var delegate: isStringReceiver?
     
     func sendStringBack(_ string: String) {
         delegate?.receive(string)
@@ -49,7 +49,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print("stored \(preselection) in currentlySelected")
         }
         
-        workoutStyles = choices
+        selectionChoices = choices
         
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
@@ -121,7 +121,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PickerCell
         configure(cell, forIndexPath: indexPath)
-        cell.label.text = workoutStyles[indexPath.row].uppercased()
+        cell.label.text = selectionChoices[indexPath.row].uppercased()
         cell.label.applyCustomAttributes(.more)
         cell.sizeToFit()
         
@@ -146,7 +146,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return workoutStyles.count
+        return selectionChoices.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -219,9 +219,9 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func selectRow(withString string: String) {
         
         print("tryna select \(string) in selectRow")
-        print(" tryna find it in this array \(workoutStyles)")
+        print(" tryna find it in this array \(selectionChoices)")
         
-        if let indexOfA = workoutStyles.index(of: string) {
+        if let indexOfA = selectionChoices.index(of: string) {
             print("found it in \(indexOfA)")
             let ip = IndexPath(row: indexOfA, section: 0)
             table.selectRow(at: ip, animated: false, scrollPosition: .none)
@@ -246,7 +246,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Selectors
     
     func dismissView() {
-        print("selector triggered")
         navigationController?.popViewController(animated: false)
     }
     
