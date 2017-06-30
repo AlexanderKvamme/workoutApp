@@ -27,7 +27,6 @@ class InputView: UIView {
         case .text:
             header.text = "NAME OF YOUR WORKOUT?"
             textField.placeholder = "Fist Pumps"
-            
         case .time:
             header.text = "HOW MUCH TIME WILL YOU REST?"
             textField.placeholder = "03:00"

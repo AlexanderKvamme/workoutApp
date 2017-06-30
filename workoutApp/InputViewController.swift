@@ -23,9 +23,12 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     var kb: Keyboard!
     var inputStyle: CustomInputStyle!
     var tf: UITextField!
-    var v: UIView!
+    var topInputView: InputView!
     
-    weak var delegate: isStringReceiver?
+    let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
+    
+    weak var delegate: isStringReceiver? // Delegate to receive string from the InputViewController
     
     init(inputStyle: CustomInputStyle) {
         super.init(nibName: nil, bundle: nil)
@@ -36,25 +39,58 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: .keyboardWillShow, name: .UIKeyboardWillShow, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+    }
+    
+    func keyboardWillShow(notification: Notification) {
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame: NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        let keyboardHeight = keyboardRectangle.height
+        
+        print("found height to be \(keyboardHeight)")
+        let size = CGSize(width: screenWidth, height: screenHeight - keyboardHeight)
+        if let topInputView = topInputView {
+            topInputView.frame.size = size
+        } else {
+            print("in kbwillShow had no topinputView to unwrap")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("vdl")
         
         view.backgroundColor = .light
-
-        let screenWidth = UIScreen.main.bounds.width
         
-        // keyboard
-        let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-        kb.setKeyboardType(style: self.inputStyle)
-        
-        let v = InputView(inputStyle: inputStyle)
-        v.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
-        
-        view.addSubview(v)
-        tf = v.textField
-        tf.inputView = kb
-        
-        kb.delegate = self
+        switch inputStyle! {
+        case CustomInputStyle.text:
+            // Standard keyboard for inputting text, such as workout names
+            topInputView = InputView(inputStyle: inputStyle)
+            topInputView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
+            view.addSubview(topInputView)
+            tf = topInputView.textField
+            tf.delegate = self
+            
+        default:
+            // Custom keyboard for inputting time and weight
+            let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
+            kb.setKeyboardType(style: self.inputStyle)
+            
+            topInputView = InputView(inputStyle: inputStyle)
+            topInputView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
+            
+            view.addSubview(topInputView)
+            tf = topInputView.textField
+            tf.inputView = kb
+            
+            kb.delegate = self
+        }
     }
     
     // Keyboard delegate method
@@ -90,10 +126,21 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         return true
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        tf.resignFirstResponder()
+        return true
+    }
+    
     // MARK : - isStringSender protocol requirements
     
     func sendStringBack(_ string: String) {
         delegate?.receive(string)
     }
+}
+
+// MARK: - Extensions
+
+extension Selector {
+    static let keyboardWillShow = #selector(InputViewController.keyboardWillShow(notification:))
 }
 

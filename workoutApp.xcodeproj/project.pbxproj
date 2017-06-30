@@ -235,7 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				DDD290A61EDCCD1500048BC9 /* TestViewController */,
-				DD7600461EDF23E900871DD8 /* newWorkout */,
+				DD7600461EDF23E900871DD8 /* New Workout */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DDDE6E521ED4DF4900A03886 /* Table View */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
@@ -297,7 +297,7 @@
 			name = Modal;
 			sourceTree = "<group>";
 		};
-		DD7600461EDF23E900871DD8 /* newWorkout */ = {
+		DD7600461EDF23E900871DD8 /* New Workout */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1121EE9434800EBB7B7 /* Selection and keyboard */,
@@ -308,7 +308,7 @@
 				DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */,
 				DD59B0951EE2B989006443D4 /* ButtonFooter.swift */,
 			);
-			name = newWorkout;
+			name = "New Workout";
 			sourceTree = "<group>";
 		};
 		DD90AF2A1EDED25600A560F0 /* refreshControl */ = {
