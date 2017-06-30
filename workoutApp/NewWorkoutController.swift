@@ -61,7 +61,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
                                    topText: "Name",
                                    topFont: UIFont.custom(style: .bold, ofSize: .medium),
                                    topColor: UIColor.medium,
-                                   bottomText: "My New Long named Workout",
+                                   bottomText: "Your workout",
                                    bottomFont: UIFont.custom(style: .bold, ofSize: .big),
                                    bottomColor: UIColor.darkest,
                                    fadedBottomLabel: false)
@@ -162,8 +162,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
     // MARK: - Tap handlers
     
     func headerDidTap() {
-        print("header was tapped")
-        let currentWorkoutName = header.bottomLabel.text
+//        let currentWorkoutName = header.bottomLabel.text
         let workoutNamePicker = InputViewController(inputStyle: .text)
         workoutNamePicker.delegate = self
         

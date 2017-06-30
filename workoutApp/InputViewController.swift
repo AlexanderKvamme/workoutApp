@@ -23,7 +23,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     var kb: Keyboard!
     var inputStyle: CustomInputStyle!
     var tf: UITextField!
-    var topInputView: InputView!
+    var customTextfieldContainer: InputView!
     
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
@@ -55,7 +55,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         
         print("found height to be \(keyboardHeight)")
         let size = CGSize(width: screenWidth, height: screenHeight - keyboardHeight)
-        if let topInputView = topInputView {
+        if let topInputView = customTextfieldContainer {
             topInputView.frame.size = size
         } else {
             print("in kbwillShow had no topinputView to unwrap")
@@ -71,10 +71,10 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         switch inputStyle! {
         case CustomInputStyle.text:
             // Standard keyboard for inputting text, such as workout names
-            topInputView = InputView(inputStyle: inputStyle)
-            topInputView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
-            view.addSubview(topInputView)
-            tf = topInputView.textField
+            customTextfieldContainer = InputView(inputStyle: inputStyle)
+            customTextfieldContainer.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
+            view.addSubview(customTextfieldContainer)
+            tf = customTextfieldContainer.textField
             tf.delegate = self
             
         default:
@@ -82,11 +82,11 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
             let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
             kb.setKeyboardType(style: self.inputStyle)
             
-            topInputView = InputView(inputStyle: inputStyle)
-            topInputView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
+            customTextfieldContainer = InputView(inputStyle: inputStyle)
+            customTextfieldContainer.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
             
-            view.addSubview(topInputView)
-            tf = topInputView.textField
+            view.addSubview(customTextfieldContainer)
+            tf = customTextfieldContainer.textField
             tf.inputView = kb
             
             kb.delegate = self
@@ -100,11 +100,11 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
             case "OK":
             tf.resignFirstResponder()
             textFieldDidEndEditing(tf)
-        case "B":
+        case "B": // Back button
             tf.deleteBackward()
             return
         default:
-            tf.insertText(keyName)
+            tf.insertText(keyName.uppercased())
         }
     }
     

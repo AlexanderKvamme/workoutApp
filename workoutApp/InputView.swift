@@ -46,6 +46,8 @@ class InputView: UIView {
         textField.clipsToBounds = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.widthAnchor.constraint(equalToConstant: Constant.UI.width).isActive = true
+        textField.autocapitalizationType = .allCharacters
+
         addSubview(textField)
         
         // Header
