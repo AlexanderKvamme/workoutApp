@@ -66,6 +66,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
                                    bottomColor: UIColor.darkest,
                                    fadedBottomLabel: false)
         header.button.addTarget(self, action: #selector(headerDidTap), for: .touchUpInside)
+        header.bottomLabel.adjustsFontSizeToFitWidth = true
         
         // Type and Muscle selectors
         

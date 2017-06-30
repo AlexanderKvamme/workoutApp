@@ -47,7 +47,10 @@ class InputView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.widthAnchor.constraint(equalToConstant: Constant.UI.width).isActive = true
         textField.autocapitalizationType = .allCharacters
-
+        
+        // FIXME: - Tryna avoid multi label, by reducing size while typing
+        textField.adjustsFontSizeToFitWidth = true
+        
         addSubview(textField)
         
         // Header
