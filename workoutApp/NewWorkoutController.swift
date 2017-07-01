@@ -157,7 +157,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
     }
     
     func dismissVC() {
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Tap handlers

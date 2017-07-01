@@ -12,11 +12,11 @@ class BoxTableViewController: UITableViewController {
     
     let cellIdentifier: String = "BoxCell"
     var workoutStyle = ""
-    var willPushVC = false
     
     var customRefreshView: RefreshControlView!
-    
     var dataSource: UITableViewDataSource!
+    
+    // Initializer
     
     init(workoutStyle: String) {
         super.init(nibName: nil, bundle: nil)
@@ -30,41 +30,48 @@ class BoxTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
-        
-        
-        
-        viewDidLoad()
+        print("vwa")
         removeBackButton()
+        refreshControl?.endRefreshing()
     }
+    
+    // View did load
     
     override func viewDidLoad() {
         view.backgroundColor = .light
         super.viewDidLoad()
-        removeBackButton()
-
+        print("vdl")
         
-        // Data source setup
         setupDataSource()
-        
-        // Table view setup
         setupTableView()
-        
-        // refreshControl
         setupRefreshControl()
+        resetRefreshControlAnimation()
     }
+    
+    
+    // View Did Appear
     
     override func viewDidAppear(_ animated: Bool) {
         // Show SelectionIndicator over tab bar
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.showSelectionindicator()
         }
+        print("vda")
+        refreshControl?.endRefreshing()
+        tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+//        refreshControl?.endRefreshing()
+//        refreshControl?.removeFromSuperview()
+//        refreshControl = nil
+//        tableView.reloadData()
+        resetRefreshControlAnimation()
     }
 
-    // MARK: - helpers
+    // MARK: - Refresh Control
     
     private func setupRefreshControl() {
-        
         refreshControl = UIRefreshControl()
         refreshControl?.backgroundColor = .clear
         refreshControl?.tintColor = .clear
@@ -73,23 +80,25 @@ class BoxTableViewController: UITableViewController {
         customRefreshView = RefreshControlView()
         customRefreshView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         customRefreshView.frame = refreshControl!.bounds // <-- Why is this needed?
+        customRefreshView.label.alpha = 0
         refreshControl?.addSubview(customRefreshView)
         
-        refreshControl!.addTarget(self, action: #selector(BoxTableViewController.refreshControlHandler(sender:)), for: .valueChanged)
+        refreshControl!.addTarget(self,
+                                  action: #selector(BoxTableViewController.refreshControlHandler(sender:)),
+                                  for: .valueChanged)
     }
     
     @objc private func refreshControlHandler(sender: UIRefreshControl) {
-        
-        print("Hard pull -> *handle pull*")
-        
         // Fontsize pops bigger
         customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .extreme)
         
-        willPushVC = true
-        sender.endRefreshing()
-        
         let newWorkoutVC = NewWorkoutController()
-        navigationController?.pushViewController(newWorkoutVC, animated: false)
+        navigationController?.pushViewController(newWorkoutVC, animated: true)
+    }
+    
+    private func resetRefreshControlAnimation() {
+        customRefreshView.label.alpha = 0
+        customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .biggest)
     }
     
     private func setupDataSource() {
@@ -122,22 +131,10 @@ class BoxTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = rightButton
     }
     
-    // MARK: - Delegate methods
+    // MARK: - TableView delegate methods
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        customRefreshView.label.alpha = abs(scrollView.contentOffset.y + 64)/100
-        
-        if customRefreshView.label.alpha == 0 {
-            customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .biggest)
-            
-            //if willPushVC && abs(scrollView.contentOffset.y + 64)/10 < 0.5 {
-//            if willPushVC{
-//                willPushVC = false
-//                let newWorkoutVC = newWorkoutController()
-//                navigationController?.pushViewController(newWorkoutVC, animated: true)
-//            }
-        }
+        customRefreshView.label.alpha = customRefreshView.frame.height/100
     }
 }
 
