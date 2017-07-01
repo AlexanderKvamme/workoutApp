@@ -65,6 +65,10 @@
 		DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */; };
 		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
 		DDEEA9F81EDCD99A003360CD /* WorkoutBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */; };
+		DDF1F1EC1F07AC27001A6F0C /* ExerciseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EB1F07AC27001A6F0C /* ExerciseCollectionViewCell.swift */; };
+		DDF1F1EE1F07AD0D001A6F0C /* ExerciseCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1ED1F07AD0D001A6F0C /* ExerciseCollectionViewController.swift */; };
+		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */; };
+		DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 /* End PBXBuildFile section */
@@ -130,6 +134,10 @@
 		DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
 		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
 		DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutBoxCell.swift; sourceTree = "<group>"; };
+		DDF1F1EB1F07AC27001A6F0C /* ExerciseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCollectionViewCell.swift; sourceTree = "<group>"; };
+		DDF1F1ED1F07AD0D001A6F0C /* ExerciseCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCollectionViewController.swift; sourceTree = "<group>"; };
+		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewController.swift; sourceTree = "<group>"; };
+		DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,6 +242,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DDF1F1EA1F07AAAF001A6F0C /* Exercises */,
 				DDD290A61EDCCD1500048BC9 /* TestViewController */,
 				DD7600461EDF23E900871DD8 /* New Workout */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
@@ -366,6 +375,17 @@
 			name = "Helper Classes";
 			sourceTree = "<group>";
 		};
+		DDF1F1EA1F07AAAF001A6F0C /* Exercises */ = {
+			isa = PBXGroup;
+			children = (
+				DDF1F1EB1F07AC27001A6F0C /* ExerciseCollectionViewCell.swift */,
+				DDF1F1ED1F07AD0D001A6F0C /* ExerciseCollectionViewController.swift */,
+				DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */,
+				DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */,
+			);
+			name = Exercises;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -440,6 +460,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDF1F1EE1F07AD0D001A6F0C /* ExerciseCollectionViewController.swift in Sources */,
 				DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */,
 				DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */,
 				DDA54AFD1EDA0A05008C601C /* Workout+CoreDataProperties.swift in Sources */,
@@ -448,6 +469,7 @@
 				DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */,
 				DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
+				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				DDA54AF91EDA0A05008C601C /* ExerciseLog+CoreDataProperties.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
@@ -459,6 +481,7 @@
 				DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */,
 				DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */,
 				DDA54AF81EDA0A05008C601C /* ExerciseLog+CoreDataClass.swift in Sources */,
+				DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
 				DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */,
 				DD0CD4C81F012A33008544EE /* WorkoutPickerProtocols.swift in Sources */,
@@ -469,6 +492,7 @@
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
 				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,
+				DDF1F1EC1F07AC27001A6F0C /* ExerciseCollectionViewCell.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,

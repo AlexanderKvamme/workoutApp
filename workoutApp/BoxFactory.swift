@@ -16,8 +16,9 @@ import UIKit
 public enum BoxType {
     case HistoryBox
     case WorkoutBox
-    case SuggestionBox // mulig denne ikke passer inn
+    case SuggestionBox // Maybe this does not fit
     case SelectionBox
+    case ExerciseProgressBox
 }
 
 public class BoxFactory {
@@ -50,6 +51,8 @@ public class BoxFactory {
             factory = SuggestionBoxFactory()
         case .SelectionBox:
             factory = SelectionBoxFactory()
+        case .ExerciseProgressBox:
+            factory = ExerciseProgressBoxFactory()
         }
         return factory
     }

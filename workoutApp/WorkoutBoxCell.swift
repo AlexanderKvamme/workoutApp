@@ -15,7 +15,6 @@ class WorkoutBoxCell: UITableViewCell {
     // MARK: - Init
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        // super.init
         
         // Box
         let boxFactory = BoxFactory.makeFactory(type: .HistoryBox)
@@ -31,8 +30,11 @@ class WorkoutBoxCell: UITableViewCell {
         
         backgroundColor = .clear
         selectionStyle = .none
-//        setUpViews()
         setupTestViews()
+    }
+    
+        required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupTestViews() {
@@ -41,55 +43,15 @@ class WorkoutBoxCell: UITableViewCell {
         box.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-//            box.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-//            box.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-
             marginGuide.topAnchor.constraint(equalTo: box.topAnchor),
             marginGuide.bottomAnchor.constraint(equalTo: box.bottomAnchor),
-            //box.heightAnchor.constraint(equalToConstant: box.intrinsicContentSize.height),
-            
-//            contentView.heightAnchor.constraint(equalToConstant: 160),
-//            box.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
             box.heightAnchor.constraint(greaterThanOrEqualToConstant: box.intrinsicContentSize.height),
-//            box.heightAnchor.constraint(equalToConstant: box.frame.height),
             box.widthAnchor.constraint(equalToConstant: box.frame.width),
             ])
         
         // Compression resistance
         box.setContentCompressionResistancePriority(1000, for: .vertical)
         contentView.setContentCompressionResistancePriority(0, for: .vertical)
-    }
-    
-    // MARK: - Helpers
-    
-    func setUpViews() {
-        
-        let marginGuide = contentView.layoutMarginsGuide
-        
-        NSLayoutConstraint.activate([
-            box.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            box.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-//            box.topAnchor.constraint(equalTo: marginGuide.topAnchor),
-//            box.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor),
-//            box.heightAnchor.constraint(equalToConstant: box.intrinsicContentSize.height),
-    
-            contentView.heightAnchor.constraint(equalToConstant: 160),
-            
-            box.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
-//            box.heightAnchor.constraint(equalToConstant: 150),
-            //box.heightAnchor.constraint(equalToConstant: box.frame.height),
-            box.widthAnchor.constraint(equalToConstant: box.frame.width),
-            ])
-        
-        // Compression resistance
-        box.setContentCompressionResistancePriority(1000, for: .vertical)
-        contentView.setContentCompressionResistancePriority(0, for: .vertical)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
