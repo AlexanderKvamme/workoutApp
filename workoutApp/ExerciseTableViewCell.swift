@@ -32,9 +32,9 @@ class ExerciseTableViewCell: UITableViewCell {
         let boxContent = boxFactory.makeBoxContent()
         
         box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
-        addSubview(box)
-        
         box.setTitle("Real Exercise")
+        
+        contentView.addSubview(box)
     }
     
     private func setupConstraints() {
@@ -42,17 +42,10 @@ class ExerciseTableViewCell: UITableViewCell {
 //        box.translatesAutoresizingMaskIntoConstraints = false
      
         NSLayoutConstraint.activate([
-            // Cell
-            topAnchor.constraint(equalTo: box.topAnchor),
-            bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: 10),
-            widthAnchor.constraint(equalToConstant: Constant.UI.width),
-//            heightAnchor.constraint(equalToConstant: 50),
-            
-            // Box
-//            box.widthAnchor.constraint(equalToConstant: 300),
-//            box.heightAnchor.constraint(equalToConstant: 100),
-//            box.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            box.centerYAnchor.constraint(equalTo: centerYAnchor),
+            //
+            contentView.topAnchor.constraint(equalTo: box.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: 10),
+            contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
                                     ])
     }
 
