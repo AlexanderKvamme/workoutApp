@@ -50,8 +50,8 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - Profile Tab
 //        let TestViewController = PickerViewController(withSelectedString: "Weighted")
-//        let TestViewController = PickerViewController(withChoices: ["Shredded", "Bizniz"], withPreselection: "Bizniz")
-        let TestViewController = ExerciseTableViewController()
+        let TestViewController = PickerViewController(withChoices: ["Shredded", "Bizniz"], withPreselection: "Bizniz")
+//        let TestViewController = ExerciseTableViewController(withWorkout: <#T##Workout#>)
         let profileController = TestViewController
         profileController.hidesBottomBarWhenPushed = true
         

@@ -10,27 +10,17 @@ import UIKit
 
 class ExerciseTableViewCell: UITableViewCell {
     
-    var header: UILabel!
     var box: Box!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .red
-        setupConstraints()
-        setupHeader()
         setupBox()
+        setupConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupHeader() {
-        header = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 20))
-        header.text = "Some Header".uppercased()
-        header.sizeToFit()
-        header.backgroundColor = .purple
-        addSubview(header)
     }
     
     private func setupBox() {
@@ -41,25 +31,33 @@ class ExerciseTableViewCell: UITableViewCell {
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         
-        box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
-        view.addSubView(box)
+        box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
+        addSubview(box)
+        
+        box.setTitle("Real Exercise")
     }
     
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
+//        box.translatesAutoresizingMaskIntoConstraints = false
      
-        NSLayoutConstraint.activate([heightAnchor.constraint(equalToConstant: 200),
-                                    widthAnchor.constraint(equalToConstant: Constant.UI.width),
-                                    
-                                    
+        NSLayoutConstraint.activate([
+            // Cell
+            topAnchor.constraint(equalTo: box.topAnchor),
+            bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: 10),
+            widthAnchor.constraint(equalToConstant: Constant.UI.width),
+//            heightAnchor.constraint(equalToConstant: 50),
+            
+            // Box
+//            box.widthAnchor.constraint(equalToConstant: 300),
+//            box.heightAnchor.constraint(equalToConstant: 100),
+//            box.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            box.centerYAnchor.constraint(equalTo: centerYAnchor),
                                     ])
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-    
-    
 }
+

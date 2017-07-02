@@ -136,6 +136,26 @@ fileprivate class SelectionBoxFactory: BoxFactory {
     }
 }
 
+// Exercise Progress Box Factory
+
+fileprivate class ExerciseProgressBoxFactory: BoxFactory {
+    public override func makeBoxHeader() -> BoxHeader? {
+        return SelectionBoxHeader()
+    }
+    
+    public override func makeBoxSubHeader() -> BoxSubHeader? {
+        return nil
+    }
+    
+    public override func makeBoxFrame() -> BoxFrame? {
+        return ExerciseProgressBoxFrame()
+    }
+    
+    public override func makeBoxContent() -> BoxContent? {
+        return nil
+    }
+}
+
 // MARK: - Box parts
 
 // MARK: - Box Headers
@@ -320,7 +340,6 @@ public class BoxFrame: UIView {
     
     init() {
         super.init(frame: CGRect.zero)
-//        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         
         // background properties
         background.backgroundColor = .primary
@@ -328,7 +347,6 @@ public class BoxFrame: UIView {
         // shimmer properties
         shimmer.backgroundColor = .white
         shimmer.alpha = 0.1
-        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -406,6 +424,36 @@ fileprivate class SelectionBoxFrame: BoxFrame {
     }
 }
 
+
+fileprivate class ExerciseProgressBoxFrame: BoxFrame {
+    
+    override init(){
+        super.init()
+        
+        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
+                                     height: Constant.components.Box.ExerciseProgress.height)
+        // Colored view behind shimmer
+        background.frame = CGRect(x: 0,
+                                  y: 0,
+                                  width: standardBoxSize.width,
+                                  height: standardBoxSize.height)
+        // Shimmer
+        let shimmerInset = Constant.components.Box.shimmerInset
+        shimmer.frame = CGRect(x: shimmerInset,
+                               y: shimmerInset,
+                               width: background.frame.width - 2*shimmerInset,
+                               height: background.frame.height - 2*shimmerInset)
+        
+        frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
+        
+        addSubview(background)
+        addSubview(shimmer)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
 
 // The 3 components

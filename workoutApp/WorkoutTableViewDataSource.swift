@@ -15,14 +15,9 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
     let cellIdentifier: String = "BoxCell"
     var workoutStyle: String!
     
-    private var fetchedWorkouts = [Workout]()
+    var fetchedWorkouts = [Workout]()
     
     // MARK: - Initializers
-    
-//    init(workoutStyle: String) {
-//        super.init()
-//        self.workoutStyle = workoutStyle
-//    }
     
     init(workoutStyle: String) {
         super.init()
@@ -41,7 +36,6 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
         } catch let err as NSError {
             print(err.debugDescription)
         }
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,4 +53,11 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
         cell.box.setSubHeader(workoutStyle)
         return cell
     }
+    
+    // MARK: - API
+    
+    func getWorkouts() -> [Workout]? {
+        return fetchedWorkouts
+    }
 }
+

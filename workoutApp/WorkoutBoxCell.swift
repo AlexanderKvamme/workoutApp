@@ -25,6 +25,8 @@ class WorkoutBoxCell: UITableViewCell {
         
         box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
         
+        box.isUserInteractionEnabled = false
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(box)
         

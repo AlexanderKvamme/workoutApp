@@ -14,10 +14,10 @@ public class Box: UIView {
     public var header: BoxHeader?
     public var subheader: BoxSubHeader?
     public var boxFrame: BoxFrame
-    public var content: BoxContent
+    public var content: BoxContent?
     public var button: UIButton // All boxes gets a invisible button to allow for input
     
-    public init(header: BoxHeader?, subheader: BoxSubHeader?, bgFrame: BoxFrame, content: BoxContent) {
+    public init(header: BoxHeader?, subheader: BoxSubHeader?, bgFrame: BoxFrame, content: BoxContent?) {
         self.header = header
         self.subheader = subheader
         self.boxFrame = bgFrame
@@ -64,9 +64,10 @@ public class Box: UIView {
         addSubview(boxFrame)
         
         // content
-        content.frame = boxFrame.frame
-        
-        addSubview(content)
+        if let content = content {
+            content.frame = boxFrame.frame
+            addSubview(content)
+        }
         
         // header
         if let header = header {
@@ -142,7 +143,7 @@ public class Box: UIView {
                        height: totalHeight)
         
         boxFrame.frame.origin.y = header.frame.height
-        content.frame.origin.y = header.frame.height
+        content?.frame.origin.y = header.frame.height
         button.frame = boxFrame.frame
         
         // update Intrinsic content size to fit new height
@@ -158,6 +159,10 @@ public class Box: UIView {
     }
     
     public func setContentLabel(_ string: String) {
+        guard let content = content else {
+            print("no content to set")
+            return
+        }
         
         if let label = content.label {
             label.text = "ohh wee"

@@ -202,7 +202,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         
         receiveHandler = { s in
             if s != "" {
-                self.weightSelectionBox.content.label?.text = s
+                self.weightSelectionBox.content?.label?.text = s
             }
         }
         navigationController?.pushViewController(weightInputViewController, animated: false)
@@ -214,7 +214,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         
         receiveHandler = { s in
             if s != "" {
-                self.restSelectionBox.content.label?.text = s
+                self.restSelectionBox.content?.label?.text = s
             }
         }
         navigationController?.pushViewController(restInputViewController, animated: false)

@@ -14,7 +14,7 @@ class BoxTableViewController: UITableViewController {
     var workoutStyle = ""
     
     var customRefreshView: RefreshControlView!
-    var dataSource: UITableViewDataSource!
+    var dataSource: WorkoutTableViewDataSource!
     
     // Initializer
     
@@ -48,7 +48,6 @@ class BoxTableViewController: UITableViewController {
         resetRefreshControlAnimation()
     }
     
-    
     // View Did Appear
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,10 +61,6 @@ class BoxTableViewController: UITableViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-//        refreshControl?.endRefreshing()
-//        refreshControl?.removeFromSuperview()
-//        refreshControl = nil
-//        tableView.reloadData()
         resetRefreshControlAnimation()
     }
 
@@ -135,6 +130,16 @@ class BoxTableViewController: UITableViewController {
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         customRefreshView.label.alpha = customRefreshView.frame.height/100
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selectedRowAt \(indexPath.row)")
+        let wo = dataSource.getWorkouts()
+        if let wo = wo {
+            print("which is: ", wo[indexPath.row])
+            let detailedVC = ExerciseTableViewController(withWorkout: wo[indexPath.row])
+            navigationController?.pushViewController(detailedVC, animated: true)
+        }
     }
 }
 

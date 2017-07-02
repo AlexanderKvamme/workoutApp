@@ -57,6 +57,10 @@ enum Constant {
                 static let width: CGFloat = Constant.UI.width/2
                 static let height: CGFloat = 60
             }
+            enum ExerciseProgress {
+                static let width: CGFloat = standardBoxWidth
+                static let height: CGFloat = 50
+            }
         }
         
         enum SelectionVC {
