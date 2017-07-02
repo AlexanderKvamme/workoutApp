@@ -16,7 +16,10 @@ class ExerciseTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setDebugColors()
+//        setDebugColors()
+        tableView.backgroundColor = .light
+        
+        setUpNavigationBar()
         
         // Table view setup
         dataSource = ExerciseTableViewDataSource(workout: currentWorkout)
@@ -27,6 +30,8 @@ class ExerciseTableViewController: UITableViewController {
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.reloadData()
+        
+        
     }
     
     // MARK: - Initializers
@@ -40,10 +45,30 @@ class ExerciseTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Navbar
+    
+    private func setUpNavigationBar() {
+//        self.title = "\(workoutStyle) workouts".uppercased()
+        if let name = currentWorkout.name {
+            self.title = name.uppercased()
+        } else {
+            self.title = "test"
+        }
+        let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
+        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
+        self.navigationItem.rightBarButtonItem = rightButton
+    }
+    
     // MARK: - Delegate methods
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected row \(indexPath.row)")
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 10
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        // FIXME: - clear color needed?
+        return v
     }
     
     // Helper

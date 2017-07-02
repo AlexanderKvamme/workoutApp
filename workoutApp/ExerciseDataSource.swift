@@ -32,26 +32,26 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         print("ExerciseTableViewDataSource initialized")
     }
     
+    // Space out cells with use of sections
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("1 sections")
-        return 1
+        return currentExercises.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("found \(currentExercises.count) exercises")
-        return currentExercises.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("cell for row at ip \(indexPath)")
-        let exercise = currentExercises[indexPath.row]
+        let exercise = currentExercises[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
         cell = ExerciseTableViewCell(style: .default, reuseIdentifier: cellIdentifier)
         
         if let name = exercise.name {
             cell.box.setTitle(name)
-            print("setting name -> \(cell.box.header?.label.text)")
+
         }
 //        cell.layoutIfNeeded()
         return cell

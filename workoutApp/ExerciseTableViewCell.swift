@@ -14,9 +14,11 @@ class ExerciseTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .red
+        
         setupBox()
         setupConstraints()
+        
+        backgroundColor = .clear
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,16 +43,14 @@ class ExerciseTableViewCell: UITableViewCell {
 //        box.translatesAutoresizingMaskIntoConstraints = false
      
         NSLayoutConstraint.activate([
-            //
-//            contentView.topAnchor.constraint(equalTo: box.topAnchor),
-            contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: Constant.ViewControllers.exericeseTable.verticalSpacing),
+            contentView.topAnchor.constraint(equalTo: box.topAnchor),
             contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: 10),
             contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
                                     ])
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//    }
 }
 
