@@ -39,6 +39,12 @@ enum Constant {
         }
     }
     
+    enum ViewControllers {
+        enum exericeseTable {
+            static let verticalSpacing: CGFloat = 50
+        }
+    }
+    
     enum components {
         enum Box {
             static let spacingFromSides: CGFloat = 10

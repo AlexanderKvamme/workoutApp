@@ -140,7 +140,7 @@ fileprivate class SelectionBoxFactory: BoxFactory {
 
 fileprivate class ExerciseProgressBoxFactory: BoxFactory {
     public override func makeBoxHeader() -> BoxHeader? {
-        return SelectionBoxHeader()
+        return ExerciseProgressBoxHeader()
     }
     
     public override func makeBoxSubHeader() -> BoxSubHeader? {
@@ -181,6 +181,7 @@ fileprivate class StandardBoxHeader: BoxHeader {
     override init() {
         super.init()
 
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.numberOfLines = 2
         label.sizeToFit()
         addSubview(label)
@@ -192,6 +193,30 @@ fileprivate class StandardBoxHeader: BoxHeader {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class ExerciseProgressBoxHeader: BoxHeader {
+    override init() {
+        super.init()
+        
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
+        label.numberOfLines = 2
+        label.sizeToFit() // Fixes height. Adjust length
+        addSubview(label)
+        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+                       y: 0,
+                       width: Constant.components.Box.ExerciseProgress.width,
+                       height: label.frame.height)
+    
+        label.frame = CGRect(x: Constant.components.Box.spacingFromSides,
+                             y: 0,
+                             width: Constant.components.Box.ExerciseProgress.width - Constant.components.Box.spacingFromSides,
+                             height: label.frame.height)        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) haas not been implemented")
     }
 }
 

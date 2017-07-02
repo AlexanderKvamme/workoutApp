@@ -51,8 +51,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         if let name = exercise.name {
             cell.box.setTitle(name)
+            print("setting name -> \(cell.box.header?.label.text)")
         }
-        print("cell height:", cell.frame.height)
 //        cell.layoutIfNeeded()
         return cell
     }

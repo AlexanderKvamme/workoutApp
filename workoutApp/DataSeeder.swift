@@ -55,20 +55,26 @@ final class DataSeeder {
         muscleString = CDModels.workout.muscle.back.rawValue
         
         let exercisesForBackNormal: [DummyExercise] = [
-            (name: "Chins", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Head Bangers", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Australian Chins", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Bicep Pumps", muscle: muscleString, plannedSets: 1, type: typeString),]
+            (name: "Pull ups", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Australian pull ups", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Chin ups", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Australian chin ups", muscle: muscleString, plannedSets: 1, type: typeString),
+            ]
         
         // Arms - Normal
         muscleString = CDModels.workout.muscle.arms.rawValue
         typeString = CDModels.workout.type.dropSet.rawValue
         
         let exercisesForBicepsAndTricepsDropSet: [DummyExercise] = [
-            (name: "Chins", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Head Bangers", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Australian Chins", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Bicep Pumps", muscle: muscleString, plannedSets: 1, type: typeString),]
+            (name: "Bicep Curls", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Hammer Curls", muscle: muscleString, plannedSets: 2, type: typeString),
+            (name: "Fist pumps", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Bicep Pumps", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Biceps Flex", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Chin Ups", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Chin up negatives", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Australian chin ups", muscle: muscleString, plannedSets: 1, type: typeString),
+            ]
         
         // Seed into Core Data
         makeWorkout(backWorkoutDropSet, withExercises: exercisesForBackDropSet)

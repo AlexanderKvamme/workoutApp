@@ -32,7 +32,6 @@ class ExerciseTableViewCell: UITableViewCell {
         let boxContent = boxFactory.makeBoxContent()
         
         box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
-        box.setTitle("Real Exercise")
         
         contentView.addSubview(box)
     }
@@ -43,7 +42,8 @@ class ExerciseTableViewCell: UITableViewCell {
      
         NSLayoutConstraint.activate([
             //
-            contentView.topAnchor.constraint(equalTo: box.topAnchor),
+//            contentView.topAnchor.constraint(equalTo: box.topAnchor),
+            contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: Constant.ViewControllers.exericeseTable.verticalSpacing),
             contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: 10),
             contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
                                     ])

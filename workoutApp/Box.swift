@@ -39,7 +39,7 @@ public class Box: UIView {
         
         button.backgroundColor = .blue
         button.alpha = 0.5
-        
+         
         backgroundColor = .red
         alpha = 0.8
         if let header = header {
@@ -114,7 +114,7 @@ public class Box: UIView {
     // FIXME: - Refactor update of gui to a separate function and have setTitle() call it
     
     public func setTitle(_ newText: String) {
-        
+        /* Makes sure a header can spread over 2 lines if its long */
         var totalHeight: CGFloat = 0
         
         guard let header = header else { return }
@@ -156,6 +156,8 @@ public class Box: UIView {
             
         }
         setNeedsLayout()
+        // FIXME: - Det er labelen som får feil størrelse
+        print("header width after setTitle", header.label.frame)
     }
     
     public func setContentLabel(_ string: String) {
@@ -196,5 +198,4 @@ public class Box: UIView {
         }
     }
 }
-
 
