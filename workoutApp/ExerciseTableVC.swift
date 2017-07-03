@@ -16,10 +16,9 @@ class ExerciseTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        setDebugColors()
+        // Visuals
         tableView.backgroundColor = .light
-        
-        setUpNavigationBar()
+        setupNavigationBar()
         
         // Table view setup
         dataSource = ExerciseTableViewDataSource(workout: currentWorkout)
@@ -31,7 +30,7 @@ class ExerciseTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.reloadData()
         
-        
+        //        setDebugColors()
     }
     
     // MARK: - Initializers
@@ -47,8 +46,7 @@ class ExerciseTableViewController: UITableViewController {
     
     // MARK: - Navbar
     
-    private func setUpNavigationBar() {
-//        self.title = "\(workoutStyle) workouts".uppercased()
+    private func setupNavigationBar() {
         if let name = currentWorkout.name {
             self.title = name.uppercased()
         } else {
@@ -66,9 +64,13 @@ class ExerciseTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        // FIXME: - clear color needed?
-        return v
+        let verticalSpacingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        return verticalSpacingView
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("tapped \(indexPath)")
+        print("- \(dataSource.currentExercises[indexPath.section].name)")
     }
     
     // Helper

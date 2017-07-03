@@ -29,13 +29,13 @@ class BoxTableViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life cycle
+    
     override func viewWillAppear(_ animated: Bool) {
         print("vwa")
         removeBackButton()
         refreshControl?.endRefreshing()
     }
-    
-    // View did load
     
     override func viewDidLoad() {
         view.backgroundColor = .light
@@ -47,8 +47,6 @@ class BoxTableViewController: UITableViewController {
         setupRefreshControl()
         resetRefreshControlAnimation()
     }
-    
-    // View Did Appear
     
     override func viewDidAppear(_ animated: Bool) {
         // Show SelectionIndicator over tab bar
@@ -114,10 +112,8 @@ class BoxTableViewController: UITableViewController {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         }
     }
-    
-    func swipeHandler() {
-        print("swiped")
-    }
+
+    // Nav bar
     
     private func setUpNavigationBar() {
         self.title = "\(workoutStyle) workouts".uppercased()
@@ -133,11 +129,10 @@ class BoxTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selectedRowAt \(indexPath.row)")
         let wo = dataSource.getWorkouts()
         if let wo = wo {
-            print("which is: ", wo[indexPath.row])
-            let detailedVC = ExerciseTableViewController(withWorkout: wo[indexPath.row])
+            let selectedWorkout = wo[indexPath.row]
+            let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
             navigationController?.pushViewController(detailedVC, animated: true)
         }
     }

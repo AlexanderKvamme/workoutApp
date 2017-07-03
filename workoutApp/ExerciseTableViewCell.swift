@@ -11,23 +11,43 @@ import UIKit
 class ExerciseTableViewCell: UITableViewCell {
     
     var box: Box!
+    var collectionViewOfSets: ExerciseSetCollectionView! // each table view cell contains a collectionViewController
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        setup()
         setupBox()
         setupConstraints()
-//        setupCollectionvis
+    }
+    
+    convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
+        self.init(style: .default, reuseIdentifier: cellIdentifier)
         
-        backgroundColor = .clear
+        setupSetCollectionViews(exercise)
+        print("setting up collectionView")
+    
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setupSetCollectionViews(_ exercise: Exercise) {
+        print("tryna setup make a collectionview from \(exercise.name)")
+//        collectionViewOfSets = ExerciseSetCollectionViewController(withExercise: exercise)
+        collectionViewOfSets = ExerciseSetCollectionView(withExercise: exercise)
+        collectionViewOfSets.frame = box.boxFrame.frame // the graphic part of the box
+        collectionViewOfSets.backgroundColor = .purple
+        collectionViewOfSets.alpha = 0.5
+        addSubview(collectionViewOfSets)
+    }
+    
+    private func setup() {
+        backgroundColor = .clear
+    }
+    
     private func setupBox() {
-        // Box
         let boxFactory = BoxFactory.makeFactory(type: .ExerciseProgressBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
@@ -41,7 +61,6 @@ class ExerciseTableViewCell: UITableViewCell {
     
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
-//        box.translatesAutoresizingMaskIntoConstraints = false
      
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: box.topAnchor),
@@ -49,9 +68,5 @@ class ExerciseTableViewCell: UITableViewCell {
             contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
                                     ])
     }
-
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//    }
 }
 

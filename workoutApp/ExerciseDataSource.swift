@@ -46,7 +46,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         let exercise = currentExercises[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
-        cell = ExerciseTableViewCell(style: .default, reuseIdentifier: cellIdentifier)
+//        cell = ExerciseTableViewCell(style: .default, reuseIdentifier: cellIdentifier)
+        cell = ExerciseTableViewCell(withExercise: exercise, andIdentifier: cellIdentifier)
         
         if let name = exercise.name {
             cell.box.setTitle(name)

@@ -9,6 +9,10 @@
 import Foundation
 import CoreData
 
+/*
+ Used to make some example workouts, exercises, and exerciseLogs when the app is freshly installed
+ */
+
 final class DataSeeder {
     
     typealias DummyWorkout = (name: String, muscle: String, type: String)
@@ -85,7 +89,7 @@ final class DataSeeder {
         DatabaseController.saveContext()
     }
     
-    // Helper Methods
+    // MARK: - Helper Methods
     
     private func makeWorkout(_ workout: DummyWorkout, withExercises exercises: [DummyExercise]) {
         
@@ -105,9 +109,11 @@ final class DataSeeder {
             exerciseRecord.plannedSets = exercise.plannedSets
             exerciseRecord.type = exercise.type
             exerciseRecord.addToUsedInWorkouts(workoutRecord)
+            
+            // FIXME: - Simulate this exercise having been used
+            
         }
     }
-    
     
     // Print
     
