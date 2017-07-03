@@ -112,10 +112,28 @@ final class DataSeeder {
             
             // FIXME: - Simulate this exercise having been used
             
+            let logItem = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
+            logItem.date = Date() as NSDate
+            logItem.design = exerciseRecord
+            
+            // add lifts this workout
+            
+            for _ in 0...4 {
+                let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
+                lift.reps = randomRepNumber()
+                lift.owner = logItem
+            }
         }
     }
     
-    // Print
+    // MARK: - Exercise methods
+    
+    private func randomRepNumber() -> Int16 {
+        let result = Int16(arc4random_uniform(UInt32(99)))
+        return result
+    }
+    
+    // MARK: - Print methods
     
     private func printWorkouts() {
 

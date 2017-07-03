@@ -7,26 +7,44 @@
 //
 
 import UIKit
-/*
+
 private let reuseIdentifier = "exerciseSetCell"
 
 class ExerciseSetCollectionViewController: UICollectionViewController {
 
+    var collectionViewOfSets: ExerciseSetCollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .blue
+        view.alpha = 0.5
 
         // Register cell classes
         self.collectionView!.register(ExerciseSetCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
     
-    init(withExercise exercise: Exercise) {
+    init(withExercise exercise: Exercise, forFrame: CGRect) {
         let layout = UICollectionViewFlowLayout()
         super.init(collectionViewLayout: layout)
-        print("initializing a exerciseCVC for \(exercise.name)")
+        view.frame = forFrame
+        setupSetCollectionViews(exercise)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Other things
+    
+    private func setupSetCollectionViews(_ exercise: Exercise) {
+        print("in collectionVC tryna make a collectionview from \(exercise.name)")
+        //        collectionViewOfSets = ExerciseSetCollectionViewController(withExercise: exercise)
+        collectionViewOfSets = ExerciseSetCollectionView(withExercise: exercise)
+//        collectionViewOfSets.frame = box.boxFrame.frame // the graphic part of the box
+        collectionViewOfSets.backgroundColor = .purple
+        collectionViewOfSets.alpha = 0.5
+        view.addSubview(collectionViewOfSets)
     }
 
     // MARK: UICollectionViewDataSource
@@ -79,4 +97,3 @@ class ExerciseSetCollectionViewController: UICollectionViewController {
     */
 
 }
-*/

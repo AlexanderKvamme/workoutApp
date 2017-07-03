@@ -161,6 +161,7 @@ public class DatabaseController {
         // Create Fetch Request
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
         let managedObjectContext = sharedInstance.managedObjectContext
+        
         // Helpers
         var result = [NSManagedObject]()
         

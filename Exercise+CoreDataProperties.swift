@@ -2,7 +2,7 @@
 //  Exercise+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 27/05/2017.
+//  Created by Alexander Kvamme on 03/07/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -20,25 +20,25 @@ extension Exercise {
     @NSManaged public var name: String?
     @NSManaged public var plannedSets: Int16
     @NSManaged public var type: String?
-    @NSManaged public var usedIn: NSSet?
+    @NSManaged public var loggedInstances: NSSet?
     @NSManaged public var usedInWorkouts: NSSet?
 
 }
 
-// MARK: Generated accessors for usedIn
+// MARK: Generated accessors for loggedInstances
 extension Exercise {
 
-    @objc(addUsedInObject:)
-    @NSManaged public func addToUsedIn(_ value: ExerciseLog)
+    @objc(addLoggedInstancesObject:)
+    @NSManaged public func addToLoggedInstances(_ value: ExerciseLog)
 
-    @objc(removeUsedInObject:)
-    @NSManaged public func removeFromUsedIn(_ value: ExerciseLog)
+    @objc(removeLoggedInstancesObject:)
+    @NSManaged public func removeFromLoggedInstances(_ value: ExerciseLog)
 
-    @objc(addUsedIn:)
-    @NSManaged public func addToUsedIn(_ values: NSSet)
+    @objc(addLoggedInstances:)
+    @NSManaged public func addToLoggedInstances(_ values: NSSet)
 
-    @objc(removeUsedIn:)
-    @NSManaged public func removeFromUsedIn(_ values: NSSet)
+    @objc(removeLoggedInstances:)
+    @NSManaged public func removeFromLoggedInstances(_ values: NSSet)
 
 }
 

@@ -5,12 +5,12 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="plannedSets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="usedIn" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="design" inverseEntity="ExerciseLog" syncable="YES"/>
+        <relationship name="loggedInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="design" inverseEntity="ExerciseLog" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercises" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <entity name="ExerciseLog" representedClassName="ExerciseLog" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="design" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="usedIn" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="design" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="loggedInstances" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="lifts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Lift" inverseName="owner" inverseEntity="Lift" syncable="YES"/>
         <relationship name="usedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="loggedExercises" inverseEntity="WorkoutLog" syncable="YES"/>
     </entity>

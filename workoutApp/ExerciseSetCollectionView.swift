@@ -9,24 +9,27 @@
 import UIKit
 
 class ExerciseSetCollectionView: UICollectionView {
-
-    
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     init(withExercise exercise: Exercise) {
         let layout = UICollectionViewFlowLayout()
         super.init(frame: .zero, collectionViewLayout: layout)
-        print("so view receives \(exercise.name)")
+        
+        // visuals
+        backgroundColor = .blue
+        alpha = 0.5
+        
+        print("ExerciseSetCollectionView receives \(exercise.name!)")
+        
+        let exerciseLogs = exercise.loggedInstances as! Set<ExerciseLog>
+        
+        for log in exerciseLogs {
+            for lift in log.lifts as! Set<Lift> {
+                print("log reps: \(lift.reps)")
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }

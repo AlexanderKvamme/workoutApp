@@ -11,7 +11,8 @@ import UIKit
 class ExerciseTableViewCell: UITableViewCell {
     
     var box: Box!
-    var collectionViewOfSets: ExerciseSetCollectionView! // each table view cell contains a collectionViewController
+//    var collectionViewController: ExerciseSetCollectionViewController!
+    var collectionViewOfSets: ExerciseSetCollectionView! // each cell contains a collectionviewcontroller
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,23 +25,15 @@ class ExerciseTableViewCell: UITableViewCell {
     convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
         self.init(style: .default, reuseIdentifier: cellIdentifier)
         
-        setupSetCollectionViews(exercise)
-        print("setting up collectionView")
-    
+        print("in cell: making lift collectionVC")
+        collectionViewOfSets = ExerciseSetCollectionView(withExercise: exercise)
+        collectionViewOfSets.frame = box.boxFrame.frame
+        print("frame set: ", collectionViewOfSets.frame)
+        addSubview(collectionViewOfSets)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupSetCollectionViews(_ exercise: Exercise) {
-        print("tryna setup make a collectionview from \(exercise.name)")
-//        collectionViewOfSets = ExerciseSetCollectionViewController(withExercise: exercise)
-        collectionViewOfSets = ExerciseSetCollectionView(withExercise: exercise)
-        collectionViewOfSets.frame = box.boxFrame.frame // the graphic part of the box
-        collectionViewOfSets.backgroundColor = .purple
-        collectionViewOfSets.alpha = 0.5
-        addSubview(collectionViewOfSets)
     }
     
     private func setup() {

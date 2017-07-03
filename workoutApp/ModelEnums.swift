@@ -11,6 +11,8 @@ import Foundation
 enum Entity: String {
     case Workout = "Workout"
     case Exercise = "Exercise"
+    case ExerciseLog = "ExerciseLog"
+    case Lift = "Lift"
 }
 
 enum CDModels {
@@ -27,7 +29,6 @@ enum CDModels {
             case core = "Core"
             case chest = "Chest"
             case shoulders = "Shoulders"
-            
         }
     }
 }
