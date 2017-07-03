@@ -17,6 +17,8 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
         label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         label.text = labelText
         label.backgroundColor = .red
+        label.text = "99"
+        label.backgroundColor = .purple
         addSubview(label)
     }
     

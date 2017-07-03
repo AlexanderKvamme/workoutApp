@@ -43,7 +43,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cell for row at ip \(indexPath)")
         let exercise = currentExercises[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
@@ -53,7 +52,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             cell.box.setTitle(name)
 
         }
-//        cell.layoutIfNeeded()
+//        cell.layoutIfNeeded() 
         return cell
     }
 }

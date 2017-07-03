@@ -17,6 +17,7 @@ class ExerciseTableViewCell: UITableViewCell {
         
         setupBox()
         setupConstraints()
+//        setupCollectionvis
         
         backgroundColor = .clear
     }
