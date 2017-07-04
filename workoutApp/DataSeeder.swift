@@ -113,7 +113,9 @@ final class DataSeeder {
             // FIXME: - Simulate this exercise having been used
             
             let logItem = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
-            logItem.date = Date() as NSDate
+            if let randomDate = randomDate(daysBack: 10) {
+                logItem.datePerformed = randomDate as NSDate
+            }
             logItem.design = exerciseRecord
             
             // add lifts this workout
@@ -122,6 +124,7 @@ final class DataSeeder {
                 let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
                 lift.reps = randomRepNumber()
                 lift.owner = logItem
+                lift.datePerformed = Date() as NSDate
             }
         }
     }
@@ -131,6 +134,23 @@ final class DataSeeder {
     private func randomRepNumber() -> Int16 {
         let result = Int16(arc4random_uniform(UInt32(99)))
         return result
+    }
+    
+    func randomDate(daysBack: Int)-> Date? {
+        sleep(400)
+        let day = arc4random_uniform(UInt32(daysBack))+1
+        let hour = arc4random_uniform(UInt32(23))
+        let minute = arc4random_uniform(UInt32(59))
+        
+        let today = Date(timeIntervalSinceNow: 0)
+        let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
+        var offsetComponents = DateComponents()
+        offsetComponents.day = Int(day - 1)
+        offsetComponents.hour = Int(hour)
+        offsetComponents.minute = Int(minute)
+        
+        let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
+        return randomDate
     }
     
     // MARK: - Print methods
