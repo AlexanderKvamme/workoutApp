@@ -16,7 +16,7 @@ class Keyboard: UIView {
     
     weak var delegate: KeyboardDelegate?
 
-    @IBOutlet weak var bottomLeftButton: UIButton!
+    @IBOutlet weak var bottomLeftButton: UIButton! // Will change according to setting between : and .
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,11 +39,7 @@ class Keyboard: UIView {
     }
     
     func setKeyboardType(style: CustomInputStyle) {
-        
         switch style {
-        case .text:
-            print("implement text keyboard for entering custom names")
-            bottomLeftButton.setTitle(".", for: .normal)
         case .time:
             bottomLeftButton.setTitle(":", for: .normal)
         default:

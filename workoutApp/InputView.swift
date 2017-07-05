@@ -36,6 +36,8 @@ class InputView: UIView {
             header.preferredMaxLayoutWidth = Constant.UI.width * 0.65
             header.textAlignment = .center
             textField.placeholder = "32.5"
+        default:
+            return
         }
         
         // TextField
@@ -82,15 +84,15 @@ class InputView: UIView {
         diagonalLineView.center = textField.center
         
         // Draw diagonalLine and send to the back
-        let v = drawLine(throughView: diagonalLineView)
-        v.translatesAutoresizingMaskIntoConstraints = false
+        let diagonalView = drawLine(throughView: diagonalLineView)
+        diagonalView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            v.heightAnchor.constraint(equalToConstant: v.frame.height),
-            v.widthAnchor.constraint(equalToConstant: v.frame.width),
-            v.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
-            v.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
+            diagonalView.heightAnchor.constraint(equalToConstant: diagonalView.frame.height),
+            diagonalView.widthAnchor.constraint(equalToConstant: diagonalView.frame.width),
+            diagonalView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
+            diagonalView.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
                     ])
-        sendSubview(toBack: v)
+        sendSubview(toBack: diagonalView)
         
         // default to showing keyboard
         textField.becomeFirstResponder()

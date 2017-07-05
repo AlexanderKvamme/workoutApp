@@ -7,38 +7,44 @@
 //
 
 import UIKit
-/*
- Hver celle skal displaye en "Lift" fra databasen..
+
+/* Hver celle skal displaye en "Lift" fra databasen..
  
  Lift:
  - reps
  - weight
  
- Cellen skal vise bare reps, eller "reps og weight"
- */
-class ExerciseSetCollectionViewCell: UICollectionViewCell {
+ Cellen skal vise bare reps, eller "reps og weight" */
+
+class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     
     var button: UIButton! // Button that covers entire cell, to handle taps
-    var repsLabel: UILabel!
+    var repsField: UITextField!
     var weightLabel: UILabel?
+    var keyboard: Keyboard!
     
-//    let lift = Lift()
-//    lift.set
+    var initialRepValue: String!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        repsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        repsLabel.text = "99"
-        repsLabel.textAlignment = .center
-        repsLabel.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsLabel.textColor = UIColor.light
-        repsLabel.alpha = Constant.alpha.faded
-        addSubview(repsLabel)
+        repsField = UITextField(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        repsField.text = "99"
+        repsField.textAlignment = .center
+        repsField.font = UIFont.custom(style: .medium, ofSize: .big)
+        repsField.textColor = UIColor.light
+        repsField.alpha = Constant.alpha.faded
+        repsField.clearsOnBeginEditing = true
+        repsField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        addSubview(repsField)
         
-        button = UIButton(frame: repsLabel.frame)
-        button.addTarget(self, action: #selector(tapHandler), for: .touchUpInside)
+        button = UIButton(frame: repsField.frame)
+        button.addTarget(self, action: #selector(tapHandler(sender:)), for: .touchUpInside)
         addSubview(button)
+        
+        // Observers
+//        NotificationCenter.default.addObserver(self, #selector(keyboardWillShow), name: "kbws", object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name(rawValue: "test"), object: nil)
         
         //setDebugColors()
     }
@@ -47,25 +53,85 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func tapHandler() {
-        print("tapped button: \(repsLabel.text)")
+    deinit {
+        print("deinit")
+//        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+    }
+    
+    // MARK: - Keyboard delegate method
+    
+    func buttonDidTap(keyName: String) {
+        switch keyName{
+        case "OK":
+            repsField.resignFirstResponder()
+            textFieldDidEndEditing(repsField)
+        case "B": // Back button
+            repsField.deleteBackward()
+            return
+        default:
+            repsField.insertText(keyName.uppercased())
+        }
+    }
+    
+    // MARK: - Textfield delegate methods
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let newValue = textField.text {
+            if newValue == "" {
+                textField.text = initialRepValue
+                makeTextNormal()
+            }
+        }
+    }
+    
+    func textFieldDidChange(_ tf: UITextField) {
+        print("DidChange")
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("initially it was: ", textField.text)
+        makeTextBold()
+    }
+    
+    func tapHandler(sender: Any) {
+        // Custom keyboard for inputting time and weight
+        let screenWidth = Constant.UI.width
+        let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
+        keyboard.setKeyboardType(style: .reps)
+        repsField.inputView = keyboard
+        keyboard.delegate = self
+        
+        // FIXME: - Present keyboard
+        repsField.inputView = keyboard
+        repsField.delegate = self
+        repsField.becomeFirstResponder()
+
+        layoutIfNeeded()
     }
     
     public func setReps(_ n: Int16) {
-        repsLabel.text = String(n)
+        repsField.text = String(n)
+        self.initialRepValue = String(n)
     }
     
-    @objc private func markPerformed() {
-        repsLabel.font = UIFont.custom(style: .bold, ofSize: .big)
-        repsLabel.textColor = .light
+    private func makeTextNormal() {
+        repsField.font = UIFont.custom(style: .medium, ofSize: .big)
+        repsField.textColor = .light
+        repsField.alpha = Constant.alpha.faded
+    }
+    
+    private func makeTextBold() {
+        repsField.font = UIFont.custom(style: .bold, ofSize: .big)
+        repsField.textColor = .light
+        repsField.alpha = 1
     }
     
     // FIXME: - Finish implementing the weight laabel to allow weighted exercises
     
     func setWeight(_ n: Int16) {
-        weightLabel = UILabel(frame: CGRect(x: repsLabel.frame.minX,
-                                            y: repsLabel.frame.maxY,
-                                            width: repsLabel.frame.width,
+        weightLabel = UILabel(frame: CGRect(x: repsField.frame.minX,
+                                            y: repsField.frame.maxY,
+                                            width: repsField.frame.width,
                                             height: 20))
         
         if let weightLabel = weightLabel {
@@ -82,8 +148,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = .orange
         button.alpha = 0.5
 
-        repsLabel.backgroundColor = .purple
-        repsLabel.alpha = 0.5
+        repsField.backgroundColor = .purple
+        repsField.alpha = 0.5
         
         if let weightLabel = weightLabel {
             weightLabel.backgroundColor = .yellow

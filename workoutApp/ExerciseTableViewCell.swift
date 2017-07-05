@@ -37,14 +37,11 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
         let exerciseLogs = exercise.loggedInstances as! Set<ExerciseLog>
         
         for log in exerciseLogs {
-            print("new exerciseLog:", log.datePerformed)
             for lift in log.lifts as! Set<Lift> {
                 
                 let sortDescriptor: [NSSortDescriptor] = [NSSortDescriptor(key: "datePerformed", ascending: false)]
                 let sortedLifts = log.lifts?.sortedArray(using: sortDescriptor) as! [Lift]
                 liftsToDisplay = sortedLifts
-                
-                print("new rep logged: \(lift.reps)")
             }
         }
     }

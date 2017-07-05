@@ -14,6 +14,7 @@ enum CustomInputStyle {
     case weight
     case time
     case text
+    case reps
 }
 
 // MARK: - InputViewController
@@ -53,7 +54,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
         
-        print("found height to be \(keyboardHeight)")
         let size = CGSize(width: screenWidth, height: screenHeight - keyboardHeight)
         if let topInputView = customTextfieldContainer {
             topInputView.frame.size = size
@@ -64,7 +64,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("vdl")
         
         view.backgroundColor = .light
         
@@ -81,19 +80,17 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
             // Custom keyboard for inputting time and weight
             let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
             kb.setKeyboardType(style: self.inputStyle)
+            kb.delegate = self
             
             customTextfieldContainer = InputView(inputStyle: inputStyle)
             customTextfieldContainer.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
-            
             view.addSubview(customTextfieldContainer)
             tf = customTextfieldContainer.textField
             tf.inputView = kb
-            
-            kb.delegate = self
         }
     }
     
-    // Keyboard delegate method
+    // MARK: - Keyboard delegate method
 
     func buttonDidTap(keyName: String) {
         switch keyName{

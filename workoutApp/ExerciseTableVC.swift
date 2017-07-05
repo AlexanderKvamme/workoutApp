@@ -70,7 +70,6 @@ class ExerciseTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("tapped \(indexPath)")
-        print("- \(dataSource.currentExercises[indexPath.section].name)")
     }
     
     // Helper
