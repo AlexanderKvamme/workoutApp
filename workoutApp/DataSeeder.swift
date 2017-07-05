@@ -120,7 +120,7 @@ final class DataSeeder {
             
             // add lifts this workout
             
-            for _ in 0...4 {
+            for _ in 0...Int16(arc4random_uniform(UInt32(9))) {
                 let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
                 lift.reps = randomRepNumber()
                 lift.owner = logItem
@@ -137,7 +137,6 @@ final class DataSeeder {
     }
     
     func randomDate(daysBack: Int)-> Date? {
-        sleep(400)
         let day = arc4random_uniform(UInt32(daysBack))+1
         let hour = arc4random_uniform(UInt32(23))
         let minute = arc4random_uniform(UInt32(59))

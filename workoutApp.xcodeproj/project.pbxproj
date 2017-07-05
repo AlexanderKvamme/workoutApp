@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
-		DD04F7BB1F0A876C008DC940 /* ExerciseSetCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD04F7BA1F0A876C008DC940 /* ExerciseSetCollectionView.swift */; };
 		DD0CD4C61F01023C008544EE /* WorkoutPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* WorkoutPickerViewController.swift */; };
 		DD0CD4C81F012A33008544EE /* WorkoutPickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C71F012A33008544EE /* WorkoutPickerProtocols.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
@@ -76,7 +75,6 @@
 
 /* Begin PBXFileReference section */
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
-		DD04F7BA1F0A876C008DC940 /* ExerciseSetCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSetCollectionView.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* WorkoutPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutPickerViewController.swift; sourceTree = "<group>"; };
 		DD0CD4C71F012A33008544EE /* WorkoutPickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutPickerProtocols.swift; sourceTree = "<group>"; };
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
@@ -400,7 +398,6 @@
 			isa = PBXGroup;
 			children = (
 				DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */,
-				DD04F7BA1F0A876C008DC940 /* ExerciseSetCollectionView.swift */,
 			);
 			name = "CollectionView of sets";
 			sourceTree = "<group>";
@@ -497,7 +494,6 @@
 				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,
 				DDA54AFB1EDA0A05008C601C /* Lift+CoreDataProperties.swift in Sources */,
 				DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */,
-				DD04F7BB1F0A876C008DC940 /* ExerciseSetCollectionView.swift in Sources */,
 				DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */,
 				DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */,
 				DDA54AF81EDA0A05008C601C /* ExerciseLog+CoreDataClass.swift in Sources */,
