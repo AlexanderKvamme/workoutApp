@@ -23,6 +23,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     var weightLabel: UILabel?
     var keyboard: Keyboard!
     
+//    weak var ownedByTableViewCell: ExerciseTableViewCell!
+    
     var initialRepValue: String!
     
     override init(frame: CGRect) {
@@ -35,16 +37,11 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.textColor = UIColor.light
         repsField.alpha = Constant.alpha.faded
         repsField.clearsOnBeginEditing = true
-        repsField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         addSubview(repsField)
         
         button = UIButton(frame: repsField.frame)
         button.addTarget(self, action: #selector(tapHandler(sender:)), for: .touchUpInside)
         addSubview(button)
-        
-        // Observers
-//        NotificationCenter.default.addObserver(self, #selector(keyboardWillShow), name: "kbws", object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name(rawValue: "test"), object: nil)
         
         //setDebugColors()
     }
@@ -54,8 +51,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     deinit {
-        print("deinit")
-//        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        print("cell deinit")
     }
     
     // MARK: - Keyboard delegate method
@@ -84,16 +80,15 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         }
     }
     
-    func textFieldDidChange(_ tf: UITextField) {
-        print("DidChange")
-    }
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("initially it was: ", textField.text)
         makeTextBold()
     }
     
     func tapHandler(sender: Any) {
+        // FIXME: - acces containing tableViewCell, and use this to target next cell when they keyboard receives "->"
+        print("cellDidTap")
+        
         // Custom keyboard for inputting time and weight
         let screenWidth = Constant.UI.width
         let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
@@ -101,7 +96,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.inputView = keyboard
         keyboard.delegate = self
         
-        // FIXME: - Present keyboard
+        // Present keyboard
         repsField.inputView = keyboard
         repsField.delegate = self
         repsField.becomeFirstResponder()
@@ -113,6 +108,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.text = String(n)
         self.initialRepValue = String(n)
     }
+
+    // Text Design
     
     private func makeTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
@@ -126,7 +123,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.alpha = 1
     }
     
-    // FIXME: - Finish implementing the weight laabel to allow weighted exercises
+    // FIXME: - Finish implementing the weight label to allow weighted exercises
     
     func setWeight(_ n: Int16) {
         weightLabel = UILabel(frame: CGRect(x: repsField.frame.minX,
@@ -135,7 +132,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                                             height: 20))
         
         if let weightLabel = weightLabel {
-            
             weightLabel.text = String(n)
             weightLabel.textAlignment = .center
             weightLabel.font = UIFont.custom(style: .medium, ofSize: .small)

@@ -8,20 +8,27 @@
 
 import UIKit
 
+/*
+ ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
+ */
+
 class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private let collectionViewReuseIdentifier = "collectionViewCell"
     var liftsToDisplay: [Lift]!
     var collectionView: UICollectionView!
     var plusButton: UIButton!
-    
     var box: Box!
+    var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         setupBox()
         setupConstraints()
+        selectionStyle = .none
+        
+        // Log item to store each Lift in the current Exercise. This exercise is potentially sent to Core Data if user decides to store workout
+        currentCellExerciseLog = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
     }
     
     convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
@@ -49,7 +56,15 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    // MARK: - Observers
     
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(doSomething), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
+    }
+    
+    @objc private func doSomething() {
+        print("observed")
+    }
     // MARK: - Helpers
     
     private func setupPlusButton() {
@@ -57,7 +72,7 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
         plusButton = UIButton(frame: CGRect(x: 0, y: 0, width: shimmerHeight, height: shimmerHeight))
         plusButton.setTitle("+", for: .normal)
         plusButton.setTitleColor(.light, for: .normal)
-        plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .big)
+        plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
         plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)
         
         plusButton.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +90,8 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
     }
     
     func plusButtonHandler() {
-        print("*ADD NEW SET*")
+        print("*insertNewCell*")
+        insertNewCell()
     }
     
     func setDebugColors() {
@@ -97,6 +113,41 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
         let repFromLift = liftsToDisplay[indexPath.row].reps
         cell.setReps(repFromLift)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("did select some item")
+    }
+    
+    // FIXME: - Make the + button add a new Lift
+    
+    func insertNewCell() {
+        let itemCount = collectionView.numberOfItems(inSection: 0)
+        
+        // make new dummy value to be displayed
+        let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
+        newLift.datePerformed = Date() as NSDate
+        newLift.reps = -1
+        newLift.weight = 0
+        newLift.owner = self.currentCellExerciseLog
+        
+        // FIXME: - remember to add entire ExerciseLog to the Workoutlog when user saves
+        
+        // add to dataSource and tableView
+        let newIndexPath = IndexPath(item: itemCount, section: 0)
+        liftsToDisplay.append(newLift)
+        collectionView.insertItems(at: [newIndexPath]) // needs to have a matching Lift in the dataSource array
+        
+        // Make it selected and show keyboard
+//        collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        UIView.animate(withDuration: 0.5,
+                       animations: { 
+                        self.collectionView.scrollToItem(at: newIndexPath, at: .right, animated: false)
+        }) { _ in
+            let c = self.collectionView.cellForItem(at: newIndexPath) as! ExerciseSetCollectionViewCell
+            self.collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+            c.tapHandler(sender: self)
+        }
     }
     
     @available(iOS 6.0, *)
@@ -125,22 +176,10 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
         
         collectionView.frame.size = CGSize(width: collectionView.frame.width - plusButton.frame.width,
                                            height: collectionView.frame.height)
-        // Layout
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            collectionView.rightAnchor.constraint(equalTo: plusButton.leftAnchor),
-//              collectionView.rightAnchor.constraint(equalTo: box.boxFrame.rightAnchor),
-//            collectionView.leftAnchor.constraint(equalTo: box.boxFrame.leftAnchor),
-//            collectionView.topAnchor.constraint(equalTo: box.boxFrame.topAnchor),
-//            collectionView.bottomAnchor.constraint(equalTo: box.boxFrame.bottomAnchor),
-//            collectionView.heightAnchor.constraint(equalTo: box.boxFrame.heightAnchor),
-//            collectionView.centerYAnchor.constraint(equalTo: box.boxFrame.centerYAnchor),
-//            ])
     }
     
     private func setupCell() {
-        backgroundColor = .clear
+        backgroundColor = .light
     }
     
     private func setupBox() {

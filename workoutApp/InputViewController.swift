@@ -14,7 +14,7 @@ enum CustomInputStyle {
     case weight
     case time
     case text
-    case reps
+    case reps // Used in exercise
 }
 
 // MARK: - InputViewController

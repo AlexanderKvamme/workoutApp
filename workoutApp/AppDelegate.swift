@@ -63,11 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func customizeUIAppearance() {
         
         // TextField Customization
-        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .purple
+        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
         
         // Navigaiton bar customization
         UINavigationBar.appearance().barTintColor = UIColor.light
-        let backArrowImage = UIImage(named: "arrow-back-blue")
+        let backArrowImage = UIImage(named: "arrow-back")
         let renderedImage = backArrowImage?.withRenderingMode(.alwaysOriginal)
         UINavigationBar.appearance().backIndicatorImage = renderedImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage

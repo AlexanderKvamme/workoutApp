@@ -15,7 +15,7 @@ class ExerciseTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.hideKeyboardWhenTappedAround()
         // Visuals
         tableView.backgroundColor = .light
         setupNavigationBar()
@@ -28,9 +28,19 @@ class ExerciseTableViewController: UITableViewController {
         
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
+        //tableView.allowsSelection = false
         tableView.reloadData()
         
-        //        setDebugColors()
+        // Table footer
+        let footerFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let footer = ExerciseTableFooter(frame: footerFrame)
+        footer.saveButton.addTarget(self, action: #selector(saveButtonHandler), for: .touchUpInside)
+        
+        footer.backgroundColor = .dark
+        view.backgroundColor = .dark
+        tableView.tableFooterView = footer
+        
+        // setDebugColors()
     }
     
     // MARK: - Initializers
@@ -65,17 +75,22 @@ class ExerciseTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let verticalSpacingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        verticalSpacingView.backgroundColor = .light
         return verticalSpacingView
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("tapped \(indexPath)")
+        print("tableView didSelect at: \(indexPath)")
     }
     
-    // Helper
+    // MARK: - Helpers
     
     func setDebugColors() {
         view.backgroundColor = .green
+    }
+    
+    func saveButtonHandler() {
+        print("*save*")
     }
 }
 

@@ -13,6 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Keyboard" customModule="workoutApp" customModuleProvider="target">
             <connections>
                 <outlet property="bottomLeftButton" destination="PiV-Zf-xlw" id="YiU-5e-KQL"/>
+                <outlet property="middleRightButton" destination="Jm3-9o-nkL" id="Vpl-yn-M1K"/>
+                <outlet property="topRightButton" destination="Ioe-Zd-9z4" id="CMr-2b-nJU"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
