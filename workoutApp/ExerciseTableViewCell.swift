@@ -12,8 +12,12 @@ import UIKit
  ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
  */
 
-class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
-    
+protocol hasNextCell: class {
+    func getNextCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell
+}
+
+class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDelegate, UICollectionViewDataSource {
+
     private let collectionViewReuseIdentifier = "collectionViewCell"
     var liftsToDisplay: [Lift]!
     var collectionView: UICollectionView!
@@ -65,6 +69,24 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
     @objc private func doSomething() {
         print("observed")
     }
+    
+    // MARK: - HasNextCell protocol requirement
+    
+    // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the next cell, or make a new one if it doesnt exist, to allow for fast input of sets for the user
+    func getNextCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell {
+        var ip = indexPath
+        ip.row += 1
+        
+        let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
+        if let nextCell = nextCollectionViewCell {
+            return nextCell
+        } else {
+            print("there was no next cell, so make it")
+            insertNewCell()
+        }
+        return ExerciseSetCollectionViewCell()
+    }
+    
     // MARK: - Helpers
     
     private func setupPlusButton() {
@@ -110,6 +132,8 @@ class ExerciseTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseSetCollectionViewCell
+        cell.owner = self
+        
         let repFromLift = liftsToDisplay[indexPath.row].reps
         cell.setReps(repFromLift)
         return cell

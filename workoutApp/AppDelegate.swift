@@ -64,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // TextField Customization
         UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
+        UITextField.appearance(whenContainedInInstancesOf: [ExerciseSetCollectionViewCell.self]).tintColor = .darkest
         
         // Navigaiton bar customization
         UINavigationBar.appearance().barTintColor = UIColor.light

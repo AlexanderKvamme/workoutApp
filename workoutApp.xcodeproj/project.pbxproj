@@ -20,7 +20,6 @@
 		DD1EA1621EEC1CBC00EBB7B7 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */; };
 		DD1EA1641EEC1CC900EBB7B7 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */; };
 		DD2A9E741F0EED600074B46F /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A9E731F0EED600074B46F /* Footer.swift */; };
-		DD2A9E761F110D410074B46F /* temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A9E751F110D410074B46F /* temp.swift */; };
 		DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44A1EE45A9300C55453 /* PickerCell.swift */; };
 		DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */; };
 		DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD491B7B1ED7464E008A4619 /* DataSeeder.swift */; };
@@ -90,7 +89,6 @@
 		DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		DD2A9E731F0EED600074B46F /* Footer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
-		DD2A9E751F110D410074B46F /* temp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = temp.swift; sourceTree = "<group>"; };
 		DD3AF44A1EE45A9300C55453 /* PickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerCell.swift; sourceTree = "<group>"; };
 		DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
@@ -414,7 +412,6 @@
 			isa = PBXGroup;
 			children = (
 				DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */,
-				DD2A9E751F110D410074B46F /* temp.swift */,
 			);
 			name = "CollectionView of sets";
 			sourceTree = "<group>";
@@ -526,7 +523,6 @@
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
 				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,
-				DD2A9E761F110D410074B46F /* temp.swift in Sources */,
 				DDF1F1EC1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,

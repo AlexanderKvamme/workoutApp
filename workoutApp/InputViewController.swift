@@ -58,7 +58,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         if let topInputView = customTextfieldContainer {
             topInputView.frame.size = size
         } else {
-            print("in kbwillShow had no topinputView to unwrap")
+            print("in keyboardWillShow - had no topinputView to unwrap")
         }
     }
     

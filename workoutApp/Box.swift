@@ -156,8 +156,6 @@ public class Box: UIView {
             
         }
         setNeedsLayout()
-        // FIXME: - Det er labelen som får feil størrelse
-        print("header width after setTitle", header.label.frame)
     }
     
     public func setContentLabel(_ string: String) {

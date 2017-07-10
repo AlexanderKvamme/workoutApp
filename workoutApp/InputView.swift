@@ -49,8 +49,6 @@ class InputView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.widthAnchor.constraint(equalToConstant: Constant.UI.width).isActive = true
         textField.autocapitalizationType = .allCharacters
-        
-        // FIXME: - Tryna avoid multi label, by reducing size while typing
         textField.adjustsFontSizeToFitWidth = true
         
         addSubview(textField)
@@ -61,7 +59,7 @@ class InputView: UIView {
         header.applyCustomAttributes(.medium)
         header.sizeToFit()
         
-//         Stack
+        // Stack: Contains header and textField
         stack = StackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.setContentCompressionResistancePriority(0, for: .horizontal)
@@ -111,7 +109,6 @@ class InputView: UIView {
     }
     
     private func setupStack() {
-        
         NSLayoutConstraint.activate([
             stack.centerXAnchor.constraint(equalTo: centerXAnchor),
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -134,7 +131,6 @@ class InputView: UIView {
         
         v.layer.addSublayer(shapeLayer)
         addSubview(v)
-        
         return v
     }
 }

@@ -110,7 +110,6 @@ class TwoLabelStack: UIView {
             button.leftAnchor.constraint(equalTo: leftAnchor),
             button.rightAnchor.constraint(equalTo: rightAnchor),
             ])
-        
         setNeedsLayout()
     }
     
@@ -121,3 +120,4 @@ class TwoLabelStack: UIView {
         backgroundColor = .red
     }
 }
+

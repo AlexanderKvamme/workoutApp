@@ -122,7 +122,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         
         restSelectionBox.button.addTarget(self, action: #selector(restButtonDidTap), for: .touchUpInside)
         
-        
 //        restSelectionBox.setDebugColors()
         
         // Workout selection box

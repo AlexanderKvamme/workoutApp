@@ -63,12 +63,6 @@ class Keyboard: UIView {
             }
             middleRightButton.addTarget(self, action: #selector(postNextKeyDidPressNotification), for: .touchUpInside)
             
-//            et xmark = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysTemplate)
-//            cancelButton.setImage(xmark, for: .normal)
-//            cancelButton.tintColor = color
-            
-            
-            print("would set up Keyboard class for REPS")
         default:
             bottomLeftButton.setTitle(".", for: .normal)
         }

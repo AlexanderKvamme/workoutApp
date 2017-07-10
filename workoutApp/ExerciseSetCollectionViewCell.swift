@@ -22,10 +22,9 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     var repsField: UITextField!
     var weightLabel: UILabel?
     var keyboard: Keyboard!
-    
-//    weak var ownedByTableViewCell: ExerciseTableViewCell!
-    
     var initialRepValue: String!
+    
+    weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -78,11 +77,20 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                 makeTextNormal()
             }
         }
+        NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("initially it was: ", textField.text)
         makeTextBold()
+        NotificationCenter.default.addObserver(self, selector: #selector(jumpToNextCell), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
+    }
+    
+    func jumpToNextCell() {
+        // Returns the indexpath of the current collectionviewCell, IN the
+        if let currentIndexPath = owner.collectionView.indexPath(for: self){
+            let refToNextCell = owner.getNextCell(fromIndexPath: currentIndexPath)
+            refToNextCell.tapHandler(sender: self)
+        }
     }
     
     func tapHandler(sender: Any) {
