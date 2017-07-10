@@ -194,13 +194,13 @@
 			name = NavigationController;
 			sourceTree = "<group>";
 		};
-		DD1EA1121EE9434800EBB7B7 /* Selection and keyboard */ = {
+		DD1EA1121EE9434800EBB7B7 /* InputViewController */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1131EE9435A00EBB7B7 /* InputView.swift */,
 				DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */,
 			);
-			name = "Selection and keyboard";
+			name = InputViewController;
 			sourceTree = "<group>";
 		};
 		DD3AF4491EE45A7500C55453 /* Tableview and picker */ = {
@@ -312,7 +312,7 @@
 		DD7600461EDF23E900871DD8 /* New Workout */ = {
 			isa = PBXGroup;
 			children = (
-				DD1EA1121EE9434800EBB7B7 /* Selection and keyboard */,
+				DD1EA1121EE9434800EBB7B7 /* InputViewController */,
 				DD0CD4C41F010122008544EE /* workoutPicker */,
 				DD3AF4491EE45A7500C55453 /* Tableview and picker */,
 				DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */,

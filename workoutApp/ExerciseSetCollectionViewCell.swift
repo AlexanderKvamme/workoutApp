@@ -29,18 +29,12 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        repsField = UITextField(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        repsField.text = "99"
-        repsField.textAlignment = .center
-        repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = UIColor.light
-        repsField.alpha = Constant.alpha.faded
-        repsField.clearsOnBeginEditing = true
-        addSubview(repsField)
+        setupRepsField()
+        setupButtonCoveringCell()
         
-        button = UIButton(frame: repsField.frame)
-        button.addTarget(self, action: #selector(tapHandler(sender:)), for: .touchUpInside)
-        addSubview(button)
+        // Add long press gesture recognizer to edit cell
+        let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
+        button.addGestureRecognizer(longpressRecognizer)
         
         //setDebugColors()
     }
@@ -51,6 +45,47 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     deinit {
         print("cell deinit")
+    }
+    
+    // MARK: - Handlers
+    
+    // Remove cell when user uses long press on it
+    @objc private func longPressOnCellHandler(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began{
+            let indexPathToRemove = self.owner.collectionView.indexPath(for: self)
+            if let indexPathToRemove = indexPathToRemove {
+                owner.liftsToDisplay.remove(at: indexPathToRemove.row)
+                owner.collectionView.deleteItems(at: [indexPathToRemove])
+//                printCollectionViewsReps()
+            }
+        }
+    }
+    
+    // MARK: - Helper
+    
+    private func printCollectionViewsReps() {
+        print("REPS COLLECTION CONTAIN: ")
+        for repValue in owner.liftsToDisplay {
+            print(repValue.reps)
+        }
+        print()
+    }
+    
+    private func setupButtonCoveringCell() {
+        button = UIButton(frame: repsField.frame)
+        button.addTarget(self, action: #selector(tapHandler(sender:)), for: .touchUpInside)
+        addSubview(button)
+    }
+    
+    private func setupRepsField() {
+        repsField = UITextField(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        repsField.text = "99"
+        repsField.textAlignment = .center
+        repsField.font = UIFont.custom(style: .medium, ofSize: .big)
+        repsField.textColor = UIColor.light
+        repsField.alpha = Constant.alpha.faded
+        repsField.clearsOnBeginEditing = true
+        addSubview(repsField)
     }
     
     // MARK: - Keyboard delegate method
@@ -70,13 +105,30 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     // MARK: - Textfield delegate methods
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let newValue = textField.text {
-            if newValue == "" {
-                textField.text = initialRepValue
-                makeTextNormal()
-            }
+        // if no change, revert to initial value
+        guard let newText = textField.text, let newValueAsInt16 = Int16(newText) else {
+            textField.text = initialRepValue
+            makeTextNormal()
+            return
         }
+        
+//        guard let newValue = textField.text, let newValueAsInt16 = Int16(newValue) else { return }
+        
+        // Update data source with new value
+        if let indexPath = owner.collectionView.indexPath(for: self) {
+            let dataSourceIndexToUpdate = indexPath.row
+            owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
+        }
+        
+        printCollectionViewsReps()
+        
         NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
     }
     
