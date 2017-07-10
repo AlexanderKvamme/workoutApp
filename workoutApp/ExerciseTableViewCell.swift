@@ -151,7 +151,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         // make new dummy value to be displayed
         let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
         newLift.datePerformed = Date() as NSDate
-        newLift.reps = -1
+        newLift.reps = 0
         newLift.weight = 0
         newLift.owner = self.currentCellExerciseLog
         
@@ -163,7 +163,6 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         collectionView.insertItems(at: [newIndexPath]) // needs to have a matching Lift in the dataSource array
         
         // Make it selected and show keyboard
-//        collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
         UIView.animate(withDuration: 0.5,
                        animations: { 
                         self.collectionView.scrollToItem(at: newIndexPath, at: .right, animated: false)

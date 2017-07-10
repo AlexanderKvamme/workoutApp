@@ -199,8 +199,6 @@
 			children = (
 				DD1EA1131EE9435A00EBB7B7 /* InputView.swift */,
 				DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */,
-				DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */,
-				DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */,
 			);
 			name = "Selection and keyboard";
 			sourceTree = "<group>";
@@ -229,7 +227,6 @@
 				DDA54AF61EDA0A05008C601C /* WorkoutLog+CoreDataClass.swift */,
 				DDA54AF71EDA0A05008C601C /* WorkoutLog+CoreDataProperties.swift */,
 				DDA7276C1ED5BA3500068AD4 /* Core Data */,
-				DDA7277B1ED60CFA00068AD4 /* Models */,
 				DD585D451EC4D53900962B19 /* workoutApp */,
 				DD585D441EC4D53900962B19 /* Products */,
 			);
@@ -251,6 +248,7 @@
 				DD7600461EDF23E900871DD8 /* New Workout */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DDDE6E521ED4DF4900A03886 /* Workout Table View */,
+				DD98A5021F13AAAE002985BF /* Keyboard */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
@@ -341,6 +339,15 @@
 			name = Notifications;
 			sourceTree = "<group>";
 		};
+		DD98A5021F13AAAE002985BF /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */,
+				DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */,
+			);
+			name = Keyboard;
+			sourceTree = "<group>";
+		};
 		DDA7276C1ED5BA3500068AD4 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -351,13 +358,6 @@
 			);
 			name = "Core Data";
 			path = workoutApp;
-			sourceTree = "<group>";
-		};
-		DDA7277B1ED60CFA00068AD4 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Models;
 			sourceTree = "<group>";
 		};
 		DDD290A61EDCCD1500048BC9 /* TestViewController */ = {

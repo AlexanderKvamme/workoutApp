@@ -76,7 +76,6 @@ class Keyboard: UIView {
     }
 }
 
-
 // MARK: - Extension to enable dismissal of keyboard when tapping outside
 
 extension UIViewController {
