@@ -6,6 +6,7 @@
         <attribute name="plannedSets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="loggedInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="design" inverseEntity="ExerciseLog" syncable="YES"/>
+        <relationship name="musclesUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInExercises" inverseEntity="Muscle" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercises" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <entity name="ExerciseLog" representedClassName="ExerciseLog" syncable="YES">
@@ -19,6 +20,10 @@
         <attribute name="reps" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="lifts" inverseEntity="ExerciseLog" syncable="YES"/>
+    </entity>
+    <entity name="Muscle" representedClassName="Muscle" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES">
         <attribute name="muscle" optional="YES" attributeType="String" syncable="YES"/>
@@ -34,10 +39,11 @@
         <relationship name="loggedExercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExerciseLog" inverseName="usedIn" inverseEntity="ExerciseLog" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Exercise" positionX="-396" positionY="3591" width="128" height="133"/>
+        <element name="Exercise" positionX="-396" positionY="3591" width="128" height="150"/>
         <element name="ExerciseLog" positionX="-461" positionY="3900" width="128" height="105"/>
         <element name="Lift" positionX="-191" positionY="3765" width="128" height="105"/>
-        <element name="Workout" positionX="-639" positionY="3573" width="128" height="118"/>
+        <element name="Workout" positionX="-639" positionY="3573" width="128" height="120"/>
         <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="103"/>
+        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="75"/>
     </elements>
 </model>

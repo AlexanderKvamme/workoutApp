@@ -1,5 +1,5 @@
 //
-//  Lift+CoreDataClass.swift
+//  Muscle+CoreDataClass.swift
 //  workoutApp
 //
 //  Created by Alexander Kvamme on 12/07/2017.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(Lift)
-public class Lift: NSManagedObject {
+@objc(Muscle)
+public class Muscle: NSManagedObject {
 
 }
