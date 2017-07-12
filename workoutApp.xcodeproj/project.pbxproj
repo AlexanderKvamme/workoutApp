@@ -261,11 +261,12 @@
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,
-				DD585D501EC4D53900962B19 /* Assets.xcassets */,
 				DD9838711F12716900B876C7 /* Notifications */,
+				DD585D501EC4D53900962B19 /* Assets.xcassets */,
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
 				DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */,
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
+				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
 			);
@@ -276,7 +277,6 @@
 			isa = PBXGroup;
 			children = (
 				DD585D5C1EC4D7CC00962B19 /* Colors.swift */,
-				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
 				DD585D5E1EC4DC3400962B19 /* Fonts.swift */,
 				DD59B0931EE1C1FA006443D4 /* Typography.swift */,
 				DDC660B01EE6BE9900122543 /* DrawingMethods.swift */,

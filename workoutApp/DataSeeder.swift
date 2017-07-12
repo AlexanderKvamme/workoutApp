@@ -16,6 +16,7 @@ import CoreData
 final class DataSeeder {
     
     typealias DummyWorkout = (name: String, muscle: String, type: String)
+    typealias DummyMuscle = (String)
     typealias DummyExercise = (name: String, muscle: String, plannedSets: Int16, type: String)
     
     private let context: NSManagedObjectContext
@@ -28,6 +29,8 @@ final class DataSeeder {
     
     public func seedCoreData() {
         seedWithExampleWorkoutsAndExercies()
+        seedWithExampleMuscleGroups()
+        DatabaseController.saveContext()
     }
     
     // MARK: - Seeding
@@ -84,9 +87,20 @@ final class DataSeeder {
         makeWorkout(backWorkoutDropSet, withExercises: exercisesForBackDropSet)
         makeWorkout(bicepsTricepsWorkoutDropSet, withExercises: exercisesForBicepsAndTricepsDropSet)
         makeWorkout(backWorkoutNormal, withExercises: exercisesForBackNormal)
-
+        
         printWorkouts()
-        DatabaseController.saveContext()
+    }
+    
+    // Seed example muscles
+    
+    private func seedWithExampleMuscleGroups() {
+        
+        let dummyMuscles: [DummyMuscle] = ["Biceps", "Triceps", "Back", "Legs", "Glutes", "None"]
+        
+        for m in dummyMuscles {
+            makeMuscle(withName: m)
+        }
+        printMuscles()
     }
     
     // MARK: - Helper Methods
@@ -110,7 +124,7 @@ final class DataSeeder {
             exerciseRecord.type = exercise.type
             exerciseRecord.addToUsedInWorkouts(workoutRecord)
             
-            // FIXME: - Simulate this exercise having been used
+            // Simulate this exercise having been used
             
             let logItem = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
             if let randomDate = randomDate(daysBack: 10) {
@@ -127,6 +141,13 @@ final class DataSeeder {
                 lift.datePerformed = Date() as NSDate
             }
         }
+    }
+    
+    // MARK: - Make muscle
+    
+    private func makeMuscle(withName name: String) {
+        let muscleRecord = DatabaseController.createManagedObjectForEntity(.Muscle) as! Muscle
+        muscleRecord.name = name
     }
     
     // MARK: - Exercise methods
@@ -177,6 +198,23 @@ final class DataSeeder {
             }
         } catch {
                 print("error in printing workouts")
+        }
+    }
+    
+    private func printMuscles() {
+        do {
+            let request = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
+            let allMuscles = try context.fetch(request)
+            
+            print("Muscle count: ", allMuscles.count)
+            print()
+            
+            for muscle in allMuscles {
+                print("Name: ", muscle.name ?? "")
+            }
+            print("----------------------")
+        } catch {
+            print("error in printing Muscles")
         }
     }
     

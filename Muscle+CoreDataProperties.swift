@@ -16,7 +16,7 @@ extension Muscle {
         return NSFetchRequest<Muscle>(entityName: "Muscle")
     }
 
-    @NSManaged public var name: NSObject?
+    @NSManaged public var name: String?
     @NSManaged public var usedInExercises: Exercise?
 
 }

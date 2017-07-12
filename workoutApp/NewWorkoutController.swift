@@ -183,9 +183,25 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         navigationController?.pushViewController(typePicker, animated: false)
     }
     
+    // FIXME: - Hent muscles fra core data som er preseedet og bruk disse i stedet for
+    
+    /*
+     let manyWorkoutStyles = ["NORMAL", "BODYWEIGHT"]
+
+     */
+    
     func muscleDidTap() {
         let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
-        let musclePicker = PickerViewController(withChoices: manyWorkoutStyles, withPreselection: currentlySelectedMuscle)
+        //let musclePicker = PickerViewController(withChoices: manyWorkoutStyles, withPreselection: currentlySelectedMuscle)
+        var muscleNames = [String]()
+        let musclesFromCoredate = DatabaseController.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
+        for m in musclesFromCoredate {
+            if let name = m.name {
+                muscleNames.append(name.uppercased() )
+            }
+        }
+        
+        let musclePicker = PickerViewController(withChoices: muscleNames, withPreselection: currentlySelectedMuscle)
         musclePicker.delegate = self
         
         receiveHandler = {
