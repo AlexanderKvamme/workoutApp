@@ -20,9 +20,14 @@ extension Exercise {
     @NSManaged public var name: String?
     @NSManaged public var plannedSets: Int16
     @NSManaged public var type: String?
+    @NSManaged public var attribute: NSObject?
+    @NSManaged public var attribute1: NSObject?
+    @NSManaged public var attribute2: NSObject?
+    @NSManaged public var attribute3: NSObject?
     @NSManaged public var loggedInstances: NSSet?
-    @NSManaged public var usedInWorkouts: NSSet?
     @NSManaged public var musclesUsed: NSSet?
+    @NSManaged public var usedInWorkouts: NSSet?
+    @NSManaged public var style: ExerciseStyle?
 
 }
 
@@ -43,23 +48,6 @@ extension Exercise {
 
 }
 
-// MARK: Generated accessors for usedInWorkouts
-extension Exercise {
-
-    @objc(addUsedInWorkoutsObject:)
-    @NSManaged public func addToUsedInWorkouts(_ value: Workout)
-
-    @objc(removeUsedInWorkoutsObject:)
-    @NSManaged public func removeFromUsedInWorkouts(_ value: Workout)
-
-    @objc(addUsedInWorkouts:)
-    @NSManaged public func addToUsedInWorkouts(_ values: NSSet)
-
-    @objc(removeUsedInWorkouts:)
-    @NSManaged public func removeFromUsedInWorkouts(_ values: NSSet)
-
-}
-
 // MARK: Generated accessors for musclesUsed
 extension Exercise {
 
@@ -74,5 +62,22 @@ extension Exercise {
 
     @objc(removeMusclesUsed:)
     @NSManaged public func removeFromMusclesUsed(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for usedInWorkouts
+extension Exercise {
+
+    @objc(addUsedInWorkoutsObject:)
+    @NSManaged public func addToUsedInWorkouts(_ value: Workout)
+
+    @objc(removeUsedInWorkoutsObject:)
+    @NSManaged public func removeFromUsedInWorkouts(_ value: Workout)
+
+    @objc(addUsedInWorkouts:)
+    @NSManaged public func addToUsedInWorkouts(_ values: NSSet)
+
+    @objc(removeUsedInWorkouts:)
+    @NSManaged public func removeFromUsedInWorkouts(_ values: NSSet)
 
 }

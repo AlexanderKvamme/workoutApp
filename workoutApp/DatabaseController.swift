@@ -61,6 +61,7 @@ public class DatabaseController {
             print("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
             
             abort()//når vi sender appen til brukeren må vi gjøre noe med koden, men her skal vi bare terminere appen og logge erroren.
+            // slett app fra iphone og prøv igjen om du har gjort endringer i core data
         }
         
         return coordinator

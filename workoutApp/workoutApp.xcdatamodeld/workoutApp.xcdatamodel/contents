@@ -7,6 +7,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="loggedInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="design" inverseEntity="ExerciseLog" syncable="YES"/>
         <relationship name="musclesUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInExercises" inverseEntity="Muscle" syncable="YES"/>
+        <relationship name="style" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseStyle" inverseName="usedInExercises" inverseEntity="ExerciseStyle" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercises" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <entity name="ExerciseLog" representedClassName="ExerciseLog" syncable="YES">
@@ -14,6 +15,10 @@
         <relationship name="design" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="loggedInstances" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="lifts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Lift" inverseName="owner" inverseEntity="Lift" syncable="YES"/>
         <relationship name="usedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="loggedExercises" inverseEntity="WorkoutLog" syncable="YES"/>
+    </entity>
+    <entity name="ExerciseStyle" representedClassName="ExerciseStyle" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="style" inverseEntity="Exercise" syncable="YES"/>
     </entity>
     <entity name="Lift" representedClassName="Lift" syncable="YES">
         <attribute name="datePerformed" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -24,6 +29,7 @@
     <entity name="Muscle" representedClassName="Muscle" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="muscleUsed" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES">
         <attribute name="muscle" optional="YES" attributeType="String" syncable="YES"/>
@@ -31,6 +37,8 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="usedInWorkouts" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="loggedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="design" inverseEntity="WorkoutLog" syncable="YES"/>
+        <relationship name="muscleUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInWorkouts" inverseEntity="Muscle" syncable="YES"/>
+        <relationship name="workoutStyle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutStyle" syncable="YES"/>
     </entity>
     <entity name="WorkoutLog" representedClassName="WorkoutLog" syncable="YES">
         <attribute name="dateEnded" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -38,12 +46,18 @@
         <relationship name="design" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="loggedWorkouts" inverseEntity="Workout" syncable="YES"/>
         <relationship name="loggedExercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExerciseLog" inverseName="usedIn" inverseEntity="ExerciseLog" syncable="YES"/>
     </entity>
+    <entity name="WorkoutStyle" representedClassName="WorkoutStyle" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="usedInWorkouts" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Exercise" positionX="-396" positionY="3591" width="128" height="150"/>
+        <element name="Exercise" positionX="-396" positionY="3591" width="128" height="165"/>
         <element name="ExerciseLog" positionX="-461" positionY="3900" width="128" height="105"/>
+        <element name="ExerciseStyle" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Lift" positionX="-191" positionY="3765" width="128" height="105"/>
-        <element name="Workout" positionX="-639" positionY="3573" width="128" height="120"/>
+        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="90"/>
+        <element name="Workout" positionX="-639" positionY="3573" width="128" height="150"/>
         <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="103"/>
-        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="75"/>
+        <element name="WorkoutStyle" positionX="-441" positionY="3735" width="128" height="75"/>
     </elements>
 </model>

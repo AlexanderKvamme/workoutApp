@@ -21,6 +21,8 @@ extension Workout {
     @NSManaged public var type: String?
     @NSManaged public var exercises: NSSet?
     @NSManaged public var loggedWorkouts: NSSet?
+    @NSManaged public var muscleUsed: NSSet?
+    @NSManaged public var workoutStyle: WorkoutStyle?
 
 }
 
@@ -55,5 +57,22 @@ extension Workout {
 
     @objc(removeLoggedWorkouts:)
     @NSManaged public func removeFromLoggedWorkouts(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for muscleUsed
+extension Workout {
+
+    @objc(addMuscleUsedObject:)
+    @NSManaged public func addToMuscleUsed(_ value: Muscle)
+
+    @objc(removeMuscleUsedObject:)
+    @NSManaged public func removeFromMuscleUsed(_ value: Muscle)
+
+    @objc(addMuscleUsed:)
+    @NSManaged public func addToMuscleUsed(_ values: NSSet)
+
+    @objc(removeMuscleUsed:)
+    @NSManaged public func removeFromMuscleUsed(_ values: NSSet)
 
 }

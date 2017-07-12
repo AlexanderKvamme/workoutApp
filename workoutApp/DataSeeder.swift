@@ -30,6 +30,7 @@ final class DataSeeder {
     public func seedCoreData() {
         seedWithExampleWorkoutsAndExercies()
         seedWithExampleMuscleGroups()
+        seedWithExampleWorkoutStyles()
         DatabaseController.saveContext()
     }
     
@@ -103,6 +104,16 @@ final class DataSeeder {
         printMuscles()
     }
     
+    // Seed example WorkoutStyles
+    
+    private func seedWithExampleWorkoutStyles() {
+        let workoutStyles = ["CD style1", "CD style2", "CD style3", "INTENSE", "CD style4"]
+        for w in workoutStyles {
+            makeWorkoutStyle(withName: w.uppercased())
+        }
+        printWorkoutStyles()
+    }
+    
     // MARK: - Helper Methods
     
     private func makeWorkout(_ workout: DummyWorkout, withExercises exercises: [DummyExercise]) {
@@ -148,6 +159,13 @@ final class DataSeeder {
     private func makeMuscle(withName name: String) {
         let muscleRecord = DatabaseController.createManagedObjectForEntity(.Muscle) as! Muscle
         muscleRecord.name = name
+    }
+    
+    // MARK: - Make WorkoutStyle
+    
+    private func makeWorkoutStyle(withName name: String) {
+        let workoutRecord = DatabaseController.createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
+        workoutRecord.name = name
     }
     
     // MARK: - Exercise methods
@@ -215,6 +233,20 @@ final class DataSeeder {
             print("----------------------")
         } catch {
             print("error in printing Muscles")
+        }
+    }
+    
+    private func printWorkoutStyles() {
+        do {
+            let request = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
+            let allWorkoutStyles = try context.fetch(request)
+
+            print("WorkoutStyle count: ", allWorkoutStyles.count)
+            for style in allWorkoutStyles {
+                print("Name: ", style.name ?? "")
+            }
+        } catch {
+            print("error in printing workoutStyles")
         }
     }
     

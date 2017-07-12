@@ -174,7 +174,16 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
     
     func typeDidTap() {
         let currentlySelectedType = typeSelecter.bottomLabel.text
-        let typePicker = PickerViewController(withChoices: fewWorkoutStyles, withPreselection: currentlySelectedType)
+        let workoutStyles = DatabaseController.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
+        var workoutStyleNames = [String]()
+        
+        for w in workoutStyles {
+            if let name = w.name {
+                workoutStyleNames.append(name)
+            }
+        }
+        
+        let typePicker = PickerViewController(withChoices: workoutStyleNames, withPreselection: currentlySelectedType)
         typePicker.delegate = self
         
         receiveHandler = { s in
@@ -183,16 +192,8 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         navigationController?.pushViewController(typePicker, animated: false)
     }
     
-    // FIXME: - Hent muscles fra core data som er preseedet og bruk disse i stedet for
-    
-    /*
-     let manyWorkoutStyles = ["NORMAL", "BODYWEIGHT"]
-
-     */
-    
     func muscleDidTap() {
         let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
-        //let musclePicker = PickerViewController(withChoices: manyWorkoutStyles, withPreselection: currentlySelectedMuscle)
         var muscleNames = [String]()
         let musclesFromCoredate = DatabaseController.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
         for m in musclesFromCoredate {
