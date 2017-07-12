@@ -106,6 +106,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     // MARK: - Textfield delegate methods
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Make sure input is convertable to an integer for Core Data
         let allowedCharacters = CharacterSet.decimalDigits
         let characterSet = CharacterSet(charactersIn: string)
         return allowedCharacters.isSuperset(of: characterSet)
@@ -118,9 +119,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
             makeTextNormal()
             return
         }
-        
-//        guard let newValue = textField.text, let newValueAsInt16 = Int16(newValue) else { return }
-        
         // Update data source with new value
         if let indexPath = owner.collectionView.indexPath(for: self) {
             let dataSourceIndexToUpdate = indexPath.row
@@ -134,6 +132,12 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         makeTextBold()
+        // Make a placeholder in a nice color
+        let color = UIColor.light
+        let font = UIFont.custom(style: .medium, ofSize: .big)
+        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSForegroundColorAttributeName : color, NSFontAttributeName: font])
+        // Prepare for input
+        
         NotificationCenter.default.addObserver(self, selector: #selector(jumpToNextCell), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
     }
     
@@ -141,6 +145,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         // Returns the indexpath of the current collectionviewCell, IN the
         if let currentIndexPath = owner.collectionView.indexPath(for: self){
             let refToNextCell = owner.getNextCell(fromIndexPath: currentIndexPath)
+            print("nextcell: \(refToNextCell.repsField.text))")
             refToNextCell.tapHandler(sender: self)
         }
     }

@@ -167,9 +167,10 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
                        animations: { 
                         self.collectionView.scrollToItem(at: newIndexPath, at: .right, animated: false)
         }) { _ in
-            let c = self.collectionView.cellForItem(at: newIndexPath) as! ExerciseSetCollectionViewCell
+            if let c = self.collectionView.cellForItem(at: newIndexPath) as? ExerciseSetCollectionViewCell {
             self.collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
-            c.tapHandler(sender: self)
+                c.tapHandler(sender: self)
+            }
         }
     }
     
