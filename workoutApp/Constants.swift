@@ -23,6 +23,12 @@ enum Constant {
         static let exerciseType = "Normal"
     }
     
+    enum exampleValues {
+        static let exampleMuscles = ["None","Biceps", "Triceps", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core"]
+        static let workoutStyles = ["Normal", "Drop Set", "Superset", "Cardio"]
+        static let exerciseStyles = ["Normal", "Assisted", "Weighted", "Slow", "Explosive", "Inclined"]
+    }
+    
     enum UI {
         static let width = UIScreen.main.bounds.width
         static let height = UIScreen.main.bounds.height

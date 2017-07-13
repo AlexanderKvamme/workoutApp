@@ -46,7 +46,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // FIXME: - start out with multieple workouts selected, so make this an optional array
         if let preselection = preselection {
             self.currentlySelectedString = preselection
-            print("stored \(preselection) in currentlySelected")
         }
         
         selectionChoices = choices
@@ -218,11 +217,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func selectRow(withString string: String) {
         
-        print("tryna select \(string) in selectRow")
-        print(" tryna find it in this array \(selectionChoices)")
-        
         if let indexOfA = selectionChoices.index(of: string) {
-            print("found it in \(indexOfA)")
             let ip = IndexPath(row: indexOfA, section: 0)
             table.selectRow(at: ip, animated: false, scrollPosition: .none)
             selectedIndexPath = ip

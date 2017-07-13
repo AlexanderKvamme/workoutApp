@@ -15,9 +15,8 @@ import CoreData
 
 final class DataSeeder {
     
-    typealias DummyWorkout = (name: String, muscle: String, type: String)
-    typealias DummyMuscle = (String)
-    typealias DummyExercise = (name: String, muscle: String, plannedSets: Int16, type: String)
+    typealias DummyWorkout = (name: String, muscle: Muscle, type: String)
+    typealias DummyExercise = (name: String, muscle: Muscle, plannedSets: Int16, type: String)
     
     private let context: NSManagedObjectContext
     
@@ -28,9 +27,9 @@ final class DataSeeder {
     // MARK: - API
     
     public func seedCoreData() {
-        seedWithExampleWorkoutsAndExercies()
         seedWithExampleMuscleGroups()
         seedWithExampleWorkoutStyles()
+        seedWithExampleWorkoutsAndExercies()
         DatabaseController.saveContext()
     }
     
@@ -42,31 +41,36 @@ final class DataSeeder {
         var muscleString: String = CDModels.workout.type.normal.rawValue
         
         // Workouts
-        let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: "Back", type: "Drop Set")
-        let backWorkoutNormal: DummyWorkout = (name: "Back", muscle: "Back", type: "Normal")
-        let bicepsTricepsWorkoutDropSet: DummyWorkout = (name: "Biceps and Triceps", muscle: "Arms", type: typeString)
+        // let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: "Back", type: "Drop Set")
+        
+        let backMuscle = DatabaseFacade.fetchMuscleWithName("BACK")!
+        let armsMuscle = DatabaseFacade.fetchMuscleWithName("ARMS")!
+        
+        let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: backMuscle, type: "Drop Set")
+        let backWorkoutNormal: DummyWorkout = (name: "Back", muscle: backMuscle, type: "Normal")
+        let bicepsTricepsWorkoutDropSet: DummyWorkout = (name: "Biceps and Triceps", muscle: armsMuscle, type: typeString)
         
         typeString = CDModels.workout.type.normal.rawValue
         muscleString = CDModels.workout.muscle.back.rawValue
         
         // Back - Drop set
         let exercisesForBackDropSet: [DummyExercise] = [
-            (name: "Pullup", muscle: muscleString, plannedSets: 4, type: typeString),
-            (name: "Backflip", muscle: muscleString, plannedSets: 3, type: typeString),
-            (name: "Muscleup", muscle: muscleString, plannedSets: 3, type: typeString),
-            (name: "Bridge", muscle: muscleString, plannedSets: 3, type: typeString),
-            (name: "Back Extension", muscle: muscleString, plannedSets: 3, type: typeString),
-            (name: "Inverted Flies", muscle: muscleString, plannedSets: 3, type: typeString),]
+            (name: "Pullup", muscle: backMuscle, plannedSets: 4, type: typeString),
+            (name: "Backflip", muscle: backMuscle, plannedSets: 3, type: typeString),
+            (name: "Muscleup", muscle: backMuscle, plannedSets: 3, type: typeString),
+            (name: "Bridge", muscle: backMuscle, plannedSets: 3, type: typeString),
+            (name: "Back Extension", muscle: backMuscle, plannedSets: 3, type: typeString),
+            (name: "Inverted Flies", muscle: backMuscle, plannedSets: 3, type: typeString),]
         
         // Back - Normal
         typeString = CDModels.workout.type.normal.rawValue
         muscleString = CDModels.workout.muscle.back.rawValue
         
         let exercisesForBackNormal: [DummyExercise] = [
-            (name: "Pull ups", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Australian pull ups", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Chin ups", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Australian chin ups", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Pull ups", muscle: backMuscle, plannedSets: 2, type: typeString),
+            (name: "Australian pull ups", muscle: backMuscle, plannedSets: 2, type: typeString),
+            (name: "Chin ups", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Australian chin ups", muscle: backMuscle, plannedSets: 1, type: typeString),
             ]
         
         // Arms - Normal
@@ -74,14 +78,14 @@ final class DataSeeder {
         typeString = CDModels.workout.type.dropSet.rawValue
         
         let exercisesForBicepsAndTricepsDropSet: [DummyExercise] = [
-            (name: "Bicep Curls", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Hammer Curls", muscle: muscleString, plannedSets: 2, type: typeString),
-            (name: "Fist pumps", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Bicep Pumps", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Biceps Flex", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Chin Ups", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Chin up negatives", muscle: muscleString, plannedSets: 1, type: typeString),
-            (name: "Australian chin ups", muscle: muscleString, plannedSets: 1, type: typeString),
+            (name: "Bicep Curls", muscle: backMuscle, plannedSets: 2, type: typeString),
+            (name: "Hammer Curls", muscle: backMuscle, plannedSets: 2, type: typeString),
+            (name: "Fist pumps", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Bicep Pumps", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Biceps Flex", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Chin Ups", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Chin up negatives", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Australian chin ups", muscle: backMuscle, plannedSets: 1, type: typeString),
             ]
         
         // Seed into Core Data
@@ -95,11 +99,8 @@ final class DataSeeder {
     // Seed example muscles
     
     private func seedWithExampleMuscleGroups() {
-        
-        let dummyMuscles: [DummyMuscle] = ["Biceps", "Triceps", "Back", "Legs", "Glutes", "None"]
-        
-        for m in dummyMuscles {
-            makeMuscle(withName: m)
+        for m in Constant.exampleValues.exampleMuscles {
+            makeMuscle(withName: m.uppercased())
         }
         printMuscles()
     }
@@ -107,8 +108,7 @@ final class DataSeeder {
     // Seed example WorkoutStyles
     
     private func seedWithExampleWorkoutStyles() {
-        let workoutStyles = ["CD style1", "CD style2", "CD style3", "INTENSE", "CD style4"]
-        for w in workoutStyles {
+        for w in Constant.exampleValues.workoutStyles {
             makeWorkoutStyle(withName: w.uppercased())
         }
         printWorkoutStyles()
@@ -116,21 +116,26 @@ final class DataSeeder {
     
     // MARK: - Helper Methods
     
+    // Takes a DummyWorkout (name: String, muscle: Muscle, type: String) and an array of exercises, and creates a new Workout into core data. 
     private func makeWorkout(_ workout: DummyWorkout, withExercises exercises: [DummyExercise]) {
         
-        // make and add back exercises
+        // Make and add back exercises
         
         let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
         workoutRecord.name = workout.name
-        workoutRecord.muscle = workout.muscle
+        workoutRecord.muscle = workout.muscle.name
+        workoutRecord.muscleUsed = workout.muscle
         workoutRecord.type = workout.type
         
         for exercise in exercises {
-            
             let exerciseRecord = DatabaseController.createManagedObjectForEntity(.Exercise) as! Exercise
             
             exerciseRecord.name = exercise.name
-            exerciseRecord.muscle = exercise.muscle
+            exerciseRecord.muscle = exercise.muscle.name
+            print("making exercise and setting muscle to ", exercise.muscle.name ?? "bam")
+            
+            exerciseRecord.musclesUsed = exercise.muscle
+            print("- ended up setting value: ", exerciseRecord.musclesUsed?.name ?? "bam")
             exerciseRecord.plannedSets = exercise.plannedSets
             exerciseRecord.type = exercise.type
             exerciseRecord.addToUsedInWorkouts(workoutRecord)
@@ -143,7 +148,7 @@ final class DataSeeder {
             }
             logItem.design = exerciseRecord
             
-            // add lifts this workout
+            // add random lifts this workout
             
             for _ in 0...Int16(arc4random_uniform(UInt32(9))) {
                 let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift

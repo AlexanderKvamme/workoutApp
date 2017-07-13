@@ -2,7 +2,7 @@
 //  Muscle+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 12/07/2017.
+//  Created by Alexander Kvamme on 13/07/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -17,8 +17,25 @@ extension Muscle {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var usedInExercises: Exercise?
+    @NSManaged public var usedInExercises: NSSet?
     @NSManaged public var usedInWorkouts: NSSet?
+
+}
+
+// MARK: Generated accessors for usedInExercises
+extension Muscle {
+
+    @objc(addUsedInExercisesObject:)
+    @NSManaged public func addToUsedInExercises(_ value: Exercise)
+
+    @objc(removeUsedInExercisesObject:)
+    @NSManaged public func removeFromUsedInExercises(_ value: Exercise)
+
+    @objc(addUsedInExercises:)
+    @NSManaged public func addToUsedInExercises(_ values: NSSet)
+
+    @objc(removeUsedInExercises:)
+    @NSManaged public func removeFromUsedInExercises(_ values: NSSet)
 
 }
 

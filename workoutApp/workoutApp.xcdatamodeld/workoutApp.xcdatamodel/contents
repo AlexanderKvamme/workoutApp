@@ -6,7 +6,7 @@
         <attribute name="plannedSets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="loggedInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="design" inverseEntity="ExerciseLog" syncable="YES"/>
-        <relationship name="musclesUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInExercises" inverseEntity="Muscle" syncable="YES"/>
+        <relationship name="musclesUsed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInExercises" inverseEntity="Muscle" syncable="YES"/>
         <relationship name="style" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseStyle" inverseName="usedInExercises" inverseEntity="ExerciseStyle" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercises" inverseEntity="Workout" syncable="YES"/>
     </entity>
@@ -28,7 +28,7 @@
     </entity>
     <entity name="Muscle" representedClassName="Muscle" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="usedInExercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="muscleUsed" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES">
@@ -37,7 +37,7 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="usedInWorkouts" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="loggedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="design" inverseEntity="WorkoutLog" syncable="YES"/>
-        <relationship name="muscleUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInWorkouts" inverseEntity="Muscle" syncable="YES"/>
+        <relationship name="muscleUsed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInWorkouts" inverseEntity="Muscle" syncable="YES"/>
         <relationship name="workoutStyle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutStyle" syncable="YES"/>
     </entity>
     <entity name="WorkoutLog" representedClassName="WorkoutLog" syncable="YES">

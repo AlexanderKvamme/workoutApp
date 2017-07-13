@@ -15,7 +15,11 @@ class TwoLabelStack: UIView {
      */
     
     var topLabel: UILabel!
-    var bottomLabel: UILabel!
+    var bottomLabel: UILabel! {
+        didSet {
+            print("bottomLabel didSet")
+        }
+    }
     var button: UIButton!
     var verticalStack = UIStackView()
     
@@ -58,7 +62,6 @@ class TwoLabelStack: UIView {
         setup()
         
         sizeToFit()
-        print(button.frame)
         isUserInteractionEnabled = true
         bottomLabel.isUserInteractionEnabled = false
         topLabel.isUserInteractionEnabled = false

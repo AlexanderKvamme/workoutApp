@@ -16,12 +16,20 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
     let screenWidth = Constant.UI.width
     let selecterHeight: CGFloat = 150
     var header: TwoLabelStack!
-    var typeSelecter: TwoLabelStack!
-    var muscleSelecter: TwoLabelStack!
+    var typeSelecter: TwoLabelStack! {
+        didSet {
+            print("typeSelecter didset")
+        }
+    }
+    var muscleSelecter: TwoLabelStack! {
+        didSet {
+            print("muscle didSet")
+        }
+    }
     var restSelectionBox: Box!
     var weightSelectionBox: Box!
     var workoutSelectionBox: TwoLabelStack!
-    var nameOfSelectedWorkouts = [String]()
+    var nameOfCurrentlySelectedExercises = [String]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -53,7 +61,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         let darkHeaderFont = UIFont.custom(style: .bold, ofSize: .medium)
         let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
         
-        // MARK: - setup of buttons: Header, muscle, type, exercises
+        // Setup of buttons: Header, muscle, type, exercises
         
         header = TwoLabelStack(frame: CGRect(x: 0, y: 100,
                                                  width: Constant.UI.width,
@@ -78,7 +86,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
                                          bottomFont: darkSubHeaderFont,
                                          bottomColor: UIColor.dark,
                                          fadedBottomLabel: false)
-        typeSelecter.button.addTarget(self, action: #selector(typeDidTap), for: .touchUpInside)
+        typeSelecter.button.addTarget(self, action: #selector(typeSelecterDidTap), for: .touchUpInside)
         
         muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Muscle",
@@ -106,7 +114,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         weightSelectionBox.setTitle("Weight in kg")
         weightSelectionBox.setContentLabel("40.1")
         weightSelectionBox.button.addTarget(self, action: #selector(weightButtonDidTap), for: .touchUpInside)
-//        weightSelectionBox.setDebugColors()
+        // weightSelectionBox.setDebugColors()
         
         // Rest selection box
         
@@ -122,7 +130,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         
         restSelectionBox.button.addTarget(self, action: #selector(restButtonDidTap), for: .touchUpInside)
         
-//        restSelectionBox.setDebugColors()
+        // restSelectionBox.setDebugColors()
         
         // Workout selection box
         
@@ -137,7 +145,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
                                    bottomFont: UIFont.custom(style: .bold, ofSize: .big),
                                    bottomColor: UIColor.dark,
                                    fadedBottomLabel: false)
-        workoutSelectionBox.button.addTarget(self, action: #selector(workoutsTapHandler), for: .touchUpInside)
+        workoutSelectionBox.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
         
         let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
@@ -151,8 +159,8 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         view.addSubview(workoutSelectionBox)
         view.addSubview(buttonFooter)
         
-//        header.setDebugColors()
-//        typeSelecter.setDebugColors()
+        // header.setDebugColors()
+        // typeSelecter.setDebugColors()
     }
     
     func dismissVC() {
@@ -162,7 +170,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
     // MARK: - Tap handlers
     
     func headerDidTap() {
-//        let currentWorkoutName = header.bottomLabel.text
         let workoutNamePicker = InputViewController(inputStyle: .text)
         workoutNamePicker.delegate = self
         
@@ -172,7 +179,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         navigationController?.pushViewController(workoutNamePicker, animated: false)
     }
     
-    func typeDidTap() {
+    func typeSelecterDidTap() {
         let currentlySelectedType = typeSelecter.bottomLabel.text
         let workoutStyles = DatabaseController.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
         var workoutStyleNames = [String]()
@@ -186,8 +193,10 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         let typePicker = PickerViewController(withChoices: workoutStyleNames, withPreselection: currentlySelectedType)
         typePicker.delegate = self
         
+        // When receivng a selection of workout type
         receiveHandler = { s in
             self.typeSelecter.bottomLabel.text = s
+            self.updateExerciseSelecters()
         }
         navigationController?.pushViewController(typePicker, animated: false)
     }
@@ -205,9 +214,11 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         let musclePicker = PickerViewController(withChoices: muscleNames, withPreselection: currentlySelectedMuscle)
         musclePicker.delegate = self
         
+        // When receivng a selection of workout musclegroup
         receiveHandler = {
             s in
             self.muscleSelecter.bottomLabel.text = s
+            self.updateExerciseSelecters()
         }
         navigationController?.pushViewController(musclePicker, animated: false)
     }
@@ -236,12 +247,50 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
         navigationController?.pushViewController(restInputViewController, animated: false)
     }
     
-    func workoutsTapHandler() {
+    // Update/reset exercise picker whenever user changes workout type/musclegroup
+    
+    private func updateExerciseSelecters() {
+        print("*UPDATE EXERCISESELECTER*")
+        
+        
+        // FIXME: - update exercises to match newly selected "MUSCLE"
+        
+        // guard muscle is actually changed
+        
+        // Get muscle
+        
+        var newlySelectedMuscle: Muscle? = nil
+        
+        if let muscleName = muscleSelecter.bottomLabel.text {
+            newlySelectedMuscle = DatabaseFacade.fetchMuscleWithName(muscleName)
+        }
+        
+        // use muscle to get exercises
+        
+        var exercisesUsingSelectedMuscle: [Exercise]? = nil
+        
+        if let newlySelectedMuscle = newlySelectedMuscle {
+            exercisesUsingSelectedMuscle = DatabaseFacade.fetchExercises(usingMuscle: newlySelectedMuscle)
+            print("updateExerciseSelecters received fetched exercises: \(exercisesUsingSelectedMuscle)")
+        }
+        
+        // save exercises and reset currentlySelected
+        
+        let existingExercises = DatabaseController.fetchManagedObjectsForEntity(.Exercise)
+        
+        
+        
+//        DatabaseFacade.fetchExercises(usingMuscle: )
+     print("*DONE UPDATING EXERCISESELECTER*")   
+    }
+    
+    @objc private func exercisesTapHandler() {
+        
         let workoutPickerViewController = WorkoutPickerViewController(choices: ["Extreme Flipovers",
                                                                                 "Backstacked Tripleflips",
                                                                                 "Underground Leg Flexers"],
-                                                                      withMultiplePreselections: nameOfSelectedWorkouts)
-        print("sending inn this list: \(nameOfSelectedWorkouts)")
+                                                                      withMultiplePreselections: nameOfCurrentlySelectedExercises)
+        print("sending inn this list: \(nameOfCurrentlySelectedExercises)")
         workoutPickerViewController.delegate = self
         workoutPickerViewController.workoutDelegate = self
         receiveHandler = { s in
@@ -254,6 +303,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isWorkoutReceive
     
     func receiveWorkout(_ workouts: [String]) {
         print("workouts in NWC is received and set to : ", workouts)
-        nameOfSelectedWorkouts = workouts
+        nameOfCurrentlySelectedExercises = workouts
     }
 }
