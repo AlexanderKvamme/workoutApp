@@ -19,13 +19,13 @@ fileprivate let standardBoxHeight: CGFloat = 80
 enum Constant {
     
     enum defaultValues {
-        static let muscle = "None"
+        static let muscle = "Undefined"
         static let exerciseType = "Normal"
     }
     
     enum exampleValues {
-        static let exampleMuscles = ["None","Biceps", "Triceps", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core"]
-        static let workoutStyles = ["Normal", "Drop Set", "Superset", "Cardio"]
+        static let exampleMuscles = ["Undefined","Biceps", "Triceps", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core"]
+        static let workoutStyles = ["Normal", "Drop Set", "Superset", "Cardio", "For fun"]
         static let exerciseStyles = ["Normal", "Assisted", "Weighted", "Slow", "Explosive", "Inclined"]
     }
     

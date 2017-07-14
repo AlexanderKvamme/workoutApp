@@ -60,15 +60,17 @@ final class DatabaseFacade {
 
         do {
             let result = try DatabaseController.getContext().fetch(fetchRequest)
-            print()
-            print()
-            print()
-            print()
-            print()
-            print()
-            print()
-            print("fetchExercises found \(result.count) exercises")
-            print("fetchExercises using muscle received \(result)")
+            
+//            print()
+//            print()
+//            print()
+//            print()
+//            print()
+//            print()
+//            print()
+//            print("fetchExercises found \(result.count) exercises")
+//            print("fetchExercises using muscle received \(result)")
+            return result
         } catch let error as NSError {
             print(" error fetching exercises using Muscle: \(error.localizedDescription)")
         }
