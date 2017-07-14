@@ -12,7 +12,7 @@ import Foundation
  Protocol that eneables passing selected workouts back to the New Workout VC.
  */
 
-protocol isWorkoutReceiver: class {
-    func receiveWorkout(_ workouts: [String])
+protocol isExerciseNameReceiver: class {
+    func receiveExerciseNames(_ exerciseNames: [String])
 }
 

@@ -8,16 +8,16 @@
 
 import UIKit
 
-class WorkoutPickerViewController: PickerViewController {
+class ExercisePickerViewController: PickerViewController {
 
-    var selectedWorkoutNames = [String]()
+    var selectedExerciseNames = [String]()
     var selectedIndexPaths = [IndexPath]()
     
-    weak var workoutDelegate: isWorkoutReceiver?
+    weak var exerciseDelegate: isExerciseNameReceiver?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        for name in selectedWorkoutNames {
+        for name in selectedExerciseNames {
             selectRow(withString: name)
         }
     }
@@ -36,7 +36,7 @@ class WorkoutPickerViewController: PickerViewController {
         self.init(withChoices: choices, withPreselection: nil)
         
         if let preselections = preselections {
-            self.selectedWorkoutNames = preselections
+            self.selectedExerciseNames = preselections
         }
     }
     
@@ -58,7 +58,6 @@ class WorkoutPickerViewController: PickerViewController {
     }
     
     override func selectRow(withString string: String) {
-        
         // looks through the possible choices, finds the index of the one you want to select, retrieves the corresponding indexPath, and selects that indexPath
         if let indexOfElement = selectionChoices.index(of: string) {
             let indexPath = IndexPath(row: indexOfElement, section: 0)
@@ -78,16 +77,12 @@ class WorkoutPickerViewController: PickerViewController {
         if selectedIndexPaths.contains(indexPath){
             if let location = selectedIndexPaths.index(of: indexPath){
                 selectedIndexPaths.remove(at: location)
-                selectedWorkoutNames.remove(at: location)
+                selectedExerciseNames.remove(at: location)
             }
         } else {
             // is not already contained in the array, so append and make it look selected
             selectedIndexPaths.append(indexPath)
-            selectedWorkoutNames.append(selectionChoices[indexPath.row])
-//            if let text = selectedCell.label.text {
-//                selectedWorkoutNames.append(text) // Denne finner "EXTREME FLIPOVERS"
-//            }
-
+            selectedExerciseNames.append(selectionChoices[indexPath.row])
         }
         configure(selectedCell, forIndexPath: indexPath)
     }
@@ -95,10 +90,11 @@ class WorkoutPickerViewController: PickerViewController {
     // MARK: - Exit
     
     override func confirmAndDismiss() {
-        if selectedWorkoutNames.count > 0 {
-            let selectedWorkoutCount = String(selectedWorkoutNames.count)
+        if selectedExerciseNames.count > 0 {
+            let selectedWorkoutCount = String(selectedExerciseNames.count)
             delegate?.receive(selectedWorkoutCount)
-            workoutDelegate?.receiveWorkout(selectedWorkoutNames)
+            exerciseDelegate?.receiveExerciseNames(selectedExerciseNames)
+            
         } else {
             delegate?.receive("0")
         }
