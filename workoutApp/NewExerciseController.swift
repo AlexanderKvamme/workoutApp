@@ -1,4 +1,14 @@
 //
+//  NewExerciseController.swift
+//  workoutApp
+//
+//  Created by Alexander Kvamme on 14/07/2017.
+//  Copyright © 2017 Alexander Kvamme. All rights reserved.
+//
+
+import Foundation
+
+//
 //  newWorkoutController.swift
 //  workoutApp
 //
@@ -8,10 +18,10 @@
 
 import UIKit
 
-class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameReceiver {
+class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameReceiver {
     
     var receiveHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of muscle/type/weight/time pickers
-
+    
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
     let selecterHeight: CGFloat = 150
@@ -57,38 +67,38 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         // Setup of buttons: Header, muscle, type, rest, and exercises
         
         header = TwoLabelStack(frame: CGRect(x: 0, y: 100,
-                                                 width: Constant.UI.width,
-                                                 height: 70),
-                                   topText: "Name",
-                                   topFont: UIFont.custom(style: .bold, ofSize: .medium),
-                                   topColor: UIColor.medium,
-                                   bottomText: "Your workout",
-                                   bottomFont: UIFont.custom(style: .bold, ofSize: .big),
-                                   bottomColor: UIColor.darkest,
-                                   fadedBottomLabel: false)
+                                             width: Constant.UI.width,
+                                             height: 70),
+                               topText: "Name",
+                               topFont: UIFont.custom(style: .bold, ofSize: .medium),
+                               topColor: UIColor.medium,
+                               bottomText: "Your workout",
+                               bottomFont: UIFont.custom(style: .bold, ofSize: .big),
+                               bottomColor: UIColor.darkest,
+                               fadedBottomLabel: false)
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
         header.bottomLabel.adjustsFontSizeToFitWidth = true
         
         // Type and Muscle selectors
         
         typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
-                                         topText: "Type",
-                                         topFont: darkHeaderFont,
-                                         topColor: .dark,
-                                         bottomText: Constant.defaultValues.exerciseType,
-                                         bottomFont: darkSubHeaderFont,
-                                         bottomColor: UIColor.dark,
-                                         fadedBottomLabel: false)
+                                     topText: "Type",
+                                     topFont: darkHeaderFont,
+                                     topColor: .dark,
+                                     bottomText: Constant.defaultValues.exerciseType,
+                                     bottomFont: darkSubHeaderFont,
+                                     bottomColor: UIColor.dark,
+                                     fadedBottomLabel: false)
         typeSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
         
         muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
-                                         topText: "Muscle",
-                                         topFont: darkHeaderFont,
-                                         topColor: .dark,
-                                         bottomText: Constant.defaultValues.muscle,
-                                         bottomFont: darkSubHeaderFont,
-                                         bottomColor: UIColor.dark,
-                                         fadedBottomLabel: false)
+                                       topText: "Muscle",
+                                       topFont: darkHeaderFont,
+                                       topColor: .dark,
+                                       bottomText: Constant.defaultValues.muscle,
+                                       bottomFont: darkSubHeaderFont,
+                                       bottomColor: UIColor.dark,
+                                       fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
         // MARK: - Weight and Rest Boxes
@@ -128,16 +138,16 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         // Workout selection box
         
         exerciseSelectionBox = TwoLabelStack(frame: CGRect(x: 0,
-                                                              y: restSelectionBox.frame.maxY + 20,
-                                                              width: Constant.UI.width,
-                                                              height: 100),
-                                   topText: "\(Constant.defaultValues.muscle) Exercises Added",
-                                   topFont: UIFont.custom(style: .bold, ofSize: .medium),
-                                   topColor: UIColor.faded,
-                                   bottomText: "0",
-                                   bottomFont: UIFont.custom(style: .bold, ofSize: .big),
-                                   bottomColor: UIColor.dark,
-                                   fadedBottomLabel: false)
+                                                           y: restSelectionBox.frame.maxY + 20,
+                                                           width: Constant.UI.width,
+                                                           height: 100),
+                                             topText: "\(Constant.defaultValues.muscle) Exercises Added",
+            topFont: UIFont.custom(style: .bold, ofSize: .medium),
+            topColor: UIColor.faded,
+            bottomText: "0",
+            bottomFont: UIFont.custom(style: .bold, ofSize: .big),
+            bottomColor: UIColor.dark,
+            fadedBottomLabel: false)
         exerciseSelectionBox.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
         
         let buttonFooter = ButtonFooter(withColor: .darkest)
@@ -288,10 +298,10 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         }
         
         let exercisePicker = ExercisePickerViewController(choices: currentExerciseNames,
-                                                                      withMultiplePreselections: nameOfCurrentlySelectedExercises)
+                                                          withMultiplePreselections: nameOfCurrentlySelectedExercises)
         // Set header
         if let muscleName = muscleSelecter.bottomLabel.text {
-                exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")
+            exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")
         } else {
             exercisePicker.setHeaderTitle("SELECT EXERCISES")
         }

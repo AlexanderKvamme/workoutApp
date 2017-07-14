@@ -49,10 +49,9 @@ class CustomTabBarController: UITabBarController {
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
         
         // MARK: - Profile Tab
-//        let TestViewController = PickerViewController(withSelectedString: "Weighted")
-        let TestViewController = PickerViewController(withChoices: ["Shredded", "Bizniz"], withPreselection: "Bizniz")
-//        let TestViewController = ExerciseTableViewController(withWorkout: <#T##Workout#>)
-        let profileController = TestViewController
+        let testViewController = NewExerciseController()
+
+        let profileController = testViewController
         profileController.hidesBottomBarWhenPushed = true
         
         // MARK: - Set up navbar

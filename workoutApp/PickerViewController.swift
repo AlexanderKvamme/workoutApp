@@ -43,14 +43,14 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     init(withChoices choices: [String], withPreselection preselection: String?) {
-        // FIXME: - start out with multieple workouts selected, so make this an optional array
+        
         if let preselection = preselection {
             self.currentlySelectedString = preselection
         }
-        
         selectionChoices = choices
         
         super.init(nibName: nil, bundle: nil)
+        setupHeader()
         hidesBottomBarWhenPushed = true
     }
     
@@ -66,15 +66,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         hidesBottomBarWhenPushed = true
         
         // Header
-        let headerFrame = CGRect(x: 0, y: 50,
-                                 width: Constant.UI.width,
-                                 height: 100)
-        header = TwoLabelStack(frame: headerFrame,
-                                   topText: "TYPE",
-                                   topFont: .custom(style: .bold, ofSize: .big),
-                                   topColor: .secondary,
-                                   bottomText: "",
-                                   bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .black, fadedBottomLabel: false)
+
         view.addSubview(header)
         
         // Table
@@ -173,6 +165,22 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // MARK: - Helpers
+    
+    private func setupHeader() {
+        let headerFrame = CGRect(x: 0, y: 50,
+                                 width: Constant.UI.width,
+                                 height: 100)
+        header = TwoLabelStack(frame: headerFrame,
+                               topText: "SELECT",
+                               topFont: .custom(style: .bold, ofSize: .big),
+                               topColor: .secondary,
+                               bottomText: "",
+                               bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .black, fadedBottomLabel: false)
+    }
+    
+    func setHeaderTitle(_ newTitle: String) {
+        header.topLabel.text = newTitle
+    }
     
     func setupTable() {
         table.translatesAutoresizingMaskIntoConstraints = false

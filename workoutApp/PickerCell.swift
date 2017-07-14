@@ -25,9 +25,8 @@ class PickerCell: UITableViewCell {
     }
     
     func setupCell() {
-        
         label = UILabel()
-        label.text = "bam"
+        label.text = "cellText"
         label.textAlignment = .center
         label.sizeToFit()
         addSubview(label)

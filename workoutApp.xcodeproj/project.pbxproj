@@ -38,6 +38,7 @@
 		DD41AAF81F17D30800CB08F5 /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41AAE81F17D30800CB08F5 /* Exercise+CoreDataProperties.swift */; };
 		DD41AAF91F17D30800CB08F5 /* ExerciseLog+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41AAE91F17D30800CB08F5 /* ExerciseLog+CoreDataClass.swift */; };
 		DD41AAFA1F17D30800CB08F5 /* ExerciseLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41AAEA1F17D30800CB08F5 /* ExerciseLog+CoreDataProperties.swift */; };
+		DD41AAFC1F18F5C800CB08F5 /* NewExerciseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */; };
 		DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD491B7B1ED7464E008A4619 /* DataSeeder.swift */; };
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
 		DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */; };
@@ -113,6 +114,7 @@
 		DD41AAE81F17D30800CB08F5 /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DD41AAE91F17D30800CB08F5 /* ExerciseLog+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExerciseLog+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DD41AAEA1F17D30800CB08F5 /* ExerciseLog+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExerciseLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewExerciseController.swift; sourceTree = "<group>"; };
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
 		DD4B1C0F1EC8606F00BD313B /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				DD0CD4C41F010122008544EE /* workoutPicker */,
 				DD3AF4491EE45A7500C55453 /* Tableview and picker */,
 				DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */,
+				DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */,
 				DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */,
 				DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */,
 				DD59B0951EE2B989006443D4 /* ButtonFooter.swift */,
@@ -539,6 +542,7 @@
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
 				DD41AAF11F17D30800CB08F5 /* ExerciseStyle+CoreDataClass.swift in Sources */,
+				DD41AAFC1F18F5C800CB08F5 /* NewExerciseController.swift in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
 				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
