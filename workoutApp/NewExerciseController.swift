@@ -72,7 +72,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
                                topText: "Name",
                                topFont: UIFont.custom(style: .bold, ofSize: .medium),
                                topColor: UIColor.medium,
-                               bottomText: "Your workout",
+                               bottomText: "Your exercise",
                                bottomFont: UIFont.custom(style: .bold, ofSize: .big),
                                bottomColor: UIColor.darkest,
                                fadedBottomLabel: false)
@@ -185,16 +185,16 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
         let currentlySelectedType = typeSelecter.bottomLabel.text
-        let workoutStyles = DatabaseController.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
-        var workoutStyleNames = [String]()
+        let exerciseStyles = DatabaseController.fetchManagedObjectsForEntity(.ExerciseStyle) as! [ExerciseStyle]
+        var exerciseNames = [String]()
         
-        for ws in workoutStyles {
+        for ws in exerciseStyles {
             if let name = ws.name {
-                workoutStyleNames.append(name)
+                exerciseNames.append(name)
             }
         }
         
-        let typePicker = PickerViewController(withChoices: workoutStyleNames, withPreselection: currentlySelectedType)
+        let typePicker = PickerViewController(withChoices: exerciseNames, withPreselection: currentlySelectedType)
         typePicker.delegate = self
         
         // When receivng a selection of workout type

@@ -16,12 +16,13 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Tabs of the tab bar
+        // Setup the tab bar
         let progressController = SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of", subheader: "Progress?"),
             buttons: [SelectionViewButton(header: "Statistics", subheader: "Workout History"),
                       SelectionViewButton(header: "Workout History", subheader: "292 Workouts")
             ])
+        
         let historyController = SelectionViewController(
             header: SelectionViewHeader(header: "History", subheader: "Of which style?"),
             buttons: [SelectionViewButton(header: "Normal", subheader: "9 Workouts"),
@@ -36,34 +37,25 @@ class CustomTabBarController: UITabBarController {
         workoutRequest.resultType = .managedObjectResultType
         workoutRequest.propertiesToFetch = ["type"]
 
-        
-        // FIXME: - Do it
-        
-//        let workoutController = SelectionViewController(
-//            header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest)
-        
-//        let workoutNav = CustomNavigationViewController(rootViewController: workoutController)
-//        let navigationController = UINavigationController(rootViewController: TestViewController())
-//        let workoutNavigationController = CustomNavigationViewController(rootViewController: TestViewController())
         let workoutNavigationController = CustomNavigationViewController(rootViewController: SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
         
         // MARK: - Profile Tab
-//        let testViewController = NewExerciseController()
-        let testViewController = ExercisePickerViewController(choices: ["One", "two", "Three"], withMultiplePreselections: nil)
-
+        let test = ExercisePickerViewController(choices: ["One", "two", "Three"], withMultiplePreselections: nil)
+        let testViewController = CustomNavigationViewController(rootViewController: test)
+        
         let profileController = testViewController
         profileController.hidesBottomBarWhenPushed = true
         
         // MARK: - Set up navbar
         
-        viewControllers = [progressController, historyController, workoutNavigationController, profileController]
+        viewControllers = [progressController, historyController, workoutNavigationController, testViewController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
         historyController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
-//        workoutController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
-        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
+        //profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
+        testViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
         for item in tabBarItems {
@@ -75,7 +67,7 @@ class CustomTabBarController: UITabBarController {
         tabBar.barTintColor = UIColor.darkest
         tabBar.isTranslucent = false
         
-        // SelectionView
+        // Tab selection indicator (hovering over selected tab)
         selectionIndicator.setup(selectableItemsCount: 4, atHeight: tabBar.frame.minY)
         view.addSubview(selectionIndicator)
     }
