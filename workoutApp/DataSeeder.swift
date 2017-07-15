@@ -30,6 +30,7 @@ final class DataSeeder {
         seedWithExampleMuscleGroups()
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
+        seedWithExampleMeasurementStyles()
         seedWithExampleWorkoutsAndExercies()
         DatabaseController.saveContext()
     }
@@ -118,8 +119,16 @@ final class DataSeeder {
     // Seed example ExerciseStyles
     
     private func seedWithExampleExerciseStyles() {
-        for e in Constant.exampleValues.exerciseStyles {
-            makeExerciseStyle(withName: e)
+        for exerciseStyleName in Constant.exampleValues.exerciseStyles {
+            makeExerciseStyle(withName: exerciseStyleName)
+        }
+    }
+    
+    // Seed example measurementStyles
+    
+    private func seedWithExampleMeasurementStyles() {
+        for measurementStyleName in Constant.exampleValues.measurementStyles {
+            makeMeasurementStyle(withName: measurementStyleName)
         }
     }
     
@@ -145,7 +154,6 @@ final class DataSeeder {
             
             exerciseRecord.musclesUsed = exercise.muscle
             print("- ended up setting value: ", exerciseRecord.musclesUsed?.name ?? "bam")
-            exerciseRecord.plannedSets = exercise.plannedSets
             exerciseRecord.type = exercise.type
             exerciseRecord.addToUsedInWorkouts(workoutRecord)
             
@@ -155,7 +163,7 @@ final class DataSeeder {
             if let randomDate = randomDate(daysBack: 10) {
                 logItem.datePerformed = randomDate as NSDate
             }
-            logItem.design = exerciseRecord
+            logItem.exerciseDesign = exerciseRecord
             
             // add random lifts this workout
             
@@ -168,28 +176,36 @@ final class DataSeeder {
         }
     }
     
-    // MARK: - Make muscle
+    // MARK: - Record making functions
+    
+    // Make muscle
     
     private func makeMuscle(withName name: String) {
         let muscleRecord = DatabaseController.createManagedObjectForEntity(.Muscle) as! Muscle
         muscleRecord.name = name.uppercased()
     }
     
-    // MARK: - Make WorkoutStyle
+    // Make WorkoutStyle
     
     private func makeWorkoutStyle(withName name: String) {
         let workoutStyleRecord = DatabaseController.createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
         workoutStyleRecord.name = name.uppercased()
     }
     
-    // MARK: - Make ExerciseStyle
+    // Make ExerciseStyle
     
     private func makeExerciseStyle(withName name: String) {
         let exerciseStyleRecord = DatabaseController.createManagedObjectForEntity(.ExerciseStyle) as! ExerciseStyle
         exerciseStyleRecord.name = name.uppercased()
     }
     
-    // MARK: - Exercise methods
+    private func makeMeasurementStyle(withName name: String) {
+        let measurementStyleRecord = DatabaseController.createManagedObjectForEntity(.MeasurementStyle) as! MeasurementStyle
+        measurementStyleRecord.name = name.uppercased()
+        print("made style record with name \(measurementStyleRecord.name)")
+    }
+    
+    // MARK: - Exercise Helper Methods
     
     private func randomRepNumber() -> Int16 {
         let result = Int16(arc4random_uniform(UInt32(99)))
@@ -281,7 +297,6 @@ final class DataSeeder {
                 print()
                 print("Name: ", exercise.name ?? "")
                 print("Muscle: ", exercise.muscle ?? "")
-                print("PlannedSets: ", exercise.plannedSets )
                 print("Type: ", exercise.type ?? "")
             }
         } catch {

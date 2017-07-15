@@ -1,5 +1,5 @@
 //
-//  WorkoutStyle+CoreDataClass.swift
+//  MeasurementStyle+CoreDataClass.swift
 //  workoutApp
 //
 //  Created by Alexander Kvamme on 15/07/2017.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(WorkoutStyle)
-public class WorkoutStyle: NSManagedObject {
+@objc(MeasurementStyle)
+public class MeasurementStyle: NSManagedObject {
 
 }
