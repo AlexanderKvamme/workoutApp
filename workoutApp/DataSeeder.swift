@@ -132,7 +132,7 @@ final class DataSeeder {
             
             exerciseRecord.name = exercise.name
             exerciseRecord.muscle = exercise.muscle.name
-            print("making exercise and setting muscle to ", exercise.muscle.name ?? "bam")
+            print("making exercise and setting muscle to ", exercise.muscle.name ?? "")
             
             exerciseRecord.musclesUsed = exercise.muscle
             print("- ended up setting value: ", exerciseRecord.musclesUsed?.name ?? "bam")
