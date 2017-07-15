@@ -20,7 +20,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     var muscleSelecter: TwoLabelStack!
     var restSelectionBox: Box!
     var weightSelectionBox: Box!
-    var exerciseSelectionBox: TwoLabelStack!
+    var exerciseSelecter: TwoLabelStack!
     var nameOfCurrentlySelectedExercises = [String]()
     var currentExerciseSelectionOptions: [Exercise]?
     
@@ -127,7 +127,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         
         // Workout selection box
         
-        exerciseSelectionBox = TwoLabelStack(frame: CGRect(x: 0,
+        exerciseSelecter = TwoLabelStack(frame: CGRect(x: 0,
                                                               y: restSelectionBox.frame.maxY + 20,
                                                               width: Constant.UI.width,
                                                               height: 100),
@@ -138,7 +138,9 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
                                    bottomFont: UIFont.custom(style: .bold, ofSize: .big),
                                    bottomColor: UIColor.dark,
                                    fadedBottomLabel: false)
-        exerciseSelectionBox.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
+        exerciseSelecter.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
+        
+        // Footer 
         
         let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
@@ -149,7 +151,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         view.addSubview(muscleSelecter)
         view.addSubview(weightSelectionBox)
         view.addSubview(restSelectionBox)
-        view.addSubview(exerciseSelectionBox)
+        view.addSubview(exerciseSelecter)
         view.addSubview(buttonFooter)
         
         // header.setDebugColors()
@@ -214,7 +216,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         receiveHandler = {
             s in
             self.muscleSelecter.bottomLabel.text = s
-            self.exerciseSelectionBox.topLabel.text = "\(s) Exercises Added".uppercased()
+            self.exerciseSelecter.topLabel.text = "\(s) Exercises Added".uppercased()
             self.updateSelectableExercises()
         }
         navigationController?.pushViewController(musclePicker, animated: false)
@@ -272,10 +274,11 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         // save exercises, exerciseCount, and reset currentlySelected
         currentExerciseSelectionOptions = exercisesUsingSelectedMuscle // Stores exercises in class
         nameOfCurrentlySelectedExercises = [String]()
-        exerciseSelectionBox.bottomLabel.text = "0"
+        exerciseSelecter.bottomLabel.text = "0"
     }
     
-    @objc private func exercisesTapHandler() {
+    @objc private func exercisesTapHandler() { 
+        
         // Uses exercises fetched during updateSelectableExercises to create a custom picker
         
         var currentExerciseNames = [String]()
@@ -300,7 +303,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         exercisePicker.exerciseDelegate = self
         
         receiveHandler = { input in
-            self.exerciseSelectionBox.bottomLabel.text = input
+            self.exerciseSelecter.bottomLabel.text = input
         }
         navigationController?.pushViewController(exercisePicker, animated: false)
     }

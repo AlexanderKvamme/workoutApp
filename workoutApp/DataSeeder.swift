@@ -29,6 +29,7 @@ final class DataSeeder {
     public func seedCoreData() {
         seedWithExampleMuscleGroups()
         seedWithExampleWorkoutStyles()
+        seedWithExampleExerciseStyles()
         seedWithExampleWorkoutsAndExercies()
         DatabaseController.saveContext()
     }
@@ -109,9 +110,17 @@ final class DataSeeder {
     
     private func seedWithExampleWorkoutStyles() {
         for w in Constant.exampleValues.workoutStyles {
-            makeWorkoutStyle(withName: w.uppercased())
+            makeWorkoutStyle(withName: w)
         }
         printWorkoutStyles()
+    }
+    
+    // Seed example ExerciseStyles
+    
+    private func seedWithExampleExerciseStyles() {
+        for e in Constant.exampleValues.exerciseStyles {
+            makeExerciseStyle(withName: e)
+        }
     }
     
     // MARK: - Helper Methods
@@ -132,7 +141,7 @@ final class DataSeeder {
             
             exerciseRecord.name = exercise.name
             exerciseRecord.muscle = exercise.muscle.name
-            print("making exercise and setting muscle to ", exercise.muscle.name ?? "bam")
+            print("making exercise and setting muscle to ", exercise.muscle.name ?? "")
             
             exerciseRecord.musclesUsed = exercise.muscle
             print("- ended up setting value: ", exerciseRecord.musclesUsed?.name ?? "bam")
@@ -163,14 +172,21 @@ final class DataSeeder {
     
     private func makeMuscle(withName name: String) {
         let muscleRecord = DatabaseController.createManagedObjectForEntity(.Muscle) as! Muscle
-        muscleRecord.name = name
+        muscleRecord.name = name.uppercased()
     }
     
     // MARK: - Make WorkoutStyle
     
     private func makeWorkoutStyle(withName name: String) {
-        let workoutRecord = DatabaseController.createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
-        workoutRecord.name = name
+        let workoutStyleRecord = DatabaseController.createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
+        workoutStyleRecord.name = name.uppercased()
+    }
+    
+    // MARK: - Make ExerciseStyle
+    
+    private func makeExerciseStyle(withName name: String) {
+        let exerciseStyleRecord = DatabaseController.createManagedObjectForEntity(.ExerciseStyle) as! ExerciseStyle
+        exerciseStyleRecord.name = name.uppercased()
     }
     
     // MARK: - Exercise methods

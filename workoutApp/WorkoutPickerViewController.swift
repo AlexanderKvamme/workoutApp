@@ -8,6 +8,8 @@
 
 import UIKit
 
+// TODO: - Add "newButton" to the pickerview
+
 class ExercisePickerViewController: PickerViewController {
 
     var selectedExerciseNames = [String]()
@@ -28,6 +30,7 @@ class ExercisePickerViewController: PickerViewController {
         super.init(withChoices: choices, withPreselection: preselection)
         selectionChoices = choices
         hidesBottomBarWhenPushed = true
+        addNewExerciseButton()
     }
 
     // Initializer with multiple preselections
@@ -42,6 +45,43 @@ class ExercisePickerViewController: PickerViewController {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Helpers
+    
+    func addNewExerciseButton() {
+        let width: CGFloat = 25
+        
+        let img = UIImage(named: "newButton")?.withRenderingMode(.alwaysTemplate)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        button.tintColor = UIColor.faded
+        button.alpha = Constant.alpha.faded
+        button.setImage(img, for: .normal)
+        view.addSubview(button)
+        
+        // Layout
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            button.topAnchor.constraint(equalTo: header.topLabel.bottomAnchor, constant: 10),
+            button.heightAnchor.constraint(equalToConstant: width),
+            button.widthAnchor.constraint(equalToConstant: width),
+            ])
+        
+        // Let taps present newExerciseController
+        button.addTarget(self, action: #selector(newExerciseTapHandler), for: .touchUpInside)
+    }
+    
+    @objc private func newExerciseTapHandler() {
+        print("didTap")
+        let nec = NewExerciseController()
+        if let navigationController = navigationController {
+            print("Gonna push")
+            navigationController.pushViewController(nec, animated: true)
+        } else {
+            print("Gonna present")
+            present(nec, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Tableview Delegate Methods

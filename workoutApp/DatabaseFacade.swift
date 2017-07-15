@@ -39,7 +39,6 @@ final class DatabaseFacade {
         do {
             let result = try DatabaseController.getContext().fetch(fetchRequest)
             if result.count > 0 {
-                print("Found one, returning \(result[0].name)")
                 return result[0]
             }
             } catch let error as NSError {
