@@ -91,22 +91,22 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
                                          fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
-        // MARK: - Weight and Rest Boxes
+        // MARK: - Rest Box
         
         let boxFactory = BoxFactory.makeFactory(type: .SelectionBox)
         
         // Weight selection box
         
-        let weightHeader = boxFactory.makeBoxHeader()
-        let weightSubHeader = boxFactory.makeBoxSubHeader()
-        let weightFrame = boxFactory.makeBoxFrame()
-        let weightContent = boxFactory.makeBoxContent()
-        
-        weightSelectionBox = Box(header: weightHeader, subheader: weightSubHeader, bgFrame: weightFrame!, content: weightContent!)
-        weightSelectionBox.frame.origin = CGPoint(x: 0, y: typeSelecter.frame.maxY)
-        weightSelectionBox.setTitle("Weight in kg")
-        weightSelectionBox.setContentLabel("40.1")
-        weightSelectionBox.button.addTarget(self, action: #selector(weightTapHandler), for: .touchUpInside)
+//        let weightHeader = boxFactory.makeBoxHeader()
+//        let weightSubHeader = boxFactory.makeBoxSubHeader()
+//        let weightFrame = boxFactory.makeBoxFrame()
+//        let weightContent = boxFactory.makeBoxContent()
+//        
+//        weightSelectionBox = Box(header: weightHeader, subheader: weightSubHeader, bgFrame: weightFrame!, content: weightContent!)
+//        weightSelectionBox.frame.origin = CGPoint(x: 0, y: typeSelecter.frame.maxY)
+//        weightSelectionBox.setTitle("Weight in kg")
+//        weightSelectionBox.setContentLabel("40.1")
+//        weightSelectionBox.button.addTarget(self, action: #selector(weightTapHandler), for: .touchUpInside)
         // weightSelectionBox.setDebugColors()
         
         // Rest selection box
@@ -117,13 +117,13 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         let restContent = boxFactory.makeBoxContent()
         
         restSelectionBox = Box(header: restHeader, subheader: restSubHeader, bgFrame: restFrame!, content: restContent!)
-        restSelectionBox.frame.origin = CGPoint(x: halfScreenWidth, y: weightSelectionBox.frame.origin.y)
+        restSelectionBox.frame.origin = CGPoint(x: halfScreenWidth - restSelectionBox.frame.width/2, y: typeSelecter.frame.maxY)
         restSelectionBox.setTitle("Rest")
         restSelectionBox.setContentLabel("3:00")
         
         restSelectionBox.button.addTarget(self, action: #selector(restTapHandler), for: .touchUpInside)
         
-        // restSelectionBox.setDebugColors()
+        //restSelectionBox.setDebugColors()
         
         // Workout selection box
         
@@ -149,7 +149,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         view.addSubview(header)
         view.addSubview(typeSelecter)
         view.addSubview(muscleSelecter)
-        view.addSubview(weightSelectionBox)
+//        view.addSubview(weightSelectionBox)
         view.addSubview(restSelectionBox)
         view.addSubview(exerciseSelecter)
         view.addSubview(buttonFooter)
@@ -222,18 +222,18 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         navigationController?.pushViewController(musclePicker, animated: false)
     }
     
-    @objc private func weightTapHandler() {
-        // Prepares and present a VC to input weight
-        let weightInputViewController = InputViewController(inputStyle: .weight)
-        weightInputViewController.delegate = self
-        
-        receiveHandler = { s in
-            if s != "" {
-                self.weightSelectionBox.content?.label?.text = s
-            }
-        }
-        navigationController?.pushViewController(weightInputViewController, animated: false)
-    }
+//    @objc private func weightTapHandler() {
+//        // Prepares and present a VC to input weight
+//        let weightInputViewController = InputViewController(inputStyle: .weight)
+//        weightInputViewController.delegate = self
+//        
+//        receiveHandler = { s in
+//            if s != "" {
+//                self.weightSelectionBox.content?.label?.text = s
+//            }
+//        }
+//        navigationController?.pushViewController(weightInputViewController, animated: false)
+//    }
     
     @objc private func restTapHandler() {
         // Prepares and present a VC to input weight
