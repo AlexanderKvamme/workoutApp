@@ -95,20 +95,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         
         let boxFactory = BoxFactory.makeFactory(type: .SelectionBox)
         
-        // Weight selection box
-        
-//        let weightHeader = boxFactory.makeBoxHeader()
-//        let weightSubHeader = boxFactory.makeBoxSubHeader()
-//        let weightFrame = boxFactory.makeBoxFrame()
-//        let weightContent = boxFactory.makeBoxContent()
-//        
-//        weightSelectionBox = Box(header: weightHeader, subheader: weightSubHeader, bgFrame: weightFrame!, content: weightContent!)
-//        weightSelectionBox.frame.origin = CGPoint(x: 0, y: typeSelecter.frame.maxY)
-//        weightSelectionBox.setTitle("Weight in kg")
-//        weightSelectionBox.setContentLabel("40.1")
-//        weightSelectionBox.button.addTarget(self, action: #selector(weightTapHandler), for: .touchUpInside)
-        // weightSelectionBox.setDebugColors()
-        
         // Rest selection box
         
         let restHeader = boxFactory.makeBoxHeader()
@@ -171,7 +157,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         receiveHandler = { s in
             self.header.bottomLabel.text = s
         }
-        navigationController?.pushViewController(workoutNamePicker, animated: false)
+        navigationController?.pushViewController(workoutNamePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func typeTapHandler() {
@@ -193,7 +179,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         receiveHandler = { s in
             self.typeSelecter.bottomLabel.text = s
         }
-        navigationController?.pushViewController(typePicker, animated: false)
+        navigationController?.pushViewController(typePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func muscleTapHandler() {
@@ -219,21 +205,8 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
             self.exerciseSelecter.topLabel.text = "\(s) Exercises Added".uppercased()
             self.updateSelectableExercises()
         }
-        navigationController?.pushViewController(musclePicker, animated: false)
+        navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
-    
-//    @objc private func weightTapHandler() {
-//        // Prepares and present a VC to input weight
-//        let weightInputViewController = InputViewController(inputStyle: .weight)
-//        weightInputViewController.delegate = self
-//        
-//        receiveHandler = { s in
-//            if s != "" {
-//                self.weightSelectionBox.content?.label?.text = s
-//            }
-//        }
-//        navigationController?.pushViewController(weightInputViewController, animated: false)
-//    }
     
     @objc private func restTapHandler() {
         // Prepares and present a VC to input weight
@@ -277,41 +250,45 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         exerciseSelecter.bottomLabel.text = "0"
     }
     
-    @objc private func exercisesTapHandler() { 
-        
-        // Uses exercises fetched during updateSelectableExercises to create a custom picker
-        
+    @objc private func exercisesTapHandler() {
+        print("didTapExerciseHandler")
+        // Uses exercises fetched during updateSelectableExercises to create a custom pickerVC
         var currentExerciseNames = [String]()
         
-        guard let currentExerciseSelectionOptions = currentExerciseSelectionOptions else { return }
-        for e in currentExerciseSelectionOptions {
-            if let name = e.name {
+        guard let currentExerciseSelectionOptions = currentExerciseSelectionOptions else {
+            print("ERROR FOUND NO: currentExerciseSelectionOptions")
+            return
+        }
+        
+        for exercise in currentExerciseSelectionOptions {
+            if let name = exercise.name {
                 currentExerciseNames.append(name)
             }
         }
+
+        let exercisePicker: ExercisePickerViewController!
         
-        let exercisePicker = ExercisePickerViewController(choices: currentExerciseNames,
-                                                                      withMultiplePreselections: nameOfCurrentlySelectedExercises)
-        // Set header
-        if let muscleName = muscleSelecter.bottomLabel.text {
-                exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")
-        } else {
-            exercisePicker.setHeaderTitle("SELECT EXERCISES")
-        }
+        // Use selected muscle to prepare a pickerview and also update UI
+        guard let muscleName = muscleSelecter.bottomLabel.text  else {
+            print("had no muscleName")
+            return }
         
+        let muscle = DatabaseFacade.fetchMuscleWithName(muscleName)! // Only existing muscles are displayed so force unwrap
+        exercisePicker = ExercisePickerViewController(forMuscle: muscle,
+                                                          withMultiplePreselections: nameOfCurrentlySelectedExercises)
+        exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")
         exercisePicker.delegate = self
         exercisePicker.exerciseDelegate = self
         
         receiveHandler = { input in
             self.exerciseSelecter.bottomLabel.text = input
         }
-        navigationController?.pushViewController(exercisePicker, animated: false)
+        navigationController?.pushViewController(exercisePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     // MARK: - Delegate methods
     
     func receiveExerciseNames(_ exerciseNames: [String]) {
-        print("BAM workouts in NWC is received and set to : ", exerciseNames)
         nameOfCurrentlySelectedExercises = exerciseNames
     }
 }

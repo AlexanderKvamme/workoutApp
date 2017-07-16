@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
-		DD0CD4C61F01023C008544EE /* WorkoutPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* WorkoutPickerViewController.swift */; };
-		DD0CD4C81F012A33008544EE /* WorkoutPickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C71F012A33008544EE /* WorkoutPickerProtocols.swift */; };
+		DD0CD4C61F01023C008544EE /* ExercisePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */; };
+		DD0CD4C81F012A33008544EE /* ExercisePickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
@@ -86,8 +86,8 @@
 
 /* Begin PBXFileReference section */
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
-		DD0CD4C51F01023C008544EE /* WorkoutPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutPickerViewController.swift; sourceTree = "<group>"; };
-		DD0CD4C71F012A33008544EE /* WorkoutPickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutPickerProtocols.swift; sourceTree = "<group>"; };
+		DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerViewController.swift; sourceTree = "<group>"; };
+		DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerProtocols.swift; sourceTree = "<group>"; };
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
@@ -178,8 +178,8 @@
 		DD0CD4C41F010122008544EE /* workoutPicker */ = {
 			isa = PBXGroup;
 			children = (
-				DD0CD4C51F01023C008544EE /* WorkoutPickerViewController.swift */,
-				DD0CD4C71F012A33008544EE /* WorkoutPickerProtocols.swift */,
+				DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */,
+				DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */,
 			);
 			name = workoutPicker;
 			sourceTree = "<group>";
@@ -271,10 +271,10 @@
 			children = (
 				DDF1F1EA1F07AAAF001A6F0C /* Exercises */,
 				DDD290A61EDCCD1500048BC9 /* TestViewController */,
-				DD7600461EDF23E900871DD8 /* New Workout or Exercise */,
+				DD7600461EDF23E900871DD8 /* New Workout / Exercise */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DDDE6E521ED4DF4900A03886 /* Workout Table View */,
-				DD98A5021F13AAAE002985BF /* Keyboard */,
+				DD98A5021F13AAAE002985BF /* Custom Keyboard */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
@@ -335,7 +335,7 @@
 			name = Modal;
 			sourceTree = "<group>";
 		};
-		DD7600461EDF23E900871DD8 /* New Workout or Exercise */ = {
+		DD7600461EDF23E900871DD8 /* New Workout / Exercise */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1121EE9434800EBB7B7 /* InputViewController */,
@@ -347,7 +347,7 @@
 				DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */,
 				DD59B0951EE2B989006443D4 /* ButtonFooter.swift */,
 			);
-			name = "New Workout or Exercise";
+			name = "New Workout / Exercise";
 			sourceTree = "<group>";
 		};
 		DD90AF2A1EDED25600A560F0 /* refreshControl */ = {
@@ -366,13 +366,13 @@
 			name = Notifications;
 			sourceTree = "<group>";
 		};
-		DD98A5021F13AAAE002985BF /* Keyboard */ = {
+		DD98A5021F13AAAE002985BF /* Custom Keyboard */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */,
 				DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */,
 			);
-			name = Keyboard;
+			name = "Custom Keyboard";
 			sourceTree = "<group>";
 		};
 		DDA7276C1ED5BA3500068AD4 /* Core Data */ = {
@@ -542,7 +542,7 @@
 				DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
 				DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */,
-				DD0CD4C81F012A33008544EE /* WorkoutPickerProtocols.swift in Sources */,
+				DD0CD4C81F012A33008544EE /* ExercisePickerProtocols.swift in Sources */,
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD41AB731F1A550600CB08F5 /* WorkoutStyle+CoreDataClass.swift in Sources */,
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
@@ -575,7 +575,7 @@
 				DDEEA9F81EDCD99A003360CD /* WorkoutBoxCell.swift in Sources */,
 				DD41AB781F1A550600CB08F5 /* Lift+CoreDataProperties.swift in Sources */,
 				DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */,
-				DD0CD4C61F01023C008544EE /* WorkoutPickerViewController.swift in Sources */,
+				DD0CD4C61F01023C008544EE /* ExercisePickerViewController.swift in Sources */,
 				DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */,
 				DD41AB7C1F1A550600CB08F5 /* Exercise+CoreDataProperties.swift in Sources */,
 				DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */,

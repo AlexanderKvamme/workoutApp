@@ -9,7 +9,8 @@
 import Foundation
 
 /*
- This PickerView is used to pick workout styles/muscles. It is actually a ViewController containing a tableView. Since these are fantastically customizable.
+ This PickerView is used to pick workout styles/muscles. 
+ It is actually a ViewController containing a tableView. Since these are fantastically customizable.
  */
 
 import UIKit
@@ -41,6 +42,15 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func sendStringBack(_ string: String) {
         delegate?.receive(string)
     }
+    
+    // Initializers
+    
+    init() {
+        print("im initted without parameters")
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    // Initializer with choices
     
     init(withChoices choices: [String], withPreselection preselection: String?) {
         
@@ -115,7 +125,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.label.text = selectionChoices[indexPath.row].uppercased()
         cell.label.applyCustomAttributes(.more)
         cell.sizeToFit()
-        
         return cell
     }
     

@@ -39,12 +39,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "workoutApp/WorkoutPickerViewController.swift"
-            timestampString = "521814278.256232"
+            timestampString = "521902378.503598"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "confirmAndDismiss()"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
+            landmarkName = "selectRow(withString:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -55,13 +55,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "workoutApp/WorkoutPickerViewController.swift"
-            timestampString = "521814278.256232"
+            timestampString = "521902378.503598"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
-            landmarkName = "selectRow(withString:)"
-            landmarkType = "7">
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "ExercisePickerViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

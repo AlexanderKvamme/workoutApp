@@ -18,6 +18,10 @@ import Foundation
 
 import UIKit
 
+protocol NewExerciseReceiver: class {
+    func receiveNewExercise(_ exercise: Exercise)
+}
+
 class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameReceiver {
     
     var receiveHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of muscle/type/weight/time pickers
@@ -30,6 +34,8 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     var muscleSelecter: TwoLabelStack!
     var measurementSelecter: TwoLabelStack!
     var nameOfCurrentlySelectedExercises = [String]()
+    
+    weak var exercisePickerDelegate: NewExerciseReceiver?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -219,14 +225,16 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     
     @objc private func approveTapHandler() {
         // Make exercise and save to core data
-        print("approve was tapped")
-//        guard let newExerciseName = header.bottomLabel.text else { return }
         
         // Unwrap user selections to 
         if let name = header.bottomLabel.text, let exerciseStyle = typeSelecter.bottomLabel.text, let muscleName = muscleSelecter.bottomLabel.text, let measurementStyle = measurementSelecter.bottomLabel.text {
             
-            DatabaseFacade.makeExercise(withName: name, styleName: exerciseStyle, muscleName: muscleName, measurementStyleName: measurementStyle)
+            let newExercise = DatabaseFacade.makeExercise(withName: name, styleName: exerciseStyle, muscleName: muscleName, measurementStyleName: measurementStyle)
+            
+            // Signal to delegate ( exercisePicker ) that user made a new exercise, and that the VC is supposed to mark it as selected
+            exercisePickerDelegate?.receiveNewExercise(newExercise)
         }
+
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
