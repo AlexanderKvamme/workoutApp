@@ -87,4 +87,8 @@ enum Constant {
             }
         }
     }
+    enum Animation {
+        static let pickerVCsShouldAnimateIn = true
+        static let pickerVCsShouldAnimateOut = true
+    }
 }

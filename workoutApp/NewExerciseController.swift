@@ -119,6 +119,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
         let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
         buttonFooter.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        buttonFooter.approveButton.addTarget(self, action: #selector(approveTapHandler), for: .touchUpInside)
         
         view.addSubview(header)
         view.addSubview(typeSelecter)
@@ -133,7 +134,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     }
     
     func dismissVC() {
-        navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
     // MARK: - Tap handlers
@@ -145,7 +146,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
         receiveHandler = { s in
             self.header.bottomLabel.text = s
         }
-        navigationController?.pushViewController(workoutNamePicker, animated: false)
+        navigationController?.pushViewController(workoutNamePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func typeTapHandler() {
@@ -167,7 +168,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
         receiveHandler = { s in
             self.typeSelecter.bottomLabel.text = s
         }
-        navigationController?.pushViewController(typePicker, animated: false)
+        navigationController?.pushViewController(typePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func muscleTapHandler() {
@@ -191,7 +192,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
             s in
             self.muscleSelecter.bottomLabel.text = s
         }
-        navigationController?.pushViewController(musclePicker, animated: false)
+        navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func measurementTapHandler() {
@@ -213,16 +214,27 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
             print("received back: ", s)
             self.measurementSelecter.bottomLabel.text = s
         }
-        
-        navigationController?.pushViewController(measurementStylePicker, animated: true)
+        navigationController?.pushViewController(measurementStylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
  }
+    
+    @objc private func approveTapHandler() {
+        // Make exercise and save to core data
+        print("approve was tapped")
+//        guard let newExerciseName = header.bottomLabel.text else { return }
+        
+        // Unwrap user selections to 
+        if let name = header.bottomLabel.text, let exerciseStyle = typeSelecter.bottomLabel.text, let muscleName = muscleSelecter.bottomLabel.text, let measurementStyle = measurementSelecter.bottomLabel.text {
+            
+            DatabaseFacade.makeExercise(withName: name, styleName: exerciseStyle, muscleName: muscleName, measurementStyleName: measurementStyle)
+        }
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+    }
     
     // MARK: - Helper methods
     
     // MARK: - Delegate methods
     
     func receiveExerciseNames(_ exerciseNames: [String]) {
-        print("BAM workouts in NWC is received and set to : ", exerciseNames)
         nameOfCurrentlySelectedExercises = exerciseNames
     }
 }

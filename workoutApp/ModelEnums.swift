@@ -33,6 +33,7 @@ enum CDModels {
             case core = "Core"
             case chest = "Chest"
             case shoulders = "Shoulders"
+            case undefined = "Undefined"
         }
     }
 }
