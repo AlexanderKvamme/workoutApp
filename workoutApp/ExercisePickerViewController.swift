@@ -10,37 +10,93 @@ import UIKit
 
 // TODO: - Add "newButton" to the pickerview
 
-class ExercisePickerViewController: PickerViewController {
+class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
 
-    var selectedExerciseNames = [String]()
+    var selectedExerciseNames = [String]() {
+        didSet {
+            print("did set to \(selectedExerciseNames)")
+        }
+    }
     var selectedIndexPaths = [IndexPath]()
+    var currentlyDisplayedMuscle: Muscle! // Store during init, used to refresh the picker after returning from making new exercise
     
     weak var exerciseDelegate: isExerciseNameReceiver?
     
+    // ViewDidLoad
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    // ViewWillAppear
+    
+    override func viewWillAppear(_ animated: Bool) {
+        displayExercisesForMuscle(currentlyDisplayedMuscle)
+        
+        // Preselect
         for name in selectedExerciseNames {
             selectRow(withString: name)
         }
+        
+        print("viewWillAppear - selectionChoices : ", selectionChoices)
+        print("viewWillAppear - selectedExerciseNames : ", selectedExerciseNames)
+        print("viewWillAppear - selectedIndexPaths : ", selectedIndexPaths)
+        
+        table.reloadData()
     }
     
-    // Override initializer to take an [String] instead of just String.
-    
-    override init(withChoices choices: [String], withPreselection preselection: String?) {
-        super.init(withChoices: choices, withPreselection: preselection)
-        selectionChoices = choices
+    // Initializer that takes a Muscle and sets the pickerVC to display exercises of this muscle
+
+    init(forMuscle muscle: Muscle) {
+        currentlyDisplayedMuscle = muscle
+        
+        let exercisesUsingSelectedMuscle = DatabaseFacade.fetchExercises(usingMuscle: muscle)
+        
+        var selectionChoices = [String]()
+        if let exercisesUsingSelectedMuscle = exercisesUsingSelectedMuscle {
+            for exercise in exercisesUsingSelectedMuscle {
+                if let name = exercise.name {
+                    selectionChoices.append(name)
+                }
+            }
+        }
+        
+        // Pass on selectionChoices to super.init
+        super.init(withChoices: selectionChoices, withPreselection: nil)
+        
         hidesBottomBarWhenPushed = true
         addNewExerciseButton()
     }
-
-    // Initializer with multiple preselections
     
-    convenience init(choices: [String], withMultiplePreselections preselections: [String]?) {
-        self.init(withChoices: choices, withPreselection: nil)
+    // Initialize with Muscle
+
+    convenience init(forMuscle muscle: Muscle, withMultiplePreselections preselections: [String]?) {
+        self.init(forMuscle: muscle)
         
         if let preselections = preselections {
             self.selectedExerciseNames = preselections
         }
+    }
+    
+    // MARK: - Delegate methods
+    
+    func receiveNewExercise(_ exercise: Exercise) {
+        // FIXME: - Update tableview to welcome this new exercise
+        print("BEFORE RECEIVING")
+        print("receiveNewExercise - selectionChoices : ", selectionChoices)
+        print("receiveNewExercise - selectedExerciseNames : ", selectedExerciseNames)
+        print("receiveNewExercise - selectedIndexPaths : ", selectedIndexPaths)
+        
+        if let name = exercise.name {
+            print("*received \(name)*")
+            selectionChoices.append(name)
+            selectedExerciseNames.append(name)
+            selectRow(withString: name)
+        }
+        print("AFTER RECEIVING:")
+        print("receiveNewExercise - selectionChoices : ", selectionChoices)
+        print("receiveNewExercise - selectedExerciseNames : ", selectedExerciseNames)
+        print("receiveNewExercise - selectedIndexPaths : ", selectedIndexPaths)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,6 +104,25 @@ class ExercisePickerViewController: PickerViewController {
     }
     
     // MARK: - Helpers
+    
+    private func displayExercisesForMuscle(_ muscle: Muscle) {
+        // fetches all exercises for this muscle, replaces selectionChoices with them, and reloads table
+        guard let exercisesForThisMuscle = DatabaseFacade.fetchExercises(usingMuscle: muscle) else {
+            print("Could not fetch exercises for \(muscle.name)")
+            return
+        }
+        
+        // clear array to keep array uppdated
+        selectedIndexPaths.removeAll()
+        selectionChoices.removeAll()
+        
+        for e in exercisesForThisMuscle {
+            if let name = e.name {
+                selectionChoices.append(name)
+            }
+        }
+        table.reloadData()
+    }
     
     func addNewExerciseButton() {
         let width: CGFloat = 25
@@ -73,13 +148,14 @@ class ExercisePickerViewController: PickerViewController {
     }
     
     @objc private func newExerciseTapHandler() {
-        print("didTap")
+    
         let nec = NewExerciseController()
+        nec.exercisePickerDelegate = self
+        
+        // Make presentable outside of navigationController, used for testing
         if let navigationController = navigationController {
-            print("Gonna push")
             navigationController.pushViewController(nec, animated: true)
         } else {
-            print("Gonna present")
             present(nec, animated: true, completion: nil)
         }
     }
@@ -104,7 +180,7 @@ class ExercisePickerViewController: PickerViewController {
             table.selectRow(at: indexPath, animated: false, scrollPosition: .none)
             selectedIndexPaths.append(indexPath)
         } else {
-            print(selectionChoices)
+            print("ERROR could not find and select row")
         }
     }
     
@@ -116,6 +192,10 @@ class ExercisePickerViewController: PickerViewController {
         // if tapped indexPath is already contained, remove from cache and unselect it
         if selectedIndexPaths.contains(indexPath){
             if let location = selectedIndexPaths.index(of: indexPath){
+                print("location: ", location)
+                print("selIndexPaths: ", selectedIndexPaths)
+                print("selectedExerciseNames: ", selectedExerciseNames)
+                
                 selectedIndexPaths.remove(at: location)
                 selectedExerciseNames.remove(at: location)
             }

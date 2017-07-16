@@ -64,7 +64,7 @@ final class DatabaseFacade {
         return nil
     }
     
-    static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) {
+    static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
         print("Gonna make that exercise")
         
         let newExercise = DatabaseController.createManagedObjectForEntity(.Exercise) as! Exercise
@@ -75,10 +75,6 @@ final class DatabaseFacade {
         let exerciseStyle = DatabaseFacade.getExerciseStyle(named: styleName)
         let measurementStyle = DatabaseFacade.getMeasurementStyle(named: measurementStyleName)
         
-        print("exercise type fetch ended : ", exerciseStyle?.name ?? "nil")
-        print("muscle fetch ended : ", muscle?.name ?? "nil")
-        print("measurement style fetch ended : ", measurementStyle?.name ?? "nil")
-        
         // TODO: - set up the newExercise and save it to database and then show it in the previous screen somehow
         
         newExercise.name = exerciseName
@@ -87,6 +83,8 @@ final class DatabaseFacade {
         newExercise.measurementStyle = measurementStyle
         
         DatabaseController.saveContext()
+        
+        return newExercise
     }
     
     // MARK: - Getter methods

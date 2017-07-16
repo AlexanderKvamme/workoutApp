@@ -41,7 +41,8 @@ class CustomTabBarController: UITabBarController {
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
         
         // MARK: - Profile Tab
-        let test = ExercisePickerViewController(choices: ["One", "two", "Three"], withMultiplePreselections: nil)
+        let muscle = DatabaseFacade.fetchMuscleWithName("GLUTES")
+        let test = ExercisePickerViewController(forMuscle: muscle!, withMultiplePreselections: nil)
         let testViewController = CustomNavigationViewController(rootViewController: test)
         
         let profileController = testViewController
