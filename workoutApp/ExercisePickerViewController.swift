@@ -37,11 +37,6 @@ class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
         for name in selectedExerciseNames {
             selectRow(withString: name)
         }
-        
-        print("viewWillAppear - selectionChoices : ", selectionChoices)
-        print("viewWillAppear - selectedExerciseNames : ", selectedExerciseNames)
-        print("viewWillAppear - selectedIndexPaths : ", selectedIndexPaths)
-        
         table.reloadData()
     }
     
@@ -149,7 +144,7 @@ class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
     
     @objc private func newExerciseTapHandler() {
     
-        let nec = NewExerciseController()
+        let nec = NewExerciseController(withPreselectedMuscle: currentlyDisplayedMuscle)
         nec.exercisePickerDelegate = self
         
         // Make presentable outside of navigationController, used for testing
