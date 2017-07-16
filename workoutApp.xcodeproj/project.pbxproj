@@ -271,7 +271,7 @@
 			children = (
 				DDF1F1EA1F07AAAF001A6F0C /* Exercises */,
 				DDD290A61EDCCD1500048BC9 /* TestViewController */,
-				DD7600461EDF23E900871DD8 /* New Workout */,
+				DD7600461EDF23E900871DD8 /* New Workout or Exercise */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DDDE6E521ED4DF4900A03886 /* Workout Table View */,
 				DD98A5021F13AAAE002985BF /* Keyboard */,
@@ -335,7 +335,7 @@
 			name = Modal;
 			sourceTree = "<group>";
 		};
-		DD7600461EDF23E900871DD8 /* New Workout */ = {
+		DD7600461EDF23E900871DD8 /* New Workout or Exercise */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1121EE9434800EBB7B7 /* InputViewController */,
@@ -347,7 +347,7 @@
 				DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */,
 				DD59B0951EE2B989006443D4 /* ButtonFooter.swift */,
 			);
-			name = "New Workout";
+			name = "New Workout or Exercise";
 			sourceTree = "<group>";
 		};
 		DD90AF2A1EDED25600A560F0 /* refreshControl */ = {
