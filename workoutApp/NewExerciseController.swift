@@ -34,11 +34,14 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     var muscleSelecter: TwoLabelStack!
     var measurementSelecter: TwoLabelStack!
     var nameOfCurrentlySelectedExercises = [String]()
+    var preselectedMuscle: Muscle? = nil
     
     weak var exercisePickerDelegate: NewExerciseReceiver?
     
-    init() {
+    init(withPreselectedMuscle muscle: Muscle?) {
         super.init(nibName: nil, bundle: nil)
+        
+        preselectedMuscle = muscle
         hidesBottomBarWhenPushed = true
     }
     
@@ -101,7 +104,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
                                        topText: "Muscle",
                                        topFont: darkHeaderFont,
                                        topColor: .dark,
-                                       bottomText: Constant.defaultValues.muscle,
+                                       bottomText: preselectedMuscle?.name ?? Constant.defaultValues.muscle,
                                        bottomFont: darkSubHeaderFont,
                                        bottomColor: .dark,
                                        fadedBottomLabel: false)

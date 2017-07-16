@@ -22,7 +22,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     var weightSelectionBox: Box!
     var exerciseSelecter: TwoLabelStack!
     var nameOfCurrentlySelectedExercises = [String]()
-    var currentExerciseSelectionOptions: [Exercise]?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -131,17 +130,18 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
         buttonFooter.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        buttonFooter.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
         
         view.addSubview(header)
         view.addSubview(typeSelecter)
         view.addSubview(muscleSelecter)
-//        view.addSubview(weightSelectionBox)
         view.addSubview(restSelectionBox)
         view.addSubview(exerciseSelecter)
         view.addSubview(buttonFooter)
-        
-        // header.setDebugColors()
-        // typeSelecter.setDebugColors()
+    }
+    
+    @objc private func approveAndDismissVC() {
+        print("*WOULD MAKE WORKOUT, SAVE TO CORE DATA, AND DISMISS")
     }
     
     func dismissVC() {
@@ -245,33 +245,18 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         }
         
         // save exercises, exerciseCount, and reset currentlySelected
-        currentExerciseSelectionOptions = exercisesUsingSelectedMuscle // Stores exercises in class
         nameOfCurrentlySelectedExercises = [String]()
         exerciseSelecter.bottomLabel.text = "0"
     }
     
     @objc private func exercisesTapHandler() {
-        print("didTapExerciseHandler")
-        // Uses exercises fetched during updateSelectableExercises to create a custom pickerVC
-        var currentExerciseNames = [String]()
-        
-        guard let currentExerciseSelectionOptions = currentExerciseSelectionOptions else {
-            print("ERROR FOUND NO: currentExerciseSelectionOptions")
-            return
-        }
-        
-        for exercise in currentExerciseSelectionOptions {
-            if let name = exercise.name {
-                currentExerciseNames.append(name)
-            }
-        }
-
+        // Checks which muscle is selected, and then makes a pickerview to let user select exercises of that muscle group.
         let exercisePicker: ExercisePickerViewController!
         
-        // Use selected muscle to prepare a pickerview and also update UI
+        // Use selected muscle to prepare a pickerview and update UI
         guard let muscleName = muscleSelecter.bottomLabel.text  else {
-            print("had no muscleName")
-            return }
+            return
+        }
         
         let muscle = DatabaseFacade.fetchMuscleWithName(muscleName)! // Only existing muscles are displayed so force unwrap
         exercisePicker = ExercisePickerViewController(forMuscle: muscle,
