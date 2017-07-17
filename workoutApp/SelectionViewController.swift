@@ -95,16 +95,20 @@ class SelectionViewController: UIViewController {
     // MARK: - Methods
     
     func updateSelectionChoices() {
-        setupSelectionChoices()
+        // Updates the buttons subheaderlabel with corrent number of workouts from core data
+        for button in buttons {
+            let workoutStyleName = button.headerLabel.text
+            if let workoutStyleName = workoutStyleName {
+                let newSubHeader = "\(DatabaseFacade.countWorkoutsOfType(ofStyle: workoutStyleName)) WORKOUTS"
+                button.subheaderLabel.text = newSubHeader
+            }
+        }
     }
     
     func setupSelectionChoices() {
         var workoutStyles = [WorkoutStyle]()
-        
         // Fetch from Core Data
-        
         do {
-            print("fetchRequest was: \(self.fetchRequestToDisplaySelectionsFrom)")
             let results = try DatabaseController.getContext().fetch(fetchRequestToDisplaySelectionsFrom)
             // Append all received types
             for r in results as! [Workout] {
@@ -125,6 +129,7 @@ class SelectionViewController: UIViewController {
                 print("error finding style name")
                 return
             }
+
             let newButton = SelectionViewButton(header: styleName,
                                                 subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
             
@@ -146,10 +151,10 @@ class SelectionViewController: UIViewController {
     
     func buttonTapHandler(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
-        let tappedWorkoutStyle = buttonNames[button.tag]
+        let tappedWorkoutStyleName = buttonNames[button.tag]
         
-        // process string
-        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyle)
+        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        
         navigationController?.pushViewController(boxTableViewController, animated: true)
     }
     
@@ -192,3 +197,4 @@ class SelectionViewController: UIViewController {
         alignmentRectangle.translatesAutoresizingMaskIntoConstraints = false
     }
 }
+

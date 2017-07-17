@@ -145,7 +145,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         // Returns the indexpath of the current collectionviewCell, IN the
         if let currentIndexPath = owner.collectionView.indexPath(for: self){
             let refToNextCell = owner.getNextCell(fromIndexPath: currentIndexPath)
-            print("nextcell: \(refToNextCell.repsField.text))")
             refToNextCell.tapHandler(sender: self)
         }
     }

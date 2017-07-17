@@ -77,7 +77,7 @@
 		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
 		DDEEA9F81EDCD99A003360CD /* WorkoutBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */; };
 		DDF1F1EC1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */; };
-		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableVC.swift */; };
+		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */; };
 		DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */; };
 		DDF1F1F61F07E3C5001A6F0C /* ExerciseDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseDataSource.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
@@ -157,7 +157,7 @@
 		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
 		DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutBoxCell.swift; sourceTree = "<group>"; };
 		DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSetCollectionViewCell.swift; sourceTree = "<group>"; };
-		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableVC.swift; sourceTree = "<group>"; };
+		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewController.swift; sourceTree = "<group>"; };
 		DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
 		DDF1F1F51F07E3C5001A6F0C /* ExerciseDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseDataSource.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
@@ -430,7 +430,7 @@
 				DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */,
 				DD2A9E731F0EED600074B46F /* Footer.swift */,
 				DDF1F1F51F07E3C5001A6F0C /* ExerciseDataSource.swift */,
-				DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableVC.swift */,
+				DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */,
 			);
 			name = "Exercise TableView";
 			sourceTree = "<group>";
@@ -527,7 +527,7 @@
 				DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */,
 				DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
-				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableVC.swift in Sources */,
+				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,

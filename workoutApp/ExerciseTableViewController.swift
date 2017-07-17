@@ -13,12 +13,28 @@ class ExerciseTableViewController: UITableViewController {
     var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
     var dataSource: ExerciseTableViewDataSource!
     
+    // MARK: - Initializers
+    
+    init(withWorkout workout: Workout) {
+        super.init(nibName: nil, bundle: nil)
+        self.currentWorkout = workout
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setupNavigationBar()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         // Visuals
         tableView.backgroundColor = .light
-        setupNavigationBar()
         
         // Table view setup
         dataSource = ExerciseTableViewDataSource(workout: currentWorkout)
@@ -43,17 +59,6 @@ class ExerciseTableViewController: UITableViewController {
         // setDebugColors()
     }
     
-    // MARK: - Initializers
-    
-    init(withWorkout workout: Workout) {
-        super.init(nibName: nil, bundle: nil)
-        self.currentWorkout = workout
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Navbar
     
     private func setupNavigationBar() {
@@ -65,6 +70,7 @@ class ExerciseTableViewController: UITableViewController {
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = rightButton
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     // MARK: - Delegate methods

@@ -237,23 +237,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     private func updateSelectableExercises() {
         // method is called after selecting a muscle, and makes sure the exercises that are selectable are exercises for the selected muscle.
         
-        // Get muscle
-        
-        var newlySelectedMuscle: Muscle? = nil
-        
-        if let muscleName = muscleSelecter.bottomLabel.text {
-            newlySelectedMuscle = DatabaseFacade.fetchMuscleWithName(muscleName)
-        }
-        
-        // fetch exercises using the newly selected muscle as predicate
-        
-        var exercisesUsingSelectedMuscle: [Exercise]? = nil
-        
-        if let newlySelectedMuscle = newlySelectedMuscle {
-            exercisesUsingSelectedMuscle = DatabaseFacade.fetchExercises(usingMuscle: newlySelectedMuscle)
-        }
-        
-        // save exercises, exerciseCount, and reset currentlySelected
         nameOfCurrentlySelectedExercises = [String]()
         exerciseSelecter.bottomLabel.text = "0"
     }

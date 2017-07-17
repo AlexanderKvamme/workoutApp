@@ -103,7 +103,7 @@ class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
     private func displayExercisesForMuscle(_ muscle: Muscle) {
         // fetches all exercises for this muscle, replaces selectionChoices with them, and reloads table
         guard let exercisesForThisMuscle = DatabaseFacade.fetchExercises(usingMuscle: muscle) else {
-            print("Could not fetch exercises for \(muscle.name)")
+            print("Could not fetch exercises for \(String(describing: muscle.name))")
             return
         }
         

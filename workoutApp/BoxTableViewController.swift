@@ -23,7 +23,7 @@ class BoxTableViewController: UITableViewController {
         self.workoutStyleName = workoutStyleName
 
         setUpNavigationBar()
-        print("BoxVC received: \(workoutStyleName)")
+        self.title = "\(workoutStyleName) workouts".uppercased()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,7 +37,6 @@ class BoxTableViewController: UITableViewController {
         refreshControl?.endRefreshing()
         dataSource.refreshDataSource()
         tableView.reloadData()
-        print("reloaded")
     }
     
     override func viewDidLoad() {
@@ -55,7 +54,6 @@ class BoxTableViewController: UITableViewController {
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.showSelectionindicator()
         }
-        print("vda")
         refreshControl?.endRefreshing()
         tableView.reloadData()
     }
@@ -118,7 +116,6 @@ class BoxTableViewController: UITableViewController {
     // Nav bar
     
     private func setUpNavigationBar() {
-        self.title = "\(workoutStyleName) workouts".uppercased()
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = rightButton

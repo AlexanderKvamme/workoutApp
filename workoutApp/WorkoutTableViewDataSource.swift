@@ -24,7 +24,6 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
         self.workoutStyleName = workoutStyleName
         
         refreshDataSource()
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -60,7 +59,6 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
             let results = try DatabaseController.getContext().fetch(fetchRequest)
             
             fetchedWorkouts = results
-            print("result from refresh: ", results)
             
         } catch let err as NSError {
             print(err.debugDescription)

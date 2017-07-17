@@ -27,7 +27,6 @@ final class DatabaseFacade {
         
         do {
             let count = try DatabaseController.getContext().count(for: fetchRequest)
-            print("found \(count) workouts with style \(style?.name)")
             return count
         } catch let error as NSError {
             print("Error: \(error.localizedDescription)")
