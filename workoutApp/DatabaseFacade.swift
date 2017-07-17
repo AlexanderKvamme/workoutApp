@@ -68,9 +68,11 @@ final class DatabaseFacade {
         return nil
     }
     
+    // MARK: - Maker methods
+    
+    // Exercise methods
+    
     static func fetchExercise(named name: String) -> Exercise? {
-        
-        // TODO: - FIx me up
         
         var e: Exercise? = nil
         
@@ -80,13 +82,16 @@ final class DatabaseFacade {
 
         do {
             let result = try DatabaseController.getContext().fetch(fr)
-            e = result[0] as! Exercise
-            print("fetched exercise \(e?.name)")
-            
+            e = result[0] as? Exercise
         } catch let error as NSError {
             print("error fetching exercise \(error.localizedDescription)")
         }
         return e
+    }
+    
+    static func makeLift() -> Lift {
+        let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
+        return newLift
     }
     
     static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
@@ -111,22 +116,58 @@ final class DatabaseFacade {
         return newExercise
     }
     
+    static func makeExerciseLog() -> ExerciseLog {
+        let logItem = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
+        return logItem
+    }
+    
+    static func makeWorkoutLog() -> WorkoutLog {
+        let logItem = DatabaseController.createManagedObjectForEntity(.WorkoutLog) as! WorkoutLog
+        return logItem
+    }
+    
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exerciseNames: [String]) {
-        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
         
+        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
         let muscle = DatabaseFacade.getMuscle(named: muscleName)
         let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
-        
-        for exerciseName in exerciseNames {
-            if let e = DatabaseFacade.fetchExercise(named: exerciseName){
-                workoutRecord.addToExercises(e)
-            }
-        }
         
         workoutRecord.name = workoutName
         workoutRecord.muscleUsed = muscle
         workoutRecord.workoutStyle = workoutStyle
-        print("made workout")
+        
+        // Add Exercises to the Workout
+        for exerciseName in exerciseNames {
+            if let e = DatabaseFacade.fetchExercise(named: exerciseName){
+                workoutRecord.addToExercises(e)
+            } else {
+                print("could not fetch exercise named \(exerciseName)")
+            }
+        }
+        
+        // For each exercise make an initial lift, and an initial exercise log of that lift so they can be added to a workoutLog which can then be added to the Workout so that it can be displayed in in BoxTableView/WorkoutTableView and with a detailed view of the dummy lifts as "previous lifts" in the detailed ExerciseTableViewController 
+        
+        let workoutLog = DatabaseFacade.makeWorkoutLog()
+        workoutLog.dateEnded = Date() as NSDate
+        workoutLog.dateStarted = Date() as NSDate
+        workoutLog.design = workoutRecord
+        
+        let exercises = workoutRecord.exercises as! Set<Exercise>
+        for exercise in exercises {
+            // make a log item for this exercise
+            let exerciseLog = makeExerciseLog()
+            exerciseLog.exerciseDesign = exercise
+            
+            // make a a lift for the exerciseLog
+            let lift = DatabaseFacade.makeLift()
+            lift.reps = 0
+            lift.datePerformed = Date() as NSDate
+            lift.owner = exerciseLog
+
+            workoutLog.addToLoggedExercises(exerciseLog)
+        }
+        
+        workoutRecord.addToLoggedWorkouts(workoutLog)
         DatabaseController.saveContext()
     }
     
@@ -188,16 +229,14 @@ final class DatabaseFacade {
     
     static func getWorkoutStyle(named name: String) -> WorkoutStyle? {
         var workoutStyle: WorkoutStyle? = nil
-        print("tryna fine workoutStyle named \(name)")
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutStyle.rawValue)
             let predicate = NSPredicate(format: "name == %@", name.uppercased())
             fetchRequest.predicate = predicate
             let result = try DatabaseController.getContext().fetch(fetchRequest)
-            print("get wo style got result : ", result)
             workoutStyle = result[0] as? WorkoutStyle
         } catch let error as NSError {
-            print("coult not getWorkoutStyle: \(error.localizedDescription)")
+            print("could not getWorkoutStyle: \(error.localizedDescription)")
         }
         return workoutStyle
     }

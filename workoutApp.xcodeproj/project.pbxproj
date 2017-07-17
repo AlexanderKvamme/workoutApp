@@ -269,7 +269,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
-				DDF1F1EA1F07AAAF001A6F0C /* Exercises */,
+				DDF1F1EA1F07AAAF001A6F0C /* Exercise Table */,
 				DDD290A61EDCCD1500048BC9 /* TestViewController */,
 				DD7600461EDF23E900871DD8 /* New Workout / Exercise */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
@@ -415,13 +415,13 @@
 			name = "Helper Classes";
 			sourceTree = "<group>";
 		};
-		DDF1F1EA1F07AAAF001A6F0C /* Exercises */ = {
+		DDF1F1EA1F07AAAF001A6F0C /* Exercise Table */ = {
 			isa = PBXGroup;
 			children = (
 				DDF1F1F41F07E162001A6F0C /* CollectionView of sets */,
 				DDF1F1F31F07E14F001A6F0C /* Exercise TableView */,
 			);
-			name = Exercises;
+			name = "Exercise Table";
 			sourceTree = "<group>";
 		};
 		DDF1F1F31F07E14F001A6F0C /* Exercise TableView */ = {

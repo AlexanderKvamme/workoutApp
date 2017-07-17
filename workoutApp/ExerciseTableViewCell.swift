@@ -41,7 +41,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         setupCell()
         setupPlusButton()
         setupCollectionView()
-//        setDebugColors()
+        // setDebugColors()
         
         // For this tableViewCell, retrieve the latest exerciseLogs for this exercise, and use the newest logged exercise to display in the collectionviewcells
         

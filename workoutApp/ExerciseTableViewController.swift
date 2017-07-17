@@ -17,7 +17,11 @@ class ExerciseTableViewController: UITableViewController {
     
     init(withWorkout workout: Workout) {
         super.init(nibName: nil, bundle: nil)
+        print()
+        print("*initializing exerciseTable*".uppercased())
         self.currentWorkout = workout
+        print("*WORKOUT TO DISPLAY: ", workout)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

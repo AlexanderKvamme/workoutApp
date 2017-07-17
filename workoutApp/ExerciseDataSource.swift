@@ -26,6 +26,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         if let exercisesFromWorkout = workout.exercises {
             currentExercises = exercisesFromWorkout.map({return $0 as! Exercise})
+            print("datasource will deal with these exercises: ", currentExercises)
         } else {
             currentExercises = [Exercise]()
         }

@@ -69,7 +69,7 @@ class BoxTableViewController: UITableViewController {
         refreshControl?.backgroundColor = .clear
         refreshControl?.tintColor = .clear
         
-        // custom view
+        // Custom view
         customRefreshView = RefreshControlView()
         customRefreshView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         customRefreshView.frame = refreshControl!.bounds // <-- Why is this needed?
@@ -82,7 +82,7 @@ class BoxTableViewController: UITableViewController {
     }
     
     @objc private func refreshControlHandler(sender: UIRefreshControl) {
-        // Fontsize pops bigger
+        // Make fontsize "pop" bigger
         customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .extreme)
         
         let newWorkoutVC = NewWorkoutController()
