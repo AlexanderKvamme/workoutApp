@@ -2,7 +2,7 @@
 //  Exercise+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 15/07/2017.
+//  Created by Alexander Kvamme on 17/07/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -20,10 +20,10 @@ extension Exercise {
     @NSManaged public var name: String?
     @NSManaged public var type: String?
     @NSManaged public var loggedInstances: NSSet?
+    @NSManaged public var measurementStyle: MeasurementStyle?
     @NSManaged public var musclesUsed: Muscle?
     @NSManaged public var style: ExerciseStyle?
     @NSManaged public var usedInWorkouts: NSSet?
-    @NSManaged public var measurementStyle: MeasurementStyle?
 
 }
 

@@ -43,7 +43,6 @@ final class DataSeeder {
         var muscleString: String = CDModels.workout.type.normal.rawValue
         
         // Workouts
-        // let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: "Back", type: "Drop Set")
         
         let backMuscle = DatabaseFacade.fetchMuscleWithName("BACK")!
         let armsMuscle = DatabaseFacade.fetchMuscleWithName("ARMS")!
@@ -135,15 +134,15 @@ final class DataSeeder {
     // MARK: - Helper Methods
     
     // Takes a DummyWorkout (name: String, muscle: Muscle, type: String) and an array of exercises, and creates a new Workout into core data. 
-    private func makeWorkout(_ workout: DummyWorkout, withExercises exercises: [DummyExercise]) {
+    private func makeWorkout(_ dummyWorkout: DummyWorkout, withExercises exercises: [DummyExercise]) {
         
         // Make and add back exercises
         
         let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
-        workoutRecord.name = workout.name
-        workoutRecord.muscle = workout.muscle.name
-        workoutRecord.muscleUsed = workout.muscle
-        workoutRecord.type = workout.type
+        workoutRecord.name = dummyWorkout.name
+        workoutRecord.muscle = dummyWorkout.muscle.name
+        workoutRecord.muscleUsed = dummyWorkout.muscle
+        workoutRecord.workoutStyle = DatabaseFacade.getWorkoutStyle(named: dummyWorkout.type)
         
         for exercise in exercises {
             let exerciseRecord = DatabaseController.createManagedObjectForEntity(.Exercise) as! Exercise
@@ -188,6 +187,7 @@ final class DataSeeder {
     // Make WorkoutStyle
     
     private func makeWorkoutStyle(withName name: String) {
+        print("making workoutstyle named \(name)")
         let workoutStyleRecord = DatabaseController.createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
         workoutStyleRecord.name = name.uppercased()
     }
@@ -202,7 +202,6 @@ final class DataSeeder {
     private func makeMeasurementStyle(withName name: String) {
         let measurementStyleRecord = DatabaseController.createManagedObjectForEntity(.MeasurementStyle) as! MeasurementStyle
         measurementStyleRecord.name = name.uppercased()
-        print("made style record with name \(measurementStyleRecord.name)")
     }
     
     // MARK: - Exercise Helper Methods
@@ -243,7 +242,6 @@ final class DataSeeder {
                 print("Name: ", workout.name ?? "")
                 print("----------------------")
                 print("Muscle: ", workout.muscle ?? "")
-                print("Type: ", workout.type ?? "")
                 
                 if let exercises = workout.exercises?.allObjects as? [Exercise] {
                     for exercise in exercises {

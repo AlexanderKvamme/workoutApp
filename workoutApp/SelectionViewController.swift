@@ -10,10 +10,13 @@ import UIKit
 import CoreData
 
 /*
- SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts to show
+ SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
  */
 
 class SelectionViewController: UIViewController {
+    
+    // Input
+    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>!
     
     var header: SelectionViewHeader!
     var buttons: [SelectionViewButton]!
@@ -24,7 +27,7 @@ class SelectionViewController: UIViewController {
     var buttonNames: [String] = []
     var buttonIndex = 0
     
-    // Main initializer
+    // MARK: - Initializers
     init(header: SelectionViewHeader) {
         self.header = header
         super.init(nibName: nil, bundle: nil)
@@ -39,58 +42,26 @@ class SelectionViewController: UIViewController {
     
     // Init with fetchRequest
     
-    // MARK: - Transition into using this as prime init
-    
-    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<Workout>) {
+    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
         self.init(header: header)
-        var workoutTypes = [String]()
+        self.fetchRequestToDisplaySelectionsFrom = fetchRequest
         
-        // Fetch from Core Data
-        
-        do {
-            let results = try DatabaseController.getContext().fetch(fetchRequest)
-            // Append all received types
-            for r in results {
-                if let type = r.type {
-                    workoutTypes.append(type)
-                }
-            }
-        } catch let err as NSError {
-            print(err.debugDescription)
-        }
-        
-        // make buttons from unique workout names
-        var workoutButtons = [SelectionViewButton]()
-        let uniqueWorkoutTypes = Set(workoutTypes)
-        
-        for type in uniqueWorkoutTypes {
-            
-            let newButton = SelectionViewButton(header: type,
-                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofType: type)) exercises")
-        
-            // Set up button names etc
-            newButton.button.tag = buttonIndex
-            buttonIndex += 1
-            buttonNames.append(type)
-            
-            // Replace any default target action
-            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-            newButton.button.addTarget(self, action: #selector(processButton), for: UIControlEvents.touchUpInside)
-
-            workoutButtons.append(newButton)
-        }
-        
-        buttons = workoutButtons
+        setupSelectionChoices()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
+    
     override func viewWillAppear(_ animated: Bool) {
         // Show TabBar selection indicator
         navigationController?.setNavigationBarHidden(true, animated: true)
-  
+        
+        if fetchRequestToDisplaySelectionsFrom != nil {
+            updateSelectionChoices()
+        }
         view.layoutIfNeeded()
     }
     
@@ -121,16 +92,68 @@ class SelectionViewController: UIViewController {
         drawDiagonalLineThrough(stack, inView: view)
     }
     
+    // MARK: - Methods
+    
+    func updateSelectionChoices() {
+        setupSelectionChoices()
+    }
+    
+    func setupSelectionChoices() {
+        var workoutStyles = [WorkoutStyle]()
+        
+        // Fetch from Core Data
+        
+        do {
+            print("fetchRequest was: \(self.fetchRequestToDisplaySelectionsFrom)")
+            let results = try DatabaseController.getContext().fetch(fetchRequestToDisplaySelectionsFrom)
+            // Append all received types
+            for r in results as! [Workout] {
+                if let workoutStyle = r.workoutStyle {
+                    workoutStyles.append(workoutStyle)
+                }
+            }
+        } catch let error as NSError {
+            print("error in SelectionViewController : ", error.localizedDescription)
+        }
+        
+        // make buttons from unique workout names
+        var workoutButtons = [SelectionViewButton]()
+        let uniqueWorkoutTypes = Set(workoutStyles)
+        
+        for type in uniqueWorkoutTypes {
+            guard let styleName = type.name else {
+                print("error finding style name")
+                return
+            }
+            let newButton = SelectionViewButton(header: styleName,
+                                                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
+            
+            // Set up button names etc
+            newButton.button.tag = buttonIndex
+            buttonIndex += 1
+            buttonNames.append(styleName)
+            
+            // Replace any default target action (Default modal presentation)
+            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
+            newButton.button.addTarget(self, action: #selector(buttonTapHandler), for: UIControlEvents.touchUpInside)
+            
+            workoutButtons.append(newButton)
+        }
+        buttons = workoutButtons
+    }
+    
     // TODO: - Make work
     
-    func processButton(button: UIButton) {
+    func buttonTapHandler(button: UIButton) {
+        // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyle = buttonNames[button.tag]
-        // process string
         
-        let vc = BoxTableViewController(workoutStyle: tappedWorkoutStyle)
-        //let vc = TestTableViewController(nibName: nil, bundle: nil)
-        navigationController?.pushViewController(vc, animated: true)
+        // process string
+        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyle)
+        navigationController?.pushViewController(boxTableViewController, animated: true)
     }
+    
+    // MARK: - Helpers
     
     private func drawRectAt(_ p: CGPoint) {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
@@ -141,7 +164,6 @@ class SelectionViewController: UIViewController {
     }
     
     private func setLayout() {
-        
         // header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false

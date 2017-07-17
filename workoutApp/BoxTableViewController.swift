@@ -11,18 +11,19 @@ import UIKit
 class BoxTableViewController: UITableViewController {
     
     let cellIdentifier: String = "BoxCell"
-    var workoutStyle = ""
+    var workoutStyleName: String!
     
     var customRefreshView: RefreshControlView!
     var dataSource: WorkoutTableViewDataSource!
     
     // Initializer
     
-    init(workoutStyle: String) {
+    init(workoutStyleName: String) {
         super.init(nibName: nil, bundle: nil)
-        self.workoutStyle = workoutStyle
+        self.workoutStyleName = workoutStyleName
 
         setUpNavigationBar()
+        print("BoxVC received: \(workoutStyleName)")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,15 +33,16 @@ class BoxTableViewController: UITableViewController {
     // MARK: - Life cycle
     
     override func viewWillAppear(_ animated: Bool) {
-        print("vwa")
         removeBackButton()
         refreshControl?.endRefreshing()
+        dataSource.refreshDataSource()
+        tableView.reloadData()
+        print("reloaded")
     }
     
     override func viewDidLoad() {
         view.backgroundColor = .light
         super.viewDidLoad()
-        print("vdl")
         
         setupDataSource()
         setupTableView()
@@ -95,7 +97,7 @@ class BoxTableViewController: UITableViewController {
     }
     
     private func setupDataSource() {
-        dataSource = WorkoutTableViewDataSource(workoutStyle: workoutStyle)
+        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
         tableView.dataSource = dataSource
     }
     
@@ -116,7 +118,7 @@ class BoxTableViewController: UITableViewController {
     // Nav bar
     
     private func setUpNavigationBar() {
-        self.title = "\(workoutStyle) workouts".uppercased()
+        self.title = "\(workoutStyleName) workouts".uppercased()
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
         self.navigationItem.rightBarButtonItem = rightButton

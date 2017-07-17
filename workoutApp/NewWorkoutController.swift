@@ -16,7 +16,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     let screenWidth = Constant.UI.width
     let selecterHeight: CGFloat = 150
     var header: TwoLabelStack!
-    var typeSelecter: TwoLabelStack!
+    var workoutStyleSelecter: TwoLabelStack!
     var muscleSelecter: TwoLabelStack!
     var restSelectionBox: Box!
     var weightSelectionBox: Box!
@@ -70,7 +70,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         
         // Type and Muscle selectors
         
-        typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
+        workoutStyleSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Type",
                                          topFont: darkHeaderFont,
                                          topColor: .dark,
@@ -78,7 +78,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
                                          bottomFont: darkSubHeaderFont,
                                          bottomColor: UIColor.dark,
                                          fadedBottomLabel: false)
-        typeSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
+        workoutStyleSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
         
         muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                          topText: "Muscle",
@@ -102,7 +102,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         let restContent = boxFactory.makeBoxContent()
         
         restSelectionBox = Box(header: restHeader, subheader: restSubHeader, bgFrame: restFrame!, content: restContent!)
-        restSelectionBox.frame.origin = CGPoint(x: halfScreenWidth - restSelectionBox.frame.width/2, y: typeSelecter.frame.maxY)
+        restSelectionBox.frame.origin = CGPoint(x: halfScreenWidth - restSelectionBox.frame.width/2, y: workoutStyleSelecter.frame.maxY)
         restSelectionBox.setTitle("Rest")
         restSelectionBox.setContentLabel("3:00")
         
@@ -133,7 +133,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         buttonFooter.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
         
         view.addSubview(header)
-        view.addSubview(typeSelecter)
+        view.addSubview(workoutStyleSelecter)
         view.addSubview(muscleSelecter)
         view.addSubview(restSelectionBox)
         view.addSubview(exerciseSelecter)
@@ -141,7 +141,16 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     }
     
     @objc private func approveAndDismissVC() {
-        print("*WOULD MAKE WORKOUT, SAVE TO CORE DATA, AND DISMISS")
+        
+        if  let workoutName = header.bottomLabel.text,
+            let workoutStyleName = workoutStyleSelecter.bottomLabel.text,
+            let muscleName = muscleSelecter.bottomLabel.text {
+            DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciseNames: nameOfCurrentlySelectedExercises)
+            DatabaseController.saveContext()
+        } else {
+            print(" could not make workout")
+        }
+        navigationController?.popViewController(animated: true)
     }
     
     func dismissVC() {
@@ -162,7 +171,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
-        let currentlySelectedType = typeSelecter.bottomLabel.text
+        let currentlySelectedType = workoutStyleSelecter.bottomLabel.text
         let workoutStyles = DatabaseController.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
         var workoutStyleNames = [String]()
         
@@ -177,7 +186,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         
         // When receivng a selection of workout type
         receiveHandler = { s in
-            self.typeSelecter.bottomLabel.text = s
+            self.workoutStyleSelecter.bottomLabel.text = s
         }
         navigationController?.pushViewController(typePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }

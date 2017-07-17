@@ -33,9 +33,9 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - Workout Tab
         
-        let workoutRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
+        let workoutRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Workout.rawValue)
         workoutRequest.resultType = .managedObjectResultType
-        workoutRequest.propertiesToFetch = ["type"]
+        workoutRequest.propertiesToFetch = ["workoutStyle"]
 
         let workoutNavigationController = CustomNavigationViewController(rootViewController: SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))

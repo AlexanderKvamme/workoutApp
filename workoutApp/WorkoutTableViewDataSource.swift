@@ -13,29 +13,18 @@ import CoreData
 class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
     
     let cellIdentifier: String = "BoxCell"
-    var workoutStyle: String!
+    var workoutStyleName: String!
     
     var fetchedWorkouts = [Workout]()
     
     // MARK: - Initializers
     
-    init(workoutStyle: String) {
+    init(workoutStyleName: String) {
         super.init()
-        self.workoutStyle = workoutStyle
+        self.workoutStyleName = workoutStyleName
         
-        let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
-        let predicate = NSPredicate(format: "type = %@", workoutStyle)
-        fetchRequest.predicate = predicate
+        refreshDataSource()
         
-        // Fetch from Core Data
-        do {
-            let results = try DatabaseController.getContext().fetch(fetchRequest)
-            
-            fetchedWorkouts = results
-         
-        } catch let err as NSError {
-            print(err.debugDescription)
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,7 +39,7 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
         if let name = wo.name {
             cell.box.setTitle(name)
         }
-        cell.box.setSubHeader(workoutStyle)
+        cell.box.setSubHeader(workoutStyleName)
         return cell
     }
     
@@ -58,6 +47,24 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
     
     func getWorkouts() -> [Workout]? {
         return fetchedWorkouts
+    }
+    
+    func refreshDataSource() {
+        let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
+        let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName)
+        let predicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
+        fetchRequest.predicate = predicate
+        
+        // Fetch from Core Data
+        do {
+            let results = try DatabaseController.getContext().fetch(fetchRequest)
+            
+            fetchedWorkouts = results
+            print("result from refresh: ", results)
+            
+        } catch let err as NSError {
+            print(err.debugDescription)
+        }
     }
 }
 
