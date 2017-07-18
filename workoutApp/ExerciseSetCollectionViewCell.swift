@@ -8,7 +8,7 @@
 
 import UIKit
 
-/* Hver celle skal displaye en "Lift" fra databasen..
+/* Every cell represents a "Lift"
  
  Lift:
  - reps
@@ -20,8 +20,13 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     var button: UIButton! // Button that covers entire cell, to handle taps
     var repsField: UITextField!
+    var isPerformed = false {
+        didSet {
+            print("\(repsField.text!) is now marked as isPerformed")
+        }
+    }// track if Lift should be tracked as completed
     var weightLabel: UILabel?
-    var keyboard: Keyboard!
+    private var  keyboard: Keyboard!
     var initialRepValue: String!
     
     weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
@@ -44,7 +49,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     deinit {
-        print("cell deinit")
+        // print("cell deinit")
     }
     
     // MARK: - Handlers
@@ -94,7 +99,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         switch keyName{
         case "OK":
             repsField.resignFirstResponder()
-            textFieldDidEndEditing(repsField)
+            // textFieldDidEndEditing(repsField)
         case "B": // Back button
             repsField.deleteBackward()
             return
@@ -106,6 +111,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     // MARK: - Textfield delegate methods
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
         // Make sure input is convertable to an integer for Core Data
         let allowedCharacters = CharacterSet.decimalDigits
         let characterSet = CharacterSet(charactersIn: string)
@@ -113,19 +119,23 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // if no change, revert to initial value
+        // If no change, revert to initial value and abort editing
         guard let newText = textField.text, let newValueAsInt16 = Int16(newText) else {
             textField.text = initialRepValue
             makeTextNormal()
             return
         }
+        
+        // Mark as performed
+        isPerformed = true
+        
         // Update data source with new value
         if let indexPath = owner.collectionView.indexPath(for: self) {
             let dataSourceIndexToUpdate = indexPath.row
             owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
         }
         
-        printCollectionViewsReps()
+        // printCollectionViewsReps()
         
         NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
     }
@@ -142,16 +152,26 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     func jumpToNextCell() {
-        // Returns the indexpath of the current collectionviewCell, IN the
-        if let currentIndexPath = owner.collectionView.indexPath(for: self){
-            let refToNextCell = owner.getNextCell(fromIndexPath: currentIndexPath)
-            refToNextCell.tapHandler(sender: self)
+        if let nextCell = getNextCell() {
+            nextCell.tapHandler(sender: self)
         }
     }
     
+    func getNextCell() -> ExerciseSetCollectionViewCell? {
+        
+        var nextCell: ExerciseSetCollectionViewCell? = nil
+        
+        print("self had text: \(self.repsField.text)")
+        if let currentIndexPath = owner.collectionView.indexPath(for: self) {
+            let refToNextCell = owner.getNextCell(fromIndexPath: currentIndexPath)
+            nextCell = refToNextCell
+        }
+        return nextCell
+    }
+    
     func tapHandler(sender: Any) {
-        // FIXME: - acces containing tableViewCell, and use this to target next cell when they keyboard receives "->"
-        print("cellDidTap")
+        
+        // FIXME: - Display keyboard, make first responder, and scroll to correct tableViewCell
         
         // Custom keyboard for inputting time and weight
         let screenWidth = Constant.UI.width
@@ -164,6 +184,10 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.inputView = keyboard
         repsField.delegate = self
         repsField.becomeFirstResponder()
+        
+        // FIXME: - Scroll to correct tableViewCell
+        
+        
 
         layoutIfNeeded()
     }

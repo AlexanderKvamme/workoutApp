@@ -23,12 +23,18 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     var exerciseSelecter: TwoLabelStack!
     var nameOfCurrentlySelectedExercises = [String]()
     
+    // MARK: - Initializer
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: - ViewWillAppear
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         // Hide tab bar's selection indicator
@@ -36,10 +42,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
             customTabBarController.hideSelectionIndicator()
             navigationController?.setNavigationBarHidden(true, animated: true)
         }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - ViewDidLoad
@@ -141,6 +143,14 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     }
     
     @objc private func approveAndDismissVC() {
+        
+        guard nameOfCurrentlySelectedExercises.count > 0 else {
+            let errorMessage = "Add at least one exercise, please!"
+            let modal = CustomAlertView(type: .message,
+                                        messageContent: errorMessage)
+            modal.show(animated: true)
+            return
+         }
         
         if  let workoutName = header.bottomLabel.text,
             let workoutStyleName = workoutStyleSelecter.bottomLabel.text,

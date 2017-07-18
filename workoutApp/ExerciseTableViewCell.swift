@@ -9,12 +9,33 @@
 import UIKit
 
 /*
- ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
+ Protocol extension that returns nextCell if it has one, or nil
  */
 
 protocol hasNextCell: class {
-    func getNextCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell
+    func getNextCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
 }
+
+extension hasNextCell where Self: ExerciseTableViewCell {
+    
+    // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the next cell, or make a new one if it doesnt exist, to allow for fast input of sets for the user
+    func getNextCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell? {
+        var ip = indexPath
+        ip.row += 1
+        
+        let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
+        if let nextCell = nextCollectionViewCell {
+            return nextCell
+        } else {
+            print("there was no next cell, so returning nil")
+            return nil
+        }
+    }
+}
+
+/*
+ ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
+ */
 
 class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -69,23 +90,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
     @objc private func doSomething() {
         print("observed")
     }
-    
-    // MARK: - HasNextCell protocol requirement
-    
-    // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the next cell, or make a new one if it doesnt exist, to allow for fast input of sets for the user
-    func getNextCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell {
-        var ip = indexPath
-        ip.row += 1
-        
-        let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
-        if let nextCell = nextCollectionViewCell {
-            return nextCell
-        } else {
-            print("there was no next cell, so make it")
-            insertNewCell()
-        }
-        return ExerciseSetCollectionViewCell()
-    }
+
     
     // MARK: - Helpers
     
@@ -99,6 +104,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         
+        // Layout
         contentView.addSubview(plusButton)
         
         NSLayoutConstraint.activate([
@@ -112,8 +118,16 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
     }
     
     func plusButtonHandler() {
-        print("*insertNewCell*")
-        insertNewCell()
+        // FIXME: - Select the first unadded cell instead of directly making a newCell
+        print()
+        print("*plusButtonHandler*")
+        let firstFreeCell = getFirstFreeCell()
+        
+        if firstFreeCell == nil {
+            insertNewCell()
+        } else {
+            firstFreeCell!.tapHandler(sender: self)
+        }
     }
     
     func setDebugColors() {
@@ -143,7 +157,44 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         print("did select some item")
     }
     
-    // FIXME: - Make the + button add a new Lift
+    func getFirstFreeCell() -> ExerciseSetCollectionViewCell? {
+        
+        guard let firstCell = getFirstCell() else {
+            print("no first cell to fetch")
+            return nil
+        }
+        
+        // We now have a firstCell...
+        // use getNextCell until it has no more nextCells, return the last one
+        
+        var currentCell = firstCell
+        print("first cell should be : \(currentCell.repsField.text)")
+        if currentCell.isPerformed == false {
+            print("first cell was not performed so returning it")
+            return currentCell
+        } else {
+            print("\(currentCell.repsField.text) is perfromed so continue")
+        }
+
+        while let nextCell = currentCell.getNextCell() {
+            currentCell = nextCell
+            if currentCell.isPerformed == false {
+                return currentCell
+            }
+        }
+        
+        print("getFirstFreeCell ended without finding a free cell so returning nil")
+        return nil
+    }
+    
+    func getFirstCell() -> ExerciseSetCollectionViewCell? {
+        let ip = IndexPath(row: 0, section: 0)
+        if let firstCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell {
+            return firstCell
+        } else {
+            return nil
+        }
+    }
     
     func insertNewCell() {
         let itemCount = collectionView.numberOfItems(inSection: 0)

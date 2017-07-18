@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+
+enum ModalType {
+    case message
+    case error
+}
+
+
 class CustomAlertView: UIView, isModal {
     var backgroundView = UIView()
     var modalView = UIView()
@@ -28,7 +35,6 @@ class CustomAlertView: UIView, isModal {
     convenience init(type: ModalType, messageContent:String) {
         self.init(frame: UIScreen.main.bounds)
         
-        
         // Message View
         let ModalWidth = UIScreen.main.bounds.width - spaceFromSides
         
@@ -37,8 +43,6 @@ class CustomAlertView: UIView, isModal {
         // Message
         
         // Pseudo: make a stack... fill with either "message"/"error"... position stack
-        
-        
         
         let typeStack = UIStackView() // message or error
         var typeStackHeight: CGFloat = 0
@@ -174,8 +178,6 @@ class CustomAlertView: UIView, isModal {
         backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedOnBackgroundView)))
     }
     
-
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -184,7 +186,7 @@ class CustomAlertView: UIView, isModal {
         dismiss(animated: true)
     }
     
-    // helper
+    // MARK: - Helper
     private func setBackground() {
         backgroundView.frame = frame
         backgroundView.backgroundColor = UIColor.darkest
@@ -197,7 +199,3 @@ class CustomAlertView: UIView, isModal {
     }
 }
 
-enum ModalType {
-    case message
-    case error
-}

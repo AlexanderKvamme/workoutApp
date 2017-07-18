@@ -20,7 +20,6 @@ class ExerciseTableViewController: UITableViewController {
         print()
         print("*initializing exerciseTable*".uppercased())
         self.currentWorkout = workout
-        print("*WORKOUT TO DISPLAY: ", workout)
         
     }
     
@@ -100,6 +99,13 @@ class ExerciseTableViewController: UITableViewController {
     }
     
     func saveButtonHandler() {
+        
+        // FIXME: - Tapping save should save a WorkoutLog to core data
+        
+        // PSEUDO:
+        // - Loop through all tableViewCells
+        // - - Loop through all collectionViewCells and return its repsPerformed, weight,
+        // - Look at all the sets in the 
         print("*save*")
     }
 }
