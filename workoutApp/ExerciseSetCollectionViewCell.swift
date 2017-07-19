@@ -28,6 +28,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     var isPerformed = false // track if Lift should be tracked as completed
     var weightLabel: UILabel?
     private var  keyboard: Keyboard!
+    weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
     var initialRepValue: String {
         if let indexPath = owner.collectionView.indexPath(for: self) {
             let dataSourceIndexToUpdate = indexPath.row
@@ -39,9 +40,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         }
     }
     
-    // FIXME: - Make this a computed property fetched from the datasource
-    
-    weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,6 +51,9 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         // Add long press gesture recognizer to edit cell
         let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
         button.addGestureRecognizer(longpressRecognizer)
+        
+        // Track changes in label
+        repsField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         
         //setDebugColors()
     }
@@ -72,6 +74,11 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
 //                printCollectionViewsReps()
             }
         }
+    }
+    
+    @objc private func textChanged() {
+        print("did change -> cellHasBeenEdited = true")
+        self.cellHasBeenEdited = true
     }
     
     // MARK: - Helper
@@ -119,8 +126,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print("cellHasBeenEdited")
-        self.cellHasBeenEdited = true
+        // FIXME: - Dette skal heller være i en target action knyttet til en controlEvent i textFieldet kalt .editingChanged eller noe
+        
         
         // Make sure input is convertable to an integer for Core Data
         let allowedCharacters = CharacterSet.decimalDigits
@@ -129,24 +136,37 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        print("textFieldDidEndEditing \(textField.text)")
         
         if let newText = textField.text, let newValueAsInt16 = Int16(newText) {
-            if cellHasBeenEdited && textField.text != "" {
+            print("got through first if")
+            print("cellHasBeenEdited is ", cellHasBeenEdited)
+            
+            if cellHasBeenEdited && textField.text != "" && isPerformed {
                 // if cell has been edited and textFieldDidEndEditing
-                isPerformed = true
+                print("set \(textField.text) isperformed")
+                print("updating datasource of \(textField.text)")
+                // Update data source with new value
+                if let indexPath = owner.collectionView.indexPath(for: self) {
+                    let dataSourceIndexToUpdate = indexPath.row
+                    owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
+                }
+            } else { // textfield has not been editet and is not ""
+                print("invalid text in \(textField.text)")
+                textField.text = initialRepValue
+                makeTextNormal()
             }
-            
-            // Update data source with new value
-            if let indexPath = owner.collectionView.indexPath(for: self) {
-                let dataSourceIndexToUpdate = indexPath.row
-                owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
-            }
-            
-            // printCollectionViewsReps()
-            
         } else {
-            textField.text = initialRepValue
-            makeTextNormal()
+            
+            print("Text not convertible to Int or no text at all")
+            // if no text at all make normal
+            if isPerformed  {
+                textField.text = initialRepValue
+                makeTextBold()
+            } else {
+                textField.text = initialRepValue
+                makeTextNormal()
+            }
         }
         
         NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)

@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "workoutApp/ExerciseSetCollectionViewCell.swift"
-            timestampString = "522157441.250752"
+            timestampString = "522194046.69375"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "nextButtonTapHandler()"
             landmarkType = "7">
          </BreakpointContent>

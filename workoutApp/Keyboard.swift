@@ -48,9 +48,8 @@ class Keyboard: UIView {
         case .reps:
             bottomLeftButton.setTitle("", for: .normal)
             topRightButton.setTitle("", for: .normal)
-            
-            // FIXME: - make next button
             middleRightButton.setTitle("", for: .normal)
+            
             if let backArrowImage = UIImage(named: "arrow-back") {
                 let tintableImage = backArrowImage.withRenderingMode(.alwaysTemplate)
                 let rotatedImage = UIImage(cgImage: tintableImage.cgImage!, scale: 0, orientation: .down)
@@ -71,5 +70,6 @@ class Keyboard: UIView {
     func postNextKeyDidPressNotification() {
         NotificationCenter.default.post(name: .keyboardsNextButtonDidPress, object: nil)
     }
+    
 }
 
