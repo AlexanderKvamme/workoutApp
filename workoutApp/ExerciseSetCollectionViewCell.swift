@@ -25,14 +25,21 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         }
     }
     private var cellHasBeenEdited = false
-    var isPerformed = false {
-        didSet {
-            print("\(repsField.text!) is now marked as isPerformed")
-        }
-    }// track if Lift should be tracked as completed
+    var isPerformed = false // track if Lift should be tracked as completed
     var weightLabel: UILabel?
     private var  keyboard: Keyboard!
-    var initialRepValue: String!
+    var initialRepValue: String {
+        if let indexPath = owner.collectionView.indexPath(for: self) {
+            let dataSourceIndexToUpdate = indexPath.row
+            let valueFromDatasource = owner.liftsToDisplay[dataSourceIndexToUpdate].reps
+            return String(valueFromDatasource)
+        }
+        else {
+            return "Error fetching initial rep"
+        }
+    }
+    
+    // FIXME: - Make this a computed property fetched from the datasource
     
     weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
     
@@ -134,6 +141,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                 let dataSourceIndexToUpdate = indexPath.row
                 owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
             }
+            
             // printCollectionViewsReps()
             
         } else {
@@ -156,6 +164,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     private func OKButtonHandler() {
+        isPerformed = true
         endEditing(true)
     }
     
@@ -197,12 +206,16 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     func tapHandler() {
         // - Display keyboard, make first responder, and scroll to the first cell in colleciton that isnt performed
         // If there are cells before this one, that are not performed, jump to the first one of these instead
-        if let firstAvailableCell = owner.getFirstFreeCell() {
-            if firstAvailableCell != self {
-                self.repsField.resignFirstResponder()
-            
-                firstAvailableCell.tapHandler()
-                return
+        
+        // If the cell is not previously performed, rather go to the first unperformed cell
+        if isPerformed == false {
+            if let firstUnperformedCell = owner.getFirstFreeCell() {
+                if firstUnperformedCell != self {
+                    self.repsField.resignFirstResponder()
+                    
+                    firstUnperformedCell.tapHandler()
+                    return
+                }
             }
         }
         
@@ -220,13 +233,11 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         
         // FIXME: - Scroll to correct tableViewCell
 
-//        layoutIfNeeded()
         setNeedsLayout()
     }
     
     public func setReps(_ n: Int16) {
         repsField.text = String(n)
-        self.initialRepValue = String(n)
     }
 
     // Text Design
