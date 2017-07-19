@@ -19,7 +19,12 @@ import UIKit
 class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     
     var button: UIButton! // Button that covers entire cell, to handle taps
-    var repsField: UITextField!
+    var repsField: UITextField! {
+        didSet {
+            print("set text to \(repsField.text)")
+        }
+    }
+    private var cellHasBeenEdited = false
     var isPerformed = false {
         didSet {
             print("\(repsField.text!) is now marked as isPerformed")
@@ -48,10 +53,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        // print("cell deinit")
-    }
-    
     // MARK: - Handlers
     
     // Remove cell when user uses long press on it
@@ -78,13 +79,13 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     private func setupButtonCoveringCell() {
         button = UIButton(frame: repsField.frame)
-        button.addTarget(self, action: #selector(tapHandler(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(tapHandler), for: .touchUpInside)
         addSubview(button)
     }
     
     private func setupRepsField() {
         repsField = UITextField(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        repsField.text = "99"
+        repsField.text = "-1"
         repsField.textAlignment = .center
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
         repsField.textColor = UIColor.light
@@ -98,8 +99,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     func buttonDidTap(keyName: String) {
         switch keyName{
         case "OK":
-            repsField.resignFirstResponder()
-            // textFieldDidEndEditing(repsField)
+            OKButtonHandler()
         case "B": // Back button
             repsField.deleteBackward()
             return
@@ -112,6 +112,9 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
+        print("cellHasBeenEdited")
+        self.cellHasBeenEdited = true
+        
         // Make sure input is convertable to an integer for Core Data
         let allowedCharacters = CharacterSet.decimalDigits
         let characterSet = CharacterSet(charactersIn: string)
@@ -119,23 +122,24 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // If no change, revert to initial value and abort editing
-        guard let newText = textField.text, let newValueAsInt16 = Int16(newText) else {
+        
+        if let newText = textField.text, let newValueAsInt16 = Int16(newText) {
+            if cellHasBeenEdited && textField.text != "" {
+                // if cell has been edited and textFieldDidEndEditing
+                isPerformed = true
+            }
+            
+            // Update data source with new value
+            if let indexPath = owner.collectionView.indexPath(for: self) {
+                let dataSourceIndexToUpdate = indexPath.row
+                owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
+            }
+            // printCollectionViewsReps()
+            
+        } else {
             textField.text = initialRepValue
             makeTextNormal()
-            return
         }
-        
-        // Mark as performed
-        isPerformed = true
-        
-        // Update data source with new value
-        if let indexPath = owner.collectionView.indexPath(for: self) {
-            let dataSourceIndexToUpdate = indexPath.row
-            owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
-        }
-        
-        // printCollectionViewsReps()
         
         NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
     }
@@ -148,20 +152,31 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSForegroundColorAttributeName : color, NSFontAttributeName: font])
         // Prepare for input
         
-        NotificationCenter.default.addObserver(self, selector: #selector(jumpToNextCell), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
     }
     
-    func jumpToNextCell() {
-        if let nextCell = getNextCell() {
-            nextCell.tapHandler(sender: self)
+    private func OKButtonHandler() {
+        endEditing(true)
+    }
+    
+    @objc private func nextButtonTapHandler() {
+        // mark as performed, find next available
+        isPerformed = true
+        endEditing(true)
+        
+        if let nextAvailableCell = owner.getFirstFreeCell() {
+            let ip = owner.collectionView.indexPath(for: nextAvailableCell)
+            owner.collectionView.selectItem(at: ip, animated: true, scrollPosition: .centeredVertically)
+            nextAvailableCell.tapHandler()
+        } else {
+            //Was nil, so there is no next. Make new cell, which is automatically selected
+            owner.insertNewCell()
         }
     }
     
     func getNextCell() -> ExerciseSetCollectionViewCell? {
-        
         var nextCell: ExerciseSetCollectionViewCell? = nil
         
-        print("self had text: \(self.repsField.text)")
         if let currentIndexPath = owner.collectionView.indexPath(for: self) {
             let refToNextCell = owner.getNextCell(fromIndexPath: currentIndexPath)
             nextCell = refToNextCell
@@ -169,9 +184,27 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         return nextCell
     }
     
-    func tapHandler(sender: Any) {
+    func getPreviousCell() -> ExerciseSetCollectionViewCell? {
+        var previousCell: ExerciseSetCollectionViewCell? = nil
         
-        // FIXME: - Display keyboard, make first responder, and scroll to correct tableViewCell
+        if let currentIndexPath = owner.collectionView.indexPath(for: self) {
+            let refToPreviousCell = owner.getPreviousCell(fromIndexPath: currentIndexPath)
+            previousCell = refToPreviousCell
+        }
+        return previousCell
+    }
+    
+    func tapHandler() {
+        // - Display keyboard, make first responder, and scroll to the first cell in colleciton that isnt performed
+        // If there are cells before this one, that are not performed, jump to the first one of these instead
+        if let firstAvailableCell = owner.getFirstFreeCell() {
+            if firstAvailableCell != self {
+                self.repsField.resignFirstResponder()
+            
+                firstAvailableCell.tapHandler()
+                return
+            }
+        }
         
         // Custom keyboard for inputting time and weight
         let screenWidth = Constant.UI.width
@@ -186,10 +219,9 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.becomeFirstResponder()
         
         // FIXME: - Scroll to correct tableViewCell
-        
-        
 
-        layoutIfNeeded()
+//        layoutIfNeeded()
+        setNeedsLayout()
     }
     
     public func setReps(_ n: Int16) {

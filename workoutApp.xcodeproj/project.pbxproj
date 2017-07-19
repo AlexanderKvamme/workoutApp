@@ -65,6 +65,7 @@
 		DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */; };
 		DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */; };
 		DD9838731F12717B00B876C7 /* CustomNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9838721F12717B00B876C7 /* CustomNotifications.swift */; };
+		DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA169451F1E882900A82FBF /* TapAnywhere.swift */; };
 		DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54AD81ED84B1B008C601C /* ModelEnums.swift */; };
 		DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54B021EDB426D008C601C /* DatabaseFacade.swift */; };
 		DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */; };
@@ -145,6 +146,7 @@
 		DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoLabelStack.swift; sourceTree = "<group>"; };
 		DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlView.swift; sourceTree = "<group>"; };
 		DD9838721F12717B00B876C7 /* CustomNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotifications.swift; sourceTree = "<group>"; };
+		DDA169451F1E882900A82FBF /* TapAnywhere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapAnywhere.swift; sourceTree = "<group>"; };
 		DDA54AD81ED84B1B008C601C /* ModelEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelEnums.swift; sourceTree = "<group>"; };
 		DDA54B021EDB426D008C601C /* DatabaseFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFacade.swift; sourceTree = "<group>"; };
 		DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */,
+				DDA169451F1E882900A82FBF /* TapAnywhere.swift */,
 				DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */,
 			);
 			name = "Custom Keyboard";
@@ -529,6 +532,7 @@
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
+				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,

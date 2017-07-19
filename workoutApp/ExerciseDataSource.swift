@@ -18,6 +18,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     let cellIdentifier: String = "exerciseCell"
     var currentExercises: [Exercise]!
+    weak var owner: ExerciseTableViewController!
     
     // MARK: - Initializers
     
@@ -46,6 +47,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
         cell = ExerciseTableViewCell(withExercise: exercise, andIdentifier: cellIdentifier)
+        cell.owner = owner
         
         if let name = exercise.name {
             cell.box.setTitle(name)

@@ -41,6 +41,7 @@ class ExerciseTableViewController: UITableViewController {
         
         // Table view setup
         dataSource = ExerciseTableViewDataSource(workout: currentWorkout)
+        dataSource.owner = self
         tableView.delegate = self
         tableView.dataSource = dataSource
         tableView.register(ExerciseTableViewCell.self, forCellReuseIdentifier: "exerciseCell")

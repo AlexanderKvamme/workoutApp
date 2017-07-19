@@ -16,6 +16,26 @@ protocol hasNextCell: class {
     func getNextCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
 }
 
+protocol hasPreviousCell: class {
+    func getPreviousCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
+}
+
+extension hasPreviousCell where Self: ExerciseTableViewCell {
+    // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the previous cell, or nil if it does not exist
+    func getPreviousCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell? {
+        var ip = indexPath
+        ip.row -= 1
+        
+        let previousCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
+        if let previousCell = previousCollectionViewCell {
+            return previousCell
+        } else {
+            print("there was no previous cell, so returning nil")
+            return nil
+        }
+    }
+}
+
 extension hasNextCell where Self: ExerciseTableViewCell {
     
     // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the next cell, or make a new one if it doesnt exist, to allow for fast input of sets for the user
@@ -37,7 +57,7 @@ extension hasNextCell where Self: ExerciseTableViewCell {
  ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
  */
 
-class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDelegate, UICollectionViewDataSource {
+class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICollectionViewDelegate, UICollectionViewDataSource {
 
     private let collectionViewReuseIdentifier = "collectionViewCell"
     var liftsToDisplay: [Lift]!
@@ -45,6 +65,8 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
     var plusButton: UIButton!
     var box: Box!
     var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
+    
+    weak var owner: ExerciseTableViewController!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -81,16 +103,6 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    // MARK: - Observers
-    
-    private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(doSomething), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
-    }
-    
-    @objc private func doSomething() {
-        print("observed")
-    }
-
     
     // MARK: - Helpers
     
@@ -126,7 +138,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         if firstFreeCell == nil {
             insertNewCell()
         } else {
-            firstFreeCell!.tapHandler(sender: self)
+            firstFreeCell!.tapHandler()
         }
     }
     
@@ -160,20 +172,13 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
     func getFirstFreeCell() -> ExerciseSetCollectionViewCell? {
         
         guard let firstCell = getFirstCell() else {
-            print("no first cell to fetch")
             return nil
         }
-        
-        // We now have a firstCell...
         // use getNextCell until it has no more nextCells, return the last one
-        
         var currentCell = firstCell
-        print("first cell should be : \(currentCell.repsField.text)")
+        
         if currentCell.isPerformed == false {
-            print("first cell was not performed so returning it")
             return currentCell
-        } else {
-            print("\(currentCell.repsField.text) is perfromed so continue")
         }
 
         while let nextCell = currentCell.getNextCell() {
@@ -182,8 +187,6 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
                 return currentCell
             }
         }
-        
-        print("getFirstFreeCell ended without finding a free cell so returning nil")
         return nil
     }
     
@@ -220,7 +223,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, UICollectionViewDeleg
         }) { _ in
             if let c = self.collectionView.cellForItem(at: newIndexPath) as? ExerciseSetCollectionViewCell {
             self.collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
-                c.tapHandler(sender: self)
+                c.tapHandler()
             }
         }
     }
