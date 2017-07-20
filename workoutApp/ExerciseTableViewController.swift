@@ -13,6 +13,8 @@ class ExerciseTableViewController: UITableViewController {
     var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
     var dataSource: ExerciseTableViewDataSource!
     
+    var activeTableCell: UITableViewCell?
+    
     // MARK: - Initializers
     
     init(withWorkout workout: Workout) {
@@ -30,6 +32,7 @@ class ExerciseTableViewController: UITableViewController {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
+        addObservers()
         setupNavigationBar()
     }
     
@@ -48,8 +51,40 @@ class ExerciseTableViewController: UITableViewController {
         
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
+        automaticallyAdjustsScrollViewInsets = false
         //tableView.allowsSelection = false
+
+        // TEST
+        
+        print("frame: ", tableView.frame)
+        print("cont insets: ", tableView.contentInset)
+        if let navHeight = navigationController?.navigationBar.frame.height {
+            let statusHeight = UIApplication.shared.statusBarFrame.height
+            print("statusheight = \(statusHeight)")
+            tableView.contentInset = UIEdgeInsets(top: navHeight + 20, left: 0, bottom: 0, right: 0)
+            tableView.headerView(forSection: 0)?.backgroundColor = .red
+            tableView.tableHeaderView?.backgroundColor = .green
+            print(tableView.sectionHeaderHeight)
+            print("done")
+        }
+        
+        // tableViewHeader for top
+        
+        
+        
+        
+//        edgesForExtendedLayout = .init(rawValue: 0) // Dont let table slide under the navBar
+        
+//        self.edgesForExtendedLayout = UIRectEdge.init(rawValue: 0)
+//        self.automaticallyAdjustsScrollViewInsets = false
+        
+        
+        print("frame: ", tableView.frame)
+        print("cont insets: ", tableView.contentInset)
+        print("header: ", tableView.tableHeaderView?.frame ?? "NO")
         tableView.reloadData()
+        
+        
         
         // Table footer
         let footerFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
@@ -61,6 +96,10 @@ class ExerciseTableViewController: UITableViewController {
         tableView.tableFooterView = footer
         
         // setDebugColors()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeObservers()
     }
     
     // MARK: - Navbar
@@ -80,7 +119,11 @@ class ExerciseTableViewController: UITableViewController {
     // MARK: - Delegate methods
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10
+        // spacing between cells
+//        if section == 0 {
+//            return 0
+//        }
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -95,8 +138,26 @@ class ExerciseTableViewController: UITableViewController {
     
     // MARK: - Helpers
     
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShowHandler),
+                                               name: .UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHideHandler),
+                                               name: .UIKeyboardWillHide,
+                                               object: nil)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
     func setDebugColors() {
         view.backgroundColor = .green
+        tableView.tableFooterView?.backgroundColor = .yellow
+        tableView.backgroundColor = .red
     }
     
     func saveButtonHandler() {
@@ -108,6 +169,69 @@ class ExerciseTableViewController: UITableViewController {
         // - - Loop through all collectionViewCells and return its repsPerformed, weight,
         // - Look at all the sets in the 
         print("*save*")
+    }
+    
+    // MARK: - Handlers
+    
+    @objc private func keyboardWillShowHandler(notification: NSNotification) {
+        print("*keyboardWillShowHandler*")
+        print(notification)
+        
+        // Make sure you received a userInfo dict
+        guard let userInfo = notification.userInfo else {
+            print("error unwrapping userInfo in kbWillShow")
+            return
+        }
+        
+        let kbrect = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        print("retrieved rect: ", kbrect)
+        print(kbrect)
+        if let kbrect = kbrect {
+            // Adjust tableViews insets
+            let keyboardHeight = kbrect.height
+            let insetsFromNavbar = tableView.contentInset.top
+            let insetsForTableView = UIEdgeInsets(top: insetsFromNavbar,
+                left: 0,
+                bottom: keyboardHeight,
+                right: 0)
+            
+            tableView.contentInset = insetsForTableView
+            tableView.scrollIndicatorInsets = insetsForTableView
+            
+            // The visible part of tableView, not hidden by keyboard
+            var visibleRect = self.view.frame
+            // may need to deal with insets from top under navbar
+            visibleRect.size.height -= keyboardHeight
+//            if var navHeight = navigationController?.navigationBar.frame.height {
+//                navHeight += 100
+//                visibleRect.size.height -= navHeight
+//                visibleRect.origin.y += navHeight
+//            }
+            
+            print("visibleRect: ", visibleRect)
+            
+            // scroll to the tapped cell
+            if let rectToBeDisplayed = activeTableCell?.frame {
+                
+                let v = UIView(frame: rectToBeDisplayed)
+                v.backgroundColor = .yellow
+                v.alpha = 0.5
+                view.addSubview(v)
+                
+                if !visibleRect.contains(rectToBeDisplayed) {
+                    print("does not contain")
+                    tableView.scrollRectToVisible(rectToBeDisplayed, animated: true)
+                } else {
+                    print("contains")
+                }
+            }
+            
+        }
+    }
+    
+    @objc private func keyboardWillHideHandler(notification: NSNotification) {
+        print("*keyboardWillHideHandler*")
+        print(notification)
     }
 }
 

@@ -27,7 +27,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     private var cellHasBeenEdited = false
     var isPerformed = false // track if Lift should be tracked as completed
     var weightLabel: UILabel?
-    private var  keyboard: Keyboard!
+    private var keyboard: Keyboard!
     weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
     var initialRepValue: String {
         if let indexPath = owner.collectionView.indexPath(for: self) {
@@ -174,6 +174,13 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         makeTextBold()
+        
+        // set field as active to make let the containing tableView scroll to active cell
+        if owner.owner.activeTableCell != owner {
+            print("active cell updated")
+            owner.owner.activeTableCell = owner
+        }
+        
         // Make a placeholder in a nice color
         let color = UIColor.light
         let font = UIFont.custom(style: .medium, ofSize: .big)
