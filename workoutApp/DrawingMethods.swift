@@ -29,6 +29,4 @@ func drawDiagonalLineThrough(_ someView: UIView, inView view: UIView) {
     line.layer.addSublayer(shapeLayer)
     view.addSubview(line)
     view.sendSubview(toBack: line)
-    //view.layer.addSublayer(shapeLayer)
-    //view.sendSubview(toBack: shapeLayer)
 }
