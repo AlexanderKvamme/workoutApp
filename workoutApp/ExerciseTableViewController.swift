@@ -183,10 +183,7 @@ class ExerciseTableViewController: UITableViewController {
             if let rectToBeDisplayed = activeTableCell?.frame {
                 
                 if !visibleRect.contains(rectToBeDisplayed) {
-                    print("does not contain")
                     tableView.scrollRectToVisible(rectToBeDisplayed, animated: true)
-                } else {
-                    print("contains")
                 }
             }
         }

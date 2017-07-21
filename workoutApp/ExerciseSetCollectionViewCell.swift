@@ -76,7 +76,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     @objc private func textChanged() {
-        print("did change -> cellHasBeenEdited = true")
         self.cellHasBeenEdited = true
     }
     
@@ -131,23 +130,16 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print("textFieldDidEndEditing \(textField.text)")
         
         if let newText = textField.text, let newValueAsInt16 = Int16(newText) {
-            print("got through first if")
-            print("cellHasBeenEdited is ", cellHasBeenEdited)
-            
             if cellHasBeenEdited && textField.text != "" && isPerformed {
                 // if cell has been edited and textFieldDidEndEditing
-                print("set \(textField.text) isperformed")
-                print("updating datasource of \(textField.text)")
                 // Update data source with new value
                 if let indexPath = owner.collectionView.indexPath(for: self) {
                     let dataSourceIndexToUpdate = indexPath.row
                     owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
                 }
             } else { // textfield has not been editet and is not ""
-                print("invalid text in \(textField.text)")
                 textField.text = initialRepValue
                 makeTextNormal()
             }
@@ -172,7 +164,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         
         // set field as active to make let the containing tableView scroll to active cell
         if owner.owner.activeTableCell != owner {
-            print("active cell updated")
             owner.owner.activeTableCell = owner
         }
         
@@ -251,8 +242,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.inputView = keyboard
         repsField.delegate = self
         repsField.becomeFirstResponder()
-        
-        // FIXME: - Scroll to correct tableViewCell
 
         setNeedsLayout()
     }

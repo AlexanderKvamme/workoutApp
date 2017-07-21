@@ -49,3 +49,4 @@ func drawDiagonalLineThrough(_ someView: UIView, inView view: UIView) {
     view.addSubview(line)
     view.sendSubview(toBack: line)
 }
+

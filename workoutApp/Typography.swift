@@ -25,7 +25,7 @@ extension UILabel {
     
     func applyCustomAttributes(_ spacing: Constant.Attributes.letterSpacing) {
         guard self.text != nil && self.text!.characters.count > 0 else {
-            print("applyCustomAttributes failed")
+            print("applyCustomAttributes failed on \(self.text)")
             return
         }
 
