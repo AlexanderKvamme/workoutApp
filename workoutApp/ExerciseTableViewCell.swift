@@ -64,6 +64,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     var collectionView: UICollectionView!
     var plusButton: UIButton!
     var box: Box!
+    var verticalInsetForBox: CGFloat = 10
     var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
     
     weak var owner: ExerciseTableViewController!
@@ -241,7 +242,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset,
-                                         y: box.boxFrame.frame.minY,
+                                         y: box.boxFrame.frame.minY + verticalInsetForBox,
                                          width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset,
                                          height: box.boxFrame.frame.height)
         collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
@@ -275,11 +276,23 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
      
+        // contentView
+        
         NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: box.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: 10),
+            contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: -verticalInsetForBox),
+            contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: verticalInsetForBox),
             contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
                                     ])
+        
+        // the box
+        
+        box.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            box.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            box.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
+            box.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 0),
+            ])
     }
 }
 

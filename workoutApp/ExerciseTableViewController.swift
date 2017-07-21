@@ -39,7 +39,7 @@ class ExerciseTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
-        // Visuals
+        
         tableView.backgroundColor = .light
         
         // Table view setup
@@ -52,39 +52,16 @@ class ExerciseTableViewController: UITableViewController {
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
         automaticallyAdjustsScrollViewInsets = false
-        //tableView.allowsSelection = false
 
-        // TEST
-        
-        print("frame: ", tableView.frame)
-        print("cont insets: ", tableView.contentInset)
         if let navHeight = navigationController?.navigationBar.frame.height {
             let statusHeight = UIApplication.shared.statusBarFrame.height
-            print("statusheight = \(statusHeight)")
-            tableView.contentInset = UIEdgeInsets(top: navHeight + 20, left: 0, bottom: 0, right: 0)
+            tableView.contentInset = UIEdgeInsets(top: navHeight + statusHeight, left: 0, bottom: 0, right: 0)
             tableView.headerView(forSection: 0)?.backgroundColor = .red
             tableView.tableHeaderView?.backgroundColor = .green
-            print(tableView.sectionHeaderHeight)
-            print("done")
         }
         
-        // tableViewHeader for top
-        
-        
-        
-        
-//        edgesForExtendedLayout = .init(rawValue: 0) // Dont let table slide under the navBar
-        
-//        self.edgesForExtendedLayout = UIRectEdge.init(rawValue: 0)
-//        self.automaticallyAdjustsScrollViewInsets = false
-        
-        
-        print("frame: ", tableView.frame)
-        print("cont insets: ", tableView.contentInset)
-        print("header: ", tableView.tableHeaderView?.frame ?? "NO")
+        tableView.separatorStyle = .none
         tableView.reloadData()
-        
-        
         
         // Table footer
         let footerFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
@@ -175,7 +152,6 @@ class ExerciseTableViewController: UITableViewController {
     
     @objc private func keyboardWillShowHandler(notification: NSNotification) {
         print("*keyboardWillShowHandler*")
-        print(notification)
         
         // Make sure you received a userInfo dict
         guard let userInfo = notification.userInfo else {
@@ -183,10 +159,9 @@ class ExerciseTableViewController: UITableViewController {
             return
         }
         
-        let kbrect = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        print("retrieved rect: ", kbrect)
-        print(kbrect)
-        if let kbrect = kbrect {
+        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        
+        if let kbrect = keyboardRect {
             // Adjust tableViews insets
             let keyboardHeight = kbrect.height
             let insetsFromNavbar = tableView.contentInset.top
@@ -200,23 +175,12 @@ class ExerciseTableViewController: UITableViewController {
             
             // The visible part of tableView, not hidden by keyboard
             var visibleRect = self.view.frame
+            
             // may need to deal with insets from top under navbar
             visibleRect.size.height -= keyboardHeight
-//            if var navHeight = navigationController?.navigationBar.frame.height {
-//                navHeight += 100
-//                visibleRect.size.height -= navHeight
-//                visibleRect.origin.y += navHeight
-//            }
-            
-            print("visibleRect: ", visibleRect)
             
             // scroll to the tapped cell
             if let rectToBeDisplayed = activeTableCell?.frame {
-                
-                let v = UIView(frame: rectToBeDisplayed)
-                v.backgroundColor = .yellow
-                v.alpha = 0.5
-                view.addSubview(v)
                 
                 if !visibleRect.contains(rectToBeDisplayed) {
                     print("does not contain")
@@ -225,13 +189,13 @@ class ExerciseTableViewController: UITableViewController {
                     print("contains")
                 }
             }
-            
         }
     }
     
     @objc private func keyboardWillHideHandler(notification: NSNotification) {
-        print("*keyboardWillHideHandler*")
-        print(notification)
+        let newInset = UIEdgeInsets(top: tableView.contentInset.top,
+                                    left: 0, bottom: 0, right: 0)
+        tableView.contentInset = newInset
     }
 }
 

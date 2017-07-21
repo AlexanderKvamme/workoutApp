@@ -19,16 +19,15 @@ import UIKit
 class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     
     var button: UIButton! // Button that covers entire cell, to handle taps
-    var repsField: UITextField! {
-        didSet {
-            print("set text to \(repsField.text)")
-        }
-    }
+    var repsField: UITextField!
     private var cellHasBeenEdited = false
-    var isPerformed = false // track if Lift should be tracked as completed
-    var weightLabel: UILabel?
     private var keyboard: Keyboard!
+    var isPerformed = false // track if Lift should be tracked as completed
+    
+    var weightLabel: UILabel?
+    
     weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
+    
     var initialRepValue: String {
         if let indexPath = owner.collectionView.indexPath(for: self) {
             let dataSourceIndexToUpdate = indexPath.row
@@ -71,7 +70,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
             if let indexPathToRemove = indexPathToRemove {
                 owner.liftsToDisplay.remove(at: indexPathToRemove.row)
                 owner.collectionView.deleteItems(at: [indexPathToRemove])
-//                printCollectionViewsReps()
+                // printCollectionViewsReps()
             }
         }
     }
@@ -84,7 +83,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     // MARK: - Helper
     
     private func printCollectionViewsReps() {
-        print("REPS COLLECTION CONTAIN: ")
+        print("Reps collection contains: ")
         for repValue in owner.liftsToDisplay {
             print(repValue.reps)
         }
@@ -125,10 +124,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     // MARK: - Textfield delegate methods
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        // FIXME: - Dette skal heller være i en target action knyttet til en controlEvent i textFieldet kalt .editingChanged eller noe
-        
-        
         // Make sure input is convertable to an integer for Core Data
         let allowedCharacters = CharacterSet.decimalDigits
         let characterSet = CharacterSet(charactersIn: string)
@@ -198,7 +193,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     @objc private func nextButtonTapHandler() {
         // mark as performed, find next available
         isPerformed = true
-        endEditing(true)
         
         if let nextAvailableCell = owner.getFirstFreeCell() {
             let ip = owner.collectionView.indexPath(for: nextAvailableCell)
