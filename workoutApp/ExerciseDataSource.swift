@@ -32,10 +32,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         }
     }
     
-    // Space out cells with use of sections
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return currentExercises.count
+        return currentExercises.count // uses sections instead of rows to space out cells easily
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,7 +51,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             cell.box.setTitle(name)
 
         }
-//        cell.layoutIfNeeded() 
+//        cell.layoutIfNeeded()
         return cell
     }
 }

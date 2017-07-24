@@ -89,6 +89,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         print()
     }
     
+    // Setup functions
+    
     private func setupButtonCoveringCell() {
         button = UIButton(frame: repsField.frame)
         button.addTarget(self, action: #selector(tapHandler), for: .touchUpInside)
@@ -138,6 +140,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                 if let indexPath = owner.collectionView.indexPath(for: self) {
                     let dataSourceIndexToUpdate = indexPath.row
                     owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
+                    print(" new value in \(indexPath) is \(newValueAsInt16)")
                 }
             } else { // textfield has not been editet and is not ""
                 textField.text = initialRepValue
@@ -220,7 +223,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         // If there are cells before this one, that are not performed, jump to the first one of these instead
         
         // If the cell is not previously performed, rather go to the first unperformed cell
-        if isPerformed == false {
+        if !isPerformed {
             if let firstUnperformedCell = owner.getFirstFreeCell() {
                 if firstUnperformedCell != self {
                     self.repsField.resignFirstResponder()
@@ -250,7 +253,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         repsField.text = String(n)
     }
 
-    // Text Design
+    // Text manipulation
     
     private func makeTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)

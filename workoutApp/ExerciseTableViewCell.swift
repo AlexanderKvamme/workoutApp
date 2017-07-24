@@ -9,51 +9,6 @@
 import UIKit
 
 /*
- Protocol extension that returns nextCell if it has one, or nil
- */
-
-protocol hasNextCell: class {
-    func getNextCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
-}
-
-protocol hasPreviousCell: class {
-    func getPreviousCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
-}
-
-extension hasPreviousCell where Self: ExerciseTableViewCell {
-    // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the previous cell, or nil if it does not exist
-    func getPreviousCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell? {
-        var ip = indexPath
-        ip.row -= 1
-        
-        let previousCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
-        if let previousCell = previousCollectionViewCell {
-            return previousCell
-        } else {
-            print("there was no previous cell, so returning nil")
-            return nil
-        }
-    }
-}
-
-extension hasNextCell where Self: ExerciseTableViewCell {
-    
-    // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the next cell, or make a new one if it doesnt exist, to allow for fast input of sets for the user
-    func getNextCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell? {
-        var ip = indexPath
-        ip.row += 1
-        
-        let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
-        if let nextCell = nextCollectionViewCell {
-            return nextCell
-        } else {
-            print("there was no next cell, so returning nil")
-            return nil
-        }
-    }
-}
-
-/*
  ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
  */
 
@@ -62,12 +17,14 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     private let collectionViewReuseIdentifier = "collectionViewCell"
     var liftsToDisplay: [Lift]!
     var collectionView: UICollectionView!
-    var plusButton: UIButton!
+    private var plusButton: UIButton!
     var box: Box!
-    var verticalInsetForBox: CGFloat = 10
+    private var verticalInsetForBox: CGFloat = 10
     var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
     
     weak var owner: ExerciseTableViewController!
+    
+    // MARK: - Initializers
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -79,24 +36,24 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         currentCellExerciseLog = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
     }
     
+    // Initialize cell by injecting an exercise
     convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
         self.init(style: .default, reuseIdentifier: cellIdentifier)
 
         setupCell()
         setupPlusButton()
         setupCollectionView()
-        // setDebugColors()
         
-        // For this tableViewCell, retrieve the latest exerciseLogs for this exercise, and use the newest logged exercise to display in the collectionviewcells
+        // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
         
         let exerciseLogs = exercise.loggedInstances as! Set<ExerciseLog>
         
+        // the cells will display one exercises last ExerciseLog, sorted by time performed. So each cell gets n Lift's, ordered in an array
         for log in exerciseLogs {
-            for lift in log.lifts as! Set<Lift> {
-                
+            for _ in log.lifts as! Set<Lift> {
                 let sortDescriptor: [NSSortDescriptor] = [NSSortDescriptor(key: "datePerformed", ascending: false)]
                 let sortedLifts = log.lifts?.sortedArray(using: sortDescriptor) as! [Lift]
-                liftsToDisplay = sortedLifts
+                liftsToDisplay = sortedLifts // dataSource update with
             }
         }
     }
@@ -131,11 +88,8 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     }
     
     func plusButtonHandler() {
-        // FIXME: - Select the first unadded cell instead of directly making a newCell
-        print()
-        print("*plusButtonHandler*")
+        // select either first cell that isnt set, or make and select a new one
         let firstFreeCell = getFirstFreeCell()
-        
         if firstFreeCell == nil {
             insertNewCell()
         } else {
@@ -167,15 +121,13 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("did select some item")
+        print("did select some item at indexpath \(indexPath)")
     }
     
     func getFirstFreeCell() -> ExerciseSetCollectionViewCell? {
+        // use getNextCell until it has no other nextCell, return this last cell
+        guard let firstCell = getFirstCell() else { return nil }
         
-        guard let firstCell = getFirstCell() else {
-            return nil
-        }
-        // use getNextCell until it has no more nextCells, return the last one
         var currentCell = firstCell
         
         if currentCell.isPerformed == false {
@@ -203,18 +155,16 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     func insertNewCell() {
         let itemCount = collectionView.numberOfItems(inSection: 0)
         
-        // make new dummy value to be displayed
+        // make new lift value to be displayed
         let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
         newLift.datePerformed = Date() as NSDate
         newLift.reps = 0
         newLift.weight = 0
         newLift.owner = self.currentCellExerciseLog
         
-        // FIXME: - remember to add entire ExerciseLog to the Workoutlog when user saves
-        
         // add to dataSource and tableView
-        let newIndexPath = IndexPath(item: itemCount, section: 0)
         liftsToDisplay.append(newLift)
+        let newIndexPath = IndexPath(item: itemCount, section: 0)
         collectionView.insertItems(at: [newIndexPath]) // needs to have a matching Lift in the dataSource array
         
         // Make it selected and show keyboard
@@ -234,7 +184,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         return liftsToDisplay.count
     }
     
-    // MARK: - setup
+    // MARK: - setup methods
     
     private func setupCollectionView() {
         
@@ -275,9 +225,9 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
-     
-        // contentView
+        box.translatesAutoresizingMaskIntoConstraints = false
         
+        // contentView
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: -verticalInsetForBox),
             contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: verticalInsetForBox),
@@ -285,9 +235,6 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
                                     ])
         
         // the box
-        
-        box.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             box.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             box.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),

@@ -146,13 +146,13 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
 
         
         // Present error modal if workout contains no exercises
-//        guard nameOfCurrentlySelectedExercises.count > 0 else {
-//            let errorMessage = "Add at least one exercise, please!"
-//            let modal = CustomAlertView(type: .message,
-//                                        messageContent: errorMessage)
-//            modal.show(animated: true)
-//            return
-//         }
+        guard nameOfCurrentlySelectedExercises.count > 0 else {
+            let errorMessage = "Add at least one exercise, please!"
+            let modal = CustomAlertView(type: .message,
+                                        messageContent: errorMessage)
+            modal.show(animated: true)
+            return
+         }
         
         if  let workoutName = header.bottomLabel.text,
             let workoutStyleName = workoutStyleSelecter.bottomLabel.text,
