@@ -22,7 +22,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     private var verticalInsetForBox: CGFloat = 10
     var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
     
-    weak var owner: ExerciseTableViewController!
+    weak var owner: ExerciseTableViewDataSource!
     
     // MARK: - Initializers
     
@@ -36,7 +36,52 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         currentCellExerciseLog = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
     }
     
-    // Initialize cell by injecting an exercise
+    // Initialize cell by injecting an Exercise
+    convenience init(withExerciseLog exerciseLog: ExerciseLog, andIdentifier cellIdentifier: String?) {
+        self.init(style: .default, reuseIdentifier: cellIdentifier)
+        
+        // Uses injected Exercise to fetch the latest ExerciseLog of that Exercise type.
+        
+        setupCell()
+        setupPlusButton()
+        setupCollectionView()
+        
+        // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
+        
+        // the cells will display one exercises last ExerciseLog, sorted by time performed. So each cell gets n Lifts, ordered in an array
+        
+        let lifts = exerciseLog.lifts as! Set<Lift>
+        
+        // make sortingFunction
+        func backwards(s1: Lift, s2: Lift) -> Bool {
+            if let date1 = s1.datePerformed, let date2 = s2.datePerformed {
+                return date1 as Date > date2 as Date
+            }
+            return false
+        }
+        
+        // Sort
+        let sortedLifts = lifts.sorted(by: backwards)
+        liftsToDisplay = sortedLifts // update dataSource
+//        owner.totalLiftsToDisplay[
+        
+        // FIXME: - set up initial index of totalLiftsToDisplay?
+
+        // tror ikke jeg kan aksessere owner.totalLift fordi total er ikke satt i initializeren.
+        
+//        if let ip = getIndexPath() {
+//            owner.totalLiftsToDisplay[ip.section] = liftsToDisplay
+//        }
+        
+        // testprint
+        print()
+        for l in liftsToDisplay {
+            print(l.reps)
+        }
+    }
+    
+    
+    // Initialize cell by injecting an Exercise
     convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
         self.init(style: .default, reuseIdentifier: cellIdentifier)
 
@@ -62,7 +107,47 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Data source update
+    
+    func updateDataSourceWIP() {
+        // should update the ExerciseTableViewDataSource... it has an array of liftsToDisplay: [Lift], so that it is in fact [[Lift]], this cells [Lift] should be accessable by using this cells section/row, and whenever this method is called, it should update the this [[Lift]] to keep it ready for a possible save
+        
+        // FIXME: - PSEUDO
+        
+        // - get this cells indexPath
+        // - test until that its the correct one
+        // - update the correct index
+        
+        // - get this cells indexPath
+        if let indexPath = getIndexPath() {
+            print("ip: ", indexPath)
+            print("row: ", indexPath.row)
+            owner.totalLiftsToDisplay[indexPath.section] = liftsToDisplay
+        
+            print("updated the row to ", owner.totalLiftsToDisplay[indexPath.section])
+            
+            // problem could be that its not properly initialized, that i need to initialize it empty when making the workoutLog
+            
+            
+        } else {
+            print(" nah bro i couldnt find")
+        }
+        
+        // - test until that its the correct one
+        
+    }
+    
     // MARK: - Helpers
+    
+    private func getIndexPath() -> IndexPath? {
+        if let indexPath = owner.owner.tableView.indexPath(for: self) {
+            print("ip: ", indexPath)
+            return indexPath
+        } else {
+            print(" nah bro i couldnt find")
+        }
+        return nil
+    }
     
     private func setupPlusButton() {
         let shimmerHeight = box.boxFrame.shimmer.frame.height

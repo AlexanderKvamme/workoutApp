@@ -152,26 +152,17 @@ class ExerciseTableViewController: UITableViewController {
     
     func saveButtonHandler() {
         
+        // FIXME: - remember call deleteTrackedData on datasource from the dismissbutton
+        
         print("*going to try to save*")
-        print("updating myWorkoutLog")
-
-        //update workoutLogModel
-//
-//        print("\n printing ExerciseTVCs datasource content")
-//        for e in dataSource.currentExercises {
-//            print("making log for: ", e.name!)
-//            let newExerciseLog = DatabaseFacade.makeExerciseLog()
-//            newExerciseLog.datePerformed = Date() as NSDate
-//            newExerciseLog.exerciseDesign = e
-//            
-//            exercisesToLog.append(newExerciseLog)
-//            
-//            // FIXME: - manage to retrieve lifts for this exrcise
-//            //newExerciseLog.addToLifts(someSet of lifts)
-//        }
+        print("PRINTING SUMMARY")
+        print("dataSource count:", dataSource.totalLiftsToDisplay.count)
         
-        
-        // First gonna try to retrieve all the data and testprint it
+        // print each row of reps
+        for x in dataSource.totalLiftsToDisplay {
+            print("\nLift array with \(x.count) values:")
+            x.oneLinePrint()
+        }
     }
     
     // MARK: - Handlers

@@ -23,9 +23,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     private var cellHasBeenEdited = false
     private var keyboard: Keyboard!
     var isPerformed = false // track if Lift should be tracked as completed
-    
-    var weightLabel: UILabel?
-    
+    var weightLabel: UILabel? // TODO
     weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
     
     var initialRepValue: String {
@@ -71,6 +69,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                 owner.liftsToDisplay.remove(at: indexPathToRemove.row)
                 owner.collectionView.deleteItems(at: [indexPathToRemove])
                 // printCollectionViewsReps()
+                owner.updateDataSourceWIP()
             }
         }
     }
@@ -141,6 +140,10 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                     let dataSourceIndexToUpdate = indexPath.row
                     owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
                     print(" new value in \(indexPath) is \(newValueAsInt16)")
+                    
+                    // FIXME: - From here, update the TableViewCell this collectionViewCell is contained indexPath
+                    owner.updateDataSourceWIP()
+                    
                 }
             } else { // textfield has not been editet and is not ""
                 textField.text = initialRepValue
@@ -166,8 +169,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         makeTextBold()
         
         // set field as active to make let the containing tableView scroll to active cell
-        if owner.owner.activeTableCell != owner {
-            owner.owner.activeTableCell = owner
+        if owner.owner.owner.activeTableCell != owner {
+            owner.owner.owner.activeTableCell = owner
         }
         
         // Make a placeholder in a nice color

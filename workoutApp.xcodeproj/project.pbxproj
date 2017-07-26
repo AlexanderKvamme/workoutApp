@@ -69,6 +69,7 @@
 		DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54AD81ED84B1B008C601C /* ModelEnums.swift */; };
 		DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54B021EDB426D008C601C /* DatabaseFacade.swift */; };
 		DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */; };
+		DDC4C5C01F28C8D300B511A3 /* LiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5BF1F28C8D300B511A3 /* LiftExtensions.swift */; };
 		DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC660B01EE6BE9900122543 /* DrawingMethods.swift */; };
 		DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */; };
 		DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */; };
@@ -81,7 +82,7 @@
 		DDF1F1EC1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */; };
 		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */; };
 		DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */; };
-		DDF1F1F61F07E3C5001A6F0C /* ExerciseDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseDataSource.swift */; };
+		DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 /* End PBXBuildFile section */
@@ -151,6 +152,7 @@
 		DDA54AD81ED84B1B008C601C /* ModelEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelEnums.swift; sourceTree = "<group>"; };
 		DDA54B021EDB426D008C601C /* DatabaseFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFacade.swift; sourceTree = "<group>"; };
 		DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
+		DDC4C5BF1F28C8D300B511A3 /* LiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiftExtensions.swift; sourceTree = "<group>"; };
 		DDC660B01EE6BE9900122543 /* DrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingMethods.swift; sourceTree = "<group>"; };
 		DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableProtocols.swift; sourceTree = "<group>"; };
@@ -163,7 +165,7 @@
 		DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSetCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewController.swift; sourceTree = "<group>"; };
 		DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
-		DDF1F1F51F07E3C5001A6F0C /* ExerciseDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseDataSource.swift; sourceTree = "<group>"; };
+		DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */,
+				DDC4C5BF1F28C8D300B511A3 /* LiftExtensions.swift */,
 				DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */,
 				DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */,
 			);
@@ -433,7 +436,7 @@
 			isa = PBXGroup;
 			children = (
 				DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */,
-				DDF1F1F51F07E3C5001A6F0C /* ExerciseDataSource.swift */,
+				DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */,
 				DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */,
 				DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */,
 				DD2A9E731F0EED600074B46F /* Footer.swift */,
@@ -529,7 +532,7 @@
 				DD6ACA7F1F1CDC17009714F1 /* MeasurementStyle+CoreDataClass.swift in Sources */,
 				DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */,
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
-				DDF1F1F61F07E3C5001A6F0C /* ExerciseDataSource.swift in Sources */,
+				DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */,
 				DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */,
 				DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */,
 				DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */,
@@ -564,6 +567,7 @@
 				DDF1F1EC1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
+				DDC4C5C01F28C8D300B511A3 /* LiftExtensions.swift in Sources */,
 				DD6ACA7E1F1CDC17009714F1 /* Lift+CoreDataProperties.swift in Sources */,
 				DD6ACA821F1CDC17009714F1 /* Exercise+CoreDataProperties.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,

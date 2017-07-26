@@ -68,6 +68,28 @@ final class DatabaseFacade {
         return nil
     }
     
+    // MARK: - ExerciseLog methods
+    
+    static func fetchLatestExerciseLog(ofExercise exercise: Exercise) -> ExerciseLog? {
+        var resultingExerciseLog: ExerciseLog? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.ExerciseLog.rawValue)
+        let dateDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
+        let ePredicate = NSPredicate(format: "exerciseDesign == %@", exercise)
+        
+        fetchRequest.predicate = ePredicate
+        fetchRequest.sortDescriptors = [dateDescriptor]
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            let res = try DatabaseController.getContext().fetch(fetchRequest)
+            resultingExerciseLog = res[0] as? ExerciseLog
+        } catch let error as NSError {
+            print("failed getting recent exercise")
+        }
+        return resultingExerciseLog
+    }
+    
     // MARK: - Maker methods
     
     // Exercise methods
