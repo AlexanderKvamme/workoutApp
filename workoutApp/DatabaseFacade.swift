@@ -85,9 +85,35 @@ final class DatabaseFacade {
             let res = try DatabaseController.getContext().fetch(fetchRequest)
             resultingExerciseLog = res[0] as? ExerciseLog
         } catch let error as NSError {
-            print("failed getting recent exercise")
+            print("failed getting recent exercise: \(error.localizedDescription)")
         }
         return resultingExerciseLog
+    }
+    
+    // MARK: - WorkoutLog methods
+    
+    static func fetchLatestWorkoutLog(ofWorkout workout: Workout) -> WorkoutLog? {
+        var workoutLog: WorkoutLog? = nil
+        
+        // make fetchrequest for newest
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        let stylePredicate = NSPredicate(format: "design == %@", workout)
+        let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
+        fetchRequest.predicate = stylePredicate
+        fetchRequest.sortDescriptors = [dateSorter]
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            if let result = try DatabaseController.getContext().fetch(fetchRequest) as? [WorkoutLog] {
+                print(" RES : ", result)
+                if result.count > 0 {
+                        workoutLog = result[0] as? WorkoutLog
+                }
+            }
+        } catch let error as NSError {
+            print("i got error: \(error.localizedDescription)")
+        }
+        return workoutLog
     }
     
     // MARK: - Maker methods
@@ -125,8 +151,6 @@ final class DatabaseFacade {
         let muscle = DatabaseFacade.getMuscle(named: muscleName)
         let exerciseStyle = DatabaseFacade.getExerciseStyle(named: styleName)
         let measurementStyle = DatabaseFacade.getMeasurementStyle(named: measurementStyleName)
-        
-        // TODO: - set up the newExercise and save it to database and then show it in the previous screen somehow
         
         newExercise.name = exerciseName
         newExercise.musclesUsed = muscle
@@ -224,8 +248,6 @@ final class DatabaseFacade {
             fetchRequest.predicate = predicate
             let result = try DatabaseController.getContext().fetch(fetchRequest)
             muscle = result[0] as? Muscle
-            
-            // TODO: - Får hentet rett muscle. Må hente de andre tingene og så kan jeg lagre den i Core data
             
         } catch let error as NSError {
             print("error fetching \(name): \(error.localizedDescription)")

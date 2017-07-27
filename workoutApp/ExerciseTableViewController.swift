@@ -12,9 +12,6 @@ class ExerciseTableViewController: UITableViewController {
 
     var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
     var dataSource: ExerciseTableViewDataSource!
-    
-    // FIXME: - Make a better dataSource
-    
     var myWorkoutLog: WorkoutLog! // used in the end
     var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
     var activeTableCell: UITableViewCell?
@@ -25,10 +22,18 @@ class ExerciseTableViewController: UITableViewController {
         super.init(nibName: nil, bundle: nil)
         self.currentWorkout = workout
         
-        // set up myWorkoutLog to store exerciseLogs and Lifts in
-        myWorkoutLog = DatabaseFacade.makeWorkoutLog()
-        myWorkoutLog.dateStarted = Date() as NSDate
-        myWorkoutLog.design = workout
+        // FIXME: - If there is a previous performed workoutLog use that, if not, make a new one
+        
+        print(" INNIT ")
+//        // set up myWorkoutLog to store exerciseLogs and Lifts in
+//        
+//        if let existingWorkoutLog = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
+//            // use the existingWorkoutlog
+//        } else {
+//            // make a new one and
+//        }
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -45,53 +50,21 @@ class ExerciseTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
-        
-        tableView.backgroundColor = .light
-        
-        // dataSource setup
-        if let exercisesToAdd = currentWorkout.exercises as? [Exercise] {
-            for e in exercisesToAdd {
-                print(e.name)
-            }
-        }
-        
+
         dataSource = ExerciseTableViewDataSource(workout: currentWorkout)
-//        dataSource = ExerciseTableViewDataSource(workout: myWorkoutLog)
-        dataSource.owner = self
         tableView.dataSource = dataSource
+        dataSource.owner = self
+        
         
         // delegate setup
         tableView.delegate = self
         tableView.register(ExerciseTableViewCell.self, forCellReuseIdentifier: "exerciseCell")
         
         setupTable()
-        
-        // Table footer
-        let footerFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
-        let footer = ExerciseTableFooter(frame: footerFrame)
-        footer.saveButton.addTarget(self, action: #selector(saveButtonHandler), for: .touchUpInside)
-        
-        footer.backgroundColor = .dark
-        view.backgroundColor = .dark
-        tableView.tableFooterView = footer
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
-    }
-    
-    // MARK: - Navbar
-    
-    private func setupNavigationBar() {
-        if let name = currentWorkout.name {
-            self.title = name.uppercased()
-        } else {
-            print("error setting navbar title")
-        }
-        let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
-        self.navigationItem.rightBarButtonItem = rightButton
-        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     // MARK: - TableView delegate methods
@@ -110,6 +83,34 @@ class ExerciseTableViewController: UITableViewController {
         print("tableView didSelect at: \(indexPath)")
     }
     
+    // MARK: - Methods
+    
+    @objc private func saveButtonHandler() {
+        // FIXME: - remember call deleteTrackedData on datasource from the dismissbutton
+        print("*GONNA SAVE*")
+        
+        // print each row of reps
+        for x in dataSource.totalLiftsToDisplay {
+            x.oneLinePrint()
+        }
+        
+        // FIXME: - Actually save data
+        dataSource.exerciseLogsAsArray.oneLinePrint()
+        dataSource.saveWorkout()
+    }
+    
+    private func setupNavigationBar() {
+        if let name = currentWorkout.name {
+            self.title = name.uppercased()
+        } else {
+            print("error setting navbar title")
+        }
+        let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
+        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
+        self.navigationItem.rightBarButtonItem = rightButton
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     // MARK: - Helper methods
     
     private func setupTable() {
@@ -125,7 +126,20 @@ class ExerciseTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         automaticallyAdjustsScrollViewInsets = false
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .light
+        
+        setupFooter()
         tableView.reloadData()
+    }
+    
+    private func setupFooter() {
+        let footerFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let footer = ExerciseTableFooter(frame: footerFrame)
+        footer.saveButton.addTarget(self, action: #selector(saveButtonHandler), for: .touchUpInside)
+        
+        footer.backgroundColor = .dark
+        view.backgroundColor = .dark
+        tableView.tableFooterView = footer
     }
     
     private func addObservers() {
@@ -148,21 +162,6 @@ class ExerciseTableViewController: UITableViewController {
         view.backgroundColor = .green
         tableView.tableFooterView?.backgroundColor = .yellow
         tableView.backgroundColor = .red
-    }
-    
-    func saveButtonHandler() {
-        
-        // FIXME: - remember call deleteTrackedData on datasource from the dismissbutton
-        
-        print("*going to try to save*")
-        print("PRINTING SUMMARY")
-        print("dataSource count:", dataSource.totalLiftsToDisplay.count)
-        
-        // print each row of reps
-        for x in dataSource.totalLiftsToDisplay {
-            print("\nLift array with \(x.count) values:")
-            x.oneLinePrint()
-        }
     }
     
     // MARK: - Handlers

@@ -18,3 +18,13 @@ extension Sequence where Iterator.Element == Lift {
         print(repNumbersSeparatedByCommas)
     }
 }
+
+extension Sequence where Iterator.Element == ExerciseLog {
+    func oneLinePrint() {
+        print("ExerciseLog array contains")
+        
+        for x in self {
+            print(" - \(x.exerciseDesign?.name ?? "error in oneLinePrint")")
+        }
+    }
+}

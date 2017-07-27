@@ -36,11 +36,11 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         currentCellExerciseLog = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
     }
     
-    // Initialize cell by injecting an Exercise
+    // Initialize cell by injecting an ExerciseLog
     convenience init(withExerciseLog exerciseLog: ExerciseLog, andIdentifier cellIdentifier: String?) {
         self.init(style: .default, reuseIdentifier: cellIdentifier)
         
-        // Uses injected Exercise to fetch the latest ExerciseLog of that Exercise type.
+        // Use injected Exercise to fetch the latest ExerciseLog of that Exercise type.
         
         setupCell()
         setupPlusButton()
@@ -63,45 +63,30 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         // Sort
         let sortedLifts = lifts.sorted(by: backwards)
         liftsToDisplay = sortedLifts // update dataSource
-//        owner.totalLiftsToDisplay[
-        
-        // FIXME: - set up initial index of totalLiftsToDisplay?
-
-        // tror ikke jeg kan aksessere owner.totalLift fordi total er ikke satt i initializeren.
-        
-//        if let ip = getIndexPath() {
-//            owner.totalLiftsToDisplay[ip.section] = liftsToDisplay
-//        }
-        
-        // testprint
-        print()
-        for l in liftsToDisplay {
-            print(l.reps)
-        }
     }
     
     
     // Initialize cell by injecting an Exercise
-    convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
-        self.init(style: .default, reuseIdentifier: cellIdentifier)
-
-        setupCell()
-        setupPlusButton()
-        setupCollectionView()
-        
-        // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
-        
-        let exerciseLogs = exercise.loggedInstances as! Set<ExerciseLog>
-        
-        // the cells will display one exercises last ExerciseLog, sorted by time performed. So each cell gets n Lift's, ordered in an array
-        for log in exerciseLogs {
-            for _ in log.lifts as! Set<Lift> {
-                let sortDescriptor: [NSSortDescriptor] = [NSSortDescriptor(key: "datePerformed", ascending: false)]
-                let sortedLifts = log.lifts?.sortedArray(using: sortDescriptor) as! [Lift]
-                liftsToDisplay = sortedLifts // dataSource update with
-            }
-        }
-    }
+//    convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
+//        self.init(style: .default, reuseIdentifier: cellIdentifier)
+//
+//        setupCell()
+//        setupPlusButton()
+//        setupCollectionView()
+//        
+//        // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
+//        
+//        let exerciseLogs = exercise.loggedInstances as! Set<ExerciseLog>
+//        
+//        // the cells will display one exercises last ExerciseLog, sorted by time performed. So each cell gets n Lift's, ordered in an array
+//        for log in exerciseLogs {
+//            for _ in log.lifts as! Set<Lift> {
+//                let sortDescriptor: [NSSortDescriptor] = [NSSortDescriptor(key: "datePerformed", ascending: false)]
+//                let sortedLifts = log.lifts?.sortedArray(using: sortDescriptor) as! [Lift]
+//                liftsToDisplay = sortedLifts // dataSource update with
+//            }
+//        }
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -112,36 +97,17 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     func updateDataSourceWIP() {
         // should update the ExerciseTableViewDataSource... it has an array of liftsToDisplay: [Lift], so that it is in fact [[Lift]], this cells [Lift] should be accessable by using this cells section/row, and whenever this method is called, it should update the this [[Lift]] to keep it ready for a possible save
         
-        // FIXME: - PSEUDO
-        
-        // - get this cells indexPath
-        // - test until that its the correct one
-        // - update the correct index
-        
-        // - get this cells indexPath
         if let indexPath = getIndexPath() {
-            print("ip: ", indexPath)
-            print("row: ", indexPath.row)
             owner.totalLiftsToDisplay[indexPath.section] = liftsToDisplay
-        
-            print("updated the row to ", owner.totalLiftsToDisplay[indexPath.section])
-            
-            // problem could be that its not properly initialized, that i need to initialize it empty when making the workoutLog
-            
-            
         } else {
-            print(" nah bro i couldnt find")
+            print("Could not find indexPath for updating dataSource")
         }
-        
-        // - test until that its the correct one
-        
     }
     
     // MARK: - Helpers
     
     private func getIndexPath() -> IndexPath? {
         if let indexPath = owner.owner.tableView.indexPath(for: self) {
-            print("ip: ", indexPath)
             return indexPath
         } else {
             print(" nah bro i couldnt find")
