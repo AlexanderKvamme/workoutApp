@@ -17,10 +17,11 @@ import CoreData
 class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     let cellIdentifier: String = "exerciseCell"
-    var exerciseLogsAsArray: [ExerciseLog]! // when you create NSSet of Exercise, store them as arrays here to let tableView properly arrange them
-    var dataSourceWorkoutLog: WorkoutLog! // The main datamodel made to be added to core data on save, or deleted on dismiss
     weak var owner: ExerciseTableViewController!
     
+    // Data source methods
+    var exerciseLogsAsArray: [ExerciseLog]! // each entry represents one tableViewCell. So [0] will be the topmost cell
+    var dataSourceWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
     var totalLiftsToDisplay: [[Lift]]! // Each tableViewCell has a "liftsToDisplay" variable to display, this layered array of lifts should store each one of them, and when one of them is changed, it should bubble up the change to this one, which should contain one [Lift] for each tableViewCell. For example if cell 0 is Pull Ups, cell 1 is Hammer Curls, and cell 2 is Dips, then this Dips one should be able to be updated from TotalLiftsToDisplay[2] = liftsToDisplay
     
     // MARK: - Initializers
@@ -28,36 +29,22 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     init(workout: Workout) {
         super.init()
         
-        // PSEUDO
-        // - Takes workout
-        
-        // - Find out if user has performed it before or not
-        // - if user has performed it before, use that WorkoutLog and copy it - use copy as datasource
-        // - if user has NOT performed it before, use the design layed out
-        
+        // setup data source to use the most recent performance as a foundation, or the workoutlog if it has not been performed.
         if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
             setupUsingWorkoutLog(mostRecentPerformance: lastPerformance)
         } else {
             setupUsingWorkout(withDesign: workout)
         }
-        
-    } // init
+    }
     
     // convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
-    
     private func setupUsingWorkoutLog(mostRecentPerformance inputtedWorkoutLog: WorkoutLog) {
-        print("\n\n\nSetupUsingWorkoutLog")
-        print("setupUsingWorkoutLog received this log:", inputtedWorkoutLog)
-        
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog and make it identical to the previous one
         dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog()
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         dataSourceWorkoutLog.design = inputtedWorkoutLog.design
-        
-        print("workoutLog.design set to ", inputtedWorkoutLog.design ?? "XXX")
-        print("inputted had workoutcount: ", inputtedWorkoutLog.loggedExercises?.count ?? "XXX")
         
         // FIXME: - copy the exercises of the WorkoutLog provided (which is the last time this workout was performed)
         
@@ -79,24 +66,26 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 var liftCopies = [Lift]()
                 
                 // Copy values from the most recently performed ExerciseLog to the newly created one
-                // FIXME: - This one fetches the latest exercise log of that exercise, but we rather want to copy the exercises from the provided one
                 
                 // SortDescriptor
-                let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
+                let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
                 let sortedRecentLifts = exercise.lifts?.sortedArray(using: [dateSortDescriptor]) as! [Lift]
                 
                 // copy each Lift and add them to the newExerciseLog
                 for lift in sortedRecentLifts {
                     let newLift = DatabaseFacade.makeLift()
                     newLift.reps = lift.reps
-                    newLift.datePerformed = Date() as NSDate
+                    newLift.datePerformed = lift.datePerformed // use original time for sorting 
                     newLift.time = lift.time
                     newLift.weight = lift.weight
                     newLift.owner = newExerciseLog
                     
-                    print("copied lift had reps: " ,lift.reps)
-                    
                     liftCopies.append(newLift)
+                }
+                
+                print("\ngonna print copies from : ", exercise.exerciseDesign?.name ?? "BAM")
+                for l in liftCopies {
+                    print("rep from liftCopies: \(l.reps) - \(l.datePerformed!)")
                 }
                 
                 // Save to datasources
@@ -105,21 +94,16 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 i += 1
             }
             
-            // FIXME: - add 1,2,3 to each lift, save, go back, and come back, now delete all the 2's and go back and return again. Somehow the wrong workoutLog is being displayed, or its saving the wrong lifts. 
-            
-            // Changes to the lifts are being displayed, but deleted lifts are not being deleted
-            
         } else {
             print("ERROR: failed unwrapping exercisesFromWorkout")
             exerciseLogsAsArray = [ExerciseLog]()
         }
-        print("exerciseLogsAsArray ended up as: ", exerciseLogsAsArray)
-        print("setupUsingWorkoutLog finished".uppercased())
+        print("setupUsingWorkoutLog finished")
     }
     
     private func setupUsingWorkout(withDesign workout: Workout) {
         
-        print("setupUsingWorkout")
+        print(" - setupUsingWorkout")
         
         exerciseLogsAsArray = [ExerciseLog]()
         
@@ -154,8 +138,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                         let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
                         let sortedRecentLifts = mostRecentLifts.sortedArray(using: [dateSortDescriptor]) as! [Lift]
                         
-                        // TODO: - Make sure dates are actually sorted when you get different timestamps
-                        
                         // copy each Lift and add them to the newExerciseLog
                         for l in sortedRecentLifts {
                             let newLift = DatabaseFacade.makeLift()
@@ -170,27 +152,22 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                     }
                     exerciseLogsAsArray.append(newExerciseLog)
                 } else {
-                    print("got back a whole bunch of nothing")
+                    print("ERROR: Nothing returned from ExerciseLog fetchRequest")
                 }
                 // Add lifts to the total
                 totalLiftsToDisplay[i] = liftCopies
                 i += 1
             }
         } else {
-            print("failed unwrapping exercisesFromWorkout")
+            print("ERROR: Failed unwrapping exercisesFromWorkout")
             exerciseLogsAsArray = [ExerciseLog]()
         }
     }
     
-    
     // MARK: - TableView dataSource methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        //return currentExerciseLogItems.count // uses sections instead of rows to space out cells easily
-        
-        // FIXME: - Er noe feil her. denne returnere 8... tror grunnen er at dataSourcen ikke blir reset eller noe
-        print("secnumber of sections: ", dataSourceWorkoutLog.loggedExercises!.count)
-        
+        // uses sections instead of rows to space out cells easily
         return dataSourceWorkoutLog.loggedExercises!.count
     }
     
@@ -199,8 +176,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("exerciseLogsAsArray count: ", exerciseLogsAsArray.count)
-        print("ip: ", indexPath)
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
@@ -216,20 +191,45 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     // MARK: - Methods
     
     func saveWorkout() {
-        print("\nsaveWorkout() received in dataSource")
+        // set endDate Save to context
         dataSourceWorkoutLog.dateEnded = Date() as NSDate
         DatabaseController.saveContext()
-        // Make sure workoutLog exists in core data
         
-        let workouts = DatabaseController.fetchManagedObjectsForEntity(.WorkoutLog) as! [WorkoutLog]
-        print(dataSourceWorkoutLog)
-        print("name: ", dataSourceWorkoutLog.design?.name ?? "FAIL: workoutLog.design?.name had no name")
+        // FIXME: - Make sure the ExerciseLogs and Lifts are synchronized with the datasource. That is, when a Lift is deleted from the CollectionView, make sure this is reflected in the totalDatasource and that this totalDatasource is the one being saved when user presses save
         
+        print("\nAFTER SAVE THE LOCAL DATA - totalLiftsToDisplay - IS LIKE THIS")
+        
+        // print each row of reps
+        for x in totalLiftsToDisplay {
+            x.oneLinePrint()
+        }
+        
+        print("\nAFTER SAVE THE ACTUAL DATA  - dataSourceWorkoutLog - IS LIKE THIS ")
+        printActualExerciseLogsFromAWorkoutLog()
+        
+        print("and Exercises in exerciseLogsASArray:" )
+        exerciseLogsAsArray.oneLinePrint()
+        
+        // FIXME: - Make a delete method when you dont wanna save, that deletes all lifts, exerciselogs and workoutLogs
+    }
+    
+    func printActualExerciseLogsFromAWorkoutLog() {
+        
+        if let el = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+            for exercise in el {
+                print("gonna print exercise: \(String(describing: exercise.exerciseDesign?.name))")
+                if let lifts = exercise.lifts {
+                    let sortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
+                    if let sortedLifts = lifts.sortedArray(using: [sortDescriptor]) as? [Lift]{
+                        sortedLifts.oneLinePrint()
+                    }
+                }
+            }
+        }
     }
     
     func deleteTrackedData() {
         // FIXME: - THis method should remove any trace of the workoutLog that was created to serve as a dataSource. Including exerciseLogs and Lifts created.
-        
         print("*SHOULD DELETE DATA*")
     }
 }

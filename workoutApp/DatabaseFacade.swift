@@ -95,7 +95,7 @@ final class DatabaseFacade {
     static func fetchLatestWorkoutLog(ofWorkout workout: Workout) -> WorkoutLog? {
         var workoutLog: WorkoutLog? = nil
         
-        // make fetchrequest for newest
+        // make fetchrequest for most recently performed workout of provided type
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
         let stylePredicate = NSPredicate(format: "design == %@", workout)
         let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
@@ -105,7 +105,6 @@ final class DatabaseFacade {
         
         do {
             if let result = try DatabaseController.getContext().fetch(fetchRequest) as? [WorkoutLog] {
-                print(" RES : ", result)
                 if result.count > 0 {
                         workoutLog = result[0] as? WorkoutLog
                 }

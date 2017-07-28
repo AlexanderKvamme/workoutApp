@@ -21,19 +21,6 @@ class ExerciseTableViewController: UITableViewController {
     init(withWorkout workout: Workout) {
         super.init(nibName: nil, bundle: nil)
         self.currentWorkout = workout
-        
-        // FIXME: - If there is a previous performed workoutLog use that, if not, make a new one
-        
-        print(" INNIT ")
-//        // set up myWorkoutLog to store exerciseLogs and Lifts in
-//        
-//        if let existingWorkoutLog = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
-//            // use the existingWorkoutlog
-//        } else {
-//            // make a new one and
-//        }
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,10 +38,9 @@ class ExerciseTableViewController: UITableViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
 
-        dataSource = ExerciseTableViewDataSource(workout: currentWorkout)
+        dataSource = ExerciseTableViewDataSource(workout: currentWorkout) // Make datasource out of the provided Workout
         tableView.dataSource = dataSource
         dataSource.owner = self
-        
         
         // delegate setup
         tableView.delegate = self
@@ -87,15 +73,7 @@ class ExerciseTableViewController: UITableViewController {
     
     @objc private func saveButtonHandler() {
         // FIXME: - remember call deleteTrackedData on datasource from the dismissbutton
-        print("*GONNA SAVE*")
-        
-        // print each row of reps
-        for x in dataSource.totalLiftsToDisplay {
-            x.oneLinePrint()
-        }
-        
-        // FIXME: - Actually save data
-        dataSource.exerciseLogsAsArray.oneLinePrint()
+        print("*GONNA DELEGATE SAVING TO THE DATASOURCE*")
         dataSource.saveWorkout()
     }
     

@@ -70,6 +70,7 @@
 		DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54B021EDB426D008C601C /* DatabaseFacade.swift */; };
 		DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */; };
 		DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */; };
+		DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */; };
 		DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC660B01EE6BE9900122543 /* DrawingMethods.swift */; };
 		DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */; };
 		DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */; };
@@ -153,6 +154,7 @@
 		DDA54B021EDB426D008C601C /* DatabaseFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFacade.swift; sourceTree = "<group>"; };
 		DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
 		DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityHelperExtensions.swift; sourceTree = "<group>"; };
+		DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sorting Functions.swift"; sourceTree = "<group>"; };
 		DDC660B01EE6BE9900122543 /* DrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingMethods.swift; sourceTree = "<group>"; };
 		DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableProtocols.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
+				DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */,
 			);
 			path = workoutApp;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
 				DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */,
+				DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */,
 				DD0CD4C81F012A33008544EE /* ExercisePickerProtocols.swift in Sources */,
 				DD6ACA851F1CDC17009714F1 /* WorkoutStyle+CoreDataClass.swift in Sources */,
 				DD6ACA8C1F1CDC17009714F1 /* ExerciseLog+CoreDataProperties.swift in Sources */,

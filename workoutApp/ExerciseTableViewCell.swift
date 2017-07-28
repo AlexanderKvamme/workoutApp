@@ -14,13 +14,13 @@ import UIKit
 
 class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    private let collectionViewReuseIdentifier = "collectionViewCell"
-    var liftsToDisplay: [Lift]!
+    var liftsToDisplay: [Lift]! // FIXME: - Instead of making a [Lift]
     var collectionView: UICollectionView!
     private var plusButton: UIButton!
-    var box: Box!
     private var verticalInsetForBox: CGFloat = 10
+    private let collectionViewReuseIdentifier = "collectionViewCell"
     var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
+    var box: Box!
     
     weak var owner: ExerciseTableViewDataSource!
     
@@ -48,60 +48,19 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         
         // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
         
-        // the cells will display one exercises last ExerciseLog, sorted by time performed. So each cell gets n Lifts, ordered in an array
+        // the cells will display an exercise's most recent ExerciseLog, sorted by time performed. So each cell gets n Lifts, ordered in an array
         
         let lifts = exerciseLog.lifts as! Set<Lift>
         
-        // make sortingFunction
-        func backwards(s1: Lift, s2: Lift) -> Bool {
-            if let date1 = s1.datePerformed, let date2 = s2.datePerformed {
-                return date1 as Date > date2 as Date
-            }
-            return false
-        }
-        
         // Sort
-        let sortedLifts = lifts.sorted(by: backwards)
+        let sortedLifts = lifts.sorted(by: forewards)
         liftsToDisplay = sortedLifts // update dataSource
+        print("liftsToDisplay sorted by date are now: ")
+        liftsToDisplay.printLiftsWithTimeStamps()
     }
-    
-    
-    // Initialize cell by injecting an Exercise
-//    convenience init(withExercise exercise: Exercise, andIdentifier cellIdentifier: String?) {
-//        self.init(style: .default, reuseIdentifier: cellIdentifier)
-//
-//        setupCell()
-//        setupPlusButton()
-//        setupCollectionView()
-//        
-//        // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
-//        
-//        let exerciseLogs = exercise.loggedInstances as! Set<ExerciseLog>
-//        
-//        // the cells will display one exercises last ExerciseLog, sorted by time performed. So each cell gets n Lift's, ordered in an array
-//        for log in exerciseLogs {
-//            for _ in log.lifts as! Set<Lift> {
-//                let sortDescriptor: [NSSortDescriptor] = [NSSortDescriptor(key: "datePerformed", ascending: false)]
-//                let sortedLifts = log.lifts?.sortedArray(using: sortDescriptor) as! [Lift]
-//                liftsToDisplay = sortedLifts // dataSource update with
-//            }
-//        }
-//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Data source update
-    
-    func updateDataSourceWIP() {
-        // should update the ExerciseTableViewDataSource... it has an array of liftsToDisplay: [Lift], so that it is in fact [[Lift]], this cells [Lift] should be accessable by using this cells section/row, and whenever this method is called, it should update the this [[Lift]] to keep it ready for a possible save
-        
-        if let indexPath = getIndexPath() {
-            owner.totalLiftsToDisplay[indexPath.section] = liftsToDisplay
-        } else {
-            print("Could not find indexPath for updating dataSource")
-        }
     }
     
     // MARK: - Helpers
@@ -110,7 +69,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         if let indexPath = owner.owner.tableView.indexPath(for: self) {
             return indexPath
         } else {
-            print(" nah bro i couldnt find")
+            print("ERROR: - Could not find indexPath")
         }
         return nil
     }
@@ -204,17 +163,51 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     }
     
     func insertNewCell() {
+        
+        print("Adding new cell")
         let itemCount = collectionView.numberOfItems(inSection: 0)
         
         // make new lift value to be displayed
         let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
         newLift.datePerformed = Date() as NSDate
+        print("setting newLift.datePerformed to \(newLift.datePerformed!)")
         newLift.reps = 0
         newLift.weight = 0
         newLift.owner = self.currentCellExerciseLog
         
+        // FIXME: - Add this new lift to the Workoutlog's ExerciseLog
+        
+        if let tableIP = getIndexPath() {
+            print("would add to \(tableIP)")
+            print("corresponding to \(owner.exerciseLogsAsArray[tableIP.section].exerciseDesign?.name)")
+        } else {
+            print("Error: - Could not find IP while inserting new cell")
+        }
+        
+        print()
+        
         // add to dataSource and tableView
         liftsToDisplay.append(newLift)
+        
+        // FIXME: - get section/row and add to the correct part of totalLiftsToDisplay
+        
+        if let test = getIndexPath() {
+            print("got indexpath: ", test)
+            print("got indexpath section: ", test.section)
+            print(" would add to total")
+            owner.totalLiftsToDisplay[test.section].append(newLift)
+            print("totalLiftsToDisplay[\(test.section)] is now : ")
+            owner.totalLiftsToDisplay[test.section].oneLinePrint()
+            
+            // FIXME: - add the lift to the proper exerciseLog
+            print("truna add to right exerciseLog")
+            print("would add to \(owner.exerciseLogsAsArray[test.section].exerciseDesign?.name)")
+            owner.exerciseLogsAsArray[test.section].addToLifts(newLift)
+            
+        } else {
+            print(" no index path")
+        }
+        
         let newIndexPath = IndexPath(item: itemCount, section: 0)
         collectionView.insertItems(at: [newIndexPath]) // needs to have a matching Lift in the dataSource array
         

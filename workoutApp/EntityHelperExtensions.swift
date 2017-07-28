@@ -17,6 +17,12 @@ extension Sequence where Iterator.Element == Lift {
         }
         print(repNumbersSeparatedByCommas)
     }
+    
+    func printLiftsWithTimeStamps() {
+        for e in self {
+            print("\(e.reps) -  \(e.datePerformed!)")
+        }
+    }
 }
 
 extension Sequence where Iterator.Element == ExerciseLog {

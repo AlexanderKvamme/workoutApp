@@ -164,11 +164,14 @@ final class DataSeeder {
             
             // add random lifts this workout
             
+            var secondsToAdd = 0 // space out datePerformed to make them sortable by date
             for _ in 0...Int16(arc4random_uniform(UInt32(9))) {
                 let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
                 lift.reps = randomRepNumber()
                 lift.owner = logItem
-                lift.datePerformed = Date() as NSDate
+//                lift.datePerformed = Date().addingTimeInterval(TimeInterval(secondsToAdd*10)) as NSDate
+                lift.datePerformed = randomDate(daysBack: 10) as! NSDate
+                secondsToAdd += 1
             }
         }
     }
