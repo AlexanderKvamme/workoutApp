@@ -161,18 +161,15 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                     let dataSourceIndexToUpdate = indexPath.row
                     owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
                     owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed = NSDate()
+                    owner.liftsToDisplay[dataSourceIndexToUpdate].hasBeenPerformed = true
                     print(" new value in \(indexPath) is \(newValueAsInt16)")
-                    
-                    // FIXME: - From here, update the TableViewCell this collectionViewCell is contained indexPath
-                    
                 }
             } else { // textfield has not been editet and is not ""
                 textField.text = initialRepValue
                 makeTextNormal()
             }
         } else {
-            
-            print("Text not convertible to Int or no text at all")
+            print("ERROR: Text not convertible to Int or no text at all - NOT saving")
             // if no text at all make normal
             if isPerformed  {
                 textField.text = initialRepValue

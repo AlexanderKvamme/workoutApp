@@ -197,6 +197,9 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         // FIXME: - Make sure the ExerciseLogs and Lifts are synchronized with the datasource. That is, when a Lift is deleted from the CollectionView, make sure this is reflected in the totalDatasource and that this totalDatasource is the one being saved when user presses save
         
+        print("gonna delete tho")
+        deleteUnperformedLifts()
+        
         print("\nAFTER SAVE THE LOCAL DATA - totalLiftsToDisplay - IS LIKE THIS")
         
         // print each row of reps
@@ -209,6 +212,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         print("and Exercises in exerciseLogsASArray:" )
         exerciseLogsAsArray.oneLinePrint()
+        
+        owner.navigationController?.popViewController(animated: true)
         
         // FIXME: - Make a delete method when you dont wanna save, that deletes all lifts, exerciselogs and workoutLogs
     }
@@ -231,6 +236,25 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     func deleteTrackedData() {
         // FIXME: - THis method should remove any trace of the workoutLog that was created to serve as a dataSource. Including exerciseLogs and Lifts created.
         print("*SHOULD DELETE DATA*")
+        
+    }
+    
+    func deleteUnperformedLifts() {
+        if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+            for el in exerciseSet {
+                if let lifts = el.lifts as? Set<Lift> {
+                    for lift in lifts {
+                        if lift.hasBeenPerformed {
+                            print("lift: \(lift.reps) performed")
+                        } else {
+                            print("lift: \(lift.reps) deleted")
+                            DatabaseController.getContext().delete(lift)
+                        }
+                    }
+                }
+                
+            }
+        }
     }
 }
 
