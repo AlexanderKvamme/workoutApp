@@ -77,6 +77,12 @@ class ExerciseTableViewController: UITableViewController {
         dataSource.saveWorkout()
     }
     
+    @objc private func xButtonHandler() {
+        print("X WAS PRESSED")
+        dataSource.deleteData()
+        navigationController?.popViewController(animated: true)
+    }
+    
     private func setupNavigationBar() {
         if let name = currentWorkout.name {
             self.title = name.uppercased()
@@ -84,7 +90,7 @@ class ExerciseTableViewController: UITableViewController {
             print("error setting navbar title")
         }
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
+        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)
     }

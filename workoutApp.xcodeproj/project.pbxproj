@@ -42,7 +42,7 @@
 		DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */; };
 		DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59B0931EE1C1FA006443D4 /* Typography.swift */; };
 		DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59B0951EE2B989006443D4 /* ButtonFooter.swift */; };
-		DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */; };
+		DD5ED8381ECA5F5100D3EB1A /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5ED8371ECA5F5100D3EB1A /* CustomAlertView.swift */; };
 		DD6ACA7B1F1CDC17009714F1 /* Muscle+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6ACA691F1CDC17009714F1 /* Muscle+CoreDataClass.swift */; };
 		DD6ACA7C1F1CDC17009714F1 /* Muscle+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6ACA6A1F1CDC17009714F1 /* Muscle+CoreDataProperties.swift */; };
 		DD6ACA7F1F1CDC17009714F1 /* MeasurementStyle+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6ACA6D1F1CDC17009714F1 /* MeasurementStyle+CoreDataClass.swift */; };
@@ -126,7 +126,7 @@
 		DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = temporaryDummyData.swift; sourceTree = "<group>"; };
 		DD59B0931EE1C1FA006443D4 /* Typography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		DD59B0951EE2B989006443D4 /* ButtonFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonFooter.swift; sourceTree = "<group>"; };
-		DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalMessageController.swift; sourceTree = "<group>"; };
+		DD5ED8371ECA5F5100D3EB1A /* CustomAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		DD6ACA691F1CDC17009714F1 /* Muscle+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muscle+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DD6ACA6A1F1CDC17009714F1 /* Muscle+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muscle+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DD6ACA6D1F1CDC17009714F1 /* MeasurementStyle+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeasurementStyle+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -339,7 +339,7 @@
 		DD5ED8391ECA5F5800D3EB1A /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				DD5ED8371ECA5F5100D3EB1A /* ModalMessageController.swift */,
+				DD5ED8371ECA5F5100D3EB1A /* CustomAlertView.swift */,
 				DD0437401ECCF29F0016EFBB /* Modal.swift */,
 			);
 			name = Modal;
@@ -590,7 +590,7 @@
 				DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */,
 				DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */,
 				DDEEA9F81EDCD99A003360CD /* WorkoutBoxCell.swift in Sources */,
-				DD5ED8381ECA5F5100D3EB1A /* ModalMessageController.swift in Sources */,
+				DD5ED8381ECA5F5100D3EB1A /* CustomAlertView.swift in Sources */,
 				DD0CD4C61F01023C008544EE /* ExercisePickerViewController.swift in Sources */,
 				DD4B1C101EC8606F00BD313B /* TestViewController.swift in Sources */,
 				DD6ACA881F1CDC17009714F1 /* WorkoutLog+CoreDataProperties.swift in Sources */,

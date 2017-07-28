@@ -271,18 +271,19 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     public func setReps(_ n: Int16) {
+        print("didsetrep to \(n)")
         repsField.text = String(n)
     }
 
     // Text manipulation
     
-    private func makeTextNormal() {
+    func makeTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
         repsField.textColor = .light
         repsField.alpha = Constant.alpha.faded
     }
     
-    private func makeTextBold() {
+    func makeTextBold() {
         repsField.font = UIFont.custom(style: .bold, ofSize: .big)
         repsField.textColor = .light
         repsField.alpha = 1

@@ -125,8 +125,15 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseSetCollectionViewCell
         cell.owner = self
         
-        let repFromLift = liftsToDisplay[indexPath.row].reps
+        let liftToDisplay = liftsToDisplay[indexPath.row]
+        print("making cell for liftsToDisplay[indexPath.row] : liftsToDisplay[\(indexPath.row)] : \(liftToDisplay.reps)")
+        let repFromLift = liftToDisplay.reps
         cell.setReps(repFromLift)
+        
+        // Make bold if it is performed
+        if liftsToDisplay[indexPath.row].hasBeenPerformed {
+            cell.makeTextBold()
+        }
         return cell
     }
     
