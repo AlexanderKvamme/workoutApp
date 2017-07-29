@@ -130,6 +130,15 @@ class SelectionViewController: UIViewController {
     
     private func updateStackWithEntriesFromCoreData(withRequest request: NSFetchRequest<NSFetchRequestResult>) {
         let workoutStyles = getWorkoutStyles(withRequest: request)
+        print("SelectionView being set up with \(workoutStyles.count) workouts")
+        
+        guard workoutStyles.count > 0 else {
+            // set up with only a "New Exercises" button
+            print("Need to set up a + button")
+            addNewWorkoutButton()
+            return
+        }
+        
         buttonIndex = 0
         
         for sv in stack.subviews {
@@ -173,6 +182,10 @@ class SelectionViewController: UIViewController {
             stack.addArrangedSubview(button)
         }
         stack.setNeedsLayout()
+    }
+    
+    private func addNewWorkoutButton() {
+        //FIXME: - Add it up
     }
     
     func buttonTapHandler(button: UIButton) {

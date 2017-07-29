@@ -68,7 +68,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 // Copy values from the most recently performed ExerciseLog to the newly created one
                 
                 // SortDescriptor
-                let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
+                let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
                 let sortedRecentLifts = exercise.lifts?.sortedArray(using: [dateSortDescriptor]) as! [Lift]
                 
                 // copy each Lift and add them to the newExerciseLog
@@ -83,11 +83,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                     liftCopies.append(newLift)
                 }
                 
-                print("\ngonna print copies from : ", exercise.exerciseDesign?.name ?? "BAM")
-                for l in liftCopies {
-                    print("rep from liftCopies: \(l.reps) - \(l.datePerformed!)")
-                }
-                
                 // Save to datasources
                 exerciseLogsAsArray.append(newExerciseLog)
                 totalLiftsToDisplay[i] = liftCopies
@@ -98,13 +93,9 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             print("ERROR: failed unwrapping exercisesFromWorkout")
             exerciseLogsAsArray = [ExerciseLog]()
         }
-        print("setupUsingWorkoutLog finished")
     }
     
     private func setupUsingWorkout(withDesign workout: Workout) {
-        
-        print(" - setupUsingWorkout")
-        
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog to later to later be updated
@@ -156,6 +147,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 }
                 // Add lifts to the total
                 totalLiftsToDisplay[i] = liftCopies
+                print("set a row in totalLiftsToDisplay to : ", liftCopies)
                 i += 1
             }
         } else {
@@ -177,9 +169,10 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
+        let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
-        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andIdentifier: cellIdentifier)
+        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
         cell.owner = self
         
         if let name = exerciseLog.exerciseDesign?.name {
@@ -191,7 +184,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     // MARK: - Methods
     
     func saveWorkout() {
-        print("/n*SAVE*")
+        print("/n\n*SAVE*")
         printSummaryOfWorkoutLog()
         
         // set endDate Save to context
@@ -231,7 +224,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             for exercise in el {
                 print("gonna print exercise: \(String(describing: exercise.exerciseDesign?.name))")
                 if let lifts = exercise.lifts {
-                    let sortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
+                    let sortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
                     if let sortedLifts = lifts.sortedArray(using: [sortDescriptor]) as? [Lift]{
                         sortedLifts.oneLinePrint()
                     }
@@ -241,9 +234,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     func deleteData() {
-        // FIXME: - THis method should remove any trace of the workoutLog that was created to serve as a dataSource. Including exerciseLogs and Lifts created.
-        print("*SHOULD DELETE DATA - but doesnt*")
-        deleteAllLifts()
+        deleteLiftsExerciseLogsAndWorkoutLogs()
     }
     
     private func countPerformedExercises() -> Int {
@@ -277,7 +268,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         }
     }
     
-    private func deleteAllLifts() {
+    private func deleteLiftsExerciseLogsAndWorkoutLogs() {
         // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
         if let exerciseLogSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
             for exerciseLog in exerciseLogSet {

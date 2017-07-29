@@ -160,7 +160,10 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                 if let indexPath = owner.collectionView.indexPath(for: self) {
                     let dataSourceIndexToUpdate = indexPath.row
                     owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
-                    owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed = NSDate()
+                    // FIXME: - only update datePerformed if user is not making a change to a previously performed lift. 
+                    if owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed == nil {
+                        owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed = NSDate()
+                    }
                     owner.liftsToDisplay[dataSourceIndexToUpdate].hasBeenPerformed = true
                     print(" new value in \(indexPath) is \(newValueAsInt16)")
                 }

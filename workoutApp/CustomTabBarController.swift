@@ -41,22 +41,23 @@ class CustomTabBarController: UITabBarController {
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
         
         // MARK: - Profile Tab
-        let muscle = DatabaseFacade.fetchMuscleWithName("GLUTES")
-        let test = ExercisePickerViewController(forMuscle: muscle!, withMultiplePreselections: nil)
-        let testViewController = CustomNavigationViewController(rootViewController: test)
+//        let muscle = DatabaseFacade.fetchMuscleWithName("GLUTES")
+//        let test = ExercisePickerViewController(forMuscle: muscle!, withMultiplePreselections: nil)
+//        let testViewController = CustomNavigationViewController(rootViewController: test)
         
-        let profileController = testViewController
-        profileController.hidesBottomBarWhenPushed = true
+//        let profileController = testViewController
+//        profileController.hidesBottomBarWhenPushed = true
         
         // MARK: - Set up navbar
         
-        viewControllers = [progressController, historyController, workoutNavigationController, testViewController]
+//        viewControllers = [progressController, historyController, workoutNavigationController, testViewController]
+        viewControllers = [progressController, historyController, workoutNavigationController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
         historyController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
         //profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
-        testViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
+        //testViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
         for item in tabBarItems {

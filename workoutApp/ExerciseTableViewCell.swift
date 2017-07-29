@@ -37,7 +37,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     }
     
     // Initialize cell by injecting an ExerciseLog
-    convenience init(withExerciseLog exerciseLog: ExerciseLog, andIdentifier cellIdentifier: String?) {
+    convenience init(withExerciseLog exerciseLog: ExerciseLog, andLifts lifts: [Lift], andIdentifier cellIdentifier: String?) {
         self.init(style: .default, reuseIdentifier: cellIdentifier)
         
         // Use injected Exercise to fetch the latest ExerciseLog of that Exercise type.
@@ -50,14 +50,42 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         
         // the cells will display an exercise's most recent ExerciseLog, sorted by time performed. So each cell gets n Lifts, ordered in an array
         
-        let lifts = exerciseLog.lifts as! Set<Lift>
+        // FIXME: - Kanskje heller x
         
         // Sort
-        let sortedLifts = lifts.sorted(by: forewards)
-        liftsToDisplay = sortedLifts // update dataSource
-        print("liftsToDisplay sorted by date are now: ")
+//        let lifts = exerciseLog.lifts as! Set<Lift>
+//        let sortedLifts = lifts.sorted(by: forewards)
+//        liftsToDisplay = sortedLifts // update dataSource
+        
+        liftsToDisplay = lifts
+    
         liftsToDisplay.printLiftsWithTimeStamps()
     }
+    
+    
+//    // Initialize cell by injecting an ExerciseLog
+//    convenience init(withExerciseLog exerciseLog: ExerciseLog, andIdentifier cellIdentifier: String?) {
+//        self.init(style: .default, reuseIdentifier: cellIdentifier)
+//        
+//        // Use injected Exercise to fetch the latest ExerciseLog of that Exercise type.
+//        
+//        setupCell()
+//        setupPlusButton()
+//        setupCollectionView()
+//        
+//        // For this tableViewCell, retrieve the latest exerciseLog for this exercise, and use the newest logged exercise to display in the collectionviewcells
+//        
+//        // the cells will display an exercise's most recent ExerciseLog, sorted by time performed. So each cell gets n Lifts, ordered in an array
+//        
+//        // FIXME: - Kanskje heller x
+//        
+//        // Sort
+//        let lifts = exerciseLog.lifts as! Set<Lift>
+//        let sortedLifts = lifts.sorted(by: forewards)
+//        liftsToDisplay = sortedLifts // update dataSource
+//        print("liftsToDisplay sorted by date are now: ")
+//        liftsToDisplay.printLiftsWithTimeStamps()
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -129,6 +157,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         print("making cell for liftsToDisplay[indexPath.row] : liftsToDisplay[\(indexPath.row)] : \(liftToDisplay.reps)")
         let repFromLift = liftToDisplay.reps
         cell.setReps(repFromLift)
+        cell.isPerformed = liftToDisplay.hasBeenPerformed // is it already performed this workout and should be tappable?
         
         // Make bold if it is performed
         if liftsToDisplay[indexPath.row].hasBeenPerformed {
@@ -170,10 +199,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     }
     
     func insertNewCell() {
-        
-        print("Adding new cell")
         let itemCount = collectionView.numberOfItems(inSection: 0)
-        
         // make new lift value to be displayed
         let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
         newLift.datePerformed = Date() as NSDate
