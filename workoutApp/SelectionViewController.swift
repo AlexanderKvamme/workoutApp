@@ -33,7 +33,7 @@ class SelectionViewController: UIViewController {
     }
     
     // Initialize with manually created buttons
-
+    
     init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
         self.header = header
         self.buttons = buttons
@@ -57,6 +57,7 @@ class SelectionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("VWA")
         // Show TabBar selection indicator
         navigationController?.setNavigationBarHidden(true, animated: true)
         
@@ -68,7 +69,9 @@ class SelectionViewController: UIViewController {
         }
         stack.layoutIfNeeded()
         
-        drawDiagonalLine()
+        if buttonNames.count > 0 {
+            drawDiagonalLine()
+        }
         
         view.bringSubview(toFront: stack) // Bring it in front of diagonal line
         view.layoutIfNeeded()
@@ -111,7 +114,7 @@ class SelectionViewController: UIViewController {
         makeAlignmentRectangle()
         stack.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor, constant: 0).isActive = true
     }
-
+    
     private func setupStack() {
         stack = StackView(frame: CGRect.zero)
         stack.axis = UILayoutConstraintAxis.vertical
@@ -128,21 +131,21 @@ class SelectionViewController: UIViewController {
         }
     }
     
+    /** Sends new fetch and updates buttons */
     private func updateStackWithEntriesFromCoreData(withRequest request: NSFetchRequest<NSFetchRequestResult>) {
         let workoutStyles = getWorkoutStyles(withRequest: request)
-        print("SelectionView being set up with \(workoutStyles.count) workouts")
         
-        guard workoutStyles.count > 0 else {
-            // set up with only a "New Exercises" button
-            print("Need to set up a + button")
-            addNewWorkoutButton()
-            return
-        }
+//        guard workoutStyles.count > 0 else {
+//            // set up with only a "New Exercises" button
+//            print("Need to set up a + button")
+//            addNewWorkoutButton()
+//            return
+//        }
         
         buttonIndex = 0
         
-        for sv in stack.subviews {
-            sv.removeFromSuperview()
+        for subview in stack.subviews {
+            subview.removeFromSuperview()
         }
         
         // make buttons from unique workout names
@@ -181,11 +184,35 @@ class SelectionViewController: UIViewController {
         for button in buttons {
             stack.addArrangedSubview(button)
         }
+        
+        addNewWorkoutButton()
+        
         stack.setNeedsLayout()
     }
     
+    
+    /// Some help
     private func addNewWorkoutButton() {
-        //FIXME: - Add it up
+
+        let plusButton = ReusableComponents.makePlusButton()
+        stack.addArrangedSubview(plusButton)
+        
+        if buttons.count > 0 {
+            plusButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                plusButton.heightAnchor.constraint(equalToConstant: 5),
+                plusButton.widthAnchor.constraint(equalToConstant: 5),
+                ])
+        }
+        stack.addArrangedSubview(plusButton)
+        
+        // present newWorkoutController on tap
+        plusButton.addTarget(self, action: #selector(plusButtonTapHandler), for: .touchUpInside)
+    }
+    
+    @objc private func plusButtonTapHandler() {
+        let newWorkoutController = NewWorkoutController()
+        navigationController?.pushViewController(newWorkoutController, animated: true)
     }
     
     func buttonTapHandler(button: UIButton) {

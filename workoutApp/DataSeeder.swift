@@ -35,6 +35,15 @@ final class DataSeeder {
         DatabaseController.saveContext()
     }
     
+    public func seedCoreDataWithOnlyEssentials() {
+        seedWithExampleMuscleGroups()
+        seedWithExampleWorkoutStyles()
+        seedWithExampleExerciseStyles()
+        seedWithExampleMeasurementStyles()
+//        seedWithExampleWorkoutsAndExercies()
+        DatabaseController.saveContext()
+    }
+    
     // MARK: - Seeding
     
     private func seedWithExampleWorkoutsAndExercies() {
@@ -172,7 +181,7 @@ final class DataSeeder {
                 lift.reps = randomRepNumber()
                 lift.owner = logItem
 //                lift.datePerformed = Date().addingTimeInterval(TimeInterval(secondsToAdd*10)) as NSDate
-                lift.datePerformed = randomDate(daysBack: 10) as! NSDate
+                lift.datePerformed = randomDate(daysBack: 10)
                 lift.hasBeenPerformed = true
                 secondsToAdd += 1
             }
@@ -215,7 +224,7 @@ final class DataSeeder {
         return result
     }
     
-    func randomDate(daysBack: Int)-> Date? {
+    func randomDate(daysBack: Int)-> NSDate? {
         let day = arc4random_uniform(UInt32(daysBack))+1
         let hour = arc4random_uniform(UInt32(23))
         let minute = arc4random_uniform(UInt32(59))
@@ -228,7 +237,7 @@ final class DataSeeder {
         offsetComponents.minute = Int(minute)
         
         let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
-        return randomDate
+        return randomDate as NSDate?
     }
     
     // MARK: - Print methods

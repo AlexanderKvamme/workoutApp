@@ -17,12 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // seed Core Data with development Data
-//        DatabaseController.clearCoreData()
+        //DatabaseController.clearCoreData()
         
         // Core data
-//        let dataSeeder = DataSeeder(context: DatabaseController.getContext())
-//        dataSeeder.seedCoreData()
-//        DatabaseController.saveContext()
+        let dataSeeder = DataSeeder(context: DatabaseController.getContext())
+        dataSeeder.seedCoreDataWithOnlyEssentials()
+        //dataSeeder.seedCoreData()
         
         // Appearance()
         customizeUIAppearance()

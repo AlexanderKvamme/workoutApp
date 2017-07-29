@@ -67,6 +67,7 @@
 		DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54AD81ED84B1B008C601C /* ModelEnums.swift */; };
 		DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54B021EDB426D008C601C /* DatabaseFacade.swift */; };
 		DDA7276E1ED5BA5900068AD4 /* DatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */; };
+		DDBFCA621F2CA43000ABB241 /* ReusableComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBFCA611F2CA43000ABB241 /* ReusableComponents.swift */; };
 		DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */; };
 		DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */; };
 		DDC4C5E91F2B850B00B511A3 /* Lift+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5E71F2B850B00B511A3 /* Lift+CoreDataClass.swift */; };
@@ -151,6 +152,7 @@
 		DDA54AD81ED84B1B008C601C /* ModelEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelEnums.swift; sourceTree = "<group>"; };
 		DDA54B021EDB426D008C601C /* DatabaseFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFacade.swift; sourceTree = "<group>"; };
 		DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseController.swift; sourceTree = "<group>"; };
+		DDBFCA611F2CA43000ABB241 /* ReusableComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableComponents.swift; sourceTree = "<group>"; };
 		DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityHelperExtensions.swift; sourceTree = "<group>"; };
 		DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sorting Functions.swift"; sourceTree = "<group>"; };
 		DDC4C5E71F2B850B00B511A3 /* Lift+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Lift+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -183,13 +185,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DD0CD4C41F010122008544EE /* workoutPicker */ = {
+		DD0CD4C41F010122008544EE /* ExercisePicker */ = {
 			isa = PBXGroup;
 			children = (
 				DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */,
 				DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */,
 			);
-			name = workoutPicker;
+			name = ExercisePicker;
 			sourceTree = "<group>";
 		};
 		DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */ = {
@@ -307,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				DD585D5C1EC4D7CC00962B19 /* Colors.swift */,
+				DDBFCA611F2CA43000ABB241 /* ReusableComponents.swift */,
 				DD585D5E1EC4DC3400962B19 /* Fonts.swift */,
 				DD59B0931EE1C1FA006443D4 /* Typography.swift */,
 				DDC660B01EE6BE9900122543 /* DrawingMethods.swift */,
@@ -349,7 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				DD1EA1121EE9434800EBB7B7 /* InputViewController */,
-				DD0CD4C41F010122008544EE /* workoutPicker */,
+				DD0CD4C41F010122008544EE /* ExercisePicker */,
 				DD3AF4491EE45A7500C55453 /* Tableview and picker */,
 				DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */,
 				DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */,
@@ -541,6 +544,7 @@
 				DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
+				DDBFCA621F2CA43000ABB241 /* ReusableComponents.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,

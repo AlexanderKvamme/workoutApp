@@ -60,7 +60,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         header = TwoLabelStack(frame: CGRect(x: 0, y: 100,
                                                  width: Constant.UI.width,
                                                  height: 70),
-                                   topText: "Name",
+                                   topText: "Name of new workout",
                                    topFont: UIFont.custom(style: .bold, ofSize: .medium),
                                    topColor: UIColor.medium,
                                    bottomText: "Your workout",
