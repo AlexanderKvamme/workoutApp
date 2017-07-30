@@ -51,7 +51,7 @@ class CustomTabBarController: UITabBarController {
         workoutRequest.resultType = .managedObjectResultType
         workoutRequest.propertiesToFetch = ["workoutStyle"]
 
-        let workoutNavigationController = CustomNavigationViewController(rootViewController: SelectionViewController(
+        let workoutNavigationController = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController(
             header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
         
         // MARK: - Profile Tab
@@ -71,7 +71,6 @@ class CustomTabBarController: UITabBarController {
         historyController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
         //profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
-        //testViewController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
         for item in tabBarItems {

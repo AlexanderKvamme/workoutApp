@@ -8,15 +8,10 @@
 
 import UIKit
 
-// TODO: - Add "newButton" to the pickerview
 
 class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
 
-    var selectedExerciseNames = [String]() {
-        didSet {
-            print("did set to \(selectedExerciseNames)")
-        }
-    }
+    var selectedExerciseNames = [String]()
     var selectedIndexPaths = [IndexPath]()
     var currentlyDisplayedMuscle: Muscle! // Store during init, used to refresh the picker after returning from making new exercise
     
@@ -149,9 +144,9 @@ class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
         
         // Make presentable outside of navigationController, used for testing
         if let navigationController = navigationController {
-            navigationController.pushViewController(nec, animated: true)
+            navigationController.pushViewController(nec, animated: Constant.Animation.pickerVCsShouldAnimateIn)
         } else {
-            present(nec, animated: true, completion: nil)
+            present(nec, animated: Constant.Animation.pickerVCsShouldAnimateIn, completion: nil)
         }
     }
     
@@ -213,7 +208,7 @@ class ExercisePickerViewController: PickerViewController, NewExerciseReceiver {
         } else {
             delegate?.receive("0")
         }
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
 }
 

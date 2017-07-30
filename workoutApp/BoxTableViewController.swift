@@ -20,6 +20,7 @@ class BoxTableViewController: UITableViewController {
     
     init(workoutStyleName: String) {
         super.init(nibName: nil, bundle: nil)
+        self.title = "\(workoutStyleName) workouts".uppercased()
         self.workoutStyleName = workoutStyleName
 
         setUpNavigationBar()
@@ -32,7 +33,11 @@ class BoxTableViewController: UITableViewController {
     // MARK: - Life cycle
     
     override func viewWillAppear(_ animated: Bool) {
+        // Navbar setup
+        navigationController?.setNavigationBarHidden(false, animated: true)
         removeBackButton()
+        
+        // TableViewSetup
         refreshControl?.endRefreshing()
         dataSource.refreshDataSource()
         tableView.reloadData()
@@ -118,8 +123,6 @@ class BoxTableViewController: UITableViewController {
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
-        
-        self.title = "\(workoutStyleName) workouts".uppercased()
     }
     
     @objc private func xButtonHandler() {

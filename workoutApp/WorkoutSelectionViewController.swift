@@ -1,5 +1,5 @@
 
-/*
+
 //
 //  WorkoutSelectionViewController.swift
 //  workoutApp
@@ -17,41 +17,41 @@ import CoreData
 
 class WorkoutSelectionViewController: SelectionViewController {
     
-    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch avaiable choices and display them as buttons
-    var header: SelectionViewHeader!
-    var buttons: [SelectionViewButton]!
-    var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
-    var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
-    var stack: StackView!
-    // button creation
-    var buttonNames = [String]()
-    var buttonIndex = 0
+//    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch avaiable choices and display them as buttons
+//    var header: SelectionViewHeader!
+//    var buttons: [SelectionViewButton]!
+//    var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
+//    var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
+//    var stack: StackView!
+//    // button creation
+//    var buttonNames = [String]()
+//    var buttonIndex = 0
     
     // MARK: - Initializers
     
-    init(header: SelectionViewHeader) {
-        self.header = header
-        super.init(nibName: nil, bundle: nil)
-    }
+//    init(header: SelectionViewHeader) {
+//        self.header = header
+//        super.init(nibName: nil, bundle: nil)
+//    }
     
     // Initialize with manually created buttons
     
-    init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
-        self.header = header
-        self.buttons = buttons
-        super.init(nibName: nil, bundle: nil)
-    }
+//    init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
+//        self.header = header
+//        self.buttons = buttons
+//        super.init(nibName: nil, bundle: nil)
+//    }
     
     // Initialize with fetchRequest
     
-    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
-        self.init(header: header)
-        self.fetchRequestToDisplaySelectionsFrom = fetchRequest
-    }
+//    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
+//        self.init(header: header)
+//        self.fetchRequestToDisplaySelectionsFrom = fetchRequest
+//    }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     // MARK: - Lifecycle
     
@@ -59,8 +59,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationController?.setNavigationBarHidden(true, animated: true)
         
         // update with injected fetchRequest or manually added buttons
         if let request = fetchRequestToDisplaySelectionsFrom {
@@ -80,9 +78,9 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     // ViewWillDisappear
     
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        navigationController?.setNavigationBarHidden(false, animated: true)
+//    }
     
     // ViewDidLoad
     
@@ -210,13 +208,13 @@ class WorkoutSelectionViewController: SelectionViewController {
         navigationController?.pushViewController(newWorkoutController, animated: true)
     }
     
-    func buttonTapHandler(button: UIButton) {
-        // Identifies which choice was selected and creates a BoxTableView to display
-        let tappedWorkoutStyleName = buttonNames[button.tag]
-        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyleName)
-        
-        navigationController?.pushViewController(boxTableViewController, animated: true)
-    }
+//    func buttonTapHandler(button: UIButton) {
+//        // Identifies which choice was selected and creates a BoxTableView to display
+//        let tappedWorkoutStyleName = buttonNames[button.tag]
+//        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyleName)
+//        
+//        navigationController?.pushViewController(boxTableViewController, animated: true)
+//    }
     
     // MARK: - Helpers
     
@@ -236,5 +234,3 @@ class WorkoutSelectionViewController: SelectionViewController {
         return workoutStyles
     }
 }
-
-*/

@@ -33,7 +33,6 @@ class SelectionViewController: UIViewController {
     }
     
     // Initialize with manually created buttons
-    
     init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
         self.header = header
         self.buttons = buttons
@@ -41,7 +40,6 @@ class SelectionViewController: UIViewController {
     }
     
     // Initialize with fetchRequest
-    
     convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
         self.init(header: header)
         self.fetchRequestToDisplaySelectionsFrom = fetchRequest
@@ -54,33 +52,32 @@ class SelectionViewController: UIViewController {
     // MARK: - Lifecycle
     
     // ViewWillAppear
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         
-        // update with injected fetchRequest or manually added buttons
-        if let request = fetchRequestToDisplaySelectionsFrom {
-            updateStackWithEntriesFromCoreData(withRequest: request)
-        } else {
-            updateStackWithInsertedButtons()
-        }
-        stack.layoutIfNeeded()
-        
-        if buttonNames.count > 0 {
-            drawDiagonalLine()
-        }
-        
-        view.bringSubview(toFront: stack) // Bring it in front of diagonal line
-        view.layoutIfNeeded()
+//        // update with injected fetchRequest or manually added buttons
+//        if let request = fetchRequestToDisplaySelectionsFrom {
+//            updateStackWithEntriesFromCoreData(withRequest: request)
+//        } else {
+//            updateStackWithInsertedButtons()
+//        }
+//        stack.layoutIfNeeded()
+//        
+//        if buttonNames.count > 0 {
+//            drawDiagonalLine()
+//        }
+//        
+//        view.bringSubview(toFront: stack) // Bring it in front of diagonal line
+//        view.layoutIfNeeded()
     }
     
     // ViewWillDisappear
     
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        navigationController?.setNavigationBarHidden(false, animated: true)
+//    }
     
     // ViewDidLoad
     
@@ -128,85 +125,55 @@ class SelectionViewController: UIViewController {
         }
     }
     
-    /** Sends new fetch and updates buttons */
-    private func updateStackWithEntriesFromCoreData(withRequest request: NSFetchRequest<NSFetchRequestResult>) {
-        let workoutStyles = getWorkoutStyles(withRequest: request)
-        
-        buttonIndex = 0
-        
-        for subview in stack.subviews {
-            subview.removeFromSuperview()
-        }
-        
-        // make buttons from unique workout names
-        var workoutButtons = [SelectionViewButton]()
-        let uniqueWorkoutTypes = Set(workoutStyles)
-        buttonNames = [String]()
-        
-        for type in uniqueWorkoutTypes {
-            guard let styleName = type.name else {
-                return
-            }
-            
-            let newButton = SelectionViewButton(header: styleName,
-                                                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
-            
-            // Set up button names etc
-            newButton.button.tag = buttonIndex
-            buttonIndex += 1
-            buttonNames.append(styleName)
-            
-            // Replace any default target action (Default modal presentation)
-            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-            newButton.button.addTarget(self, action: #selector(buttonTapHandler), for: UIControlEvents.touchUpInside)
-            
-            workoutButtons.append(newButton)
-        }
-        
-        buttons = workoutButtons
-        
-        // Update stack
-        
-        for view in stack.arrangedSubviews {
-            view.removeFromSuperview()
-        }
-        
-        for button in buttons {
-            stack.addArrangedSubview(button)
-        }
-        
-        addNewWorkoutButton()
-        
-        stack.setNeedsLayout()
-    }
-    
-    private func addNewWorkoutButton() {
-
-        let plusButton = ReusableComponents.makePlusButton()
-        
-        if buttons.count > 0 {
-            // Already has selection choices, so place button under the header
-            view.addSubview(plusButton)
-            plusButton.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                plusButton.heightAnchor.constraint(equalToConstant: 20),
-                plusButton.widthAnchor.constraint(equalToConstant: 20),
-                plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                plusButton.centerYAnchor.constraint(equalTo: header.bottomAnchor, constant: 20),
-                ])
-        } else {
-            // add to stackView as only button
-            stack.addArrangedSubview(plusButton)
-        }
-        
-        // present newWorkoutController on tap
-        plusButton.addTarget(self, action: #selector(plusButtonTapHandler), for: .touchUpInside)
-    }
-    
-    @objc private func plusButtonTapHandler() {
-        let newWorkoutController = NewWorkoutController()
-        navigationController?.pushViewController(newWorkoutController, animated: true)
-    }
+//    /** Sends new fetch and updates buttons */
+//    private func updateStackWithEntriesFromCoreData(withRequest request: NSFetchRequest<NSFetchRequestResult>) {
+//        let workoutStyles = getWorkoutStyles(withRequest: request)
+//        
+//        buttonIndex = 0
+//        
+//        for subview in stack.subviews {
+//            subview.removeFromSuperview()
+//        }
+//        
+//        // make buttons from unique workout names
+//        var workoutButtons = [SelectionViewButton]()
+//        let uniqueWorkoutTypes = Set(workoutStyles)
+//        buttonNames = [String]()
+//        
+//        for type in uniqueWorkoutTypes {
+//            guard let styleName = type.name else {
+//                return
+//            }
+//            
+//            let newButton = SelectionViewButton(header: styleName,
+//                                                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
+//            
+//            // Set up button names etc
+//            newButton.button.tag = buttonIndex
+//            buttonIndex += 1
+//            buttonNames.append(styleName)
+//            
+//            // Replace any default target action (Default modal presentation)
+//            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
+//            newButton.button.addTarget(self, action: #selector(buttonTapHandler), for: UIControlEvents.touchUpInside)
+//            
+//            workoutButtons.append(newButton)
+//        }
+//        
+//        buttons = workoutButtons
+//        
+//        // Update stack
+//        
+//        for view in stack.arrangedSubviews {
+//            view.removeFromSuperview()
+//        }
+//        
+//        for button in buttons {
+//            stack.addArrangedSubview(button)
+//        }
+//        
+//        stack.setNeedsLayout()
+//    }
     
     func buttonTapHandler(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
@@ -214,24 +181,6 @@ class SelectionViewController: UIViewController {
         let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyleName)
         
         navigationController?.pushViewController(boxTableViewController, animated: true)
-    }
-    
-    // MARK: - Helpers
-    
-    private func getWorkoutStyles(withRequest request: NSFetchRequest<NSFetchRequestResult>) -> [WorkoutStyle] {
-        var workoutStyles = [WorkoutStyle]()
-        do {
-            let results = try DatabaseController.getContext().fetch(request)
-            // Append all received types
-            for r in results as! [Workout] {
-                if let workoutStyle = r.workoutStyle {
-                    workoutStyles.append(workoutStyle)
-                }
-            }
-        } catch let error as NSError {
-            print("error in SelectionViewController : ", error.localizedDescription)
-        }
-        return workoutStyles
     }
     
     // MARK: - Helpers
@@ -244,7 +193,7 @@ class SelectionViewController: UIViewController {
         v.layoutIfNeeded()
     }
     
-    private func makeAlignmentRectangle() {
+    func makeAlignmentRectangle() {
         alignmentRectangle = UIView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
         alignmentRectangle.backgroundColor = .blue
         view.addSubview(alignmentRectangle)
@@ -257,7 +206,7 @@ class SelectionViewController: UIViewController {
         alignmentRectangle.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    private func drawDiagonalLine() {
+    func drawDiagonalLine() {
         // Draw diagonal line
         diagonalLineView = getDiagonalLineView(sizeOf: stack)
         view.addSubview(diagonalLineView)

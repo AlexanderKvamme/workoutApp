@@ -258,7 +258,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Selectors
     
     func dismissView() {
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
     func confirmAndDismiss() {
@@ -267,7 +267,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             delegate?.receive("NORMAL")
         }
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
 }
 
