@@ -1,5 +1,7 @@
+
+/*
 //
-//  SelectionViewController.swift
+//  WorkoutSelectionViewController.swift
 //  workoutApp
 //
 //  Created by Alexander Kvamme on 12/05/2017.
@@ -13,7 +15,7 @@ import CoreData
  SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
  */
 
-class SelectionViewController: UIViewController {
+class WorkoutSelectionViewController: SelectionViewController {
     
     var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch avaiable choices and display them as buttons
     var header: SelectionViewHeader!
@@ -181,7 +183,7 @@ class SelectionViewController: UIViewController {
     }
     
     private func addNewWorkoutButton() {
-
+        
         let plusButton = ReusableComponents.makePlusButton()
         
         if buttons.count > 0 {
@@ -233,40 +235,6 @@ class SelectionViewController: UIViewController {
         }
         return workoutStyles
     }
-    
-    // MARK: - Helpers
-    
-    private func drawRectAt(_ p: CGPoint) {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        v.backgroundColor = .black
-        v.center = p
-        view.addSubview(v)
-        v.layoutIfNeeded()
-    }
-    
-    private func makeAlignmentRectangle() {
-        alignmentRectangle = UIView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
-        alignmentRectangle.backgroundColor = .blue
-        view.addSubview(alignmentRectangle)
-        alignmentRectangle.alpha = 0.5
-        alignmentRectangle.isHidden = true
-        alignmentRectangle.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 0).isActive = true
-        alignmentRectangle.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        alignmentRectangle.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        alignmentRectangle.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
-        alignmentRectangle.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private func drawDiagonalLine() {
-        // Draw diagonal line
-        diagonalLineView = getDiagonalLineView(sizeOf: stack)
-        view.addSubview(diagonalLineView)
-        
-        diagonalLineView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            diagonalLineView.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor),
-            diagonalLineView.centerXAnchor.constraint(equalTo: alignmentRectangle.centerXAnchor)
-            ])
-    }
 }
 
+*/

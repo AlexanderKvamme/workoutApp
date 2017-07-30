@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+///* Used to enable swiping back thorugh the navigationstack*/
 final class CustomNavigationViewController: UINavigationController {
 
     // MARK: - Lifecycle
@@ -89,3 +91,4 @@ extension CustomNavigationViewController: UIGestureRecognizerDelegate {
         return viewControllers.count > 1 && duringPushAnimation == false
     }
 }
+

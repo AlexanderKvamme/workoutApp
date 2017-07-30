@@ -23,7 +23,6 @@ class BoxTableViewController: UITableViewController {
         self.workoutStyleName = workoutStyleName
 
         setUpNavigationBar()
-        self.title = "\(workoutStyleName) workouts".uppercased()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -117,8 +116,14 @@ class BoxTableViewController: UITableViewController {
     
     private func setUpNavigationBar() {
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: nil, action: nil)
+        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
+        
+        self.title = "\(workoutStyleName) workouts".uppercased()
+    }
+    
+    @objc private func xButtonHandler() {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - TableView delegate methods

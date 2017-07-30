@@ -17,19 +17,33 @@ class CustomTabBarController: UITabBarController {
         super.viewDidLoad()
 
         // Setup the tab bar
+        
+        // MARK: - Progress
+        
         let progressController = SelectionViewController(
             header: SelectionViewHeader(header: "Which kind of", subheader: "Progress?"),
-            buttons: [SelectionViewButton(header: "Statistics", subheader: "Workout History"),
-                      SelectionViewButton(header: "Workout History", subheader: "292 Workouts")
-            ])
-        
-        let historyController = SelectionViewController(
-            header: SelectionViewHeader(header: "History", subheader: "Of which style?"),
             buttons: [SelectionViewButton(header: "Normal", subheader: "9 Workouts"),
                       SelectionViewButton(header: "Pyramid", subheader: "4 Workouts"),
                       SelectionViewButton(header: "Drop set", subheader: "3 Workouts"),
                       SelectionViewButton(header: "Cardio", subheader: "2 Workouts"),
             ])
+        
+        // MARK: - History
+        
+        let allHistoryButton = SelectionViewButton(header: "All", subheader: "Every single one")
+        
+        allHistoryButton.button.removeTarget(nil, action: nil, for: .allEvents)
+        allHistoryButton.button.addTarget(self, action: #selector(historyButtonHandler), for: .touchUpInside)
+        
+        let historyController = SelectionViewController(
+            header: SelectionViewHeader(header: "Recent Workouts", subheader: "History"),
+            buttons: [allHistoryButton])
+        
+        // FIXME: - Make a History controller and add it to the "All" buttonHandler
+//        let historyTableViewController = HistoryBoxTableViewController()
+        
+        // Embed to enable user to navigate back through stack
+        let historyNavigationController = CustomNavigationViewController(rootViewController: historyController)
         
         // MARK: - Workout Tab
         
@@ -51,7 +65,7 @@ class CustomTabBarController: UITabBarController {
         // MARK: - Set up navbar
         
 //        viewControllers = [progressController, historyController, workoutNavigationController, testViewController]
-        viewControllers = [progressController, historyController, workoutNavigationController]
+        viewControllers = [progressController, historyNavigationController, workoutNavigationController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
         historyController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
@@ -70,7 +84,7 @@ class CustomTabBarController: UITabBarController {
         tabBar.isTranslucent = false
         
         // Tab selection indicator (hovering over selected tab)
-        selectionIndicator.setup(selectableItemsCount: 4, atHeight: tabBar.frame.minY)
+        selectionIndicator.setup(selectableItemsCount: viewControllers!.count, atHeight: tabBar.frame.minY)
         view.addSubview(selectionIndicator)
     }
     
@@ -84,6 +98,16 @@ class CustomTabBarController: UITabBarController {
     public func showSelectionindicator() {
         selectionIndicator.isHidden = false
     }
+    
+    // MARK: - Methods
+    
+    func historyButtonHandler() {
+        print("test success")
+        
+        // Prepare tableView to display all recently performed exercises
+        
+        
+    }
+    
 }
-
 
