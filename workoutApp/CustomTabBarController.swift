@@ -30,29 +30,13 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - History
         
-        let allHistoryButton = SelectionViewButton(header: "All", subheader: "Every single one")
-        
-        allHistoryButton.button.removeTarget(nil, action: nil, for: .allEvents)
-        allHistoryButton.button.addTarget(self, action: #selector(historyButtonHandler), for: .touchUpInside)
-        
-        let historyController = SelectionViewController(
-            header: SelectionViewHeader(header: "Recent Workouts", subheader: "History"),
-            buttons: [allHistoryButton])
-        
-        // FIXME: - Make a History controller and add it to the "All" buttonHandler
-//        let historyTableViewController = HistoryBoxTableViewController()
-        
         // Embed to enable user to navigate back through stack
-        let historyNavigationController = CustomNavigationViewController(rootViewController: historyController)
+        let historySelectionViewController = HistorySelectionViewController()
+        let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
         
         // MARK: - Workout Tab
-        
-        let workoutRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Workout.rawValue)
-        workoutRequest.resultType = .managedObjectResultType
-        workoutRequest.propertiesToFetch = ["workoutStyle"]
-
-        let workoutNavigationController = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController(
-            header: SelectionViewHeader(header: "Which kind of?", subheader: "Workout"), fetchRequest: workoutRequest))
+        let workoutSelectionViewController = WorkoutSelectionViewController()
+        let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
         
         // MARK: - Profile Tab
 //        let muscle = DatabaseFacade.fetchMuscleWithName("GLUTES")
@@ -68,7 +52,7 @@ class CustomTabBarController: UITabBarController {
         viewControllers = [progressController, historyNavigationController, workoutNavigationController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
-        historyController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
+        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
         //profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
 
@@ -103,8 +87,11 @@ class CustomTabBarController: UITabBarController {
     func historyButtonHandler() {
         print("test success")
         
-        // Prepare tableView to display all recently performed exercises
+        // FIXME: - Display HistoryTableViewController with all workouts sorted by date
         
+        // - Refactor selectionViewControllers
+        // - Make a HistoryTableViewController
+        // - - With matching historyTableViewCells
         
     }
     

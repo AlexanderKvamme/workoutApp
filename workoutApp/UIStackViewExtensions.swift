@@ -16,4 +16,10 @@ extension UIStackView {
         bg.alpha = 0.3
         addSubview(bg)
     }
+    
+    func removeArrangedSubviews() {
+        for arrangedSubView in self.arrangedSubviews {
+            arrangedSubView.removeFromSuperview()
+        }
+    }
 }

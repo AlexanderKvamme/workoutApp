@@ -10,18 +10,20 @@ import UIKit
 import CoreData
 
 /*
- SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
+ SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts/workoutlogs (if displaying history) to show. 
+ For example when displaying workouts, it displays the different styles. Normal, drop set, etc, while a historySelectionViewcontroller lets user see previously completed workouts in the form of a table listing out previous workoutLogs.
+ 
+ SelectionViewController is the superclass of WorkoutSelectionViewController and HistorySelectionViewController, which both leads to different tableViews.
  */
 
 class SelectionViewController: UIViewController {
     
-    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch avaiable choices and display them as buttons
+    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch choices and display them as buttons
     var header: SelectionViewHeader!
-    var buttons: [SelectionViewButton]!
+    var buttons = [SelectionViewButton]()
     var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
     var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
     var stack: StackView!
-    // button creation
     var buttonNames = [String]()
     var buttonIndex = 0
     
@@ -34,6 +36,7 @@ class SelectionViewController: UIViewController {
     
     // Initialize with manually created buttons
     init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
+        // TODO: - remove this method when you dont need any dummy
         self.header = header
         self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
@@ -56,31 +59,9 @@ class SelectionViewController: UIViewController {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-//        // update with injected fetchRequest or manually added buttons
-//        if let request = fetchRequestToDisplaySelectionsFrom {
-//            updateStackWithEntriesFromCoreData(withRequest: request)
-//        } else {
-//            updateStackWithInsertedButtons()
-//        }
-//        stack.layoutIfNeeded()
-//        
-//        if buttonNames.count > 0 {
-//            drawDiagonalLine()
-//        }
-//        
-//        view.bringSubview(toFront: stack) // Bring it in front of diagonal line
-//        view.layoutIfNeeded()
     }
     
-    // ViewWillDisappear
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        navigationController?.setNavigationBarHidden(false, animated: true)
-//    }
-    
     // ViewDidLoad
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .light
@@ -88,7 +69,7 @@ class SelectionViewController: UIViewController {
         setupLayout()
     }
     
-    // MARK: - Methods
+    // MARK: - Setup Methods
     
     private func setupLayout() {
         view.addSubview(header)
@@ -125,55 +106,45 @@ class SelectionViewController: UIViewController {
         }
     }
     
-//    /** Sends new fetch and updates buttons */
-//    private func updateStackWithEntriesFromCoreData(withRequest request: NSFetchRequest<NSFetchRequestResult>) {
-//        let workoutStyles = getWorkoutStyles(withRequest: request)
-//        
-//        buttonIndex = 0
-//        
-//        for subview in stack.subviews {
-//            subview.removeFromSuperview()
-//        }
-//        
-//        // make buttons from unique workout names
-//        var workoutButtons = [SelectionViewButton]()
-//        let uniqueWorkoutTypes = Set(workoutStyles)
-//        buttonNames = [String]()
-//        
-//        for type in uniqueWorkoutTypes {
-//            guard let styleName = type.name else {
-//                return
+    // MARK: - Other methods
+    
+    func getUniqueWorkoutStyles() -> [WorkoutStyle] {
+        let workoutRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Workout.rawValue)
+        workoutRequest.resultType = .managedObjectResultType
+        workoutRequest.propertiesToFetch = ["workoutStyle"]
+        
+        var workoutStyles = [WorkoutStyle]()
+        do {
+            let results = try DatabaseController.getContext().fetch(workoutRequest)
+            // Append all received types
+            for r in results as! [Workout] {
+                if let workoutStyle = r.workoutStyle {
+                    workoutStyles.append(workoutStyle)
+                }
+            }
+        } catch let error as NSError {
+            print("error in SelectionViewController : ", error.localizedDescription)
+        }
+        return workoutStyles
+    }
+    
+//    func getWorkoutStyles(withRequest request: NSFetchRequest<NSFetchRequestResult>) -> [WorkoutStyle] {
+//        var workoutStyles = [WorkoutStyle]()
+//        do {
+//            let results = try DatabaseController.getContext().fetch(request)
+//            // Append all received types
+//            for r in results as! [Workout] {
+//                if let workoutStyle = r.workoutStyle {
+//                    workoutStyles.append(workoutStyle)
+//                }
 //            }
-//            
-//            let newButton = SelectionViewButton(header: styleName,
-//                                                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
-//            
-//            // Set up button names etc
-//            newButton.button.tag = buttonIndex
-//            buttonIndex += 1
-//            buttonNames.append(styleName)
-//            
-//            // Replace any default target action (Default modal presentation)
-//            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-//            newButton.button.addTarget(self, action: #selector(buttonTapHandler), for: UIControlEvents.touchUpInside)
-//            
-//            workoutButtons.append(newButton)
+//        } catch let error as NSError {
+//            print("error in SelectionViewController : ", error.localizedDescription)
 //        }
-//        
-//        buttons = workoutButtons
-//        
-//        // Update stack
-//        
-//        for view in stack.arrangedSubviews {
-//            view.removeFromSuperview()
-//        }
-//        
-//        for button in buttons {
-//            stack.addArrangedSubview(button)
-//        }
-//        
-//        stack.setNeedsLayout()
+//        return workoutStyles
 //    }
+    
+    // MARK: - Taphandlers
     
     func buttonTapHandler(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
@@ -185,14 +156,7 @@ class SelectionViewController: UIViewController {
     
     // MARK: - Helpers
     
-    private func drawRectAt(_ p: CGPoint) {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        v.backgroundColor = .black
-        v.center = p
-        view.addSubview(v)
-        v.layoutIfNeeded()
-    }
-    
+    /// Used to position stack properly in the middle of header and tabbar
     func makeAlignmentRectangle() {
         alignmentRectangle = UIView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
         alignmentRectangle.backgroundColor = .blue
@@ -207,7 +171,6 @@ class SelectionViewController: UIViewController {
     }
     
     func drawDiagonalLine() {
-        // Draw diagonal line
         diagonalLineView = getDiagonalLineView(sizeOf: stack)
         view.addSubview(diagonalLineView)
         

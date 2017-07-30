@@ -8,6 +8,8 @@
 
 import UIKit
 
+// FIXME: - Now this is a real big fix it. Make this table view functional display cells with the "history design"
+
 class HistoryTableViewController: BoxTableViewController {
 
     override func viewDidLoad() {

@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Core data
         let dataSeeder = DataSeeder(context: DatabaseController.getContext())
-        dataSeeder.seedCoreDataWithOnlyEssentials()
-        //dataSeeder.seedCoreData()
+//        dataSeeder.seedCoreDataWithOnlyEssentials()
+        dataSeeder.seedCoreData()
         
         // Appearance()
         customizeUIAppearance()
