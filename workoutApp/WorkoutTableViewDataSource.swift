@@ -10,17 +10,17 @@ import Foundation
 import UIKit
 import CoreData
 
-class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
-    
-    let cellIdentifier: String = "BoxCell"
-    var workoutStyleName: String!
-    
+class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
+    var cellIdentifier: String! = "WorkoutBoxCell"
+    var workoutStyleName: String?
     var fetchedWorkouts = [Workout]()
     
     // MARK: - Initializers
     
-    init(workoutStyleName: String) {
+    required init(workoutStyleName: String?) {
         super.init()
+//        self.cellIdentifier = "BoxCell"
+        print("super init")
         self.workoutStyleName = workoutStyleName
         
         refreshDataSource()
@@ -38,28 +38,31 @@ class WorkoutTableViewDataSource: NSObject, UITableViewDataSource {
         if let name = wo.name {
             cell.box.setTitle(name)
         }
-        cell.box.setSubHeader(workoutStyleName)
+        if let workoutStyleName = workoutStyleName {
+            cell.box.setSubHeader(workoutStyleName)
+        } else {
+            print(" no subheader to set")
+        }
+        
         return cell
     }
     
     // MARK: - API
     
-    func getWorkouts() -> [Workout]? {
+    func getData() -> [NSManagedObject]? {
         return fetchedWorkouts
     }
     
     func refreshDataSource() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
-        let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName)
+        let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!) // FIXME: BANG
         let predicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
         fetchRequest.predicate = predicate
         
         // Fetch from Core Data
         do {
             let results = try DatabaseController.getContext().fetch(fetchRequest)
-            
             fetchedWorkouts = results
-            
         } catch let err as NSError {
             print(err.debugDescription)
         }

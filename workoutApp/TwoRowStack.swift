@@ -9,12 +9,15 @@
 import Foundation
 import UIKit
 
-fileprivate var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
+
 
 public class TwoRowStack: UIStackView {
+
+    private  var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
+    private var topRow = UILabel()
+    private var bottomRow = UILabel()
     
-    var topRow = UILabel()
-    var bottomRow = UILabel()
+    // MARK: - Initializers
     
     init(topText: String, bottomText: String) {
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
@@ -33,6 +36,7 @@ public class TwoRowStack: UIStackView {
         setupStack()
     }
     
+    // Set up stack with the following format: "13 x 3"
     convenience init(topText: String, sets: Int, reps: Int) {
         self.init(topText: topText, bottomText: "replace with attributedString")
         self.setTopLabel(topText)
@@ -52,7 +56,7 @@ public class TwoRowStack: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Helpers
+    // MARK: - Helpers
     
     private func setTopLabel(_ str: String) {
         topRow.text = str.uppercased()
@@ -67,5 +71,11 @@ public class TwoRowStack: UIStackView {
         alignment = .center
         axis = .vertical
         spacing = 0
+    }
+    
+    // MARK: - Public Access
+    
+    func setBottomText(_ str: String) {
+        bottomRow.text = str
     }
 }

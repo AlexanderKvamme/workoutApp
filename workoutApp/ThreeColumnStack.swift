@@ -17,9 +17,9 @@ class ThreeColumnStack: UIStackView {
     
     // Usage
     
-    func highlightBottomRow() {
-        thirdStack.bottomRow.textColor = .secondary
-    }
+//    func highlightBottomRow() {
+//        thirdStack.bottomRow.textColor = .secondary
+//    }
 }
 
 extension ThreeColumnStack {

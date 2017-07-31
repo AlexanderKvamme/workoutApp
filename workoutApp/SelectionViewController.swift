@@ -146,13 +146,13 @@ class SelectionViewController: UIViewController {
     
     // MARK: - Taphandlers
     
-    func buttonTapHandler(button: UIButton) {
-        // Identifies which choice was selected and creates a BoxTableView to display
-        let tappedWorkoutStyleName = buttonNames[button.tag]
-        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyleName)
-        
-        navigationController?.pushViewController(boxTableViewController, animated: true)
-    }
+//    func buttonTapHandler(button: UIButton) {
+//        // Identifies which choice was selected and creates a BoxTableView to display
+//        let tappedWorkoutStyleName = buttonNames[button.tag]
+//        let boxTableViewController = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
+//        
+//        navigationController?.pushViewController(boxTableViewController, animated: true)
+//    }
     
     // MARK: - Helpers
     

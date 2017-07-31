@@ -15,7 +15,7 @@ final class DatabaseFacade {
     
     private init(){}
     
-    static func countWorkoutsOfType(ofStyle styleName: String) -> Int {
+    static func countWorkouts(ofStyle styleName: String) -> Int {
         
         let style = DatabaseFacade.fetchWorkoutStyle(withName: styleName)
         
@@ -24,6 +24,25 @@ final class DatabaseFacade {
             let predicate = NSPredicate(format: "workoutStyle = %@", style)
             fetchRequest.predicate = predicate
             }
+        
+        do {
+            let count = try DatabaseController.getContext().count(for: fetchRequest)
+            return count
+        } catch let error as NSError {
+            print("Error: \(error.localizedDescription)")
+            return 0
+        }
+    }
+    
+    static func countWorkoutLogs(ofStyle styleName: String) -> Int {
+        
+        let style = DatabaseFacade.fetchWorkoutStyle(withName: styleName)
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        if let style = style {
+            let predicate = NSPredicate(format: "design.workoutStyle = %@", style)
+            fetchRequest.predicate = predicate
+        }
         
         do {
             let count = try DatabaseController.getContext().count(for: fetchRequest)
@@ -106,13 +125,30 @@ final class DatabaseFacade {
         do {
             if let result = try DatabaseController.getContext().fetch(fetchRequest) as? [WorkoutLog] {
                 if result.count > 0 {
-                        workoutLog = result[0] as? WorkoutLog
+                        workoutLog = result[0]
                 }
             }
         } catch let error as NSError {
             print("i got error: \(error.localizedDescription)")
         }
         return workoutLog
+    }
+    
+    static func fetchAllWorkoutLogs() -> [WorkoutLog]? {
+        
+        var result: [WorkoutLog]? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
+        fetchRequest.sortDescriptors = [dateSorter]
+        
+        do {
+            result = try DatabaseController.getContext().fetch(fetchRequest) as? [WorkoutLog]
+        } catch let error as NSError {
+            print("error fetching all workoutlogs: \(error.localizedDescription)")
+        }
+        return result
+        
     }
     
     // MARK: - Maker methods

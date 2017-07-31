@@ -1,19 +1,19 @@
 //
-//  HistoryTableViewController.swift
+//  BoxTableViewController.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 30/07/2017.
+//  Created by Alexander Kvamme on 23/05/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
 import UIKit
+import CoreData
 
-// FIXME: - Now this is a real big fix it. Make this table view functional display cells with the "history design"
-
-class HistoryTableViewController: BoxTableViewController {
+class WorkoutTableViewController: BoxTableViewController {
     
-    let cellIdentifier = "HistoryBoxCell"
     // MARK: - Initializers
+    
+    let cellIdentifier = "WorkoutBoxCell"
     
     override init(workoutStyleName: String) {
         super.init(workoutStyleName: workoutStyleName)
@@ -21,12 +21,6 @@ class HistoryTableViewController: BoxTableViewController {
         self.workoutStyleName = workoutStyleName
         
         setUpNavigationBar()
-    }
-    
-    /// Initialzer to set up table to show ALL avaiable history
-    override init() {
-        print("initializing history table without parameters, so calling super.init() of boxtablevc")
-        super.init()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,7 +31,9 @@ class HistoryTableViewController: BoxTableViewController {
     
     // viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
+        // Navbar
         setUpNavigationBar()
+
         // TableViewSetup
         dataSource.refreshDataSource()
         tableView.reloadData()
@@ -46,7 +42,6 @@ class HistoryTableViewController: BoxTableViewController {
     // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupDataSource()
         setupTableView()
         setupRefreshControl()
@@ -56,22 +51,31 @@ class HistoryTableViewController: BoxTableViewController {
     // MARK: - Methods
     
     private func setupDataSource() {
-        dataSource = HistoryTableViewDataSource(workoutStyleName: workoutStyleName)
+        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
         tableView.dataSource = dataSource
     }
     
-        private func setupTableView() {
-            tableView.delegate = self
-            tableView.estimatedRowHeight = 115
-            tableView.rowHeight = UITableViewAutomaticDimension
-            tableView.register(HistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
-            tableView.separatorInset.left = 0
-        }
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.estimatedRowHeight = 115
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.separatorInset.left = 0
+    }
     
     // MARK: - TableView delegate methods
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         customRefreshView.label.alpha = customRefreshView.frame.height/100
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let wo = dataSource.getData() as? [Workout]
+        if let wo = wo {
+            let selectedWorkout = wo[indexPath.row]
+            let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
+            navigationController?.pushViewController(detailedVC, animated: true)
+        }
     }
 }
 

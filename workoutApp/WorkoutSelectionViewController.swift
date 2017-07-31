@@ -31,7 +31,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     init() {
         super.init(header: SelectionViewHeader(header: "Select", subheader: "Workout Style"))
-        print("initializing historySelectionController via init()")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,10 +96,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     private func updateStackWithEntriesFromCoreData() {
         let workoutStyles = getUniqueWorkoutStyles() // getWorkoutStyles(withRequest: request)
         
-        print(" got workoutStyles")
-        print(workoutStyles.count)
-        print(workoutStyles)
-        
         buttonIndex = 0
         
         for subview in stack.subviews {
@@ -118,7 +113,7 @@ class WorkoutSelectionViewController: SelectionViewController {
             }
             
             let newButton = SelectionViewButton(header: styleName,
-                                                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
+                                                subheader: "\(DatabaseFacade.countWorkouts(ofStyle: styleName)) WORKOUTS")
             
             // Set up button names etc
             newButton.button.tag = buttonIndex
@@ -172,6 +167,14 @@ class WorkoutSelectionViewController: SelectionViewController {
     @objc private func plusButtonTapHandler() {
         let newWorkoutController = NewWorkoutController()
         navigationController?.pushViewController(newWorkoutController, animated: true)
+    }
+    
+    func buttonTapHandler(button: UIButton) {
+        // Identifies which choice was selected and creates a BoxTableView to display
+        let tappedWorkoutStyleName = buttonNames[button.tag]
+        let boxTableViewController = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        
+        navigationController?.pushViewController(boxTableViewController, animated: true)
     }
     
 //    func buttonTapHandler(button: UIButton) {

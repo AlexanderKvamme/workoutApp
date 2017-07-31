@@ -11,25 +11,11 @@ import CoreData
 
 /// Helps user navigate through the different workoutStyles and list out the history of performed workouts (as WorkoutLog items)
 class HistorySelectionViewController: SelectionViewController {
-    
-    //    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch avaiable choices and display them as buttons
-    //    var header: SelectionViewHeader!
-    //    var buttons: [SelectionViewButton]!
-    //    var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
-    //    var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
-    //    var stack: StackView!
-    //    // button creation
-    //    var buttonNames = [String]()
-    //    var buttonIndex = 0
-    
+
     // MARK: - Initializers
     
     init() {
         super.init(header: SelectionViewHeader(header: "Recent Workouts", subheader: "History"))
-        print("initializing historySelectionController via init()")
-        
-        // Make 'All' button
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,11 +28,8 @@ class HistorySelectionViewController: SelectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print("historySVC will appear")
         updateStackToDisplayStylesAndAll()
-        
         drawDiagonalLine()
-        
         view.bringSubview(toFront: stack) // Bring it in front of diagonal line
         view.layoutIfNeeded()
     }
@@ -63,8 +46,8 @@ class HistorySelectionViewController: SelectionViewController {
     
     private func makeAllButton() -> SelectionViewButton {
         let allButton = SelectionViewButton(header: "All", subheader: "Every single one")
+        allButton.button.removeTarget(nil, action: nil, for: .allEvents)
         allButton.button.addTarget(self, action: #selector(allHistoryButtonHandler), for: .touchUpInside)
-        
         return allButton
     }
     
@@ -95,7 +78,7 @@ class HistorySelectionViewController: SelectionViewController {
         stack.spacing = Constant.components.SelectionVC.Stack.spacing
     }
     
-    /** Sends new fetch and updates buttons */
+    /// Sends new fetch and updates buttons
     private func updateStackToDisplayStylesAndAll() {
         let workoutStyles = getUniqueWorkoutStyles()
         
@@ -117,7 +100,7 @@ class HistorySelectionViewController: SelectionViewController {
             guard let styleName = type.name else { return }
             
             let newButton = SelectionViewButton(header: styleName,
-                                                subheader: "\(DatabaseFacade.countWorkoutsOfType(ofStyle: styleName)) WORKOUTS")
+                                                subheader: "\(DatabaseFacade.countWorkoutLogs(ofStyle: styleName)) WORKOUTS")
             
             // Set up button names etc
             newButton.button.tag = buttonIndex
@@ -144,7 +127,16 @@ class HistorySelectionViewController: SelectionViewController {
     
     // MARK: - TapHandlers 
     
-    @objc func allHistoryButtonHandler() {
-        print("allButton tapped")
+    @objc func allHistoryButtonHandler() {        
+        let historyTableViewController = HistoryTableViewController()
+        navigationController?.pushViewController(historyTableViewController, animated: true)
+    }
+    
+    func buttonTapHandler(button: UIButton) {
+        // Identifies which choice was selected and creates a BoxTableView to display
+        let tappedWorkoutStyleName = buttonNames[button.tag]
+        let historyTableViewController = HistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        
+        navigationController?.pushViewController(historyTableViewController, animated: true)
     }
 }
