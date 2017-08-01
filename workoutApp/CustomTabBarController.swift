@@ -21,7 +21,7 @@ class CustomTabBarController: UITabBarController {
         // MARK: - Progress
         
         let progressController = SelectionViewController(
-            header: SelectionViewHeader(header: "Which kind of", subheader: "Progress?"),
+            header: SelectionViewHeader(header: "Not yet implemented", subheader: "Progress"),
             buttons: [SelectionViewButton(header: "Normal", subheader: "9 Workouts"),
                       SelectionViewButton(header: "Pyramid", subheader: "4 Workouts"),
                       SelectionViewButton(header: "Drop set", subheader: "3 Workouts"),

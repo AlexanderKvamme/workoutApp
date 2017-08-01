@@ -213,9 +213,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
         }
-        
-        print("SUMMARY AFTER DELETION")
-        printSummaryOfWorkoutLog()
     }
     
     func printActualExerciseLogsFromAWorkoutLog() {

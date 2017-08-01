@@ -85,6 +85,7 @@
 		DDE55B961F2F733400ED1D15 /* HistoryBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B951F2F733400ED1D15 /* HistoryBoxCell.swift */; };
 		DDE55B981F2F745F00ED1D15 /* isBoxTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B971F2F745F00ED1D15 /* isBoxTableViewDataSource.swift */; };
 		DDE55B9B1F2FB55300ED1D15 /* WorkoutLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B9A1F2FB55300ED1D15 /* WorkoutLog.swift */; };
+		DDE55B9E1F30AD4D00ED1D15 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B9D1F30AD4D00ED1D15 /* UserDefaults.swift */; };
 		DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */; };
 		DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */; };
 		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
@@ -178,6 +179,7 @@
 		DDE55B951F2F733400ED1D15 /* HistoryBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryBoxCell.swift; sourceTree = "<group>"; };
 		DDE55B971F2F745F00ED1D15 /* isBoxTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = isBoxTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDE55B9A1F2FB55300ED1D15 /* WorkoutLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLog.swift; sourceTree = "<group>"; };
+		DDE55B9D1F30AD4D00ED1D15 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowStack.swift; sourceTree = "<group>"; };
 		DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
 		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 		DD151E001ED47C200014DBC1 /* Native Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DDE55B9D1F30AD4D00ED1D15 /* UserDefaults.swift */,
 				DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */,
 				DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */,
 				DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */,
@@ -318,6 +321,7 @@
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,
+				DDE55B9C1F30AD3900ED1D15 /* Onboarding */,
 				DD9838711F12716900B876C7 /* Notifications */,
 				DD585D501EC4D53900962B19 /* Assets.xcassets */,
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
@@ -420,8 +424,8 @@
 		DDA7276C1ED5BA3500068AD4 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */,
 				DDE55B991F2FB53C00ED1D15 /* Managed Object Subclass Extensions */,
+				DDA7276D1ED5BA5900068AD4 /* DatabaseController.swift */,
 				DDA54AD81ED84B1B008C601C /* ModelEnums.swift */,
 				DD491B7B1ED7464E008A4619 /* DataSeeder.swift */,
 				DDA54B021EDB426D008C601C /* DatabaseFacade.swift */,
@@ -466,6 +470,13 @@
 				DDE55B9A1F2FB55300ED1D15 /* WorkoutLog.swift */,
 			);
 			name = "Managed Object Subclass Extensions";
+			sourceTree = "<group>";
+		};
+		DDE55B9C1F30AD3900ED1D15 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Onboarding;
 			sourceTree = "<group>";
 		};
 		DDEE859D1ED4921000A3F81C /* Helper Classes */ = {
@@ -602,6 +613,7 @@
 				DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */,
 				DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */,
 				DD6ACA891F1CDC17009714F1 /* Workout+CoreDataClass.swift in Sources */,
+				DDE55B9E1F30AD4D00ED1D15 /* UserDefaults.swift in Sources */,
 				DD0E1DB91F2E8ECA00E9F1C7 /* HistoryTableDataSource.swift in Sources */,
 				DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */,
 				DDC4C5EA1F2B850B00B511A3 /* Lift+CoreDataProperties.swift in Sources */,

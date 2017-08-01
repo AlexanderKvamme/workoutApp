@@ -17,12 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // seed Core Data with development Data
-        //DatabaseController.clearCoreData()
         
-        // Core data
-        let dataSeeder = DataSeeder(context: DatabaseController.getContext())
-//        dataSeeder.seedCoreDataWithOnlyEssentials()
-        dataSeeder.seedCoreData()
+        if UserDefaults.isFirstLaunch() {
+            // Core data
+            let dataSeeder = DataSeeder(context: DatabaseController.getContext())
+            dataSeeder.seedCoreData()
+            //dataSeeder.seedCoreDataWithOnlyEssentials()
+            
+            let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
+            modal.show(animated: true)
+        }
         
         // Appearance()
         customizeUIAppearance()
@@ -31,6 +35,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let masterViewController = CustomTabBarController()
         window?.rootViewController = masterViewController
         
+        if UserDefaults.isFirstLaunch() {
+            let modal = CustomAlertView(type: .error, messageContent: "first launch")
+            modal.show(animated: true)
+        } else {
+            let modal = CustomAlertView(type: .error, messageContent: "NOT first launch")
+            modal.show(animated: true)
+        }
         return true
     }
 
@@ -42,6 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        UserDefaults.standard.synchronize()
+        DatabaseController.saveContext()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -55,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        UserDefaults.standard.synchronize()
         DatabaseController.saveContext()
     }
     

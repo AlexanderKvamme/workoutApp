@@ -27,6 +27,7 @@ final class DataSeeder {
     // MARK: - API
     
     public func seedCoreData() {
+        print("SEEDING CORE DATA")
         seedWithExampleMuscleGroups()
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
@@ -180,7 +181,6 @@ final class DataSeeder {
                 let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
                 lift.reps = randomRepNumber()
                 lift.owner = logItem
-//                lift.datePerformed = Date().addingTimeInterval(TimeInterval(secondsToAdd*10)) as NSDate
                 lift.datePerformed = randomDate(daysBack: 10)
                 lift.hasBeenPerformed = true
                 secondsToAdd += 1

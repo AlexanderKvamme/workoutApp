@@ -50,7 +50,7 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         cell = HistoryBoxCell(style: .default, reuseIdentifier: cellIdentifier)
         if let name = log.design?.name {
             cell.box.setTitle(name)
-        }
+        } 
         
         // FIXME: - Set the remaining of the box
         
@@ -86,8 +86,6 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         print("refreshing data source for HISTORY")
         let fetchRequest = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
         
-        // FIXME: - Let user specify history of just 1 kind
-        
         // If a specific workoutStyle was injected using initialzation. Use this as a predicate to limit the search
         if let styleName = self.workoutStyleName {
             let workoutStyle = DatabaseFacade.getWorkoutStyle(named: styleName)
@@ -101,9 +99,6 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         do {
             let results = try DatabaseController.getContext().fetch(fetchRequest)
             fetchedWorkoutLogs = results
-            
-            print()
-            print("Fetched workoutlogs are now:")
         } catch let err as NSError {
             print(err.debugDescription)
         }

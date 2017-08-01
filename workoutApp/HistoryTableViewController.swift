@@ -17,7 +17,7 @@ class HistoryTableViewController: BoxTableViewController {
     
     override init(workoutStyleName: String) {
         super.init(workoutStyleName: workoutStyleName)
-        self.title = "\(workoutStyleName) workouts".uppercased()
+        self.title = "\(workoutStyleName) history".uppercased()
         self.workoutStyleName = workoutStyleName
         
         setUpNavigationBar()
@@ -25,8 +25,8 @@ class HistoryTableViewController: BoxTableViewController {
     
     /// Initialzer to set up table to show ALL avaiable history
     override init() {
-        print("initializing history table without parameters, so calling super.init() of boxtablevc")
         super.init()
+        self.title = "ALL HISTORY"
     }
     
     required init?(coder aDecoder: NSCoder) {
