@@ -28,11 +28,11 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         refreshDataSource()
     }
     
-    // MARK: - Protocol requirements
+    // MARK: - Datasource Protocol requirements
     
     func getData() -> [NSManagedObject]? {
-        let wo = DatabaseFacade.fetchAllWorkoutLogs()
-        return wo
+        let workouts = DatabaseFacade.fetchAllWorkoutLogs()
+        return workouts
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,15 +46,13 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         cell = HistoryBoxCell(style: .default, reuseIdentifier: cellIdentifier)
         if let name = log.design?.name {
             cell.box.setTitle(name)
-        } 
-        
-        // FIXME: - Set the remaining of the box
+        }
         
         // Subheader (top right)
         if let workoutStyleName = log.design?.workoutStyle?.name {
             cell.box.setSubHeader(workoutStyleName)
         } else {
-            cell.box.setSubHeader("Test")
+            cell.box.setSubHeader("NA")
         }
         
         // Stack: Total
@@ -67,11 +65,11 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
             let differenceInMinutes = Int(differenceInSeconds/60)
             cell.box.content?.contentStack?.secondStack.setBottomText(String(differenceInMinutes) + "M")
         } else {
-            cell.box.content?.contentStack?.secondStack.setBottomText("?")
+            cell.box.content?.contentStack?.secondStack.setBottomText("NA")
         }
         
         // Stack: PRS
-        cell.box.content?.contentStack?.thirdStack.setBottomText("X")
+        cell.box.content?.contentStack?.thirdStack.setBottomText("NA")
         
         return cell
     }
@@ -90,13 +88,22 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateEnded", ascending: false)]
         
-        // Fetch from Core Data
         do {
+            // Fetch from Core Data
             let results = try DatabaseFacade.context.fetch(fetchRequest)
             fetchedWorkoutLogs = results
         } catch let err as NSError {
             print(err.debugDescription)
         }
+    }
+    
+    // FIXME: - delete from data source
+    func deleteDataAt(_ indexPath: IndexPath) {
+        print("*In data source. Will now delete the actual workoutLog*".uppercased())
+        let woToDelete = fetchedWorkoutLogs[indexPath.row]
+        fetchedWorkoutLogs.remove(at: indexPath.row)
+        DatabaseFacade.deleteWorkoutLog(woToDelete) // FIXME: - implement
+        print(" would delete: ", woToDelete.design?.name)
     }
 }
 

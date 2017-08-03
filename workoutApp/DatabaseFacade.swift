@@ -79,6 +79,29 @@ final class DatabaseFacade {
         persistentContainer.viewContext.delete(objectToDelete)
     }
     
+    static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
+        // loop throuhg its Exerciselogs, delete their lifts, then delete exerciselog and then delete workoutLog
+        guard let exerciseLogsToDelete = workoutLogToDelete.loggedExercises as? Set<ExerciseLog> else {
+            print("error unwrapping logged exercises in deleteWorkoutLog")
+            return
+        }
+        
+        for exerciseLog in exerciseLogsToDelete {
+            
+            guard let liftsTodelete = exerciseLog.lifts as? Set<Lift> else {
+                print("error unwrapping lifts in deleteWorkoutLog")
+                return
+            }
+            
+            for lift in liftsTodelete {
+                delete(lift)
+            }
+            delete(exerciseLog)
+        }
+        delete(workoutLogToDelete)
+        print("done deleting in facade")
+    }
+    
     // MARK: - Make methods
     
     private static func createManagedObjectForEntity(_ entity: Entity) -> NSManagedObject? {

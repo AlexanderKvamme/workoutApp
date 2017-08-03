@@ -41,5 +41,21 @@ class HistoryTableViewController: BoxTableViewController {
         dataSource = HistoryTableViewDataSource(workoutStyleName: workoutStyleName)
         tableView.dataSource = dataSource
     }
+    
+    // FIXME: - Edit and delete cells
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            // Share item at indexPath
+            self.dataSource.deleteDataAt(indexPath)
+            self.tableView.reloadData() // Add animation through tableView.deleteRows(at: [indexPath], with: .none)
+        }
+        delete.backgroundColor = UIColor.secondary
+        return [delete]
+    }
 }
 

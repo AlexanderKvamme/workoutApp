@@ -15,6 +15,7 @@ protocol isBoxTableViewDataSource: UITableViewDataSource {
     var workoutStyleName: String? {get set}
     func refreshDataSource()
     func getData() -> [NSManagedObject]?
+    func deleteDataAt(_ indexPath: IndexPath)
     init(workoutStyleName: String?)
 }
 

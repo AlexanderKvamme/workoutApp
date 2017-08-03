@@ -54,14 +54,18 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
         return fetchedWorkouts
     }
     
+    func deleteDataAt(_ indexPath: IndexPath) {
+        print("would delete but havent been implemented")
+    }
+    
     func refreshDataSource() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
         let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!) // FIXME: BANG
         let predicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
         fetchRequest.predicate = predicate
         
-        // Fetch from Core Data
         do {
+            // Fetch from Core Data
             let results = try DatabaseFacade.context.fetch(fetchRequest)
             fetchedWorkouts = results
         } catch let err as NSError {
