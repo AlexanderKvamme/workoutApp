@@ -43,9 +43,8 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
         if let workoutStyleName = workoutStyleName {
             cell.box.setSubHeader(workoutStyleName)
         } else {
-            print(" no subheader to set")
+            print("No subheader to set")
         }
-        
         return cell
     }
     
