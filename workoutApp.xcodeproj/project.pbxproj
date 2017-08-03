@@ -22,6 +22,7 @@
 		DD1EA1641EEC1CC900EBB7B7 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */; };
 		DD2A9E741F0EED600074B46F /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A9E731F0EED600074B46F /* Footer.swift */; };
 		DD2DDD771F3338EF00614788 /* Navbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2DDD761F3338EF00614788 /* Navbar.swift */; };
+		DD36F5131F33D44300FD31B3 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36F5121F33D44300FD31B3 /* ProfileController.swift */; };
 		DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44A1EE45A9300C55453 /* PickerCell.swift */; };
 		DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */; };
 		DD41AAFC1F18F5C800CB08F5 /* NewExerciseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */; };
@@ -116,6 +117,7 @@
 		DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		DD2A9E731F0EED600074B46F /* Footer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
 		DD2DDD761F3338EF00614788 /* Navbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navbar.swift; sourceTree = "<group>"; };
+		DD36F5121F33D44300FD31B3 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		DD3AF44A1EE45A9300C55453 /* PickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerCell.swift; sourceTree = "<group>"; };
 		DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
 		DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewExerciseController.swift; sourceTree = "<group>"; };
@@ -256,6 +258,14 @@
 			name = InputViewController;
 			sourceTree = "<group>";
 		};
+		DD36F5111F33D41300FD31B3 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				DD36F5121F33D44300FD31B3 /* ProfileController.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		DD3AF4491EE45A7500C55453 /* Tableview and picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,6 +332,7 @@
 				DD98A5021F13AAAE002985BF /* Custom Keyboard */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
+				DD36F5111F33D41300FD31B3 /* Profile */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
@@ -604,6 +615,7 @@
 				DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */,
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
 				DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */,
+				DD36F5131F33D44300FD31B3 /* ProfileController.swift in Sources */,
 				DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */,
 				DDE55BA01F30E0F500ED1D15 /* CoreDataManager.swift in Sources */,
 				DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */,

@@ -15,8 +15,6 @@ class CustomTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Setup the tab bar
         
         // MARK: - Progress
         
@@ -39,22 +37,16 @@ class CustomTabBarController: UITabBarController {
         let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
         
         // MARK: - Profile Tab
-//        let muscle = DatabaseFacade.fetchMuscleWithName("GLUTES")
-//        let test = ExercisePickerViewController(forMuscle: muscle!, withMultiplePreselections: nil)
-//        let testViewController = CustomNavigationViewController(rootViewController: test)
-        
-//        let profileController = testViewController
-//        profileController.hidesBottomBarWhenPushed = true
+        let profileController = ProfileController()
+        let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
         // MARK: - Set up navbar
-        
-//        viewControllers = [progressController, historyController, workoutNavigationController, testViewController]
-        viewControllers = [progressController, historyNavigationController, workoutNavigationController]
+        viewControllers = [progressController, historyNavigationController, workoutNavigationController, profileController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
         historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
-        //profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
+        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
         for item in tabBarItems {
@@ -81,19 +73,5 @@ class CustomTabBarController: UITabBarController {
     public func showSelectionindicator() {
         selectionIndicator.isHidden = false
     }
-    
-    // MARK: - Methods
-    
-    func historyButtonHandler() {
-        print("test success")
-        
-        // FIXME: - Display HistoryTableViewController with all workouts sorted by date
-        
-        // - Refactor selectionViewControllers
-        // - Make a HistoryTableViewController
-        // - - With matching historyTableViewCells
-        
-    }
-    
 }
 
