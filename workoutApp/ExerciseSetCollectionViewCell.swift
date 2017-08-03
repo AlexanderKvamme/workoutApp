@@ -86,7 +86,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                     owner.owner.totalLiftsToDisplay[section].remove(at: indexPathToRemove.row)
                     print("totalLifts after delete are now: ")
                     owner.owner.totalLiftsToDisplay[section].oneLinePrint()
-                    DatabaseController.getContext().delete(liftToRemove)
+                    DatabaseFacade.delete(liftToRemove)
                 } else {
                     print("found no section")
                 }
@@ -274,7 +274,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     }
     
     public func setReps(_ n: Int16) {
-        print("didsetrep to \(n)")
         repsField.text = String(n)
     }
 

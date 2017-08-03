@@ -4,7 +4,6 @@
 //
 //  Created by Alexander Kvamme on 31/07/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
-//
 
 
 import Foundation
@@ -14,20 +13,17 @@ import CoreData
 
 class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
-    var cellIdentifier: String!
+    // MARK: - Properties
+    
+    var cellIdentifier = "HistoryBoxCell"
     var workoutStyleName: String?
     var fetchedWorkoutLogs = [WorkoutLog]()
     
     // MARK: - Initializers
     
-    override init() {
-        print("nil provided, instatiating all")
-    }
-    
     required init(workoutStyleName: String?) {
         super.init()
         self.workoutStyleName = workoutStyleName
-        self.cellIdentifier = "HistoryBoxCell"
         
         refreshDataSource()
     }
@@ -83,7 +79,6 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     // MARK: - API
     
     func refreshDataSource() {
-        print("refreshing data source for HISTORY")
         let fetchRequest = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
         
         // If a specific workoutStyle was injected using initialzation. Use this as a predicate to limit the search
@@ -97,7 +92,7 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         
         // Fetch from Core Data
         do {
-            let results = try DatabaseController.getContext().fetch(fetchRequest)
+            let results = try DatabaseFacade.context.fetch(fetchRequest)
             fetchedWorkoutLogs = results
         } catch let err as NSError {
             print(err.debugDescription)

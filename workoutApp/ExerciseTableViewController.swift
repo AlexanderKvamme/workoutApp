@@ -72,15 +72,12 @@ class ExerciseTableViewController: UITableViewController {
     // MARK: - Methods
     
     @objc private func saveButtonHandler() {
-        // FIXME: - remember call deleteTrackedData on datasource from the dismissbutton
-        print("*GONNA DELEGATE SAVING TO THE DATASOURCE*")
         dataSource.saveWorkout()
     }
     
     @objc private func xButtonHandler() {
-        print("X WAS PRESSED")
-        dataSource.deleteData()
-        navigationController?.popViewController(animated: true)
+        dataSource.deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs()
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
     private func setupNavigationBar() {
@@ -89,10 +86,11 @@ class ExerciseTableViewController: UITableViewController {
         } else {
             print("error setting navbar title")
         }
-        let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: self, action: #selector(xButtonHandler))
+        let xIcon = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
+        let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationItem.hidesBackButton = true
     }
     
     // MARK: - Helper methods

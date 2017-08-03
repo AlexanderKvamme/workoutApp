@@ -13,14 +13,11 @@ class WorkoutTableViewController: BoxTableViewController {
     
     // MARK: - Initializers
     
-    let cellIdentifier = "WorkoutBoxCell"
-    
-    override init(workoutStyleName: String) {
-        super.init(workoutStyleName: workoutStyleName)
-        self.title = "\(workoutStyleName) workouts".uppercased()
-        self.workoutStyleName = workoutStyleName
+    init(workoutStyleName: String?) {
+        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
+        tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
-        setUpNavigationBar()
+        setUpNavigationBar(withTitle: workoutStyleName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -28,16 +25,6 @@ class WorkoutTableViewController: BoxTableViewController {
     }
     
     // MARK: - Life cycle
-    
-    // viewWillAppear
-    override func viewWillAppear(_ animated: Bool) {
-        // Navbar
-        setUpNavigationBar()
-
-        // TableViewSetup
-        dataSource.refreshDataSource()
-        tableView.reloadData()
-    }
     
     // viewDidLoad
     override func viewDidLoad() {
@@ -55,19 +42,7 @@ class WorkoutTableViewController: BoxTableViewController {
         tableView.dataSource = dataSource
     }
     
-    private func setupTableView() {
-        tableView.delegate = self
-        tableView.estimatedRowHeight = 115
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.separatorInset.left = 0
-    }
-    
     // MARK: - TableView delegate methods
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        customRefreshView.label.alpha = customRefreshView.frame.height/100
-    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wo = dataSource.getData() as? [Workout]

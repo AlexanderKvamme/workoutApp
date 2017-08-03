@@ -115,7 +115,7 @@ class SelectionViewController: UIViewController {
         
         var workoutStyles = [WorkoutStyle]()
         do {
-            let results = try DatabaseController.getContext().fetch(workoutRequest)
+            let results = try DatabaseFacade.persistentContainer.viewContext.fetch(workoutRequest)
             // Append all received types
             for r in results as! [Workout] {
                 if let workoutStyle = r.workoutStyle {

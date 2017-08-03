@@ -13,7 +13,27 @@ import CoreData
  */
 final class DatabaseFacade {
     
-    private init(){}
+    private init(){} // Disable instance creation
+    
+    // MARK: - Properties
+    
+    static var persistentContainer: NSPersistentContainer = {
+        let persistentContainer = NSPersistentContainer(name: "workoutApp")
+        persistentContainer.loadPersistentStores(completionHandler: { (persistentStoreDescription, error) in
+            if let error = error {
+                print("error: ", error)
+            }
+        })
+        return persistentContainer
+    }()
+    
+    static var context: NSManagedObjectContext = {
+        return DatabaseFacade.persistentContainer.viewContext
+    }()
+    
+    // MARK: - Methods
+    
+    // MARK: - Counting methods
     
     static func countWorkouts(ofStyle styleName: String) -> Int {
         
@@ -26,7 +46,7 @@ final class DatabaseFacade {
             }
         
         do {
-            let count = try DatabaseController.getContext().count(for: fetchRequest)
+            let count = try persistentContainer.viewContext.count(for: fetchRequest)
             return count
         } catch let error as NSError {
             print("Error: \(error.localizedDescription)")
@@ -45,7 +65,7 @@ final class DatabaseFacade {
         }
         
         do {
-            let count = try DatabaseController.getContext().count(for: fetchRequest)
+            let count = try persistentContainer.viewContext.count(for: fetchRequest)
             return count
         } catch let error as NSError {
             print("Error: \(error.localizedDescription)")
@@ -53,133 +73,64 @@ final class DatabaseFacade {
         }
     }
     
-    // MARK: - Muscle methods
+    // MARK: - Delete methods
     
-    static func fetchMuscleWithName(_ name: String) -> Muscle? {
-        let fetchRequest = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
-        fetchRequest.predicate = NSPredicate(format: "name = %@", name)
-        
-        do {
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
-            if result.count > 0 {
-                return result[0]
-            }
-            } catch let error as NSError {
-                print("Error: \(error.localizedDescription)")
-        }
-        print("found no matching muscle")
-        return nil
+    static func delete(_ objectToDelete : NSManagedObject) {
+        persistentContainer.viewContext.delete(objectToDelete)
     }
     
-    // MARK: - Exercise methods
+    // MARK: - Make methods
     
-    static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
+    private static func createManagedObjectForEntity(_ entity: Entity) -> NSManagedObject? {
         
-        let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
-        fetchRequest.predicate = NSPredicate(format: "musclesUsed == %@", muscle)
-
-        do {
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
-            return result
-        } catch let error as NSError {
-            print(" error fetching exercises using Muscle: \(error.localizedDescription)")
-        }
-        return nil
-    }
-    
-    // MARK: - ExerciseLog methods
-    
-    static func fetchLatestExerciseLog(ofExercise exercise: Exercise) -> ExerciseLog? {
-        var resultingExerciseLog: ExerciseLog? = nil
+        let context = persistentContainer.viewContext
+        var result: NSManagedObject? = nil
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.ExerciseLog.rawValue)
-        let dateDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
-        let ePredicate = NSPredicate(format: "exerciseDesign == %@", exercise)
-        
-        fetchRequest.predicate = ePredicate
-        fetchRequest.sortDescriptors = [dateDescriptor]
-        fetchRequest.fetchLimit = 1
-        
-        do {
-            let res = try DatabaseController.getContext().fetch(fetchRequest)
-            resultingExerciseLog = res[0] as? ExerciseLog
-        } catch let error as NSError {
-            print("failed getting recent exercise: \(error.localizedDescription)")
-        }
-        return resultingExerciseLog
-    }
-    
-    // MARK: - WorkoutLog methods
-    
-    static func fetchLatestWorkoutLog(ofWorkout workout: Workout) -> WorkoutLog? {
-        var workoutLog: WorkoutLog? = nil
-        
-        // make fetchrequest for most recently performed workout of provided type
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
-        let stylePredicate = NSPredicate(format: "design == %@", workout)
-        let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
-        fetchRequest.predicate = stylePredicate
-        fetchRequest.sortDescriptors = [dateSorter]
-        fetchRequest.fetchLimit = 1
-        
-        do {
-            if let result = try DatabaseController.getContext().fetch(fetchRequest) as? [WorkoutLog] {
-                if result.count > 0 {
-                        workoutLog = result[0]
-                }
-            }
-        } catch let error as NSError {
-            print("i got error: \(error.localizedDescription)")
-        }
-        return workoutLog
-    }
-    
-    static func fetchAllWorkoutLogs() -> [WorkoutLog]? {
-        
-        var result: [WorkoutLog]? = nil
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
-        let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
-        fetchRequest.sortDescriptors = [dateSorter]
-        
-        do {
-            result = try DatabaseController.getContext().fetch(fetchRequest) as? [WorkoutLog]
-        } catch let error as NSError {
-            print("error fetching all workoutlogs: \(error.localizedDescription)")
+        let entityDescription = NSEntityDescription.entity(forEntityName: entity.rawValue, in: context)
+        if let entityDescription = entityDescription {
+            result = NSManagedObject(entity: entityDescription, insertInto: context)
         }
         return result
-        
     }
     
-    // MARK: - Maker methods
+    static func makeMuscle() -> Muscle {
+        let newMuscle = createManagedObjectForEntity(.Muscle) as! Muscle
+        return newMuscle
+    }
     
-    // Exercise methods
+    static func makeExercise() -> Exercise {
+        let newExercise = createManagedObjectForEntity(.Exercise) as! Exercise
+        return newExercise
+    }
     
-    static func fetchExercise(named name: String) -> Exercise? {
-        
-        var e: Exercise? = nil
-        
-        let fr = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Exercise.rawValue)
-        let predicate = NSPredicate(format: "name == %@", name)
-        fr.predicate = predicate
-
-        do {
-            let result = try DatabaseController.getContext().fetch(fr)
-            e = result[0] as? Exercise
-        } catch let error as NSError {
-            print("error fetching exercise \(error.localizedDescription)")
-        }
-        return e
+    static func makeExerciseStyle() -> ExerciseStyle {
+        let newExerciseStyle = createManagedObjectForEntity(.ExerciseStyle) as! ExerciseStyle
+        return newExerciseStyle
+    }
+    
+    static func makeWorkoutStyle() -> WorkoutStyle {
+        let newWorkoutStyle = createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
+        return newWorkoutStyle
+    }
+    
+    static func makeMeasurementStyle() -> MeasurementStyle {
+        let newMeasurementStyle = createManagedObjectForEntity(.MeasurementStyle) as! MeasurementStyle
+        return newMeasurementStyle
     }
     
     static func makeLift() -> Lift {
-        let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
+        let newLift = createManagedObjectForEntity(.Lift) as! Lift
         return newLift
+    }
+    
+    static func makeWorkout() -> Workout {
+        let newWorkout = createManagedObjectForEntity(.Workout) as! Workout
+        return newWorkout
     }
     
     static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
         
-        let newExercise = DatabaseController.createManagedObjectForEntity(.Exercise) as! Exercise
+        let newExercise = createManagedObjectForEntity(.Exercise) as! Exercise
         
         // Fetch correct type, muscle, measurement style from Core Data
         
@@ -192,24 +143,22 @@ final class DatabaseFacade {
         newExercise.style = exerciseStyle
         newExercise.measurementStyle = measurementStyle
         
-        DatabaseController.saveContext()
-        
         return newExercise
     }
     
     static func makeExerciseLog() -> ExerciseLog {
-        let logItem = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
+        let logItem = createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
         return logItem
     }
     
     static func makeWorkoutLog() -> WorkoutLog {
-        let logItem = DatabaseController.createManagedObjectForEntity(.WorkoutLog) as! WorkoutLog
+        let logItem = createManagedObjectForEntity(.WorkoutLog) as! WorkoutLog
         return logItem
     }
     
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exerciseNames: [String]) {
         
-        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
+        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         let muscle = DatabaseFacade.getMuscle(named: muscleName)
         let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
         
@@ -249,20 +198,47 @@ final class DatabaseFacade {
         }
         
         workoutRecord.addToLoggedWorkouts(workoutLog)
-        DatabaseController.saveContext()
     }
     
-    // WorkoutStyle methods
+    // MARK: - Fetch methods
     
-    static func fetchWorkoutStyle(withName name: String) -> WorkoutStyle? {
-        
-        var workoutStyle: WorkoutStyle? = nil
-        
-        let fetchRequest = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
-        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+    static func fetchManagedObjectsForEntity(_ entity: Entity) -> [NSManagedObject] {
+        // Create fetch request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
+        let context = persistentContainer.viewContext
+        var result = [NSManagedObject]()
         
         do {
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
+            let objects = try context.fetch(fetchRequest)
+            if let objects = objects as? [NSManagedObject] {
+                result = objects
+            }
+        } catch {
+            print("unable to fetch objects for entity \(entity)")
+        }
+        return result
+    }
+    
+    // fetch Exercise Style
+    static func fetchExerciseStyles() -> [ExerciseStyle] {
+        let exerciseStyles = fetchManagedObjectsForEntity(.ExerciseStyle) as! [ExerciseStyle]
+        return exerciseStyles
+    }
+    
+    // fetch Muscles
+    static func fetchMuscles() -> [Muscle] {
+        let muscles = fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
+        return muscles
+    }
+    
+    // fetch WorkoutStyle
+    static func fetchWorkoutStyle(withName name: String) -> WorkoutStyle? {
+        var workoutStyle: WorkoutStyle? = nil
+        let fetchRequest = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        do {
+            // Execute Fetch
+            let result = try context.fetch(fetchRequest)
             workoutStyle = result[0]
         } catch let error as NSError {
             print(" error fetching exercises using Muscle: \(error.localizedDescription)")
@@ -270,18 +246,15 @@ final class DatabaseFacade {
         return workoutStyle
     }
     
-    // MARK: - Getter methods
-    
+    // getMuscle
     static func getMuscle(named name: String) -> Muscle? {
-        
         var muscle: Muscle? = nil
-        
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Muscle.rawValue)
             let predicate = NSPredicate(format: "name == %@", name)
             
             fetchRequest.predicate = predicate
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
+            let result = try context.fetch(fetchRequest)
             muscle = result[0] as? Muscle
             
         } catch let error as NSError {
@@ -290,15 +263,16 @@ final class DatabaseFacade {
         return muscle
     }
     
+    // getExerciseStyle
     static func getExerciseStyle(named name: String) -> ExerciseStyle? {
         var exerciseStyle: ExerciseStyle? = nil
-        
         do {
+            // Execute Fetchrequest
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.ExerciseStyle.rawValue)
             let predicate = NSPredicate(format: "name == %@", name)
             fetchRequest.predicate = predicate
             
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
+            let result = try context.fetch(fetchRequest)
             exerciseStyle = result[0] as? ExerciseStyle
         } catch let error as NSError {
             print(error.localizedDescription)
@@ -306,13 +280,14 @@ final class DatabaseFacade {
         return exerciseStyle
     }
     
+    // getWorkoutStyle
     static func getWorkoutStyle(named name: String) -> WorkoutStyle? {
         var workoutStyle: WorkoutStyle? = nil
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutStyle.rawValue)
             let predicate = NSPredicate(format: "name == %@", name.uppercased())
             fetchRequest.predicate = predicate
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
+            let result = try context.fetch(fetchRequest)
             workoutStyle = result[0] as? WorkoutStyle
         } catch let error as NSError {
             print("could not getWorkoutStyle: \(error.localizedDescription)")
@@ -320,6 +295,7 @@ final class DatabaseFacade {
         return workoutStyle
     }
     
+    // getMeasurementStyle
     static func getMeasurementStyle(named name: String) -> MeasurementStyle? {
         var measurementStyle: MeasurementStyle? = nil
         
@@ -328,11 +304,132 @@ final class DatabaseFacade {
             let predicate = NSPredicate(format: "name == %@", name)
             fetchRequest.predicate = predicate
             
-            let result = try DatabaseController.getContext().fetch(fetchRequest)
+            let result = try context.fetch(fetchRequest)
             measurementStyle = result[0] as? MeasurementStyle
         } catch let error as NSError {
             print(error.localizedDescription)
         }
         return measurementStyle
     }
+    
+    static func fetchExercise(named name: String) -> Exercise? {
+        
+        var exercise: Exercise? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Exercise.rawValue)
+        let predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = predicate
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            exercise = result[0] as? Exercise
+        } catch let error as NSError {
+            print("error fetching exercise \(error.localizedDescription)")
+        }
+        return exercise
+    }
+    
+    static func fetchMuscleWithName(_ name: String) -> Muscle? {
+        let fetchRequest = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
+        fetchRequest.predicate = NSPredicate(format: "name = %@", name)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            if result.count > 0 {
+                return result[0]
+            }
+        } catch let error as NSError {
+            print("Error: \(error.localizedDescription)")
+        }
+        print("found no matching muscle")
+        return nil
+    }
+    
+    static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
+        
+        let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
+        fetchRequest.predicate = NSPredicate(format: "musclesUsed == %@", muscle)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            return result
+        } catch let error as NSError {
+            print(" error fetching exercises using Muscle: \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
+    static func fetchLatestExerciseLog(ofExercise exercise: Exercise) -> ExerciseLog? {
+        var resultingExerciseLog: ExerciseLog? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.ExerciseLog.rawValue)
+        let dateDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
+        let ePredicate = NSPredicate(format: "exerciseDesign == %@", exercise)
+        
+        fetchRequest.predicate = ePredicate
+        fetchRequest.sortDescriptors = [dateDescriptor]
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            let res = try context.fetch(fetchRequest)
+            resultingExerciseLog = res[0] as? ExerciseLog
+        } catch let error as NSError {
+            print("failed getting recent exercise: \(error.localizedDescription)")
+        }
+        return resultingExerciseLog
+    }
+    
+    static func fetchLatestWorkoutLog(ofWorkout workout: Workout) -> WorkoutLog? {
+        var workoutLog: WorkoutLog? = nil
+        
+        // make fetchrequest for most recently performed workout of provided type
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        let stylePredicate = NSPredicate(format: "design == %@", workout)
+        let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
+        fetchRequest.predicate = stylePredicate
+        fetchRequest.sortDescriptors = [dateSorter]
+        fetchRequest.fetchLimit = 1
+        
+        do {
+            if let result = try context.fetch(fetchRequest) as? [WorkoutLog] {
+                if result.count > 0 {
+                    workoutLog = result[0]
+                }
+            }
+        } catch let error as NSError {
+            print("i got error: \(error.localizedDescription)")
+        }
+        return workoutLog
+    }
+    
+    static func fetchAllWorkoutLogs() -> [WorkoutLog]? {
+        
+        var result: [WorkoutLog]? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
+        fetchRequest.sortDescriptors = [dateSorter]
+        
+        do {
+            result = try persistentContainer.viewContext.fetch(fetchRequest) as? [WorkoutLog]
+        } catch let error as NSError {
+            print("error fetching all workoutlogs: \(error.localizedDescription)")
+        }
+        return result
+    }
+    
+    // MARK: - Save methods
+    static func saveContext() {
+        
+        if persistentContainer.viewContext.hasChanges {
+            do {
+                try persistentContainer.viewContext.save()
+            } catch {
+                print("error saving to persistentContainers viewContext")
+            }
+        } else {
+            print("no changes to save")
+        }
+    }
 }
+

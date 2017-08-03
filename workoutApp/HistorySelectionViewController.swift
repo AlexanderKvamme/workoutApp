@@ -128,7 +128,7 @@ class HistorySelectionViewController: SelectionViewController {
     // MARK: - TapHandlers 
     
     @objc func allHistoryButtonHandler() {        
-        let historyTableViewController = HistoryTableViewController()
+        let historyTableViewController = HistoryTableViewController(workoutStyleName: nil)
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }
     

@@ -37,6 +37,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         }
     }
     
+    // MARK: - Setup
+    
     // convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
     private func setupUsingWorkoutLog(mostRecentPerformance inputtedWorkoutLog: WorkoutLog) {
         exerciseLogsAsArray = [ExerciseLog]()
@@ -45,8 +47,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog()
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         dataSourceWorkoutLog.design = inputtedWorkoutLog.design
-        
-        // FIXME: - copy the exercises of the WorkoutLog provided (which is the last time this workout was performed)
         
         if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises as? Set<ExerciseLog> {
             
@@ -184,31 +184,30 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     // MARK: - Methods
     
     func saveWorkout() {
-        print("/n\n*SAVE*")
-        printSummaryOfWorkoutLog()
-        
         // set endDate Save to context
         dataSourceWorkoutLog.dateEnded = Date() as NSDate
         
         // Delete or save
-        
         if countPerformedExercises() == 0 {
-//            // 0 performed lifts. delete entire workoutlog
-//            if let loggedExercises = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-//                for exerciseLog in loggedExercises {
-//                    DatabaseController.getContext().delete(exerciseLog)
-//                }
-//            }
-//            
+            
+            // FIXME: - When user dismisses/pops this TableView, the current WorkoutLog should be deleted along with all of its exerciseLogs and Lifts.
+            // FIXME: - Before letting user back out, present a modal giving him the chance go confirm/deny
+
+            //            // 0 performed lifts. delete entire workoutlog
+            //            if let loggedExercises = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+            //                for exerciseLog in loggedExercises {
+            //                    DatabaseController.getContext().delete(exerciseLog)
+            //                }
+            //            }
+
 //            DatabaseController.getContext().delete(dataSourceWorkoutLog)
             
-            // present error.
+            // present error
             let modal = CustomAlertView(type: .error, messageContent: "Bro, you have to actually work out to be able to log an exercise!")
             modal.show(animated: true)
         } else {
         // User has performed lifts - Save and pop viewController
             deleteUnperformedLifts()
-            DatabaseController.saveContext()
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
@@ -228,10 +227,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 }
             }
         }
-    }
-    
-    func deleteData() {
-        deleteLiftsExerciseLogsAndWorkoutLogs()
     }
     
     private func countPerformedExercises() -> Int {
@@ -257,7 +252,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 if let lifts = el.lifts as? Set<Lift> {
                     for lift in lifts {
                         if !lift.hasBeenPerformed {
-                            DatabaseController.getContext().delete(lift)
+                            DatabaseFacade.delete(lift)
                         }
                     }
                 }
@@ -265,26 +260,26 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         }
     }
     
-    private func deleteLiftsExerciseLogsAndWorkoutLogs() {
+    func deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs() {
         // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
         if let exerciseLogSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
             for exerciseLog in exerciseLogSet {
                 if let lifts = exerciseLog.lifts as? Set<Lift> {
                     for lift in lifts {
-                        DatabaseController.getContext().delete(lift)
+                        DatabaseFacade.delete(lift)
                     }
                 }
-                DatabaseController.getContext().delete(exerciseLog)
+                DatabaseFacade.delete(exerciseLog)
             }
         }
-        DatabaseController.getContext().delete(dataSourceWorkoutLog)
+        DatabaseFacade.delete(dataSourceWorkoutLog)
     }
 
     
     private func printSummaryOfWorkoutLog() {
         print("\nSummary of WL: \(dataSourceWorkoutLog.design!)")
         for exercise in dataSourceWorkoutLog.loggedExercises as! Set<ExerciseLog> {
-            print("Exercise: ", exercise.exerciseDesign?.name)
+            print("Exercise: ", exercise.exerciseDesign?.name ?? "NA")
             for lift in exercise.lifts as! Set<Lift> {
                 var stringToPrint = " - \(lift.reps)"
                 stringToPrint.append(lift.hasBeenPerformed ? "(Y)" : "(N)")

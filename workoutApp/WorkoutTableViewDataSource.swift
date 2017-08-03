@@ -10,8 +10,12 @@ import Foundation
 import UIKit
 import CoreData
 
+
 class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
-    var cellIdentifier: String! = "WorkoutBoxCell"
+    
+    // MARK: - Properties
+    
+    var cellIdentifier = "WorkoutBoxCell"
     var workoutStyleName: String?
     var fetchedWorkouts = [Workout]()
     
@@ -19,10 +23,8 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     required init(workoutStyleName: String?) {
         super.init()
-//        self.cellIdentifier = "BoxCell"
-        print("super init")
         self.workoutStyleName = workoutStyleName
-        
+
         refreshDataSource()
     }
     
@@ -61,7 +63,7 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
         
         // Fetch from Core Data
         do {
-            let results = try DatabaseController.getContext().fetch(fetchRequest)
+            let results = try DatabaseFacade.context.fetch(fetchRequest)
             fetchedWorkouts = results
         } catch let err as NSError {
             print(err.debugDescription)

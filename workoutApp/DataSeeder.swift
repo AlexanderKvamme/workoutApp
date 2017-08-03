@@ -27,13 +27,11 @@ final class DataSeeder {
     // MARK: - API
     
     public func seedCoreData() {
-        print("SEEDING CORE DATA")
         seedWithExampleMuscleGroups()
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
         seedWithExampleMeasurementStyles()
         seedWithExampleWorkoutsAndExercies()
-        DatabaseController.saveContext()
     }
     
     public func seedCoreDataWithOnlyEssentials() {
@@ -41,8 +39,6 @@ final class DataSeeder {
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
         seedWithExampleMeasurementStyles()
-//        seedWithExampleWorkoutsAndExercies()
-        DatabaseController.saveContext()
     }
     
     // MARK: - Seeding
@@ -148,14 +144,15 @@ final class DataSeeder {
         
         // Make and add back exercises
         
-        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
+//        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
+        let workoutRecord = DatabaseFacade.makeWorkout()
         workoutRecord.name = dummyWorkout.name
         workoutRecord.muscle = dummyWorkout.muscle.name
         workoutRecord.muscleUsed = dummyWorkout.muscle
         workoutRecord.workoutStyle = DatabaseFacade.getWorkoutStyle(named: dummyWorkout.type)
         
         for exercise in exercises {
-            let exerciseRecord = DatabaseController.createManagedObjectForEntity(.Exercise) as! Exercise
+            let exerciseRecord = DatabaseFacade.makeExercise()
             
             exerciseRecord.name = exercise.name
             exerciseRecord.muscle = exercise.muscle.name
@@ -166,7 +163,7 @@ final class DataSeeder {
             
             // Simulate this exercise having been used
             
-            let logItem = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
+            let logItem = DatabaseFacade.makeExerciseLog()
             if let randomDate = randomDate(daysBack: 10) {
                 logItem.datePerformed = randomDate as NSDate
             }
@@ -178,7 +175,7 @@ final class DataSeeder {
             let maximumAmountOfLiftsToMake = 3
             
             for _ in 0...Int16(arc4random_uniform(UInt32(maximumAmountOfLiftsToMake))) {
-                let lift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
+                let lift = DatabaseFacade.makeLift()
                 lift.reps = randomRepNumber()
                 lift.owner = logItem
                 lift.datePerformed = randomDate(daysBack: 10)
@@ -193,7 +190,7 @@ final class DataSeeder {
     // Make muscle
     
     private func makeMuscle(withName name: String) {
-        let muscleRecord = DatabaseController.createManagedObjectForEntity(.Muscle) as! Muscle
+        let muscleRecord = DatabaseFacade.makeMuscle()
         muscleRecord.name = name.uppercased()
     }
     
@@ -201,19 +198,19 @@ final class DataSeeder {
     
     private func makeWorkoutStyle(withName name: String) {
         print("making workoutstyle named \(name)")
-        let workoutStyleRecord = DatabaseController.createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
+        let workoutStyleRecord = DatabaseFacade.makeWorkoutStyle()
         workoutStyleRecord.name = name.uppercased()
     }
     
     // Make ExerciseStyle
     
     private func makeExerciseStyle(withName name: String) {
-        let exerciseStyleRecord = DatabaseController.createManagedObjectForEntity(.ExerciseStyle) as! ExerciseStyle
+        let exerciseStyleRecord = DatabaseFacade.makeExerciseStyle()
         exerciseStyleRecord.name = name.uppercased()
     }
     
     private func makeMeasurementStyle(withName name: String) {
-        let measurementStyleRecord = DatabaseController.createManagedObjectForEntity(.MeasurementStyle) as! MeasurementStyle
+        let measurementStyleRecord = DatabaseFacade.makeMeasurementStyle()
         measurementStyleRecord.name = name.uppercased()
     }
     

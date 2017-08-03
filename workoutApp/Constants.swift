@@ -53,6 +53,10 @@ enum Constant {
         }
     }
     
+    enum coreData {
+        static let name = "workoutApp"
+    }
+    
     enum components {
         enum Box {
             static let spacingFromSides: CGFloat = 10

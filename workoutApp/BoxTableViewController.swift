@@ -10,24 +10,18 @@ import UIKit
 
 class BoxTableViewController: UITableViewController {
     
-    var workoutStyleName: String!
+    var workoutStyleName: String?
+    var cellIdentifier: String
     var customRefreshView: RefreshControlView!
     var dataSource: isBoxTableViewDataSource!
     
     // MARK: - Initializers
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-//        setUpNavigationBar()
-    }
-    
-    init(workoutStyleName: String) {
-        print(" in BoxTableViewController init")
-        super.init(nibName: nil, bundle: nil)
-        self.title = "\(workoutStyleName) workouts".uppercased()
+    init(workoutStyleName: String?, cellIdentifier: String) {
+        self.cellIdentifier = cellIdentifier
         self.workoutStyleName = workoutStyleName
-
-        setUpNavigationBar()
+        super.init(nibName: nil, bundle: nil)
+        setUpNavigationBar(withTitle: workoutStyleName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,24 +30,10 @@ class BoxTableViewController: UITableViewController {
     
     // MARK: - Life cycle
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        // Navbar setup
-//        navigationController?.setNavigationBarHidden(false, animated: true)
-//        removeBackButton()
-//        
-//        // TableViewSetup
-//        refreshControl?.endRefreshing()
-//        dataSource.refreshDataSource()
-//        tableView.reloadData()
-//    }
-    
     override func viewDidLoad() {
         view.backgroundColor = .light
         super.viewDidLoad()
         
-//        setupTableView()
-//        setupRefreshControl()
-//        resetRefreshControlAnimation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +47,19 @@ class BoxTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         resetRefreshControlAnimation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        showNavigationBar()
+    }
+    
+    // MARK: - Methods
+    
+    func setupTableView() {
+        tableView.delegate = self
+        tableView.estimatedRowHeight = 115
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorInset.left = 0
     }
 
     // MARK: - Refresh Control
@@ -100,41 +93,28 @@ class BoxTableViewController: UITableViewController {
         customRefreshView.label.alpha = 0
         customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .biggest)
     }
-    
-//    private func setupDataSource() {
-//        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
-//        tableView.dataSource = dataSource
-//    }
-    
-//    func setupTableView() {
-//        tableView.delegate = self
-//        tableView.estimatedRowHeight = 115
-//        tableView.rowHeight = UITableViewAutomaticDimension
-//        tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
-//        tableView.separatorInset.left = 0
-//    }
 
+    // MARK: - Navigationbar
+    
+    func setUpNavigationBar(withTitle title: String?) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        if let name = title {
+            self.title = "\(name) History".uppercased()
+        } else {
+            self.title = "All History".uppercased()
+        }
+        refreshControl?.endRefreshing()
+    }
+    
+    func showNavigationBar() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        refreshControl?.endRefreshing()
+    }
+    
     func removeBackButton(){
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         }
-    }
-
-    // Nav bar
-    
-    func setUpNavigationBar() {
-        let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: self, action: #selector(xButtonHandler))
-        self.navigationItem.rightBarButtonItem = rightButton
-        
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        removeBackButton()
-        
-        refreshControl?.endRefreshing()
-    }
-    
-    @objc private func xButtonHandler() {
-        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - TableView delegate methods

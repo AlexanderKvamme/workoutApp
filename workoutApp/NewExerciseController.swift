@@ -161,7 +161,8 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
         let currentlySelectedType = typeSelecter.bottomLabel.text
-        let exerciseStyles = DatabaseController.fetchManagedObjectsForEntity(.ExerciseStyle) as! [ExerciseStyle]
+//        let exerciseStyles = DatabaseController.fetchManagedObjectsForEntity(.ExerciseStyle) as! [ExerciseStyle]
+        let exerciseStyles = DatabaseFacade.fetchExerciseStyles()
         var exerciseNames = [String]()
         
         for ws in exerciseStyles {
@@ -185,7 +186,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
         let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
         var muscleNames = [String]()
         // Fetch unique muscles
-        let musclesFromCoreData = DatabaseController.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
+        let musclesFromCoreData = DatabaseFacade.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
         
         for m in musclesFromCoreData {
             if let name = m.name {
@@ -208,7 +209,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
         let currentlySelectedMeasurement = measurementSelecter.bottomLabel.text
         var measurementNames = [String]()
         
-        let measurementsFromCoreData = DatabaseController.fetchManagedObjectsForEntity(.MeasurementStyle) as! [MeasurementStyle]
+        let measurementsFromCoreData = DatabaseFacade.fetchManagedObjectsForEntity(.MeasurementStyle) as! [MeasurementStyle]
         
         for measurementStyle in measurementsFromCoreData {
             if let name = measurementStyle.name {

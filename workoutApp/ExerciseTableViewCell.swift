@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 /*
  ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
@@ -20,6 +21,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     private var verticalInsetForBox: CGFloat = 10
     private let collectionViewReuseIdentifier = "collectionViewCell"
     var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
+    private var persistentContainer = NSPersistentContainer(name: Constant.coreData.name)
     var box: Box!
     
     weak var owner: ExerciseTableViewDataSource!
@@ -33,7 +35,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         selectionStyle = .none
         
         // Log item to store each Lift in the current Exercise. This exercise is potentially sent to Core Data if user decides to store workout
-        currentCellExerciseLog = DatabaseController.createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
+        currentCellExerciseLog = DatabaseFacade.makeExerciseLog()
     }
     
     // Initialize cell by injecting an ExerciseLog
@@ -58,8 +60,6 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
 //        liftsToDisplay = sortedLifts // update dataSource
         
         liftsToDisplay = lifts
-    
-        liftsToDisplay.printLiftsWithTimeStamps()
     }
     
     
@@ -154,7 +154,6 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         cell.owner = self
         
         let liftToDisplay = liftsToDisplay[indexPath.row]
-        print("making cell for liftsToDisplay[indexPath.row] : liftsToDisplay[\(indexPath.row)] : \(liftToDisplay.reps)")
         let repFromLift = liftToDisplay.reps
         cell.setReps(repFromLift)
         cell.isPerformed = liftToDisplay.hasBeenPerformed // is it already performed this workout and should be tappable?
@@ -201,7 +200,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
     func insertNewCell() {
         let itemCount = collectionView.numberOfItems(inSection: 0)
         // make new lift value to be displayed
-        let newLift = DatabaseController.createManagedObjectForEntity(.Lift) as! Lift
+        let newLift = DatabaseFacade.makeLift()
         newLift.datePerformed = Date() as NSDate
         print("setting newLift.datePerformed to \(newLift.datePerformed!)")
         newLift.reps = 0

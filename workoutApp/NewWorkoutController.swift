@@ -144,7 +144,6 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     
     @objc private func approveAndDismissVC() {
 
-        
         // Present error modal if workout contains no exercises
         guard nameOfCurrentlySelectedExercises.count > 0 else {
             let errorMessage = "Add at least one exercise, please!"
@@ -158,7 +157,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
             let workoutStyleName = workoutStyleSelecter.bottomLabel.text,
             let muscleName = muscleSelecter.bottomLabel.text {
             DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciseNames: nameOfCurrentlySelectedExercises)
-            DatabaseController.saveContext()
+            DatabaseFacade.saveContext()
         } else {
             print(" could not make workout")
         }
@@ -184,7 +183,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
         let currentlySelectedType = workoutStyleSelecter.bottomLabel.text
-        let workoutStyles = DatabaseController.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
+        let workoutStyles = DatabaseFacade.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
         var workoutStyleNames = [String]()
         
         for ws in workoutStyles {
@@ -208,7 +207,8 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
         var muscleNames = [String]()
         // Fetch unique muscles
-        let musclesFromCoreData = DatabaseController.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
+//        let musclesFromCoreData = Database.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
+         let musclesFromCoreData = DatabaseFacade.fetchMuscles()
         
         for m in musclesFromCoreData {
             if let name = m.name {
@@ -258,7 +258,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
         let exercisePicker: ExercisePickerViewController!
         
         // Use selected muscle to prepare a pickerview and update UI
-        guard let muscleName = muscleSelecter.bottomLabel.text  else {
+        guard let muscleName = muscleSelecter.bottomLabel.text else {
             return
         }
         
