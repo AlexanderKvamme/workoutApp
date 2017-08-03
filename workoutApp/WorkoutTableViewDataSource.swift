@@ -55,7 +55,9 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
     }
     
     func deleteDataAt(_ indexPath: IndexPath) {
-        print("would delete but havent been implemented")
+        let workoutToDelete = fetchedWorkouts[indexPath.row]
+        fetchedWorkouts.remove(at: indexPath.row)
+        DatabaseFacade.deleteWorkout(workoutToDelete)
     }
     
     func refreshDataSource() {

@@ -44,6 +44,8 @@ class WorkoutTableViewController: BoxTableViewController {
     
     // MARK: - TableView delegate methods
     
+    // Selection
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wo = dataSource.getData() as? [Workout]
         if let wo = wo {
@@ -51,6 +53,22 @@ class WorkoutTableViewController: BoxTableViewController {
             let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
             navigationController?.pushViewController(detailedVC, animated: true)
         }
+    }
+    
+    // Editing and deletion
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "DEL") { (action, indexPath) in
+            self.dataSource.deleteDataAt(indexPath)
+            self.tableView.reloadData()
+        }
+        
+        delete.backgroundColor = .secondary
+        return [delete]
     }
 }
 

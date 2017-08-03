@@ -33,7 +33,6 @@ class BoxTableViewController: UITableViewController {
     override func viewDidLoad() {
         view.backgroundColor = .light
         super.viewDidLoad()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,6 +41,7 @@ class BoxTableViewController: UITableViewController {
             customTabBarController.showSelectionindicator()
         }
         refreshControl?.endRefreshing()
+        dataSource.refreshDataSource()
         tableView.reloadData()
     }
     

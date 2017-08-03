@@ -41,7 +41,6 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let log = fetchedWorkoutLogs[indexPath.row]
-        
         var cell: HistoryBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! HistoryBoxCell
         cell = HistoryBoxCell(style: .default, reuseIdentifier: cellIdentifier)
         if let name = log.design?.name {
@@ -97,13 +96,10 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         }
     }
     
-    // FIXME: - delete from data source
     func deleteDataAt(_ indexPath: IndexPath) {
-        print("*In data source. Will now delete the actual workoutLog*".uppercased())
         let woToDelete = fetchedWorkoutLogs[indexPath.row]
         fetchedWorkoutLogs.remove(at: indexPath.row)
-        DatabaseFacade.deleteWorkoutLog(woToDelete) // FIXME: - implement
-        print(" would delete: ", woToDelete.design?.name)
+        DatabaseFacade.deleteWorkoutLog(woToDelete)
     }
 }
 

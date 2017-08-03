@@ -99,7 +99,20 @@ final class DatabaseFacade {
             delete(exerciseLog)
         }
         delete(workoutLogToDelete)
-        print("done deleting in facade")
+    }
+    
+    static func deleteWorkout(_ workoutToDelete: Workout) {
+        guard let loggedWorkouts = workoutToDelete.loggedWorkouts as? Set<WorkoutLog> else {
+            print("error unwrapping workoutslog in deleteWorkout")
+            return
+        }
+        print("loggedWorkouts: \(loggedWorkouts.count) would be deleted")
+        
+        for workoutLog in loggedWorkouts {
+            delete(workoutLog)
+            // NOTE: - This leaves any exercises assosciated with these workoutLogs still in existance in the persistentStore
+        }
+        delete(workoutToDelete)
     }
     
     // MARK: - Make methods
