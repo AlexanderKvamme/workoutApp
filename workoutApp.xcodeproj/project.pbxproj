@@ -97,6 +97,7 @@
 		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */; };
 		DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */; };
 		DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */; };
+		DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF254061F35F75C0032ED75 /* Warningbox.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 /* End PBXBuildFile section */
@@ -194,6 +195,7 @@
 		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewController.swift; sourceTree = "<group>"; };
 		DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
 		DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewDataSource.swift; sourceTree = "<group>"; };
+		DDF254061F35F75C0032ED75 /* Warningbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Warningbox.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -223,6 +225,7 @@
 			children = (
 				DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */,
 				DD151DFE1ED2DD310014DBC1 /* Box.swift */,
+				DDF254061F35F75C0032ED75 /* Warningbox.swift */,
 				DDEE859D1ED4921000A3F81C /* Helper Classes */,
 			);
 			name = "Box Abstract Factory";
@@ -620,6 +623,7 @@
 				DDE55BA01F30E0F500ED1D15 /* CoreDataManager.swift in Sources */,
 				DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */,
 				DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */,
+				DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */,
 				DD468F851F2E875000A945A9 /* WorkoutTableViewController.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,

@@ -18,6 +18,7 @@ public enum BoxType {
     case WorkoutBox
     case SuggestionBox // Maybe this does not fit
     case SelectionBox
+    case WarningBox
     case ExerciseProgressBox
 }
 
@@ -53,11 +54,12 @@ public class BoxFactory {
             factory = SelectionBoxFactory()
         case .ExerciseProgressBox:
             factory = ExerciseProgressBoxFactory()
+        case .WarningBox:
+            factory = WarningBoxFactory()
         }
         return factory
     }
 }
-
 
 // MARK: - Factories
 
@@ -156,6 +158,26 @@ fileprivate class ExerciseProgressBoxFactory: BoxFactory {
     }
 }
 
+// Warning Box Factory
+
+fileprivate class WarningBoxFactory: BoxFactory {
+    public override func makeBoxHeader() -> BoxHeader? {
+        return nil
+    }
+    
+    public override func makeBoxSubHeader() -> BoxSubHeader? {
+        return nil
+    }
+    
+    public override func makeBoxFrame() -> BoxFrame? {
+        return WarningBoxFrame()
+    }
+    
+    public override func makeBoxContent() -> BoxContent? {
+        return WarningBoxContent()
+    }
+}
+
 // MARK: - Box parts
 
 // MARK: - Box Headers
@@ -172,6 +194,26 @@ public class BoxHeader: UIView {
     }
     
     required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class WarningBoxHeader: BoxHeader {
+    override init(){
+        super.init()
+        
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
+        label.numberOfLines = 1
+        label.text = "WARNING"
+        label.sizeToFit()
+        addSubview(label)
+        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+                       y: 0,
+                       width: Constant.components.Box.Standard.width,
+                       height: label.frame.height)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -283,9 +325,13 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
 
 // MARK: - Box Content
 
+/// Content it whatever is to be displayed on the actual boxFrame. Any for om text or buttons etc.
 public class BoxContent: UIView {
+    var xButton: UIButton?
     var contentStack: ThreeColumnStack?
     var label: UILabel?
+    var messageLabel: UILabel?
+    var usesAutoLayout = false
 }
 
 fileprivate class HistoryBoxContent: BoxContent {
@@ -325,6 +371,8 @@ fileprivate class HistoryBoxContent: BoxContent {
     }
 }
 
+// SelectionBox content
+
 fileprivate class SelectionBoxContent: BoxContent {
     
     init() {
@@ -356,17 +404,101 @@ fileprivate class SelectionBoxContent: BoxContent {
     }
 }
 
+// FIXME: - WarningBox Content
+
+fileprivate class WarningBoxContent: BoxContent {
+    
+    // Iniitializers
+    
+    init() {
+        super.init(frame: CGRect.zero)
+        let topLeftSpacing: CGFloat = 10
+        let topRightInsets: CGFloat = 10
+        let buttonDiameter: CGFloat = 20
+        
+        usesAutoLayout = true
+        
+        // Headerlabel
+        label = UILabel(frame: CGRect.zero)
+        guard let label = label else { return }
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
+        label.textColor = UIColor.lightest
+        label.alpha = Constant.alpha.faded
+        label.text = "WARNING"
+        label.applyCustomAttributes(.more)
+        label.sizeToFit()
+        addSubview(label)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: topAnchor, constant: topLeftSpacing),
+            label.leftAnchor.constraint(equalTo: leftAnchor, constant: topLeftSpacing),
+            ])
+        label.setContentCompressionResistancePriority(1000, for: .vertical)
+        
+        // xButton in the top right
+        let xImage = UIImage(named: "xmarkBeige")?.withRenderingMode(.alwaysTemplate)
+        xButton = UIButton()
+        guard let xButton = xButton else { return }
+        xButton.setImage(xImage, for: .normal)
+        xButton.tintColor = .lightest
+        xButton.alpha = Constant.alpha.faded
+        addSubview(xButton)
+        
+        // Layout
+        xButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            xButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -topRightInsets),
+            xButton.topAnchor.constraint(equalTo: topAnchor, constant: topRightInsets),
+            xButton.widthAnchor.constraint(equalToConstant: buttonDiameter),
+            xButton.heightAnchor.constraint(equalToConstant: buttonDiameter),
+            ])
+        
+        // The message
+        messageLabel = UILabel(frame: CGRect.zero)
+        guard let messageLabel = messageLabel else { return }
+        addSubview(messageLabel)
+        
+        messageLabel.font = UIFont.custom(style: .bold, ofSize: .big)
+        messageLabel.textColor = .light
+        messageLabel.numberOfLines = 0
+        
+        messageLabel.text = "Messages go here".uppercased()
+        
+        // Message Layout
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            messageLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: topRightInsets),
+            messageLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -topRightInsets),
+            messageLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
+            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            ])
+        messageLabel.setContentCompressionResistancePriority(1000, for: .vertical)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Handlers
+    
+    func xButtonDidTap() {
+        print("did tap")
+    }
+}
+
 // MARK: - BoxFrames
 
+/// Boxframe is a class that contains a background and a shimmer. Both are inset from the class itself, so that the class can be set to the edges of wherever you want to display it, and it automatically shows insets.
 public class BoxFrame: UIView {
     
     var background = UIView()
     var shimmer = UIView()
+    var usesAutoLayout = false // Lets Box class set up using auto layout only for the warningBoxFrame, and eventually for all of them
     
     init() {
         super.init(frame: CGRect.zero)
-        
-        // background properties
         background.backgroundColor = .primary
         
         // shimmer properties
@@ -480,16 +612,81 @@ fileprivate class ExerciseProgressBoxFrame: BoxFrame {
     }
 }
 
+fileprivate class WarningBoxFrame: BoxFrame {
+    override init(){
+        super.init()
+        
+//        usesAutoLayout = true // Lets Box class set up using auto layout only for the warningBoxFrame, and eventually for all of them
+//        
+//        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
+//                                     height: Constant.components.Box.ExerciseProgress.height)
+//        // Colored view behind shimmer
+//        background.frame = CGRect(x: 0,
+//                                  y: 0,
+//                                  width: standardBoxSize.width,
+//                                  height: standardBoxSize.height)
+//        background.backgroundColor = .secondary
+//        
+//        // Shimmer
+//        let shimmerInset = Constant.components.Box.shimmerInset
+//        shimmer.frame = CGRect(x: shimmerInset,
+//                               y: shimmerInset,
+//                               width: background.frame.width - 2*shimmerInset,
+//                               height: background.frame.height - 2*shimmerInset)
+//        frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
+//        
+//        addSubview(background)
+//        addSubview(shimmer)
+//        bringSubview(toFront: shimmer)
+//        
+//        // FIXME: - Use autolayout to set up the boxes
+//        // Layout
+//        
+//        translatesAutoresizingMaskIntoConstraints = false
 
-// The 3 components
+        // Try using Auto layout
+        
+        usesAutoLayout = true // Lets Box class set up using auto layout only for the warningBoxFrame, and eventually for all of them
+        
+        // Colored view behind shimmer
+        background.frame = CGRect.zero
+        background.backgroundColor = .secondary
+        
+        // Shimmer
+        let shimmerInset = Constant.components.Box.shimmerInset
+        let backgroundInset: CGFloat = 5
+        
+        shimmer.frame = CGRect.zero
+        frame.size = CGSize.zero
+        
+        addSubview(background)
+        addSubview(shimmer)
+        bringSubview(toFront: shimmer)
+        
+        // Set up background and shimmer to fill frame of the boxFrame, but with insets
+        translatesAutoresizingMaskIntoConstraints = false // the class itself
+        background.translatesAutoresizingMaskIntoConstraints = false
+        shimmer.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Background
+        NSLayoutConstraint.activate([
+            background.topAnchor.constraint(equalTo: topAnchor, constant: backgroundInset),
+            background.leftAnchor.constraint(equalTo: leftAnchor, constant: backgroundInset),
+            background.rightAnchor.constraint(equalTo: rightAnchor, constant: -backgroundInset),
+            background.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -backgroundInset),
+            ])
+        
+        // Shimmer
+        NSLayoutConstraint.activate([
+            shimmer.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: -backgroundInset),
+            shimmer.topAnchor.constraint(equalTo: background.topAnchor, constant: backgroundInset),
+            shimmer.leftAnchor.constraint(equalTo: background.leftAnchor, constant: backgroundInset),
+            shimmer.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -backgroundInset),
+            ])
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
-//fileprivate class BoxComponent: UIView {
-//
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
