@@ -18,13 +18,15 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - Progress
         
-        let progressController = SelectionViewController(
-            header: SelectionViewHeader(header: "Not yet implemented", subheader: "Progress"),
-            buttons: [SelectionViewButton(header: "Normal", subheader: "9 Workouts"),
-                      SelectionViewButton(header: "Pyramid", subheader: "4 Workouts"),
-                      SelectionViewButton(header: "Drop set", subheader: "3 Workouts"),
-                      SelectionViewButton(header: "Cardio", subheader: "2 Workouts"),
-            ])
+//        let progressController = SelectionViewController(
+//            header: SelectionViewHeader(header: "Not yet implemented", subheader: "Progress"),
+//            buttons: [SelectionViewButton(header: "Normal", subheader: "9 Workouts"),
+//                      SelectionViewButton(header: "Pyramid", subheader: "4 Workouts"),
+//                      SelectionViewButton(header: "Drop set", subheader: "3 Workouts"),
+//                      SelectionViewButton(header: "Cardio", subheader: "2 Workouts"),
+//            ])
+        
+        let progressController = TestViewController()
         
         // MARK: - History
         
@@ -38,6 +40,7 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - Profile Tab
         let profileController = ProfileController()
+//        let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
         // MARK: - Set up navbar
@@ -70,6 +73,7 @@ class CustomTabBarController: UITabBarController {
     public func hideSelectionIndicator() {
         selectionIndicator.isHidden = true
     }
+    
     public func showSelectionindicator() {
         selectionIndicator.isHidden = false
     }

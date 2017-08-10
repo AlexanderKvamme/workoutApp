@@ -16,12 +16,6 @@ class Warningbox: Box {
         setupBoxFrameUsingAutolayout()
     }
     
-    deinit {
-        if let content = content {
-            print("deinit warningbox had text: ", content.messageLabel?.text)
-        }
-    }
-    
     convenience init(withWarning warning: String) {
         self.init()
         setWarning(warning)

@@ -9,9 +9,7 @@
 import Foundation
 import UIKit
 
-/*
-    Abstract Factory pattern used to create some of the most used boxes in the app. Maybe not 100% appropriate but interesting to try to use some creational patterns.
- */
+/*  Abstract Factory pattern used to create some of the most used boxes in the app. Maybe not 100% appropriate but interesting to try to use some creational patterns. */
 
 public enum BoxType {
     case HistoryBox
@@ -463,7 +461,6 @@ fileprivate class WarningBoxContent: BoxContent {
         messageLabel.font = UIFont.custom(style: .bold, ofSize: .big)
         messageLabel.textColor = .light
         messageLabel.numberOfLines = 0
-        
         messageLabel.text = "Messages go here".uppercased()
         
         // Message Layout
@@ -615,34 +612,6 @@ fileprivate class ExerciseProgressBoxFrame: BoxFrame {
 fileprivate class WarningBoxFrame: BoxFrame {
     override init(){
         super.init()
-        
-//        usesAutoLayout = true // Lets Box class set up using auto layout only for the warningBoxFrame, and eventually for all of them
-//        
-//        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
-//                                     height: Constant.components.Box.ExerciseProgress.height)
-//        // Colored view behind shimmer
-//        background.frame = CGRect(x: 0,
-//                                  y: 0,
-//                                  width: standardBoxSize.width,
-//                                  height: standardBoxSize.height)
-//        background.backgroundColor = .secondary
-//        
-//        // Shimmer
-//        let shimmerInset = Constant.components.Box.shimmerInset
-//        shimmer.frame = CGRect(x: shimmerInset,
-//                               y: shimmerInset,
-//                               width: background.frame.width - 2*shimmerInset,
-//                               height: background.frame.height - 2*shimmerInset)
-//        frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
-//        
-//        addSubview(background)
-//        addSubview(shimmer)
-//        bringSubview(toFront: shimmer)
-//        
-//        // FIXME: - Use autolayout to set up the boxes
-//        // Layout
-//        
-//        translatesAutoresizingMaskIntoConstraints = false
 
         // Try using Auto layout
         

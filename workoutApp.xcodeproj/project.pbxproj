@@ -11,6 +11,8 @@
 		DD0CD4C61F01023C008544EE /* ExercisePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */; };
 		DD0CD4C81F012A33008544EE /* ExercisePickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */; };
 		DD0E1DB91F2E8ECA00E9F1C7 /* HistoryTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0E1DB81F2E8ECA00E9F1C7 /* HistoryTableDataSource.swift */; };
+		DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D771F3C801A00228366 /* GoalsButton.swift */; };
+		DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D791F3CA36900228366 /* AttributedText.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
@@ -22,6 +24,7 @@
 		DD1EA1641EEC1CC900EBB7B7 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */; };
 		DD2A9E741F0EED600074B46F /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A9E731F0EED600074B46F /* Footer.swift */; };
 		DD2DDD771F3338EF00614788 /* Navbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2DDD761F3338EF00614788 /* Navbar.swift */; };
+		DD2EB3D11F39DB43007A556A /* GoalsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2EB3D01F39DB43007A556A /* GoalsController.swift */; };
 		DD36F5131F33D44300FD31B3 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36F5121F33D44300FD31B3 /* ProfileController.swift */; };
 		DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44A1EE45A9300C55453 /* PickerCell.swift */; };
 		DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */; };
@@ -107,6 +110,8 @@
 		DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerViewController.swift; sourceTree = "<group>"; };
 		DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerProtocols.swift; sourceTree = "<group>"; };
 		DD0E1DB81F2E8ECA00E9F1C7 /* HistoryTableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableDataSource.swift; sourceTree = "<group>"; };
+		DD109D771F3C801A00228366 /* GoalsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsButton.swift; sourceTree = "<group>"; };
+		DD109D791F3CA36900228366 /* AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
@@ -118,6 +123,7 @@
 		DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		DD2A9E731F0EED600074B46F /* Footer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
 		DD2DDD761F3338EF00614788 /* Navbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navbar.swift; sourceTree = "<group>"; };
+		DD2EB3D01F39DB43007A556A /* GoalsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsController.swift; sourceTree = "<group>"; };
 		DD36F5121F33D44300FD31B3 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		DD3AF44A1EE45A9300C55453 /* PickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerCell.swift; sourceTree = "<group>"; };
 		DD3AF44C1EE45AB500C55453 /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +226,14 @@
 			name = ExercisePicker;
 			sourceTree = "<group>";
 		};
+		DD109D7B1F3CA37A00228366 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DD109D791F3CA36900228366 /* AttributedText.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +279,9 @@
 			isa = PBXGroup;
 			children = (
 				DD36F5121F33D44300FD31B3 /* ProfileController.swift */,
+				DD2EB3D01F39DB43007A556A /* GoalsController.swift */,
+				DD109D771F3C801A00228366 /* GoalsButton.swift */,
+				DD109D7B1F3CA37A00228366 /* Helpers */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -642,6 +659,7 @@
 				DDC4C5EA1F2B850B00B511A3 /* Lift+CoreDataProperties.swift in Sources */,
 				DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */,
 				DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */,
+				DD2EB3D11F39DB43007A556A /* GoalsController.swift in Sources */,
 				DD3AF44D1EE45AB500C55453 /* PickerViewController.swift in Sources */,
 				DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */,
 				DD0CD4C81F012A33008544EE /* ExercisePickerProtocols.swift in Sources */,
@@ -675,8 +693,10 @@
 				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DDB539AE1F2E074800824CFC /* WorkoutSelectionViewController.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
+				DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */,
 				DD6ACA7C1F1CDC17009714F1 /* Muscle+CoreDataProperties.swift in Sources */,
 				DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */,
+				DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */,
 				DDDE6E511ED4DED400A03886 /* BoxTableViewController.swift in Sources */,
 				DD468F831F2E1A8100A945A9 /* HistorySelectionViewController.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
