@@ -62,7 +62,7 @@ class WorkoutTableViewController: BoxTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "DEL") { (action, indexPath) in
+        let delete = UITableViewRowAction(style: .destructive, title: "DELETE") { (action, indexPath) in
             self.dataSource.deleteDataAt(indexPath)
             self.tableView.reloadData()
         }

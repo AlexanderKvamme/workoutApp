@@ -21,10 +21,11 @@ class TestViewController: UIViewController {
         
         // test button
         
-        let btn = GoalsButton(frame: CGRect(x: 10, y: 10, width: 100, height: 100))
-        btn.backgroundColor = .green
-        btn.addTarget(self, action: #selector(test), for: .touchUpInside)
-        view.addSubview(btn)
+//        let btn = GoalButton(frame: CGRect(x: 10, y: 10, width: 100, height: 100))
+//        let btn = GoalButton(
+//        btn.backgroundColor = .green
+//        btn.addTarget(self, action: #selector(test), for: .touchUpInside)
+//        view.addSubview(btn)
     }
     
     func test() {

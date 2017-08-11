@@ -106,7 +106,6 @@ final class DatabaseFacade {
             print("error unwrapping workoutslog in deleteWorkout")
             return
         }
-        print("loggedWorkouts: \(loggedWorkouts.count) would be deleted")
         
         for workoutLog in loggedWorkouts {
             delete(workoutLog)
@@ -149,6 +148,11 @@ final class DatabaseFacade {
         return newWorkoutStyle
     }
     
+    static func makeWarning() -> Warning {
+        let newWarning = createManagedObjectForEntity(.Warning) as! Warning
+        return newWarning
+    }
+    
     static func makeMeasurementStyle() -> MeasurementStyle {
         let newMeasurementStyle = createManagedObjectForEntity(.MeasurementStyle) as! MeasurementStyle
         return newMeasurementStyle
@@ -162,6 +166,11 @@ final class DatabaseFacade {
     static func makeWorkout() -> Workout {
         let newWorkout = createManagedObjectForEntity(.Workout) as! Workout
         return newWorkout
+    }
+    
+    static func makeGoal() -> Goal {
+        let newGoal = createManagedObjectForEntity(.Goal) as! Goal
+        return newGoal
     }
     
     static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
@@ -265,6 +274,39 @@ final class DatabaseFacade {
     static func fetchMuscles() -> [Muscle] {
         let muscles = fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
         return muscles
+    }
+    
+    // fetch Goals
+    static func fetchGoals() -> [Goal]? {
+        var goals: [Goal]? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Goal.rawValue)
+        let sortDescriptor = NSSortDescriptor(key: "dateMade", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            let result = try DatabaseFacade.context.fetch(fetchRequest) as! [Goal]
+            if result.count > 0 { goals = result }
+        } catch let error as NSError{
+            print("error in fetchGoals: \(error.localizedDescription)")
+        }
+        return goals
+    }
+    
+    static func fetchWarnings() -> [Warning]? {
+        var warnings: [Warning]? = nil
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Warning.rawValue)
+        let sortDescriptor = NSSortDescriptor(key: "dateMade", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            let result = try DatabaseFacade.context.fetch(fetchRequest) as! [Warning]
+            if result.count > 0 { warnings = result }
+        } catch let error as NSError {
+            print("Error fetching warnings: \(error.localizedDescription)")
+        }
+        return warnings
     }
     
     // fetch WorkoutStyle

@@ -18,6 +18,8 @@ enum Entity: String {
     case WorkoutLog = "WorkoutLog"
     case ExerciseStyle = "ExerciseStyle"
     case MeasurementStyle = "MeasurementStyle"
+    case Goal = "Goal"
+    case Warning = "Warning"
 }
 
 enum CDModels {

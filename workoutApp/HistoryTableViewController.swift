@@ -49,7 +49,7 @@ class HistoryTableViewController: BoxTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+        let delete = UITableViewRowAction(style: .destructive, title: "DELETE") { (action, indexPath) in
             self.dataSource.deleteDataAt(indexPath)
             self.tableView.reloadData() // Add animation through tableView.deleteRows(at: [indexPath], with: .none)
         }

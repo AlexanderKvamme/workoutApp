@@ -39,6 +39,7 @@ final class DataSeeder {
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
         seedWithExampleMeasurementStyles()
+        seedWithExampleWarning()
     }
     
     // MARK: - Seeding
@@ -110,6 +111,12 @@ final class DataSeeder {
             makeMuscle(withName: m.uppercased())
         }
         printMuscles()
+    }
+    
+    // Seed with welcome warning 
+    
+    private func seedWithExampleWarning() {
+        makeWarning(withMessage: "Remember to workout your legs tho")
     }
     
     // Seed example WorkoutStyles
@@ -192,6 +199,14 @@ final class DataSeeder {
     private func makeMuscle(withName name: String) {
         let muscleRecord = DatabaseFacade.makeMuscle()
         muscleRecord.name = name.uppercased()
+    }
+    
+    // Make warning
+    
+    private func makeWarning(withMessage message: String) {
+        let warningRecord = DatabaseFacade.makeWarning()
+        warningRecord.dateMade = Date() as NSDate
+        warningRecord.message = message
     }
     
     // Make WorkoutStyle

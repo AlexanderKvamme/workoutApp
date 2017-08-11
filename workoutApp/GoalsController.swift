@@ -15,19 +15,28 @@ class GoalsController: UIViewController {
     // MARK: - Properties
     
     private var header = UILabel(frame: CGRect.zero)
-    private var goals: [String]?
-    private var goalStack: UIStackView = UIStackView()
+    private var goals: [Goal]?
+    private var stackOfGoalButtons: UIStackView = UIStackView()
     
     // MARK: - Initializers
     
-    private init() {
+    init() {
         super.init(nibName: nil, bundle: nil)
-    }
-    
-    convenience init(withGoals goals: [String]) {
-        self.init()
-        self.goals = goals
-        setupView()
+        
+        if let goalsInCoreData = DatabaseFacade.fetchGoals() {
+            self.goals = goalsInCoreData
+        } else {
+            // Make initial goals
+            let exampleGoal1 = DatabaseFacade.makeGoal()
+            exampleGoal1.dateMade = Date() as NSDate
+            exampleGoal1.text = "Hold goals to delete a goal".uppercased()
+            
+            let exampleGoal2 = DatabaseFacade.makeGoal()
+            exampleGoal2.dateMade = Date() as NSDate
+            exampleGoal2.text = "Or hold header to create a new one".uppercased()
+            
+            self.goals = [exampleGoal1, exampleGoal2]
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,9 +47,9 @@ class GoalsController: UIViewController {
     
     override func viewDidLoad() {
         if let goals = goals {
-            for goalString in goals{
-                let newButton = makeGoalButton(withText: goalString)
-                goalStack.addArrangedSubview(newButton)
+            for goal in goals {
+                let newButton = makeGoalButton(withGoal: goal)
+                stackOfGoalButtons.addArrangedSubview(newButton)
             }
         }
         setupView()
@@ -78,28 +87,30 @@ class GoalsController: UIViewController {
     private func setupStack() {
         let sideInsets: CGFloat = 40
 
-        goalStack.spacing = 8
-        goalStack.alignment = .leading
-        goalStack.axis = .vertical
-        goalStack.distribution = .equalSpacing
-        goalStack.layoutMargins = UIEdgeInsets(top: 10, left: sideInsets, bottom: 0, right: sideInsets)
-        goalStack.isLayoutMarginsRelativeArrangement = true
-        goalStack.alpha = Constant.alpha.faded
-        view.addSubview(goalStack)
+        stackOfGoalButtons.spacing = 8
+        stackOfGoalButtons.alignment = .leading
+        stackOfGoalButtons.axis = .vertical
+        stackOfGoalButtons.distribution = .equalSpacing
+        stackOfGoalButtons.layoutMargins = UIEdgeInsets(top: 10, left: sideInsets, bottom: 0, right: sideInsets)
+        stackOfGoalButtons.isLayoutMarginsRelativeArrangement = true
+        stackOfGoalButtons.alpha = Constant.alpha.faded
+        view.addSubview(stackOfGoalButtons)
         
         // Layout
-        goalStack.translatesAutoresizingMaskIntoConstraints = false
+        stackOfGoalButtons.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            goalStack.topAnchor.constraint(equalTo: header.bottomAnchor),
-            goalStack.leftAnchor.constraint(equalTo: view.leftAnchor),
-            goalStack.rightAnchor.constraint(equalTo: view.rightAnchor),
-            goalStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stackOfGoalButtons.topAnchor.constraint(equalTo: header.bottomAnchor),
+            stackOfGoalButtons.leftAnchor.constraint(equalTo: view.leftAnchor),
+            stackOfGoalButtons.rightAnchor.constraint(equalTo: view.rightAnchor),
+            stackOfGoalButtons.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
     }
     
-    private func makeGoalButton(withText text: String) -> UIButton {
-        let button = GoalsButton(frame: .zero)
+//    private func makeGoalButton(withText text: String) -> UIButton {
+    private func makeGoalButton(withGoal goal: Goal) -> GoalButton {
+//        let button = GoalButton(frame: .zero)
+        let button = GoalButton(withGoal: goal)
         
         guard let label = button.titleLabel else { return button }
         
@@ -110,7 +121,7 @@ class GoalsController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         
         // Text
-        let attributedTitle = GoalsController.bulletedListItem(string: text)
+        let attributedTitle = GoalsController.bulletedListItem(string: goal.text ?? "NO TEXT")
         button.setAttributedTitle(attributedTitle, for: .normal)
         
         // Layout
@@ -119,7 +130,7 @@ class GoalsController: UIViewController {
         button.layoutIfNeeded()
         
         // Long press to delete
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(gestureHandler(_:)))
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(goalLongPressHandler(_:)))
         button.addGestureRecognizer(longPressRecognizer)
         
         return button
@@ -129,16 +140,34 @@ class GoalsController: UIViewController {
     
     @objc private func headerLongPressHandler(_ gesture: UIGestureRecognizer) {
         if gesture.state == .began {
-            let newGoal = makeGoalButton(withText: "Let user make a real goal".uppercased())
-            goalStack.addArrangedSubview(newGoal)
+//            let newGoal = makeGoalButton(withText: "Let user make a real goal".uppercased())
+            // Goal
+            let newGoal = DatabaseFacade.makeGoal()
+            newGoal.dateMade = Date() as NSDate
+            newGoal.text = "let user input text".uppercased()
+            
+            // GoalButton
+            let newGoalButton = makeGoalButton(withGoal: newGoal)
+            goals?.append(newGoal)
+            stackOfGoalButtons.addArrangedSubview(newGoalButton)
         }
     }
     
-    @objc private func gestureHandler(_ gesture: UIGestureRecognizer) {
+    @objc private func goalLongPressHandler(_ gesture: UIGestureRecognizer) {
         if gesture.state == .began {
             if let sender = gesture.view{
-                goalStack.removeArrangedSubview(sender)
+                
+                // TODO: - Remove from Core data
+                stackOfGoalButtons.removeArrangedSubview(sender)
                 sender.removeFromSuperview()
+                if let aButton = sender as? GoalButton {
+                    print(" SUCCESS ")
+                    aButton.deleteFromCoreData()
+                    // find index and delete it
+                    
+                } else {
+                    print(" FAIL ")
+                }
             }
         }
     }

@@ -5,7 +5,14 @@ import UIKit
 
 class Warningbox: Box {
     
-    init() {
+    // MARK: - Properties
+    
+    var warning: Warning? = nil
+    
+    // MARK: - Initializers
+    
+    init(withWarning newWarning: Warning) {
+        
         let boxFactory = BoxFactory.makeFactory(type: .WarningBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
@@ -14,15 +21,26 @@ class Warningbox: Box {
         
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         setupBoxFrameUsingAutolayout()
-    }
-    
-    convenience init(withWarning warning: String) {
-        self.init()
-        setWarning(warning)
+        
+        self.warning = newWarning
+        
+        if let message = warning?.message {
+            setMessage(message)
+        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("deinitting warningBox")
+    }
+    
+    // MARK: - Methods
+    
+    func getWarning() -> Warning? {
+        if warning != nil { return warning} else { return nil }
     }
     
     private func setupBoxFrameUsingAutolayout() {
@@ -43,7 +61,7 @@ class Warningbox: Box {
                 ])
         }
         
-        // setup ContentBox
+        // Setup ContentBox
         if content.usesAutoLayout {
             content.label?.sizeToFit() // maybe not needed sinze its set to shrink with autolayout
             content.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +86,14 @@ class Warningbox: Box {
             ])
     }
     
-    func setWarning(_ warning: String) {
-        content?.messageLabel?.text = warning.uppercased()
+    func setMessage(_ message: String) {
+        content?.messageLabel?.text = message.uppercased()
+    }
+    
+    func deleteWarning() {
+        if let warning = warning {
+            DatabaseFacade.delete(warning)
+        }
     }
 }
+

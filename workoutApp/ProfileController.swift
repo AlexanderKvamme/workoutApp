@@ -25,17 +25,20 @@ final class ProfileController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Life cycle
+    
     override func viewDidLoad() {
         view.backgroundColor = .light
         view.layoutIfNeeded()
         setup()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Setup
+    // MARK: - Methods
+    // MARK: Setup
     
     private func setup() {
         setupSettingsButton()
@@ -43,8 +46,12 @@ final class ProfileController: UIViewController {
         setupScrollView()
         
         setupStackView()
-        setupGoalsController()
+
+        addWarnings(to: stackView)
+        addGoals(to: stackView)
     }
+    
+    // MARK: Methods
     
     private func setupScrollView(){
         scrollView = UIScrollView(frame: CGRect.zero)
@@ -70,8 +77,6 @@ final class ProfileController: UIViewController {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
-        
-        addWarnings(to: stackView)
         
         scrollView.addSubview(stackView)
         
@@ -103,52 +108,64 @@ final class ProfileController: UIViewController {
     
     private func setupSettingsButton() {
         settingsButton = UIButton(frame: CGRect.zero)
-        let image: UIImage = UIImage(named: "settingsButtonRounded")!
-        settingsButton.setImage(image, for: .normal)
+        settingsButton.setImage(UIImage(named: "settingsButtonRounded"), for: .normal)
         view.addSubview(settingsButton)
         
-        let topRightInsets: CGFloat = 10
+        // Layout
+        let rightInset: CGFloat = 10
+        let topInset: CGFloat = 30
         let buttonDiameter: CGFloat = 20
         
-        // Layout
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            settingsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: topRightInsets),
-            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -topRightInsets),
+            settingsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: topInset),
+            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -rightInset),
             settingsButton.widthAnchor.constraint(equalToConstant: buttonDiameter),
             settingsButton.heightAnchor.constraint(equalToConstant: buttonDiameter),
             ])
     }
     
-    private func setupGoalsController() {
-        let goalStrings = ["Hold Header to make labels".uppercased(),
-                           "Hold labels to complete".uppercased()]
-        
-        let goalsController = GoalsController(withGoals: goalStrings)
+    private func addGoals(to stackView: UIStackView) {
+        let goalsController = GoalsController()
         addChildViewController(goalsController) // NOTE: Needed to make it work as its own viewController (with its own selectors)
         stackView.addArrangedSubview(goalsController.view)
     }
     
     // MARK: - Business Logic
     
-    private func addWarnings(to stackView: UIStackView) {
-        for i in 0..<3 {
-            let box = Warningbox(withWarning: "Warning number \(i)")
-            box.content?.xButton?.addTarget(self, action: #selector(xButtonHandler(_:)), for: .touchUpInside)
-            stackView.addArrangedSubview(box)
-        }
+    private func makeWarningBox(fromWarning warning: Warning) -> Warningbox? {
+        var newBox: Warningbox? = nil
+        newBox = Warningbox(withWarning: warning)
+        newBox!.content?.xButton?.addTarget(self, action: #selector(xButtonHandler(_:)), for: .touchUpInside)
+        return newBox
     }
     
-    func xButtonHandler(_ input: Warningbox) {
-        // remove from stack and superview
-        guard let entirebox = input.superview?.superview else { return }
-        
-        stackView.removeArrangedSubview(entirebox)
-        entirebox.removeFromSuperview()
+    private func addWarnings(to stackView: UIStackView) {
+        // Get sorted messages from Core data
+        let arrayOfWarnings = DatabaseFacade.fetchWarnings()
+        if let arrayOfWarnings = arrayOfWarnings {
+            for warning in arrayOfWarnings {
+                if let newWarningBox = makeWarningBox(fromWarning: warning) {
+                    stackView.addArrangedSubview(newWarningBox)
+                }
+            }
+        } else {
+            print("did NOT have warnings in core data")
+        }
     }
     
     func setDebugColors() {
         scrollView.backgroundColor = .yellow
+    }
+    
+    // MARK: Handlers
+    
+    func xButtonHandler(_ box: UIButton) {
+        if let box = box.superview?.superview as? Warningbox {
+            stackView.removeArrangedSubview(box)
+            box.deleteWarning()
+            box.removeFromSuperview()
+        }
     }
 }
 

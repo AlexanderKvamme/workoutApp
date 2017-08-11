@@ -20,14 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if UserDefaults.isFirstLaunch() {
             // Core data
-            print("firstLaunch. Seeding")
+            print("FirstLaunch. Seeding")
             let dataSeeder = DataSeeder(context: DatabaseFacade.persistentContainer.viewContext)
             dataSeeder.seedCoreDataWithOnlyEssentials()
             
             let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
             modal.show(animated: true)
         } else {
-            print(" was not first launch")
+            print("Was not first launch - Not seeding")
         }
         
         // Appearance()

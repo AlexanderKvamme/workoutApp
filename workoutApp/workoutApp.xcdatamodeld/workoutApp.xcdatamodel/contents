@@ -20,6 +20,10 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="style" inverseEntity="Exercise" syncable="YES"/>
     </entity>
+    <entity name="Goal" representedClassName="Goal" syncable="YES">
+        <attribute name="dateMade" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Lift" representedClassName="Lift" syncable="YES">
         <attribute name="datePerformed" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="hasBeenPerformed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -36,6 +40,10 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="usedInExercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="muscleUsed" inverseEntity="Workout" syncable="YES"/>
+    </entity>
+    <entity name="Warning" representedClassName="Warning" syncable="YES">
+        <attribute name="dateMade" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES">
         <attribute name="muscle" optional="YES" attributeType="String" syncable="YES"/>
@@ -59,11 +67,13 @@
         <element name="Exercise" positionX="-396" positionY="3591" width="128" height="165"/>
         <element name="ExerciseLog" positionX="-461" positionY="3900" width="128" height="105"/>
         <element name="ExerciseStyle" positionX="-450" positionY="3726" width="128" height="75"/>
+        <element name="Goal" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Lift" positionX="-191" positionY="3765" width="128" height="135"/>
         <element name="MeasurementStyle" positionX="-182" positionY="3588" width="128" height="73"/>
         <element name="Muscle" positionX="-450" positionY="3726" width="128" height="90"/>
         <element name="Workout" positionX="-639" positionY="3573" width="128" height="135"/>
         <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="103"/>
         <element name="WorkoutStyle" positionX="-441" positionY="3735" width="128" height="75"/>
+        <element name="Warning" positionX="-450" positionY="3726" width="128" height="75"/>
     </elements>
 </model>
