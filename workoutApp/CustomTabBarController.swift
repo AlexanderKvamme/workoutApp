@@ -40,11 +40,10 @@ class CustomTabBarController: UITabBarController {
         
         // MARK: - Profile Tab
         let profileController = ProfileController()
-//        let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
         // MARK: - Set up navbar
-        viewControllers = [progressController, historyNavigationController, workoutNavigationController, profileController]
+        viewControllers = [progressController, historyNavigationController, workoutNavigationController, profileNavigationController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
         historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)

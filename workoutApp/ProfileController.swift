@@ -31,6 +31,26 @@ final class ProfileController: UIViewController {
     
     // MARK: - Life cycle
     
+
+    override func viewWillAppear(_ animated: Bool) {
+        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+            customTabBarController.hideSelectionIndicator()
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("profile VDA")
+
+//        setupScrollView()
+//        setupStackView()
+//        
+        stackView.setNeedsLayout()
+        stackView.layoutIfNeeded()
+        self.view.layoutSubviews()
+
+    }
+    
     override func viewDidLoad() {
         view.backgroundColor = .light
         view.layoutIfNeeded()
@@ -69,6 +89,7 @@ final class ProfileController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         scrollView.contentSize = stackView.frame.size // enables/disable scrolling
+        print("fitting scrollview.contentsize to stackviews size: ", scrollView.contentSize)
     }
     
     private func setupStackView() {
@@ -82,9 +103,9 @@ final class ProfileController: UIViewController {
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
-            stackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 0),
-            stackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: 0),
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
+            stackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             ])
     }
@@ -149,8 +170,6 @@ final class ProfileController: UIViewController {
                     stackView.addArrangedSubview(newWarningBox)
                 }
             }
-        } else {
-            print("did NOT have warnings in core data")
         }
     }
     

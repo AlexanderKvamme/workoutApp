@@ -10,13 +10,15 @@ import Foundation
 import UIKit
 
 
-class GoalsController: UIViewController {
-    
+class GoalsController: UIViewController, isStringReceiver {
+
     // MARK: - Properties
     
     private var header = UILabel(frame: CGRect.zero)
     private var goals: [Goal]?
     private var stackOfGoalButtons: UIStackView = UIStackView()
+    
+    var receiveHandler: ((String) -> Void) = { _ in }
     
     // MARK: - Initializers
     
@@ -53,6 +55,7 @@ class GoalsController: UIViewController {
             }
         }
         setupView()
+        setupReceiveHandler()
     }
     
     // MARK: - Methods
@@ -107,9 +110,7 @@ class GoalsController: UIViewController {
             ])
     }
     
-//    private func makeGoalButton(withText text: String) -> UIButton {
     private func makeGoalButton(withGoal goal: Goal) -> GoalButton {
-//        let button = GoalButton(frame: .zero)
         let button = GoalButton(withGoal: goal)
         
         guard let label = button.titleLabel else { return button }
@@ -140,35 +141,35 @@ class GoalsController: UIViewController {
     
     @objc private func headerLongPressHandler(_ gesture: UIGestureRecognizer) {
         if gesture.state == .began {
-//            let newGoal = makeGoalButton(withText: "Let user make a real goal".uppercased())
-            // Goal
-            let newGoal = DatabaseFacade.makeGoal()
-            newGoal.dateMade = Date() as NSDate
-            newGoal.text = "let user input text".uppercased()
-            
-            // GoalButton
-            let newGoalButton = makeGoalButton(withGoal: newGoal)
-            goals?.append(newGoal)
-            stackOfGoalButtons.addArrangedSubview(newGoalButton)
+            let goalPicker = InputViewController(inputStyle: .text)
+            goalPicker.delegate = self
+  
+            navigationController?.pushViewController(goalPicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
         }
     }
     
     @objc private func goalLongPressHandler(_ gesture: UIGestureRecognizer) {
+        
         if gesture.state == .began {
-            if let sender = gesture.view{
-                
-                // TODO: - Remove from Core data
+            if let sender = gesture.view {
                 stackOfGoalButtons.removeArrangedSubview(sender)
                 sender.removeFromSuperview()
                 if let aButton = sender as? GoalButton {
-                    print(" SUCCESS ")
                     aButton.deleteFromCoreData()
-                    // find index and delete it
-                    
-                } else {
-                    print(" FAIL ")
                 }
             }
+        }
+    }
+    
+    private func setupReceiveHandler() {
+        receiveHandler = { str in
+            let goal = DatabaseFacade.makeGoal()
+            goal.dateMade = Date() as NSDate
+            goal.text = str
+            
+            let buttonFromGoal = self.makeGoalButton(withGoal: goal)
+            self.goals?.append(goal)
+            self.stackOfGoalButtons.addArrangedSubview(buttonFromGoal)
         }
     }
 }

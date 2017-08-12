@@ -9,7 +9,7 @@
 import Foundation
 
 /*
-    Protocol to allow selecting type/muscle in a separate VC pushed onto the nav stack. With isStringSender and isStringReceiver, you can send back a selected value and update the selection in the presenting VC. This is done by storing a closure in the receiveHandler variable, and this is then called from the pickerView, along with a string argument.
+    Protocol to allow selecting type/muscle in a separate VC pushed onto the nav stack. With isStringSender and isStringReceiver, you can send back a name of the selected value and update the selection in the presenting VC. This is done by storing a closure in the receiveHandler variable, and this is then called from the pickerView, along with a string argument.
  */
 
 protocol isStringSender {
