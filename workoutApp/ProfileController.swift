@@ -31,7 +31,6 @@ final class ProfileController: UIViewController {
     
     // MARK: - Life cycle
     
-
     override func viewWillAppear(_ animated: Bool) {
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.hideSelectionIndicator()
@@ -40,15 +39,9 @@ final class ProfileController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print("profile VDA")
-
-//        setupScrollView()
-//        setupStackView()
-//        
         stackView.setNeedsLayout()
         stackView.layoutIfNeeded()
         self.view.layoutSubviews()
-
     }
     
     override func viewDidLoad() {

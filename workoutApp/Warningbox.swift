@@ -33,10 +33,6 @@ class Warningbox: Box {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        print("deinitting warningBox")
-    }
-    
     // MARK: - Methods
     
     func getWarning() -> Warning? {
@@ -63,7 +59,6 @@ class Warningbox: Box {
         
         // Setup ContentBox
         if content.usesAutoLayout {
-            content.label?.sizeToFit() // maybe not needed sinze its set to shrink with autolayout
             content.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([

@@ -14,22 +14,13 @@ class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // test controller
+        // Test out a a suggestionbox
+        let box = SuggestionBox()
+        box.setSuggestionSubheader("LEGS")
+        box.setSuggestionHeader("1 WEEK SINCE LAST WORKOUT")
         
-//        let test = GoalsController(withGoals: ["One", "Two", "Three"])
-//        view.addSubview(test.view)
-        
-        // test button
-        
-//        let btn = GoalButton(frame: CGRect(x: 10, y: 10, width: 100, height: 100))
-//        let btn = GoalButton(
-//        btn.backgroundColor = .green
-//        btn.addTarget(self, action: #selector(test), for: .touchUpInside)
-//        view.addSubview(btn)
-    }
-    
-    func test() {
-        print("test")
+        box.center = view.center
+        view.addSubview(box)
     }
 }
 

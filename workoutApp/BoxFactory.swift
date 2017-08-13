@@ -14,7 +14,7 @@ import UIKit
 public enum BoxType {
     case HistoryBox
     case WorkoutBox
-    case SuggestionBox // Maybe this does not fit
+    case SuggestionBox
     case SelectionBox
     case WarningBox
     case ExerciseProgressBox
@@ -103,16 +103,20 @@ fileprivate class WorkoutBoxFactory: BoxFactory {
 
 fileprivate class SuggestionBoxFactory: BoxFactory {
     
-    override func makeBoxHeader() -> BoxHeader {
-        return StandardBoxHeader()
+    override func makeBoxHeader() -> BoxHeader? {
+        return SuggestionBoxHeader()
     }
     
-    override func makeBoxSubHeader() -> BoxSubHeader {
-        return StandardBoxSubHeader()
+    override func makeBoxSubHeader() -> BoxSubHeader? {
+        return SuggestionBoxSubHeader()
     }
     
     override func makeBoxFrame() -> BoxFrame {
         return StandardBoxFrame()
+    }
+    
+    override func makeBoxContent() -> BoxContent? {
+        return nil
     }
 }
 
@@ -209,6 +213,33 @@ fileprivate class WarningBoxHeader: BoxHeader {
                        y: 0,
                        width: Constant.components.Box.Standard.width,
                        height: label.frame.height)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class SuggestionBoxHeader: BoxHeader {
+    override init() {
+        super.init()
+        
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
+        label.textColor = UIColor.light
+        label.textAlignment = .center
+        label.alpha = Constant.alpha.faded
+        label.numberOfLines = 1
+        addSubview(label)
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: topAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            label.leftAnchor.constraint(equalTo: leftAnchor),
+            label.rightAnchor.constraint(equalTo: rightAnchor),
+            ])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -321,6 +352,33 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
     }
 }
 
+fileprivate class SuggestionBoxSubHeader: BoxSubHeader {
+    override init() {
+        super.init()
+        label.font = UIFont.custom(style: .bold, ofSize: .bigger)
+        label.textColor = UIColor.lightest
+        label.text = "SUBHEADER"
+        label.sizeToFit()
+        label.textAlignment = .center
+        addSubview(label)
+        self.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Standard.width, height: label.frame.height)
+        label.frame = self.frame
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            label.leftAnchor.constraint(equalTo: leftAnchor),
+            label.rightAnchor.constraint(equalTo: rightAnchor),
+            label.topAnchor.constraint(equalTo: topAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 // MARK: - Box Content
 
 /// Content it whatever is to be displayed on the actual boxFrame. Any for om text or buttons etc.
@@ -402,11 +460,82 @@ fileprivate class SelectionBoxContent: BoxContent {
     }
 }
 
-// FIXME: - WarningBox Content
+fileprivate class SuggestionBoxContent: BoxContent {
+    
+    // Initializers
+    
+    init() {
+        super.init(frame: CGRect.zero)
+        let topLeftSpacing: CGFloat = 10
+        let topRightInsets: CGFloat = 10
+        
+        usesAutoLayout = true
+        
+        // Headerlabel
+        label = UILabel(frame: CGRect.zero)
+        guard let label = label else { return }
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
+        label.textColor = UIColor.lightest
+        label.textAlignment = .center
+        label.backgroundColor = .red
+        label.alpha = Constant.alpha.faded
+        label.text = "label"
+        label.applyCustomAttributes(.more)
+        label.sizeToFit()
+        addSubview(label)
+        
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        NSLayoutConstraint.activate([
+//            label.topAnchor.constraint(equalTo: topAnchor, constant: topLeftSpacing),
+//            label.centerXAnchor.constraint(equalTo: centerXAnchor, constant: topLeftSpacing),
+//            ])
+//        label.setContentCompressionResistancePriority(1000, for: .vertical)
+        
+        // The message
+        messageLabel = UILabel(frame: CGRect.zero)
+        guard let messageLabel = messageLabel else { return }
+        addSubview(messageLabel)
+        
+        messageLabel.font = UIFont.custom(style: .bold, ofSize: .big)
+        messageLabel.textColor = .light
+        messageLabel.numberOfLines = 0
+        messageLabel.text = "MessagesLabel".uppercased()
+        
+        // FIXME: - Remove header maybe
+//        
+//        messageLabel.backgroundColor = .green
+//        messageLabel.textAlignment = .center
+//        
+//        // Message Layout
+//        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            messageLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: topRightInsets),
+//            messageLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -topRightInsets),
+//            messageLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
+//            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+//            ])
+////        messageLabel.setContentCompressionResistancePriority(1000, for: .vertical)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func setHeader(_ str: String) {
+        print("would set to \(str)")
+        label?.text = str
+    }
+    
+    public func setMessage(_ str: String) {
+        print("would set to \(str)")
+        messageLabel?.text = str
+    }
+}
 
 fileprivate class WarningBoxContent: BoxContent {
     
-    // Iniitializers
+    // Initializers
     
     init() {
         super.init(frame: CGRect.zero)
@@ -478,7 +607,7 @@ fileprivate class WarningBoxContent: BoxContent {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Handlers
+    // MARK: Handlers
     
     func xButtonDidTap() {
         print("did tap")
@@ -615,14 +744,13 @@ fileprivate class WarningBoxFrame: BoxFrame {
 
         // Try using Auto layout
         
-        usesAutoLayout = true // Lets Box class set up using auto layout only for the warningBoxFrame, and eventually for all of them
+        usesAutoLayout = true // Lets Box class get set up using auto layout only for the warningBoxFrame, and eventually for all of them
         
         // Colored view behind shimmer
         background.frame = CGRect.zero
         background.backgroundColor = .secondary
         
         // Shimmer
-        let shimmerInset = Constant.components.Box.shimmerInset
         let backgroundInset: CGFloat = 5
         
         shimmer.frame = CGRect.zero

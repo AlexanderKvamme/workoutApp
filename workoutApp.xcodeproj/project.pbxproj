@@ -98,6 +98,7 @@
 		DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */; };
 		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
 		DDEEA9F81EDCD99A003360CD /* WorkoutBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */; };
+		DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF117111F3F562000E677CB /* SuggestionBox.swift */; };
 		DDF1F1EC1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */; };
 		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */; };
 		DDF1F1F21F07AE77001A6F0C /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */; };
@@ -201,6 +202,7 @@
 		DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
 		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
 		DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutBoxCell.swift; sourceTree = "<group>"; };
+		DDF117111F3F562000E677CB /* SuggestionBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionBox.swift; sourceTree = "<group>"; };
 		DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSetCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewController.swift; sourceTree = "<group>"; };
 		DDF1F1F11F07AE77001A6F0C /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */,
 				DD151DFE1ED2DD310014DBC1 /* Box.swift */,
 				DDF254061F35F75C0032ED75 /* Warningbox.swift */,
+				DDF117111F3F562000E677CB /* SuggestionBox.swift */,
 				DDEE859D1ED4921000A3F81C /* Helper Classes */,
 			);
 			name = "Box Abstract Factory";
@@ -283,8 +286,8 @@
 			isa = PBXGroup;
 			children = (
 				DD36F5121F33D44300FD31B3 /* ProfileController.swift */,
-				DD2EB3D01F39DB43007A556A /* GoalsController.swift */,
-				DD109D771F3C801A00228366 /* GoalsButton.swift */,
+				DDF1170E1F3F4B6800E677CB /* SuggestionController */,
+				DDF1170D1F3F4B5400E677CB /* GoalController */,
 				DD109D7B1F3CA37A00228366 /* Helpers */,
 			);
 			name = Profile;
@@ -531,6 +534,22 @@
 			name = "Helper Classes";
 			sourceTree = "<group>";
 		};
+		DDF1170D1F3F4B5400E677CB /* GoalController */ = {
+			isa = PBXGroup;
+			children = (
+				DD2EB3D01F39DB43007A556A /* GoalsController.swift */,
+				DD109D771F3C801A00228366 /* GoalsButton.swift */,
+			);
+			name = GoalController;
+			sourceTree = "<group>";
+		};
+		DDF1170E1F3F4B6800E677CB /* SuggestionController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SuggestionController;
+			sourceTree = "<group>";
+		};
 		DDF1F1EA1F07AAAF001A6F0C /* Exercise Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -728,6 +747,7 @@
 				DDB539AC1F2E017600824CFC /* HistoryTableViewController.swift in Sources */,
 				DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */,
 				DDF95B391ECA453A009E6925 /* StackView.swift in Sources */,
+				DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
