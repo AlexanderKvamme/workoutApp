@@ -132,32 +132,6 @@ class SelectionViewController: UIViewController {
         return workoutStyles
     }
     
-//    func getWorkoutStyles(withRequest request: NSFetchRequest<NSFetchRequestResult>) -> [WorkoutStyle] {
-//        var workoutStyles = [WorkoutStyle]()
-//        do {
-//            let results = try DatabaseController.getContext().fetch(request)
-//            // Append all received types
-//            for r in results as! [Workout] {
-//                if let workoutStyle = r.workoutStyle {
-//                    workoutStyles.append(workoutStyle)
-//                }
-//            }
-//        } catch let error as NSError {
-//            print("error in SelectionViewController : ", error.localizedDescription)
-//        }
-//        return workoutStyles
-//    }
-    
-    // MARK: - Taphandlers
-    
-//    func buttonTapHandler(button: UIButton) {
-//        // Identifies which choice was selected and creates a BoxTableView to display
-//        let tappedWorkoutStyleName = buttonNames[button.tag]
-//        let boxTableViewController = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
-//        
-//        navigationController?.pushViewController(boxTableViewController, animated: true)
-//    }
-    
     // MARK: - Helpers
     
     /// Used to position stack properly in the middle of header and tabbar
