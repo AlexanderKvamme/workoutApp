@@ -45,7 +45,7 @@ class HistorySelectionViewController: SelectionViewController {
     // MARK: - Methods
     
     private func makeAllButton() -> SelectionViewButton {
-        let allButton = SelectionViewButton(header: "All", subheader: "Every single one")
+        let allButton = SelectionViewButton(header: "All", subheader: "workouts")
         allButton.button.removeTarget(nil, action: nil, for: .allEvents)
         allButton.button.addTarget(self, action: #selector(allHistoryButtonHandler), for: .touchUpInside)
         return allButton
@@ -140,3 +140,4 @@ class HistorySelectionViewController: SelectionViewController {
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }
 }
+

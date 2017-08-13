@@ -466,8 +466,6 @@ fileprivate class SuggestionBoxContent: BoxContent {
     
     init() {
         super.init(frame: CGRect.zero)
-        let topLeftSpacing: CGFloat = 10
-        let topRightInsets: CGFloat = 10
         
         usesAutoLayout = true
         

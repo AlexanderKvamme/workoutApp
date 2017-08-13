@@ -58,6 +58,10 @@ class SelectionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+            customTabBarController.showSelectionindicator()
+        }
+        
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     

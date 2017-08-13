@@ -29,7 +29,10 @@ public class SelectionViewButton: UIView {
         
         subheaderLabel = UILabel()
         subheaderLabel.text = subheader.uppercased()
-        subheaderLabel.font = UIFont.custom(style: .medium, ofSize: .small)
+        //subheaderLabel.font = UIFont.custom(style: .medium, ofSize: .small)
+        subheaderLabel.font = UIFont.custom(style: .bold, ofSize: .small)
+        subheaderLabel.applyCustomAttributes(.medium)
+        
         subheaderLabel.textAlignment = .center
         subheaderLabel.textColor = UIColor.dark
         subheaderLabel.sizeToFit()
@@ -70,8 +73,6 @@ public class SelectionViewButton: UIView {
     
     // UI components
     func handleButtonTap(_ sender: SelectionViewButton) {
-        print("Button was tapped")
-        
         showNotYetImplementedModal()
     }
     

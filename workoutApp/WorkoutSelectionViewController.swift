@@ -112,8 +112,16 @@ class WorkoutSelectionViewController: SelectionViewController {
                 return
             }
             
+            let subheaderString: String = {
+                let count = DatabaseFacade.countWorkouts(ofStyle: styleName)
+                if count > 1 {
+                    return "\(count) WORKOUTS"
+                }
+                return "\(count) WORKOUT"
+            }()
+            
             let newButton = SelectionViewButton(header: styleName,
-                                                subheader: "\(DatabaseFacade.countWorkouts(ofStyle: styleName)) WORKOUTS")
+                                                subheader: subheaderString)
             
             // Set up button names etc
             newButton.button.tag = buttonIndex
