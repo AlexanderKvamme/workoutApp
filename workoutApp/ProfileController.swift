@@ -62,6 +62,7 @@ final class ProfileController: UIViewController {
 
         addWarnings(to: stackView)
         addGoals(to: stackView)
+        addSuggestions(to: stackView)
     }
     
     // MARK: Methods
@@ -81,8 +82,7 @@ final class ProfileController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        scrollView.contentSize = stackView.frame.size // enables/disable scrolling
-        print("fitting scrollview.contentsize to stackviews size: ", scrollView.contentSize)
+        scrollView.contentSize = stackView.frame.size // enables/disable scrolling if needed
     }
     
     private func setupStackView() {
@@ -164,6 +164,12 @@ final class ProfileController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func addSuggestions(to stackView: UIStackView) {    
+        let suggestionController = SuggestionController()
+        addChildViewController(suggestionController)
+        stackView.addArrangedSubview(suggestionController.view)
     }
     
     func setDebugColors() {

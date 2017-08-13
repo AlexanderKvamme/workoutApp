@@ -72,15 +72,14 @@ class SuggestionBox: Box {
     
     func setSuggestionHeader(_ str: String) {
         if let header = header {
-            print("had header")
             header.label.text = str
-        } else {
-            print("had no header")
         }
     }
     
     func setSuggestionSubheader(_ str: String) {
-        subheader?.label.text = str
+        if let subheader = subheader {
+            subheader.label.text = str
+        }
     }
 }
 
