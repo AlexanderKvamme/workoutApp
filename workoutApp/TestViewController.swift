@@ -21,6 +21,17 @@ class TestViewController: UIViewController {
         
         box.center = view.center
         view.addSubview(box)
+        
+        
+        // MARK: Test long press recognizer
+        
+        let longPressRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressRecognized(_:)))
+        box.addGestureRecognizer(longPressRecognizer)
+    }
+    
+    func longPressRecognized( _ sender: UIGestureRecognizer) {
+        print("lpr")
+        
     }
 }
 

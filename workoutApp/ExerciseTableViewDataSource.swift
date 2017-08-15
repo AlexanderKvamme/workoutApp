@@ -16,19 +16,18 @@ import CoreData
 
 class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
-    let cellIdentifier: String = "exerciseCell"
-    weak var owner: ExerciseTableViewController!
+    private let cellIdentifier: String = "exerciseCell"
     
     // Data source methods
     var exerciseLogsAsArray: [ExerciseLog]! // each entry represents one tableViewCell. So [0] will be the topmost cell
-    var dataSourceWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
+    private var dataSourceWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
     var totalLiftsToDisplay: [[Lift]]! // Each tableViewCell has a "liftsToDisplay" variable to display, this layered array of lifts should store each one of them, and when one of them is changed, it should bubble up the change to this one, which should contain one [Lift] for each tableViewCell. For example if cell 0 is Pull Ups, cell 1 is Hammer Curls, and cell 2 is Dips, then this Dips one should be able to be updated from TotalLiftsToDisplay[2] = liftsToDisplay
+    weak var owner: ExerciseTableViewController!
     
     // MARK: - Initializers
     
     init(workout: Workout) {
         super.init()
-        
         // setup data source to use the most recent performance as a foundation, or the workoutlog if it has not been performed.
         if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
             setupUsingWorkoutLog(mostRecentPerformance: lastPerformance)
@@ -37,7 +36,9 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         }
     }
     
-    // MARK: - Setup
+    // MARK: - Methods
+    
+    // MARK: Setup
     
     // convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
     private func setupUsingWorkoutLog(mostRecentPerformance inputtedWorkoutLog: WorkoutLog) {
@@ -142,25 +143,21 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                         }
                     }
                     exerciseLogsAsArray.append(newExerciseLog)
-                } else {
-                    print("ERROR: Nothing returned from ExerciseLog fetchRequest")
                 }
+                
                 // Add lifts to the total
                 totalLiftsToDisplay[i] = liftCopies
-                print("set a row in totalLiftsToDisplay to : ", liftCopies)
                 i += 1
             }
         } else {
-            print("ERROR: Failed unwrapping exercisesFromWorkout")
             exerciseLogsAsArray = [ExerciseLog]()
         }
     }
     
-    // MARK: - TableView dataSource methods
+    // MARK: TableView dataSource methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // uses sections instead of rows to space out cells easily
-        return dataSourceWorkoutLog.loggedExercises!.count
+        return dataSourceWorkoutLog.loggedExercises!.count// uses sections instead of rows to space out cells easily
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -181,7 +178,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         return cell
     }
     
-    // MARK: - Methods
+    // MARK: Helpers
     
     func saveWorkout() {
         // set endDate Save to context
@@ -189,19 +186,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         // Delete or save
         if countPerformedExercises() == 0 {
-            
-            // FIXME: - When user dismisses/pops this TableView, the current WorkoutLog should be deleted along with all of its exerciseLogs and Lifts.
-            // FIXME: - Before letting user back out, present a modal giving him the chance go confirm/deny
-
-            //            // 0 performed lifts. delete entire workoutlog
-            //            if let loggedExercises = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-            //                for exerciseLog in loggedExercises {
-            //                    DatabaseController.getContext().delete(exerciseLog)
-            //                }
-            //            }
-
-//            DatabaseController.getContext().delete(dataSourceWorkoutLog)
-            
             // present error
             let modal = CustomAlertView(type: .error, messageContent: "Bro, you have to actually work out to be able to log an exercise!")
             modal.show(animated: true)
@@ -211,21 +195,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
-        }
-    }
-    
-    func printActualExerciseLogsFromAWorkoutLog() {
-        
-        if let el = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-            for exercise in el {
-                print("gonna print exercise: \(String(describing: exercise.exerciseDesign?.name))")
-                if let lifts = exercise.lifts {
-                    let sortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
-                    if let sortedLifts = lifts.sortedArray(using: [sortDescriptor]) as? [Lift]{
-                        sortedLifts.oneLinePrint()
-                    }
-                }
-            }
         }
     }
     
@@ -275,6 +244,13 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         DatabaseFacade.delete(dataSourceWorkoutLog)
     }
 
+    // Swap method used when moving cells
+    func swapElementsAtIndex(_ firstIndexPath: IndexPath, withObjectAtIndex secondIndexPath: IndexPath
+        ) {
+        let temp = exerciseLogsAsArray[firstIndexPath.section]
+        exerciseLogsAsArray[firstIndexPath.section] = exerciseLogsAsArray[secondIndexPath.section]
+        exerciseLogsAsArray[secondIndexPath.section] = temp
+    }
     
     private func printSummaryOfWorkoutLog() {
         print("\nSummary of WL: \(dataSourceWorkoutLog.design!)")
@@ -284,6 +260,21 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 var stringToPrint = " - \(lift.reps)"
                 stringToPrint.append(lift.hasBeenPerformed ? "(Y)" : "(N)")
                 print(stringToPrint)
+            }
+        }
+    }
+    
+    private func printActualExerciseLogsFromAWorkoutLog() {
+        
+        if let el = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+            for exercise in el {
+                print("\nExercise: \(String(describing: exercise.exerciseDesign?.name))")
+                if let lifts = exercise.lifts {
+                    let sortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
+                    if let sortedLifts = lifts.sortedArray(using: [sortDescriptor]) as? [Lift]{
+                        sortedLifts.oneLinePrint()
+                    }
+                }
             }
         }
     }

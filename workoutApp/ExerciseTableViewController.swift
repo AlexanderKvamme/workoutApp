@@ -9,12 +9,18 @@
 import UIKit
 
 class ExerciseTableViewController: UITableViewController {
-
-    var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
-    var dataSource: ExerciseTableViewDataSource!
-    var myWorkoutLog: WorkoutLog! // used in the end
-    var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
-    var activeTableCell: UITableViewCell?
+    
+    // MARK: - Properties
+    var activeTableCell: UITableViewCell? // used by cell to make correct collectionView.label firstResponder
+    private var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
+    private var dataSource: ExerciseTableViewDataSource!
+    private var myWorkoutLog: WorkoutLog! // used in the end
+    private var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
+    
+    // cells reorder
+    private var snapShot: UIView?
+    private var location: CGPoint!
+    private var sourceIndexPath: IndexPath!
     
     // MARK: - Initializers
     
@@ -47,53 +53,31 @@ class ExerciseTableViewController: UITableViewController {
         tableView.register(ExerciseTableViewCell.self, forCellReuseIdentifier: "exerciseCell")
         
         setupTable()
+        
+        // Long press recognizer
+        let longPressRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressRecognized(_:)))
+        tableView.addGestureRecognizer(longPressRecognizer)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
     }
     
-    // MARK: - TableView delegate methods
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let verticalSpacingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        verticalSpacingView.backgroundColor = .light
-        return verticalSpacingView
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("tableView didSelect at: \(indexPath)")
-    }
-    
     // MARK: - Methods
     
-    @objc private func saveButtonHandler() {
-        dataSource.saveWorkout()
-    }
-    
-    @objc private func xButtonHandler() {
-        dataSource.deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs()
-        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
-    }
+    // MARK: setup methods
     
     private func setupNavigationBar() {
         if let name = currentWorkout.name {
             self.title = name.uppercased()
-        } else {
-            print("error setting navbar title")
         }
+        
         let xIcon = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.hidesBackButton = true
     }
-    
-    // MARK: - Helper methods
     
     private func setupTable() {
         // adjust to fit the navbar
@@ -103,6 +87,7 @@ class ExerciseTableViewController: UITableViewController {
             tableView.headerView(forSection: 0)?.backgroundColor = .red
             tableView.tableHeaderView?.backgroundColor = .green
         }
+        
         // tableview setup
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -123,6 +108,26 @@ class ExerciseTableViewController: UITableViewController {
         view.backgroundColor = .dark
         tableView.tableFooterView = footer
     }
+    
+    // MARK: Helper methods
+    
+    private func customSnapShotFromView(_ inputView: UIView) -> UIImageView {
+        // Make an image from the input view.
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0)
+        inputView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        let snapshot = UIImageView(image: image)
+        snapshot.layer.masksToBounds = false
+        snapshot.layer.cornerRadius = 0.0
+        snapshot.layer.shadowOffset = CGSize(width: -5.0, height: 0.0)
+        snapshot.layer.shadowRadius = 5.0
+        snapshot.layer.shadowOpacity = 0.4
+        
+        return snapshot
+    }
+
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self,
@@ -146,7 +151,16 @@ class ExerciseTableViewController: UITableViewController {
         tableView.backgroundColor = .red
     }
     
-    // MARK: - Handlers
+    // MARK: Handlers
+    
+    @objc private func saveButtonHandler() {
+        dataSource.saveWorkout()
+    }
+    
+    @objc private func xButtonHandler() {
+        dataSource.deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs()
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+    }
     
     @objc private func keyboardWillShowHandler(notification: NSNotification) {
         // Make sure you received a userInfo dict
@@ -186,5 +200,76 @@ class ExerciseTableViewController: UITableViewController {
                                     left: 0, bottom: 0, right: 0)
         tableView.contentInset = newInset
     }
+    
+    
+    /// Handles the long press by 'lifting' the target cell and letting the user move it around
+    @objc private func longPressRecognized( _ sender: UIGestureRecognizer) {
+        
+        switch sender.state {
+            
+        case .began:
+            location = sender.location(in: tableView)
+            guard let indexPath = tableView.indexPathForRow(at: location) else { return }
+            guard let cell = tableView.cellForRow(at: indexPath) else { return }
+            sourceIndexPath = indexPath
+            
+            // get snapshot, add it as a subview of the tableView and center it at cell's center
+            snapShot = customSnapShotFromView(cell)
+            
+            var center = CGPoint(x: cell.center.x, y: cell.center.y)
+            snapShot?.center = center
+            snapShot?.alpha = 0.0
+            tableView.addSubview(snapShot!)
+            UIView.animate(withDuration: 0.25, animations: {
+                // Offset for gesture location.
+                center.y = self.location.y
+                self.snapShot?.center = center
+                self.snapShot?.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                self.snapShot?.alpha = 0.98
+                
+                cell.alpha = 0.0
+            }, completion: { _ in
+                cell.isHidden = true
+            })
+            
+        case .changed:
+            guard let indexPath = tableView.indexPathForRow(at: location) else { return }
+            guard let sourceIndexPathTemp = sourceIndexPath else { return }
+            guard let snapShot = snapShot else { return }
+            
+            location = sender.location(in: tableView)
+            var center = snapShot.center
+            center.y = location.y
+            snapShot.center = center
+            
+            // Is destination valid and is it different from source?
+            
+            if indexPath != sourceIndexPathTemp {
+                dataSource.swapElementsAtIndex(indexPath, withObjectAtIndex: sourceIndexPathTemp) // swap elements in datasource
+                tableView.moveSection(sourceIndexPathTemp.section, toSection: indexPath.section) // swap cells in tableView
+                sourceIndexPath = indexPath// ... and update source so it is in sync with UI changes.
+            }
+        default: // endAnimation and stop moving
+            guard let sourceIndexPathTmp = sourceIndexPath else { return }
+            guard let cell = tableView.cellForRow(at: sourceIndexPathTmp) else { return }
+            
+            cell.isHidden = false
+            cell.alpha = 0.0
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                self.snapShot?.center = cell.center
+                self.snapShot?.transform = .identity
+                self.snapShot?.alpha = 0.0
+                
+                cell.alpha = 1.0
+            }, completion: { _ in
+                self.sourceIndexPath = nil
+                self.snapShot?.removeFromSuperview()
+                self.snapShot = nil
+            })
+            
+        }
+    }
+
 }
 
