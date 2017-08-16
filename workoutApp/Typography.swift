@@ -25,11 +25,11 @@ extension UILabel {
     
     func applyCustomAttributes(_ spacing: Constant.Attributes.letterSpacing) {
         guard self.text != nil && self.text!.characters.count > 0 else {
-            print("applyCustomAttributes failed on \(self.text)")
+            print("applyCustomAttributes failed on \(String(describing: self.text))")
             return
         }
 
-        // FIXME: - Utilize the spacing values
+        // TODO: - Utilize the spacing values
         var spacingValue: CGFloat = 0
     
         switch spacing {
@@ -42,8 +42,9 @@ extension UILabel {
         let attributedString = NSMutableAttributedString(string: self.text!)
         
         attributedString.addAttribute(NSKernAttributeName,
-                                      value: CGFloat(0.7),
+                                      value: spacingValue,
                                       range: NSRange(location: 0, length: attributedString.length))
         self.attributedText = attributedString
     }
 }
+

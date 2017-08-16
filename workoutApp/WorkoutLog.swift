@@ -11,7 +11,7 @@ import Foundation
 extension WorkoutLog {
     func getLiftCount() -> Int {
         var count = 0
-        for e in self.loggedExercises as! Set<ExerciseLog> {
+        for e in self.loggedExercises?.array as! [ExerciseLog] {
             count += e.lifts?.count ?? 0
         }
         return count

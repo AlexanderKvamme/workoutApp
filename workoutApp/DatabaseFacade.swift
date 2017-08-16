@@ -81,10 +81,10 @@ final class DatabaseFacade {
     
     static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
         // loop throuhg its Exerciselogs, delete their lifts, then delete exerciselog and then delete workoutLog
-        guard let exerciseLogsToDelete = workoutLogToDelete.loggedExercises as? Set<ExerciseLog> else {
-            print("error unwrapping logged exercises in deleteWorkoutLog")
-            return
-        }
+        
+        let orderedExerciseLogs: NSMutableOrderedSet = workoutLogToDelete.mutableOrderedSetValue(forKey: "loggedExercises")
+        
+        let exerciseLogsToDelete = orderedExerciseLogs.array as! [ExerciseLog]
         
         for exerciseLog in exerciseLogsToDelete {
             
@@ -108,8 +108,7 @@ final class DatabaseFacade {
         }
         
         for workoutLog in loggedWorkouts {
-            delete(workoutLog)
-            // NOTE: - This leaves any exercises assosciated with these workoutLogs still in existance in the persistentStore
+            delete(workoutLog) // NOTE: - This leaves any exercises associated with these workoutLogs still in existance in the persistentStore
         }
         delete(workoutToDelete)
     }
@@ -220,6 +219,8 @@ final class DatabaseFacade {
             }
         }
         
+        // FIXME: - Avoid making this initial exercise
+        
         // For each exercise make an initial lift, and an initial exercise log of that lift so they can be added to a workoutLog which can then be added to the Workout so that it can be displayed in in BoxTableView/WorkoutTableView and with a detailed view of the dummy lifts as "previous lifts" in the detailed ExerciseTableViewController 
         
         let workoutLog = DatabaseFacade.makeWorkoutLog()
@@ -227,7 +228,8 @@ final class DatabaseFacade {
         workoutLog.dateStarted = Date() as NSDate
         workoutLog.design = workoutRecord
         
-        let exercises = workoutRecord.exercises as! Set<Exercise>
+        let exercises = workoutRecord.exercises?.array as! [Exercise]
+        
         for exercise in exercises {
             // make a log item for this exercise
             let exerciseLog = makeExerciseLog()
@@ -293,6 +295,7 @@ final class DatabaseFacade {
         return goals
     }
     
+    // fetch Warnings
     static func fetchWarnings() -> [Warning]? {
         var warnings: [Warning]? = nil
         
@@ -315,7 +318,6 @@ final class DatabaseFacade {
         let fetchRequest = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
         do {
-            // Execute Fetch
             let result = try context.fetch(fetchRequest)
             workoutStyle = result[0]
         } catch let error as NSError {
@@ -324,24 +326,7 @@ final class DatabaseFacade {
         return workoutStyle
     }
     
-    // getMuscle
-    static func getMuscle(named name: String) -> Muscle? {
-        var muscle: Muscle? = nil
-        do {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Muscle.rawValue)
-            let predicate = NSPredicate(format: "name == %@", name)
-            
-            fetchRequest.predicate = predicate
-            let result = try context.fetch(fetchRequest)
-            muscle = result[0] as? Muscle
-            
-        } catch let error as NSError {
-            print("error fetching \(name): \(error.localizedDescription)")
-        }
-        return muscle
-    }
-    
-    // getExerciseStyle
+    // get ExerciseStyle
     static func getExerciseStyle(named name: String) -> ExerciseStyle? {
         var exerciseStyle: ExerciseStyle? = nil
         do {
@@ -358,7 +343,7 @@ final class DatabaseFacade {
         return exerciseStyle
     }
     
-    // getWorkoutStyle
+    // get WorkoutStyle
     static func getWorkoutStyle(named name: String) -> WorkoutStyle? {
         var workoutStyle: WorkoutStyle? = nil
         do {
@@ -373,7 +358,7 @@ final class DatabaseFacade {
         return workoutStyle
     }
     
-    // getMeasurementStyle
+    // get MeasurementStyle
     static func getMeasurementStyle(named name: String) -> MeasurementStyle? {
         var measurementStyle: MeasurementStyle? = nil
         
@@ -390,6 +375,7 @@ final class DatabaseFacade {
         return measurementStyle
     }
     
+    // fetch Exercise
     static func fetchExercise(named name: String) -> Exercise? {
         
         var exercise: Exercise? = nil
@@ -407,21 +393,40 @@ final class DatabaseFacade {
         return exercise
     }
     
-    static func fetchMuscleWithName(_ name: String) -> Muscle? {
-        let fetchRequest = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
-        fetchRequest.predicate = NSPredicate(format: "name = %@", name)
-        
+    
+    // get Muscle
+    static func getMuscle(named name: String) -> Muscle? {
+        var muscle: Muscle? = nil
         do {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Muscle.rawValue)
+            let predicate = NSPredicate(format: "name == %@", name)
+            
+            fetchRequest.predicate = predicate
             let result = try context.fetch(fetchRequest)
-            if result.count > 0 {
-                return result[0]
-            }
+            muscle = result[0] as? Muscle
+            
         } catch let error as NSError {
-            print("Error: \(error.localizedDescription)")
+            print("error fetching \(name): \(error.localizedDescription)")
         }
-        print("found no matching muscle")
-        return nil
+        return muscle
     }
+//    
+//    // fetch Muscle
+//    static func fetchMuscleWithName(_ name: String) -> Muscle? {
+//        let fetchRequest = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
+//        fetchRequest.predicate = NSPredicate(format: "name = %@", name)
+//        
+//        do {
+//            let result = try context.fetch(fetchRequest)
+//            if result.count > 0 {
+//                return result[0]
+//            }
+//        } catch let error as NSError {
+//            print("Error: \(error.localizedDescription)")
+//        }
+//        print("found no matching muscle")
+//        return nil
+//    }
     
     static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
         

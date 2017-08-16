@@ -28,7 +28,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     init(workout: Workout) {
         super.init()
-        // setup data source to use the most recent performance as a foundation, or the workoutlog if it has not been performed.
+        // setup data source to use the most recent performance, or the workoutlog if it has not been performed.
         if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
             setupUsingWorkoutLog(mostRecentPerformance: lastPerformance)
         } else {
@@ -49,8 +49,10 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         dataSourceWorkoutLog.design = inputtedWorkoutLog.design
         
-        if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-            
+        //if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        
+        if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises?.array as? [ExerciseLog] {
+        
             totalLiftsToDisplay = Array(repeating: [Lift](), count: exercisesFromInputtedWorkoutLog.count)
             
             var i = 0
@@ -104,7 +106,12 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         dataSourceWorkoutLog.design = workout
         
-        if let exercisesFromWorkout = workout.exercises as? Set<Exercise> {
+//        if let exercisesFromWorkout = workout.exercises as? Set<Exercise> {
+        
+        if let orderedSetExercises = workout.exercises {
+        
+            let exercisesFromWorkout = orderedSetExercises.array as! [Exercise]
+            
             // If the workout has any exercises, use them to fetch the last time its exercises were performed (ExerciseLog of each of them). Then make copies of the ExerciseLogItems. These objects are then set to be the dataSource for the tableView
             
             totalLiftsToDisplay = Array(repeating: [Lift](), count: exercisesFromWorkout.count)
@@ -202,8 +209,12 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         var performedLifts = 0
         
         // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
-        if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-            for el in exerciseSet {
+        
+//        if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        
+        if let orderedExercises = dataSourceWorkoutLog.loggedExercises {
+        let exerciseSet = orderedExercises.array as! [ExerciseLog]
+        for el in exerciseSet {
                 if let lifts = el.lifts as? Set<Lift> {
                     for lift in lifts {
                         if lift.hasBeenPerformed { performedLifts += 1 }
@@ -216,7 +227,11 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     private func deleteUnperformedLifts() {
         // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
-        if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        
+        // if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        if let orderedExercises = dataSourceWorkoutLog.loggedExercises {
+            let exerciseSet = orderedExercises.array as! [ExerciseLog]
+            
             for el in exerciseSet {
                 if let lifts = el.lifts as? Set<Lift> {
                     for lift in lifts {
@@ -231,7 +246,9 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     func deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs() {
         // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
-        if let exerciseLogSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+//        if let exerciseLogSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        if let orderedExerciseLogs = dataSourceWorkoutLog.loggedExercises {
+            let exerciseLogSet = orderedExerciseLogs.array as! [ExerciseLog]
             for exerciseLog in exerciseLogSet {
                 if let lifts = exerciseLog.lifts as? Set<Lift> {
                     for lift in lifts {
@@ -254,7 +271,14 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     
     private func printSummaryOfWorkoutLog() {
         print("\nSummary of WL: \(dataSourceWorkoutLog.design!)")
-        for exercise in dataSourceWorkoutLog.loggedExercises as! Set<ExerciseLog> {
+        
+        guard let orderedLoggedExercises = dataSourceWorkoutLog.loggedExercises else {
+            print("ERROR: - No ordered exerciselogs to print")
+            return
+        }
+        // for exercise in dataSourceWorkoutLog.loggedExercises as! Set<ExerciseLog> {
+        
+        for exercise in orderedLoggedExercises.array as! [ExerciseLog] {
             print("Exercise: ", exercise.exerciseDesign?.name ?? "NA")
             for lift in exercise.lifts as! Set<Lift> {
                 var stringToPrint = " - \(lift.reps)"
@@ -265,8 +289,10 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     private func printActualExerciseLogsFromAWorkoutLog() {
-        
-        if let el = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        //if let el = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        if let orderedExerciseLogs = dataSourceWorkoutLog.loggedExercises {
+            let el = orderedExerciseLogs.array as! [ExerciseLog]
+            
             for exercise in el {
                 print("\nExercise: \(String(describing: exercise.exerciseDesign?.name))")
                 if let lifts = exercise.lifts {

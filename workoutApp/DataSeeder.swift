@@ -47,19 +47,16 @@ final class DataSeeder {
     private func seedWithExampleWorkoutsAndExercies() {
         
         var typeString: String = CDModels.workout.type.normal.rawValue
-        var muscleString: String = CDModels.workout.type.normal.rawValue
         
         // Workouts
-        
-        let backMuscle = DatabaseFacade.fetchMuscleWithName("BACK")!
-        let armsMuscle = DatabaseFacade.fetchMuscleWithName("ARMS")!
+        let backMuscle = DatabaseFacade.getMuscle(named: "BACK")!
+        let armsMuscle = DatabaseFacade.getMuscle(named: "ARMS")!
         
         let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: backMuscle, type: "Drop Set")
         let backWorkoutNormal: DummyWorkout = (name: "Back", muscle: backMuscle, type: "Normal")
         let bicepsTricepsWorkoutDropSet: DummyWorkout = (name: "Biceps and Triceps", muscle: armsMuscle, type: typeString)
         
         typeString = CDModels.workout.type.normal.rawValue
-        muscleString = CDModels.workout.muscle.back.rawValue
         
         // Back - Drop set
         let exercisesForBackDropSet: [DummyExercise] = [
@@ -72,7 +69,6 @@ final class DataSeeder {
         
         // Back - Normal
         typeString = CDModels.workout.type.normal.rawValue
-        muscleString = CDModels.workout.muscle.back.rawValue
         
         let exercisesForBackNormal: [DummyExercise] = [
             (name: "Pull ups", muscle: backMuscle, plannedSets: 2, type: typeString),
@@ -82,7 +78,6 @@ final class DataSeeder {
             ]
         
         // Arms - Normal
-        muscleString = CDModels.workout.muscle.arms.rawValue
         typeString = CDModels.workout.type.dropSet.rawValue
         
         let exercisesForBicepsAndTricepsDropSet: [DummyExercise] = [
@@ -151,7 +146,6 @@ final class DataSeeder {
         
         // Make and add back exercises
         
-//        let workoutRecord = DatabaseController.createManagedObjectForEntity(.Workout) as! Workout
         let workoutRecord = DatabaseFacade.makeWorkout()
         workoutRecord.name = dummyWorkout.name
         workoutRecord.muscle = dummyWorkout.muscle.name
@@ -268,7 +262,13 @@ final class DataSeeder {
                 print("----------------------")
                 print("Muscle: ", workout.muscle ?? "")
                 
-                if let exercises = workout.exercises?.allObjects as? [Exercise] {
+                
+                
+//                if let exercises = workout.exercises?.allObjects as? [Exercise] {
+                if let exercises = workout.exercises?.array as? [Exercise] {
+                    
+//                if let exercises = workout.exercises as? [Exercise] {
+                
                     for exercise in exercises {
                         print(" - \(exercise.name ?? "fail")")
                     }

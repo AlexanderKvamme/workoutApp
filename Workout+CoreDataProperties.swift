@@ -2,7 +2,7 @@
 //  Workout+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 17/07/2017.
+//  Created by Alexander Kvamme on 16/08/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -18,7 +18,7 @@ extension Workout {
 
     @NSManaged public var muscle: String?
     @NSManaged public var name: String?
-    @NSManaged public var exercises: NSSet?
+    @NSManaged public var exercises: NSOrderedSet?
     @NSManaged public var loggedWorkouts: NSSet?
     @NSManaged public var muscleUsed: Muscle?
     @NSManaged public var workoutStyle: WorkoutStyle?
@@ -28,6 +28,24 @@ extension Workout {
 // MARK: Generated accessors for exercises
 extension Workout {
 
+    @objc(insertObject:inExercisesAtIndex:)
+    @NSManaged public func insertIntoExercises(_ value: Exercise, at idx: Int)
+
+    @objc(removeObjectFromExercisesAtIndex:)
+    @NSManaged public func removeFromExercises(at idx: Int)
+
+    @objc(insertExercises:atIndexes:)
+    @NSManaged public func insertIntoExercises(_ values: [Exercise], at indexes: NSIndexSet)
+
+    @objc(removeExercisesAtIndexes:)
+    @NSManaged public func removeFromExercises(at indexes: NSIndexSet)
+
+    @objc(replaceObjectInExercisesAtIndex:withObject:)
+    @NSManaged public func replaceExercises(at idx: Int, with value: Exercise)
+
+    @objc(replaceExercisesAtIndexes:withExercises:)
+    @NSManaged public func replaceExercises(at indexes: NSIndexSet, with values: [Exercise])
+
     @objc(addExercisesObject:)
     @NSManaged public func addToExercises(_ value: Exercise)
 
@@ -35,10 +53,10 @@ extension Workout {
     @NSManaged public func removeFromExercises(_ value: Exercise)
 
     @objc(addExercises:)
-    @NSManaged public func addToExercises(_ values: NSSet)
+    @NSManaged public func addToExercises(_ values: NSOrderedSet)
 
     @objc(removeExercises:)
-    @NSManaged public func removeFromExercises(_ values: NSSet)
+    @NSManaged public func removeFromExercises(_ values: NSOrderedSet)
 
 }
 

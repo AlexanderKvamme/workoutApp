@@ -211,7 +211,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
         
         if let tableIP = getIndexPath() {
             print("would add to \(tableIP)")
-            print("corresponding to \(owner.exerciseLogsAsArray[tableIP.section].exerciseDesign?.name)")
+            print("corresponding to \(String(describing: owner.exerciseLogsAsArray[tableIP.section].exerciseDesign?.name))")
         } else {
             print("Error: - Could not find IP while inserting new cell")
         }
@@ -233,7 +233,7 @@ class ExerciseTableViewCell: UITableViewCell, hasNextCell, hasPreviousCell, UICo
             
             // FIXME: - add the lift to the proper exerciseLog
             print("truna add to right exerciseLog")
-            print("would add to \(owner.exerciseLogsAsArray[test.section].exerciseDesign?.name)")
+            print("would add to \(String(describing: owner.exerciseLogsAsArray[test.section].exerciseDesign?.name))")
             owner.exerciseLogsAsArray[test.section].addToLifts(newLift)
             
         } else {

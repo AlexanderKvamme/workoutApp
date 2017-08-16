@@ -262,7 +262,8 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
             return
         }
         
-        let muscle = DatabaseFacade.fetchMuscleWithName(muscleName)! // Only existing muscles are displayed so force unwrap
+        let muscle = DatabaseFacade.getMuscle(named: muscleName)!
+//        let muscle = DatabaseFacade.fetchMuscleWithName(muscleName)! // Only existing muscles are displayed so force unwrap
         exercisePicker = ExercisePickerViewController(forMuscle: muscle,
                                                           withMultiplePreselections: nameOfCurrentlySelectedExercises)
         exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")
