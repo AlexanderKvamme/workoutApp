@@ -92,12 +92,9 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
                                          fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
-        // MARK: - Rest Box
+        // Make rest Box
         
         let boxFactory = BoxFactory.makeFactory(type: .SelectionBox)
-        
-        // Rest selection box
-        
         let restHeader = boxFactory.makeBoxHeader()
         let restSubHeader = boxFactory.makeBoxSubHeader()
         let restFrame = boxFactory.makeBoxFrame()
@@ -143,19 +140,18 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     }
     
     @objc private func approveAndDismissVC() {
-
+        
         // Present error modal if workout contains no exercises
         guard nameOfCurrentlySelectedExercises.count > 0 else {
             let errorMessage = "Add at least one exercise, please!"
-            let modal = CustomAlertView(type: .message,
-                                        messageContent: errorMessage)
+            let modal = CustomAlertView(type: .message, messageContent: errorMessage)
             modal.show(animated: true)
             return
          }
         
-        if  let workoutName = header.bottomLabel.text,
-            let workoutStyleName = workoutStyleSelecter.bottomLabel.text,
-            let muscleName = muscleSelecter.bottomLabel.text {
+        if let workoutName = header.bottomLabel.text,
+           let workoutStyleName = workoutStyleSelecter.bottomLabel.text,
+           let muscleName = muscleSelecter.bottomLabel.text {
             DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciseNames: nameOfCurrentlySelectedExercises)
             DatabaseFacade.saveContext()
         } else {
@@ -262,8 +258,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
             return
         }
         
-        let muscle = DatabaseFacade.getMuscle(named: muscleName)!
-//        let muscle = DatabaseFacade.fetchMuscleWithName(muscleName)! // Only existing muscles are displayed so force unwrap
+        let muscle = DatabaseFacade.getMuscle(named: muscleName)! // Only existing muscles are displayed so force unwrap
         exercisePicker = ExercisePickerViewController(forMuscle: muscle,
                                                           withMultiplePreselections: nameOfCurrentlySelectedExercises)
         exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")

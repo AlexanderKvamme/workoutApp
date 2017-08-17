@@ -284,6 +284,22 @@
 			name = InputViewController;
 			sourceTree = "<group>";
 		};
+		DD34C5781F4657850050BDB0 /* WorkoutLog Table */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "WorkoutLog Table";
+			sourceTree = "<group>";
+		};
+		DD34C5791F46579E0050BDB0 /* TableViews */ = {
+			isa = PBXGroup;
+			children = (
+				DD34C5781F4657850050BDB0 /* WorkoutLog Table */,
+				DDF1F1EA1F07AAAF001A6F0C /* Exercise Table */,
+			);
+			name = TableViews;
+			sourceTree = "<group>";
+		};
 		DD36F5111F33D41300FD31B3 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,7 +373,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
-				DDF1F1EA1F07AAAF001A6F0C /* Exercise Table */,
+				DD34C5791F46579E0050BDB0 /* TableViews */,
 				DDD290A61EDCCD1500048BC9 /* TestViewController */,
 				DD7600461EDF23E900871DD8 /* New Workout / Exercise */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,

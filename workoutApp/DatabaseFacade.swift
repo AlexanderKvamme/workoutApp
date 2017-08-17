@@ -223,36 +223,9 @@ final class DatabaseFacade {
                 print("could not fetch exercise named \(exerciseName)")
             }
         }
-        
-        // FIXME: - Avoid making this initial exercise
-        
-        // For each exercise make an initial lift, and an initial exercise log of that lift so they can be added to a workoutLog which can then be added to the Workout so that it can be displayed in in BoxTableView/WorkoutTableView and with a detailed view of the dummy lifts as "previous lifts" in the detailed ExerciseTableViewController 
-        
-        let workoutLog = DatabaseFacade.makeWorkoutLog()
-        workoutLog.dateEnded = Date() as NSDate
-        workoutLog.dateStarted = Date() as NSDate
-        workoutLog.design = workoutRecord
-        
-        let exercises = workoutRecord.exercises?.array as! [Exercise]
-        
-        for exercise in exercises {
-            // make a log item for this exercise
-            let exerciseLog = makeExerciseLog()
-            exerciseLog.exerciseDesign = exercise
-            
-            // make a a lift for the exerciseLog
-            let lift = DatabaseFacade.makeLift()
-            lift.reps = 0
-            lift.datePerformed = Date() as NSDate
-            lift.owner = exerciseLog
-
-            workoutLog.addToLoggedExercises(exerciseLog)
-        }
-        
-        workoutRecord.addToLoggedWorkouts(workoutLog)
     }
     
-    // MARK: - Fetch methods
+    // MARK: - Fetch/get methods
     
     static func fetchManagedObjectsForEntity(_ entity: Entity) -> [NSManagedObject] {
         // Create fetch request
@@ -397,7 +370,6 @@ final class DatabaseFacade {
         }
         return exercise
     }
-    
     
     // get Muscle
     static func getMuscle(named name: String) -> Muscle? {
