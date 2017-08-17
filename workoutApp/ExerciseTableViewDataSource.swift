@@ -200,7 +200,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         } else {
             // Save and pop viewController
             deleteUnperformedLifts()
-            updateExerciseOrder()
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
@@ -242,32 +241,17 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             
             var exerciseLogsAsArray = orderedExerciseLogs.array as! [ExerciseLog]
 
+            // swap
             let temp = exerciseLogsAsArray[indexA]
             exerciseLogsAsArray[indexA] = exerciseLogsAsArray[indexB]
             exerciseLogsAsArray[indexB] = temp
             
+            // put back
             let exerciseLogsAsOrderedeSet = NSOrderedSet(array: exerciseLogsAsArray)
             dataSourceWorkoutLog.loggedExercises = exerciseLogsAsOrderedeSet
         } else {
             print("Error: Could not unwrap orderedExerciseLogs")
         }
-    }
-    
-    func updateExerciseOrder() {
-        
-        // FIXME: - maybe not needed, but possibly have to inject the ordered set back into the database in correct data when when saving, or keep it updated every time a user moves rows
-        
-        if let orderedExerciseLogs: NSMutableOrderedSet = dataSourceWorkoutLog.loggedExercises as? NSMutableOrderedSet {
-//            print("We now have orderedExerciseLogs:", orderedExerciseLogs)
-            
-            print(" \nfirst: ", orderedExerciseLogs[0])
-            print(" \nsecond: ", orderedExerciseLogs[1])
-            print(" \nthird: ", orderedExerciseLogs[2])
-            
-        } else {
-            print("dont hve orderedExerciseLogs")
-        }
-        print(" gonna update")
     }
     
     // MARK: Delete methods

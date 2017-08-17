@@ -127,22 +127,6 @@ class ExerciseTableViewController: UITableViewController {
         
         return snapshot
     }
-
-    private func addObservers() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShowHandler),
-                                               name: .UIKeyboardWillShow,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHideHandler),
-                                               name: .UIKeyboardWillHide,
-                                               object: nil)
-    }
-    
-    private func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
-    }
     
     func setDebugColors() {
         view.backgroundColor = .green
@@ -160,46 +144,6 @@ class ExerciseTableViewController: UITableViewController {
         dataSource.deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs()
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
-    
-    @objc private func keyboardWillShowHandler(notification: NSNotification) {
-        // Make sure you received a userInfo dict
-        guard let userInfo = notification.userInfo else {
-            return
-        }
-        
-        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        
-        if let keyboardRect = keyboardRect {
-            // Adjust tableViews insets
-            let keyboardHeight = keyboardRect.height
-            let insetsFromNavbar = tableView.contentInset.top
-            let insetsForTableView = UIEdgeInsets(top: insetsFromNavbar,
-                left: 0,
-                bottom: keyboardHeight,
-                right: 0)
-            
-            tableView.contentInset = insetsForTableView
-            tableView.scrollIndicatorInsets = insetsForTableView
-            
-            // The visible part of tableView, not hidden by keyboard
-            var visibleRect = self.view.frame
-            visibleRect.size.height -= keyboardHeight
-            
-            // scroll to the tapped cell
-            if let rectToBeDisplayed = activeTableCell?.frame {
-                if !visibleRect.contains(rectToBeDisplayed) {
-                    tableView.scrollRectToVisible(rectToBeDisplayed, animated: true)
-                }
-            }
-        }
-    }
-    
-    @objc private func keyboardWillHideHandler(notification: NSNotification) {
-        let newInset = UIEdgeInsets(top: tableView.contentInset.top,
-                                    left: 0, bottom: 0, right: 0)
-        tableView.contentInset = newInset
-    }
-    
     
     /// Handles the long press by 'lifting' the target cell and letting the user move it around
     @objc private func longPressRecognized( _ sender: UIGestureRecognizer) {
@@ -227,8 +171,6 @@ class ExerciseTableViewController: UITableViewController {
                 self.snapShot?.alpha = 0.98
                 
                 cell.alpha = 0.0
-            }, completion: { _ in
-                cell.isHidden = true
             })
             
         case .changed:
@@ -242,13 +184,14 @@ class ExerciseTableViewController: UITableViewController {
             snapShot.center = center
             
             // Is destination valid and is it different from source?
-            
             if indexPath != sourceIndexPathTemp {
                 dataSource.swapElementsAtIndex(indexPath, withObjectAtIndex: sourceIndexPathTemp) // swap elements in datasource
                 tableView.moveSection(sourceIndexPathTemp.section, toSection: indexPath.section) // swap cells in tableView
                 sourceIndexPath = indexPath// ... and update source so it is in sync with UI changes.
             }
-        default: // endAnimation and stop moving
+            
+        default:
+            // end Animation and stop moving
             guard let sourceIndexPathTmp = sourceIndexPath else { return }
             guard let cell = tableView.cellForRow(at: sourceIndexPathTmp) else { return }
             
@@ -266,9 +209,58 @@ class ExerciseTableViewController: UITableViewController {
                 self.snapShot?.removeFromSuperview()
                 self.snapShot = nil
             })
-            
         }
     }
-
+    
+    // MARK: Observers
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowHandler), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideHandler), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc private func keyboardWillShowHandler(notification: NSNotification) {
+        // Make sure you received a userInfo dict
+        guard let userInfo = notification.userInfo else {
+            return
+        }
+        
+        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        
+        if let keyboardRect = keyboardRect {
+            // Adjust tableViews insets
+            let keyboardHeight = keyboardRect.height
+            let insetsFromNavbar = tableView.contentInset.top
+            let insetsForTableView = UIEdgeInsets(top: insetsFromNavbar,
+                                                  left: 0,
+                                                  bottom: keyboardHeight,
+                                                  right: 0)
+            
+            tableView.contentInset = insetsForTableView
+            tableView.scrollIndicatorInsets = insetsForTableView
+            
+            // The visible part of tableView, not hidden by keyboard
+            var visibleRect = self.view.frame
+            visibleRect.size.height -= keyboardHeight
+            
+            // scroll to the tapped cell
+            if let rectToBeDisplayed = activeTableCell?.frame {
+                if !visibleRect.contains(rectToBeDisplayed) {
+                    tableView.scrollRectToVisible(rectToBeDisplayed, animated: true)
+                }
+            }
+        }
+    }
+    
+    @objc private func keyboardWillHideHandler(notification: NSNotification) {
+        let newInset = UIEdgeInsets(top: tableView.contentInset.top,
+                                    left: 0, bottom: 0, right: 0)
+        tableView.contentInset = newInset
+    }
 }
 
