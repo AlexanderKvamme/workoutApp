@@ -128,7 +128,6 @@ class ExerciseTableViewController: UITableViewController {
         return snapshot
     }
 
-    
     private func addObservers() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShowHandler),

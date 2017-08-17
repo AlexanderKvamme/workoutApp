@@ -80,16 +80,21 @@ final class DatabaseFacade {
     }
     
     static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
-        // loop throuhg its Exerciselogs, delete their lifts, then delete exerciselog and then delete workoutLog
+        // loop through its Exerciselogs, delete their lifts, then delete exerciselog and then delete workoutLog
         
         let orderedExerciseLogs: NSMutableOrderedSet = workoutLogToDelete.mutableOrderedSetValue(forKey: "loggedExercises")
         
-        let exerciseLogsToDelete = orderedExerciseLogs.array as! [ExerciseLog]
+        let exerciseLogsToDelete = orderedExerciseLogs.array
         
         for exerciseLog in exerciseLogsToDelete {
             
+            guard let exerciseLog = exerciseLog as? ExerciseLog else {
+                print("Error: exerciseLog could not be cast to ExerciseLog")
+                return
+            }
+            
             guard let liftsTodelete = exerciseLog.lifts as? Set<Lift> else {
-                print("error unwrapping lifts in deleteWorkoutLog")
+                print("Error unwrapping lifts in deleteWorkoutLog")
                 return
             }
             
@@ -410,23 +415,6 @@ final class DatabaseFacade {
         }
         return muscle
     }
-//    
-//    // fetch Muscle
-//    static func fetchMuscleWithName(_ name: String) -> Muscle? {
-//        let fetchRequest = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
-//        fetchRequest.predicate = NSPredicate(format: "name = %@", name)
-//        
-//        do {
-//            let result = try context.fetch(fetchRequest)
-//            if result.count > 0 {
-//                return result[0]
-//            }
-//        } catch let error as NSError {
-//            print("Error: \(error.localizedDescription)")
-//        }
-//        print("found no matching muscle")
-//        return nil
-//    }
     
     static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
         
@@ -457,7 +445,7 @@ final class DatabaseFacade {
             let res = try context.fetch(fetchRequest)
             resultingExerciseLog = res[0] as? ExerciseLog
         } catch let error as NSError {
-            print("failed getting recent exercise: \(error.localizedDescription)")
+            print("Error getting recent exercise: \(error.localizedDescription)")
         }
         return resultingExerciseLog
     }
@@ -496,7 +484,7 @@ final class DatabaseFacade {
         do {
             result = try persistentContainer.viewContext.fetch(fetchRequest) as? [WorkoutLog]
         } catch let error as NSError {
-            print("error fetching all workoutlogs: \(error.localizedDescription)")
+            print("Error fetching all workoutlogs: \(error.localizedDescription)")
         }
         return result
     }

@@ -58,6 +58,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             var i = 0
             
             // for each exercise, make a copy of its exerciseLog so that it can be manipulated by user and saved later
+            
             for exercise in exercisesFromInputtedWorkoutLog {
                 
                 //make new ExerciseLog
@@ -105,8 +106,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog()
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         dataSourceWorkoutLog.design = workout
-        
-//        if let exercisesFromWorkout = workout.exercises as? Set<Exercise> {
         
         if let orderedSetExercises = workout.exercises {
         
@@ -185,10 +184,12 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         return cell
     }
     
-    // MARK: Helpers
+    // MARK: Save methods
     
     func saveWorkout() {
-        // set endDate Save to context
+        
+        printSummaryOfWorkoutLog()
+        
         dataSourceWorkoutLog.dateEnded = Date() as NSDate
         
         // Delete or save
@@ -197,24 +198,23 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             let modal = CustomAlertView(type: .error, messageContent: "Bro, you have to actually work out to be able to log an exercise!")
             modal.show(animated: true)
         } else {
-        // User has performed lifts - Save and pop viewController
+            // Save and pop viewController
             deleteUnperformedLifts()
+            updateExerciseOrder()
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
         }
     }
     
+    // MARK: Helpers
+    
     private func countPerformedExercises() -> Int {
         var performedLifts = 0
         
-        // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
-        
-//        if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-        
         if let orderedExercises = dataSourceWorkoutLog.loggedExercises {
-        let exerciseSet = orderedExercises.array as! [ExerciseLog]
-        for el in exerciseSet {
+            let exerciseSet = orderedExercises.array as! [ExerciseLog]
+            for el in exerciseSet {
                 if let lifts = el.lifts as? Set<Lift> {
                     for lift in lifts {
                         if lift.hasBeenPerformed { performedLifts += 1 }
@@ -225,10 +225,55 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         return performedLifts
     }
     
-    private func deleteUnperformedLifts() {
-        // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
+    // Swap method used when moving cells
+    func swapElementsAtIndex(_ firstIndexPath: IndexPath, withObjectAtIndex secondIndexPath: IndexPath
+        ) {
         
-        // if let exerciseSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        let indexA: Int = firstIndexPath.section
+        let indexB: Int = secondIndexPath.section
+        
+        // Swap datasource elements
+        let temp = exerciseLogsAsArray[indexA]
+        exerciseLogsAsArray[indexA] = exerciseLogsAsArray[indexB]
+        exerciseLogsAsArray[indexB] = temp
+        
+        // Swap the order of the orderedSet
+        if let orderedExerciseLogs: NSOrderedSet = dataSourceWorkoutLog.loggedExercises {
+            
+            var exerciseLogsAsArray = orderedExerciseLogs.array as! [ExerciseLog]
+
+            let temp = exerciseLogsAsArray[indexA]
+            exerciseLogsAsArray[indexA] = exerciseLogsAsArray[indexB]
+            exerciseLogsAsArray[indexB] = temp
+            
+            let exerciseLogsAsOrderedeSet = NSOrderedSet(array: exerciseLogsAsArray)
+            dataSourceWorkoutLog.loggedExercises = exerciseLogsAsOrderedeSet
+        } else {
+            print("Error: Could not unwrap orderedExerciseLogs")
+        }
+    }
+    
+    func updateExerciseOrder() {
+        
+        // FIXME: - maybe not needed, but possibly have to inject the ordered set back into the database in correct data when when saving, or keep it updated every time a user moves rows
+        
+        if let orderedExerciseLogs: NSMutableOrderedSet = dataSourceWorkoutLog.loggedExercises as? NSMutableOrderedSet {
+//            print("We now have orderedExerciseLogs:", orderedExerciseLogs)
+            
+            print(" \nfirst: ", orderedExerciseLogs[0])
+            print(" \nsecond: ", orderedExerciseLogs[1])
+            print(" \nthird: ", orderedExerciseLogs[2])
+            
+        } else {
+            print("dont hve orderedExerciseLogs")
+        }
+        print(" gonna update")
+    }
+    
+    // MARK: Delete methods
+    
+    private func deleteUnperformedLifts() {
+        // Deletes all unperformed lifts (that have no datePerformed)
         if let orderedExercises = dataSourceWorkoutLog.loggedExercises {
             let exerciseSet = orderedExercises.array as! [ExerciseLog]
             
@@ -245,8 +290,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     func deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs() {
-        // Deletes all unperformed lifts (that have no datePerformed), and returns the count of remaining lifts
-//        if let exerciseLogSet = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
+        // Deletes all unperformed lifts
         if let orderedExerciseLogs = dataSourceWorkoutLog.loggedExercises {
             let exerciseLogSet = orderedExerciseLogs.array as! [ExerciseLog]
             for exerciseLog in exerciseLogSet {
@@ -260,17 +304,11 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         }
         DatabaseFacade.delete(dataSourceWorkoutLog)
     }
-
-    // Swap method used when moving cells
-    func swapElementsAtIndex(_ firstIndexPath: IndexPath, withObjectAtIndex secondIndexPath: IndexPath
-        ) {
-        let temp = exerciseLogsAsArray[firstIndexPath.section]
-        exerciseLogsAsArray[firstIndexPath.section] = exerciseLogsAsArray[secondIndexPath.section]
-        exerciseLogsAsArray[secondIndexPath.section] = temp
-    }
+    
+    // MARK: Print methods
     
     private func printSummaryOfWorkoutLog() {
-        print("\nSummary of WL: \(dataSourceWorkoutLog.design!)")
+        print("\n\nSummary of WL: \(dataSourceWorkoutLog.design!.name)")
         
         guard let orderedLoggedExercises = dataSourceWorkoutLog.loggedExercises else {
             print("ERROR: - No ordered exerciselogs to print")

@@ -64,33 +64,22 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
     // Remove cell when user uses long press on it
     @objc private func longPressOnCellHandler(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began{
-            
-            print("\nLONG PRESS - GONNA DELETE")
+            print("\nLONG PRESS - GONNA DELETE CELL")
             let indexPathToRemove = self.owner.collectionView.indexPath(for: self)
             if let indexPathToRemove = indexPathToRemove {
                 owner.liftsToDisplay.remove(at: indexPathToRemove.row)
                 owner.collectionView.deleteItems(at: [indexPathToRemove])
                 
-                // FIXME: - delete from totalLiftsToDisplay too
-                
                 if let section = owner.owner.owner.tableView.indexPath(for: owner)?.section {
-                    
-                    print("collectionview element number:: ", indexPathToRemove.row)
-                    
-                    print(" which would lead to the deletion of lift: owner.owner.totalLiftsToDisplay[\(section)][\(indexPathToRemove.row)]", owner.owner.totalLiftsToDisplay[section][indexPathToRemove.row])
-                    
-                    print("gonna delete from total")
-                    print("totalLifts before delete: ")
+
                     owner.owner.totalLiftsToDisplay[section].oneLinePrint()
                     let liftToRemove = owner.owner.totalLiftsToDisplay[section][indexPathToRemove.row]
                     owner.owner.totalLiftsToDisplay[section].remove(at: indexPathToRemove.row)
-                    print("totalLifts after delete are now: ")
                     owner.owner.totalLiftsToDisplay[section].oneLinePrint()
                     DatabaseFacade.delete(liftToRemove)
                 } else {
                     print("found no section")
                 }
-                // printCollectionViewsReps()
             }
         }
     }
