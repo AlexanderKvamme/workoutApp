@@ -9,7 +9,7 @@
 import UIKit
 
 
-class HistoryBoxCell: UITableViewCell {
+class WorkoutLogHistoryBoxCell: UITableViewCell {
     
     let box: Box!
     

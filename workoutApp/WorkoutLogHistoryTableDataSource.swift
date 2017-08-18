@@ -11,7 +11,7 @@ import UIKit
 import CoreData
 
 
-class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
+class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     // MARK: - Properties
     
@@ -41,8 +41,8 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let log = fetchedWorkoutLogs[indexPath.row]
-        var cell: HistoryBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! HistoryBoxCell
-        cell = HistoryBoxCell(style: .default, reuseIdentifier: cellIdentifier)
+        var cell: WorkoutLogHistoryBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutLogHistoryBoxCell
+        cell = WorkoutLogHistoryBoxCell(style: .default, reuseIdentifier: cellIdentifier)
         if let name = log.design?.name {
             cell.box.setTitle(name)
         }
@@ -74,6 +74,12 @@ class HistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     }
     
     // MARK: - API
+    
+    func getWorkoutLog(at indexPath: IndexPath) -> WorkoutLog {
+        let workoutLog = fetchedWorkoutLogs[indexPath.row]
+        print("would return workoutLog: ", workoutLog.design?.name)
+        return workoutLog
+    }
     
     func refreshDataSource() {
         let fetchRequest = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)

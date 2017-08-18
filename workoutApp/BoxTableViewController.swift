@@ -10,6 +10,8 @@ import UIKit
 
 class BoxTableViewController: UITableViewController {
     
+    // MARK: - Properties
+    
     var workoutStyleName: String?
     var cellIdentifier: String
     var customRefreshView: RefreshControlView!
@@ -62,7 +64,7 @@ class BoxTableViewController: UITableViewController {
         tableView.separatorInset.left = 0
     }
 
-    // MARK: - Refresh Control
+    // MARK: Refresh Control
     
     func setupRefreshControl() {
         refreshControl = UIRefreshControl()
@@ -76,9 +78,7 @@ class BoxTableViewController: UITableViewController {
         customRefreshView.label.alpha = 0
         refreshControl?.addSubview(customRefreshView)
         
-        refreshControl!.addTarget(self,
-                                  action: #selector(BoxTableViewController.refreshControlHandler(sender:)),
-                                  for: .valueChanged)
+        refreshControl!.addTarget(self, action: #selector(BoxTableViewController.refreshControlHandler(sender:)), for: .valueChanged)
     }
     
     @objc private func refreshControlHandler(sender: UIRefreshControl) {
@@ -94,7 +94,7 @@ class BoxTableViewController: UITableViewController {
         customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .biggest)
     }
 
-    // MARK: - Navigationbar
+    // MARK: Navigationbar
     
     func setUpNavigationBar(withTitle title: String?) {
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -117,7 +117,7 @@ class BoxTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - TableView delegate methods
+    // MARK: TableView delegate methods
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         customRefreshView.label.alpha = customRefreshView.frame.height/100

@@ -128,14 +128,15 @@ class HistorySelectionViewController: SelectionViewController {
     // MARK: - TapHandlers 
     
     @objc func allHistoryButtonHandler() {        
-        let historyTableViewController = HistoryTableViewController(workoutStyleName: nil)
+        let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: nil)
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }
     
     func buttonTapHandler(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
-        let historyTableViewController = HistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
+            //HistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
         
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }

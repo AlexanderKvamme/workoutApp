@@ -9,13 +9,14 @@
 import UIKit
 
 
-class HistoryTableViewController: BoxTableViewController {
+class WorkoutLogHistoryTableViewController: BoxTableViewController {
     
     // MARK: - Initializers
     
     init(workoutStyleName: String?) {
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell")
-        tableView.register(HistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
+//        tableView.register(HistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(WorkoutLogHistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         setUpNavigationBar(withTitle: self.workoutStyleName)
     }
     
@@ -38,11 +39,13 @@ class HistoryTableViewController: BoxTableViewController {
     // MARK: - Methods
     
     private func setupDataSource() {
-        dataSource = HistoryTableViewDataSource(workoutStyleName: workoutStyleName)
+//        dataSource = HistoryTable
+        dataSource = WorkoutLogHistoryTableViewDataSource(workoutStyleName: workoutStyleName)
+//        dataSource = HistoryTableViewDataSource(workoutStyleName: workoutStyleName)
         tableView.dataSource = dataSource
     }
     
-    // FIXME: - Edit and delete cells
+    // Delete rows
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -56,5 +59,24 @@ class HistoryTableViewController: BoxTableViewController {
         delete.backgroundColor = UIColor.secondary
         return [delete]
     }
+    
+    // FIXME: - tappable cells
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selected: " ,indexPath)
+        
+        // TODO: present ExerciseTableViewController, but with another cell what has uneditable cells, and no + symbol.
+        
+        //let newDataSource = dataSource as! HistoryTableViewDataSource
+        let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
+        let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
+        
+        
+        print(" WOULD PRESENT DETAILED THING")
+//        let exerciseTable = ExerciseTableViewController(withWorkoutLog: tappedWorkoutLog)
+        
+    }
+    
+    
 }
 

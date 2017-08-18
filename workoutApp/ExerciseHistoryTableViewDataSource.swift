@@ -1,4 +1,14 @@
 //
+//  ExerciseHistoryTableViewDataSource.swift
+//  workoutApp
+//
+//  Created by Alexander Kvamme on 18/08/2017.
+//  Copyright © 2017 Alexander Kvamme. All rights reserved.
+//
+
+import Foundation
+
+//
 //  ExerciseDataSource.swift
 //  workoutApp
 //
@@ -12,7 +22,7 @@ import CoreData
 
 /// Data source for the exercise table view used to display all exercises assosciated with a workout. So you tap a workout, and you enter a tableview with all exercises owned by that workout. This class is the datasource that provides these items.
 
-class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
+class ExerciseHistoryTableViewDataSource: NSObject, UITableViewDataSource {
     
     private let cellIdentifier: String = "exerciseCell"
     
@@ -20,18 +30,13 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     var exerciseLogsAsArray: [ExerciseLog]! // each entry represents one tableViewCell. So [0] will be the topmost cell
     private var dataSourceWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
     var totalLiftsToDisplay: [[Lift]]! // Each tableViewCell has a "liftsToDisplay" variable to display, this layered array of lifts should store each one of them, and when one of them is changed, it should bubble up the change to this one, which should contain one [Lift] for each tableViewCell. For example if cell 0 is Pull Ups, cell 1 is Hammer Curls, and cell 2 is Dips, then this Dips one should be able to be updated from TotalLiftsToDisplay[2] = liftsToDisplay
-    weak var owner: ExerciseTableViewController!
+    weak var owner: ExerciseHistoryTableViewController!
     
     // MARK: - Initializers
     
-    init(workout: Workout) {
+    init(workoutLog: WorkoutLog) {
         super.init()
-        // setup data source to use the most recent performance, or the workoutlog if it has not been performed.
-        if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
-            setupUsingWorkoutLog(mostRecentPerformance: lastPerformance)
-        } else {
-            setupUsingWorkout(withDesign: workout)
-        }
+        setupUsingWorkoutLog(mostRecentPerformance: workoutLog)
     }
     
     // MARK: - Methods
@@ -50,7 +55,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         //if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises as? Set<ExerciseLog> {
         
         if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises?.array as? [ExerciseLog] {
-        
+            
             totalLiftsToDisplay = Array(repeating: [Lift](), count: exercisesFromInputtedWorkoutLog.count)
             
             var i = 0
@@ -77,7 +82,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
                 for lift in sortedRecentLifts {
                     let newLift = DatabaseFacade.makeLift()
                     newLift.reps = lift.reps
-                    newLift.datePerformed = lift.datePerformed // use original time for sorting 
+                    newLift.datePerformed = lift.datePerformed // use original time for sorting
                     newLift.time = lift.time
                     newLift.weight = lift.weight
                     newLift.owner = newExerciseLog
@@ -106,7 +111,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         dataSourceWorkoutLog.design = workout
         
         if let orderedSetExercises = workout.exercises {
-        
+            
             let exercisesFromWorkout = orderedSetExercises.array as! [Exercise]
             
             // If the workout has any exercises, use them to fetch the last time its exercises were performed (ExerciseLog of each of them). Then make copies of the ExerciseLogItems. These objects are then set to be the dataSource for the tableView
@@ -172,8 +177,10 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
-        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
+//        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseHistoryTableViewCell
+        cell = ExerciseHistoryTableViewCell(withExerciseLog: exerciseLog, andIdentifier: cellIdentifier)
+//        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
         cell.owner = self
         
         if let name = exerciseLog.exerciseDesign?.name {
@@ -238,7 +245,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         if let orderedExerciseLogs: NSOrderedSet = dataSourceWorkoutLog.loggedExercises {
             
             var exerciseLogsAsArray = orderedExerciseLogs.array as! [ExerciseLog]
-
+            
             // swap
             let temp = exerciseLogsAsArray[indexA]
             exerciseLogsAsArray[indexA] = exerciseLogsAsArray[indexB]
