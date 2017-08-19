@@ -13,7 +13,11 @@ import UIKit
 
 class PickerCell: UITableViewCell {
     
+    // MARK: - Properties
+    
     var label: UILabel!
+    
+    // MARK: - Initializer
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
@@ -24,7 +28,11 @@ class PickerCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCell() {
+    // MARK: - Methods
+    
+    // MARK: Setup methods
+    
+    private func setupCell() {
         label = UILabel()
         label.text = "cellText"
         label.textAlignment = .center
@@ -33,21 +41,15 @@ class PickerCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
         
-        // customize
+        // customize the label
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = UIColor.faded
-//        label.applyCustomAttributes(.more) // FIXME: - This one gets bugged sometimes check it out
+        // label.applyCustomAttributes(.more) // FIXME: - This one gets bugged sometimes check it out
         
-        setConstraints()
+        setLabelConstraints()
     }
     
-    func setDebugColors() {
-        label.backgroundColor = .yellow
-        backgroundColor = UIColor.secondary
-    }
-    
-    func setConstraints() {
-        //label
+    private func setLabelConstraints() {
         label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -56,6 +58,13 @@ class PickerCell: UITableViewCell {
             label.topAnchor.constraint(equalTo: topAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor),
             ])
+    }
+    
+    // MARK: Debug methods
+    
+    func setDebugColors() {
+        label.backgroundColor = .yellow
+        backgroundColor = UIColor.secondary
     }
 }
 

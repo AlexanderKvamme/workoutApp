@@ -173,7 +173,9 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
-        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
+        
+        //cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
+        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
         cell.owner = self
         
         if let name = exerciseLog.exerciseDesign?.name {
@@ -290,7 +292,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     // MARK: Print methods
     
     private func printSummaryOfWorkoutLog() {
-        print("\n\nSummary of WL: \(dataSourceWorkoutLog.design!.name)")
+        print("\n\nSummary of WL: \(String(describing: dataSourceWorkoutLog.design!.name))")
         
         guard let orderedLoggedExercises = dataSourceWorkoutLog.loggedExercises else {
             print("ERROR: - No ordered exerciselogs to print")

@@ -11,6 +11,7 @@ import UIKit
 class ExerciseTableViewController: UITableViewController {
     
     // MARK: - Properties
+    
     var activeTableCell: UITableViewCell? // used by cell to make correct collectionView.label firstResponder
     private var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
     private var dataSource: ExerciseTableViewDataSource!

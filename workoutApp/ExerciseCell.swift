@@ -1,12 +1,11 @@
 //
-//  ExerciseHistoryCell.swift
+//  ExerciseCell.swift
 //  workoutApp
 //
 //  Created by Alexander Kvamme on 18/08/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import CoreData
 
@@ -14,35 +13,25 @@ import CoreData
  ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
  */
 
-class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
+
+    // MARK: - Properties
     
     var liftsToDisplay: [Lift]!
     var collectionView: UICollectionView!
     private var plusButton: UIButton!
     private var verticalInsetForBox: CGFloat = 10
     private let collectionViewReuseIdentifier = "collectionViewCell"
+    var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
     private var persistentContainer = NSPersistentContainer(name: Constant.coreData.name)
     var box: Box!
     
-    weak var owner: ExerciseHistoryTableViewDataSource!
+    weak var owner: ExerciseTableViewDataSource!
     
     // MARK: - Initializers
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-    
-    init(withExerciseLog exerciseLog: ExerciseLog, andLifts lifts: [Lift], andIdentifier cellIdentifier: String) {
-        super.init(style: .default, reuseIdentifier: cellIdentifier)
-        
-        liftsToDisplay = lifts
-        
-        setupBox()
-        setupConstraints()
-        setupCell()
-        setupCollectionView()
-        
-        selectionStyle = .none
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -64,22 +53,33 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
         // collectionView
         self.collectionView.backgroundColor = .green
         self.collectionView.alpha = 0.5
+        
+        // + button
+        plusButton.backgroundColor = .red
+        plusButton.titleLabel?.backgroundColor = .yellow
     }
+    
+    
     
     // MARK: - CollectionView delegate methods
     
-    @available(iOS 6.0, *)
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseHistorySetCollectionViewCell
-        cell.owner = self
-        
-        let liftToDisplay = liftsToDisplay[indexPath.row]
-        let repFromLift = liftToDisplay.reps
-        cell.setReps(repFromLift)
-        cell.makeTextBold()
-        return cell
-    }
+//    @available(iOS 6.0, *)
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseSetCollectionViewCell
+//        cell.owner = self
+//        
+//        let liftToDisplay = liftsToDisplay[indexPath.row]
+//        let repFromLift = liftToDisplay.reps
+//        cell.setReps(repFromLift)
+//        cell.isPerformed = liftToDisplay.hasBeenPerformed // is it already performed this workout and should be tappable?
+//        
+//        // Make bold if it is performed
+//        if liftsToDisplay[indexPath.row].hasBeenPerformed {
+//            cell.makeTextBold()
+//        }
+//        return cell
+//    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("did select some item at indexpath \(indexPath)")
@@ -87,38 +87,16 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     @available(iOS 6.0, *)
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("liftsToDisplay.count: ", liftsToDisplay.count)
         return liftsToDisplay.count
     }
     
     // MARK: - setup methods
     
-    private func setupCollectionView() {
-        
-        // CollectionView
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset,
-                                         y: box.boxFrame.frame.minY + verticalInsetForBox,
-                                         width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset,
-                                         height: box.boxFrame.frame.height)
-        collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
-        collectionView.register(ExerciseHistorySetCollectionViewCell.self, forCellWithReuseIdentifier: collectionViewReuseIdentifier)
-        collectionView.alpha = 1
-        collectionView.backgroundColor = .clear
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        addSubview(collectionView)
-        
-        collectionView.frame.size = CGSize(width: collectionView.frame.width,
-                                           height: collectionView.frame.height)
-    }
-    
     private func setupCell() {
         backgroundColor = .light
     }
     
-    private func setupBox() {
+    func setupBox() {
         let boxFactory = BoxFactory.makeFactory(type: .ExerciseProgressBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()

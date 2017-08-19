@@ -64,17 +64,14 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("selected: " ,indexPath)
-        
-        // TODO: present ExerciseTableViewController, but with another cell what has uneditable cells, and no + symbol.
-        
+
         //let newDataSource = dataSource as! HistoryTableViewDataSource
         let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
         let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
-        
-        
+                
         print(" WOULD PRESENT DETAILED THING")
-//        let exerciseTable = ExerciseTableViewController(withWorkoutLog: tappedWorkoutLog)
-        
+        let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
+        navigationController?.pushViewController(workoutLogTable, animated: true)
     }
     
     

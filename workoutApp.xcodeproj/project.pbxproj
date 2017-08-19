@@ -13,6 +13,7 @@
 		DD0E1DB91F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0E1DB81F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift */; };
 		DD0EB24B1F46FE9200CDA1CF /* ExerciseHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB24A1F46FE9200CDA1CF /* ExerciseHistoryTableViewCell.swift */; };
 		DD0EB2501F4707E000CDA1CF /* ExerciseHistorySetCollectionViewcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB24F1F4707E000CDA1CF /* ExerciseHistorySetCollectionViewcell.swift */; };
+		DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */; };
 		DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D771F3C801A00228366 /* GoalsButton.swift */; };
 		DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D791F3CA36900228366 /* AttributedText.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
@@ -120,6 +121,7 @@
 		DD0E1DB81F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogHistoryTableDataSource.swift; sourceTree = "<group>"; };
 		DD0EB24A1F46FE9200CDA1CF /* ExerciseHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		DD0EB24F1F4707E000CDA1CF /* ExerciseHistorySetCollectionViewcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseHistorySetCollectionViewcell.swift; sourceTree = "<group>"; };
+		DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCell.swift; sourceTree = "<group>"; };
 		DD109D771F3C801A00228366 /* GoalsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsButton.swift; sourceTree = "<group>"; };
 		DD109D791F3CA36900228366 /* AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 		DD0EB24C1F4702F200CDA1CF /* New Group */ = {
 			isa = PBXGroup;
 			children = (
+				DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */,
 			);
 			name = "New Group";
 			sourceTree = "<group>";
@@ -590,9 +593,9 @@
 			isa = PBXGroup;
 			children = (
 				DD0EB24C1F4702F200CDA1CF /* New Group */,
-				DD34C5781F4657850050BDB0 /* Exercise History TableView */,
-				DDF1F1F41F07E162001A6F0C /* CollectionView of sets */,
 				DDF1F1F31F07E14F001A6F0C /* Exercise TableView */,
+				DD34C5781F4657850050BDB0 /* Exercise History TableView */,
+				DDF1F1F41F07E162001A6F0C /* CollectionView Cells - Lifts */,
 			);
 			name = "Exercise Tables";
 			sourceTree = "<group>";
@@ -609,13 +612,13 @@
 			name = "Exercise TableView";
 			sourceTree = "<group>";
 		};
-		DDF1F1F41F07E162001A6F0C /* CollectionView of sets */ = {
+		DDF1F1F41F07E162001A6F0C /* CollectionView Cells - Lifts */ = {
 			isa = PBXGroup;
 			children = (
 				DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */,
 				DD0EB24F1F4707E000CDA1CF /* ExerciseHistorySetCollectionViewcell.swift */,
 			);
-			name = "CollectionView of sets";
+			name = "CollectionView Cells - Lifts";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -742,6 +745,7 @@
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,
 				DDF1F1EC1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift in Sources */,
 				DDE55B9B1F2FB55300ED1D15 /* WorkoutLog.swift in Sources */,
+				DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD34C5711F445C200050BDB0 /* Muscle+CoreDataProperties.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,

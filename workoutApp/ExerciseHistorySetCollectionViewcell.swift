@@ -13,27 +13,26 @@ import UIKit
  
  Lift:
  - reps
- - weight
+ - weight (optional)
  
- Cellen skal vise bare reps, eller "reps og weight" */
+*/
 
-class ExerciseHistorySetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
+class ExerciseHistorySetCollectionViewCell: UICollectionViewCell {
+    
+    // MARK: - Properties
     
     var button: UIButton! // Button that covers entire cell, to handle taps
     var repsField: UITextField!
-    private var cellHasBeenEdited = false
-    private var keyboard: Keyboard!
-    var isPerformed = false // track if Lift should be tracked as completed
-    var weightLabel: UILabel? // TODO
-    weak var owner: ExerciseHistoryTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
+    var weightLabel: UILabel? // TODO: - Let users work out with weights
+    weak var owner: ExerciseHistoryTableViewCell! // Makes the containincells data accessible
     
+    // Computed properties
     var initialRepValue: String {
         if let indexPath = owner.collectionView.indexPath(for: self) {
             let dataSourceIndexToUpdate = indexPath.row
             let valueFromDatasource = owner.liftsToDisplay[dataSourceIndexToUpdate].reps
             return String(valueFromDatasource)
-        }
-        else {
+        } else {
             return "Error fetching initial rep"
         }
     }
@@ -45,61 +44,36 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell, UITextFieldDel
         
         setupRepsField()
         setupButtonCoveringCell()
-        
-        // Add long press gesture recognizer to edit cell
-        let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
-        button.addGestureRecognizer(longpressRecognizer)
-        
-        // Track changes in label
-        repsField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-        
-        //setDebugColors()
+        addLongPressRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Handlers
+    // MARK: - Methods
+    // MARK: Handlers and recognizers
+    
+    func tapHandler() {
+        print("tapped")
+    }
     
     // Remove cell when user uses long press on it
     @objc private func longPressOnCellHandler(_ gesture: UILongPressGestureRecognizer) {
-        if gesture.state == .began{
-            print("\nLONG PRESS - GONNA DELETE CELL")
-            let indexPathToRemove = self.owner.collectionView.indexPath(for: self)
-            if let indexPathToRemove = indexPathToRemove {
-                owner.liftsToDisplay.remove(at: indexPathToRemove.row)
-                owner.collectionView.deleteItems(at: [indexPathToRemove])
-                
-                if let section = owner.owner.owner.tableView.indexPath(for: owner)?.section {
-                    
-                    owner.owner.totalLiftsToDisplay[section].oneLinePrint()
-                    let liftToRemove = owner.owner.totalLiftsToDisplay[section][indexPathToRemove.row]
-                    owner.owner.totalLiftsToDisplay[section].remove(at: indexPathToRemove.row)
-                    owner.owner.totalLiftsToDisplay[section].oneLinePrint()
-                    DatabaseFacade.delete(liftToRemove)
-                } else {
-                    print("found no section")
-                }
-            }
+        // TODO: Maybe let user edit or delete lifts here
+        if gesture.state == .began {
+            print("Long press detected: Decide what to do")
         }
     }
     
-    @objc private func textChanged() {
-        self.cellHasBeenEdited = true
+    // MARK: Helper methods
+    
+    private func addLongPressRecognizer() {
+        let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
+        button.addGestureRecognizer(longpressRecognizer)
     }
     
-    // MARK: - Helper
-    
-    private func printCollectionViewsReps() {
-        print("Reps collection contains: ")
-        for repValue in owner.liftsToDisplay {
-            print(repValue.reps)
-        }
-        print()
-    }
-    
-    // Setup functions
+    // MARK: Setup functions
     
     private func setupButtonCoveringCell() {
         button = UIButton(frame: repsField.frame)
@@ -118,136 +92,11 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell, UITextFieldDel
         addSubview(repsField)
     }
     
-    // MARK: - Keyboard delegate method
-    
-    func buttonDidTap(keyName: String) {
-        switch keyName{
-        case "OK":
-            OKButtonHandler()
-        case "B": // Back button
-            repsField.deleteBackward()
-            return
-        default:
-            repsField.insertText(keyName.uppercased())
-        }
-    }
-    
-    // MARK: - Textfield delegate methods
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // Make sure input is convertable to an integer for Core Data
-        let allowedCharacters = CharacterSet.decimalDigits
-        let characterSet = CharacterSet(charactersIn: string)
-        return allowedCharacters.isSuperset(of: characterSet)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if let newText = textField.text, let newValueAsInt16 = Int16(newText) {
-            if cellHasBeenEdited && textField.text != "" && isPerformed {
-                // if cell has been edited and textFieldDidEndEditing
-                // Update data source with new value
-                if let indexPath = owner.collectionView.indexPath(for: self) {
-                    let dataSourceIndexToUpdate = indexPath.row
-                    owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
-                    // FIXME: - only update datePerformed if user is not making a change to a previously performed lift.
-                    if owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed == nil {
-                        owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed = NSDate()
-                    }
-                    owner.liftsToDisplay[dataSourceIndexToUpdate].hasBeenPerformed = true
-                    print(" new value in \(indexPath) is \(newValueAsInt16)")
-                }
-            } else { // textfield has not been editet and is not ""
-                textField.text = initialRepValue
-                makeTextNormal()
-            }
-        } else {
-            print("ERROR: Text not convertible to Int or no text at all - NOT saving")
-            // if no text at all make normal
-            if isPerformed  {
-                textField.text = initialRepValue
-                makeTextBold()
-            } else {
-                textField.text = initialRepValue
-                makeTextNormal()
-            }
-        }
-        
-        NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        makeTextBold()
-        
-        // set field as active to make let the containing tableView scroll to active cell
-        if owner.owner.owner.activeTableCell != owner {
-            owner.owner.owner.activeTableCell = owner
-        }
-        
-        // Make a placeholder in a nice color
-        let color = UIColor.light
-        let font = UIFont.custom(style: .medium, ofSize: .big)
-        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSForegroundColorAttributeName : color, NSFontAttributeName: font])
-        // Prepare for input
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
-    }
-    
-    private func OKButtonHandler() {
-        isPerformed = true
-        endEditing(true)
-    }
-    
-    @objc private func nextButtonTapHandler() {
-        // mark as performed, find next available
-        isPerformed = true
-        
-        if let nextAvailableCell = owner.getFirstFreeCell() {
-            let ip = owner.collectionView.indexPath(for: nextAvailableCell)
-            owner.collectionView.selectItem(at: ip, animated: true, scrollPosition: .centeredVertically)
-            nextAvailableCell.tapHandler()
-        } else {
-            //Was nil, so there is no next. Make new cell, which is automatically selected
-            owner.insertNewCell()
-        }
-    }
-    
-    func tapHandler() {
-        // - Display keyboard, make first responder, and scroll to the first cell in colleciton that isnt performed
-        // If there are cells before this one, that are not performed, jump to the first one of these instead
-        
-        // If the cell is not previously performed, rather go to the first unperformed cell
-        if !isPerformed {
-            if let firstUnperformedCell = owner.getFirstFreeCell() {
-                if firstUnperformedCell != self {
-                    self.repsField.resignFirstResponder()
-                    
-                    firstUnperformedCell.tapHandler()
-                    return
-                }
-            }
-        }
-        
-        // Custom keyboard for inputting time and weight
-        let screenWidth = Constant.UI.width
-        let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-        keyboard.setKeyboardType(style: .reps)
-        repsField.inputView = keyboard
-        keyboard.delegate = self
-        
-        // Present keyboard
-        repsField.inputView = keyboard
-        repsField.delegate = self
-        repsField.becomeFirstResponder()
-        
-        setNeedsLayout()
-    }
-    
     public func setReps(_ n: Int16) {
         repsField.text = String(n)
     }
     
-    // Text manipulation
+    // DEBUG: Text methods
     
     func makeTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
@@ -261,7 +110,7 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell, UITextFieldDel
         repsField.alpha = 1
     }
     
-    // FIXME: - Finish implementing the weight label to allow weighted exercises
+    // TODO: - Finish implementing the weight label to allow weighted exercises
     
     func setWeight(_ n: Int16) {
         weightLabel = UILabel(frame: CGRect(x: repsField.frame.minX,
@@ -277,6 +126,18 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell, UITextFieldDel
             addSubview(weightLabel)
         }
     }
+    
+    // MARK: Print methods
+    
+    private func printCollectionViewsReps() {
+        print("Reps collection contains: ")
+        for repValue in owner.liftsToDisplay {
+            print(repValue.reps)
+        }
+        print()
+    }
+    
+    // MARK: Debug methods
     
     func setDebugColors() {
         button.backgroundColor = .orange
