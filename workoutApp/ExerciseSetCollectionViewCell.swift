@@ -144,17 +144,15 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         
         if let newText = textField.text, let newValueAsInt16 = Int16(newText) {
             if cellHasBeenEdited && textField.text != "" && isPerformed {
-                // if cell has been edited and textFieldDidEndEditing
-                // Update data source with new value
+                // if cell has been edited and textFieldDidEndEditing, Update data source with new value
                 if let indexPath = owner.collectionView.indexPath(for: self) {
                     let dataSourceIndexToUpdate = indexPath.row
                     owner.liftsToDisplay[dataSourceIndexToUpdate].reps = newValueAsInt16
-                    // FIXME: - only update datePerformed if user is not making a change to a previously performed lift. 
+
                     if owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed == nil {
                         owner.liftsToDisplay[dataSourceIndexToUpdate].datePerformed = NSDate()
                     }
                     owner.liftsToDisplay[dataSourceIndexToUpdate].hasBeenPerformed = true
-                    print(" new value in \(indexPath) is \(newValueAsInt16)")
                 }
             } else { // textfield has not been editet and is not ""
                 textField.text = initialRepValue
@@ -171,7 +169,6 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
                 makeTextNormal()
             }
         }
-        
         NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
     }
     
@@ -187,8 +184,8 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         let color = UIColor.light
         let font = UIFont.custom(style: .medium, ofSize: .big)
         textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSForegroundColorAttributeName : color, NSFontAttributeName: font])
-        // Prepare for input
         
+        // Prepare for input
         NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
     }
     

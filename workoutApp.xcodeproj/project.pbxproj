@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */; };
 		DD0CD4C81F012A33008544EE /* ExercisePickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */; };
@@ -116,6 +117,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarControllerDelegate.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerViewController.swift; sourceTree = "<group>"; };
 		DD0CD4C71F012A33008544EE /* ExercisePickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerProtocols.swift; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 			isa = PBXGroup;
 			children = (
 				DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */,
+				DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */,
 				DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */,
 			);
 			name = "Tab bar";
@@ -728,6 +731,7 @@
 				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
 				DD34C5741F445C200050BDB0 /* ExerciseLog+CoreDataClass.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
+				DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */,
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,
 				DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */,

@@ -9,32 +9,40 @@
 import UIKit
 import CoreData
 
-class CustomTabBarController: UITabBarController {
+class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
 
+    // MARK: - Properties
+    
     let selectionIndicator = tabBarSelectionIndicatorView()
+    
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MARK: - Progress
+//        tabBar.delegate 
+        
+        delegate = self
+        
+        // MARK: Progress
         
         let progressController = TestViewController()
         
-        // MARK: - History
+        // MARK: History
         
         // Embed to enable user to navigate back through stack
         let historySelectionViewController = HistorySelectionViewController()
         let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
         
-        // MARK: - Workout Tab
+        // MARK: Workout Tab
         let workoutSelectionViewController = WorkoutSelectionViewController()
         let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
         
-        // MARK: - Profile Tab
+        // MARK: Profile Tab
         let profileController = ProfileController()
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
-        // MARK: - Set up navbar
+        // MARK: Set up navbar
         viewControllers = [progressController, historyNavigationController, workoutNavigationController, profileNavigationController]
         
         progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
@@ -57,6 +65,10 @@ class CustomTabBarController: UITabBarController {
         view.addSubview(selectionIndicator)
     }
     
+    // MARK: - Methods
+    
+    // TabBarController methods
+    
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         selectionIndicator.moveToItem(item.tag, ofItemCount: (tabBar.items?.count)!)
     }
@@ -67,6 +79,13 @@ class CustomTabBarController: UITabBarController {
     
     public func showSelectionindicator() {
         selectionIndicator.isHidden = false
+    }
+    
+    // Delegate methods
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        // disable popping navigation stack on second tap
+        return viewController != tabBarController.selectedViewController
     }
 }
 
