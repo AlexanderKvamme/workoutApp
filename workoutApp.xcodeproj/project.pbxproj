@@ -248,12 +248,12 @@
 			name = ExercisePicker;
 			sourceTree = "<group>";
 		};
-		DD0EB24C1F4702F200CDA1CF /* New Group */ = {
+		DD0EB24C1F4702F200CDA1CF /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */,
 			);
-			name = "New Group";
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		DD0EB2731F48EAF700CDA1CF /* Preferences */ = {
@@ -606,7 +606,7 @@
 		DDF1F1EA1F07AAAF001A6F0C /* Exercise Tables */ = {
 			isa = PBXGroup;
 			children = (
-				DD0EB24C1F4702F200CDA1CF /* New Group */,
+				DD0EB24C1F4702F200CDA1CF /* Cells */,
 				DDF1F1F31F07E14F001A6F0C /* Exercise TableView */,
 				DD34C5781F4657850050BDB0 /* Exercise History TableView */,
 				DDF1F1F41F07E162001A6F0C /* CollectionView Cells - Lifts */,

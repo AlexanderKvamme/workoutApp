@@ -149,6 +149,8 @@ class ExerciseTableViewController: UITableViewController {
     /// Handles the long press by 'lifting' the target cell and letting the user move it around
     @objc private func longPressRecognized( _ sender: UIGestureRecognizer) {
         
+        var allowedToHideCell = true
+        
         switch sender.state {
             
         case .began:
@@ -164,7 +166,8 @@ class ExerciseTableViewController: UITableViewController {
             snapShot?.center = center
             snapShot?.alpha = 0.0
             tableView.addSubview(snapShot!)
-            UIView.animate(withDuration: 0.25, animations: {
+            
+            UIView.animate(withDuration: 0.25, animations: { 
                 // Offset for gesture location.
                 center.y = self.location.y
                 self.snapShot?.center = center
@@ -172,6 +175,11 @@ class ExerciseTableViewController: UITableViewController {
                 self.snapShot?.alpha = 0.98
                 
                 cell.alpha = 0.0
+                
+            }, completion: { finished in
+                if finished && allowedToHideCell {
+                    cell.isHidden = true
+                }
             })
             
         case .changed:
@@ -188,7 +196,7 @@ class ExerciseTableViewController: UITableViewController {
             if indexPath != sourceIndexPathTemp {
                 dataSource.swapElementsAtIndex(indexPath, withObjectAtIndex: sourceIndexPathTemp) // swap elements in datasource
                 tableView.moveSection(sourceIndexPathTemp.section, toSection: indexPath.section) // swap cells in tableView
-                sourceIndexPath = indexPath// ... and update source so it is in sync with UI changes.
+                sourceIndexPath = indexPath// update source so it is in sync with UI changes.
             }
             
         default:
@@ -198,6 +206,8 @@ class ExerciseTableViewController: UITableViewController {
             
             cell.isHidden = false
             cell.alpha = 0.0
+            
+            allowedToHideCell = false
             
             UIView.animate(withDuration: 0.25, animations: {
                 self.snapShot?.center = cell.center
