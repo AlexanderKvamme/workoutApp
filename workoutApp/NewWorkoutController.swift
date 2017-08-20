@@ -155,7 +155,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
             DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciseNames: nameOfCurrentlySelectedExercises)
             DatabaseFacade.saveContext()
         } else {
-            print(" could not make workout")
+            print("could not make workout")
         }
         navigationController?.popViewController(animated: true)
     }
@@ -168,6 +168,7 @@ class NewWorkoutController: UIViewController, isStringReceiver, isExerciseNameRe
     
     @objc private func headerTapHandler() {
         let workoutNamePicker = InputViewController(inputStyle: .text)
+        workoutNamePicker.setHeader("NAME OF YOUR WORKOUT?")
         workoutNamePicker.delegate = self
         
         receiveHandler = { s in

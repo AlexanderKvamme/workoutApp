@@ -7,15 +7,6 @@
 //
 
 import Foundation
-
-//
-//  newWorkoutController.swift
-//  workoutApp
-//
-//  Created by Alexander Kvamme on 31/05/2017.
-//  Copyright © 2017 Alexander Kvamme. All rights reserved.
-//
-
 import UIKit
 
 protocol NewExerciseReceiver: class {
@@ -150,6 +141,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     
     @objc private func headerTapHandler() {
         let workoutNamePicker = InputViewController(inputStyle: .text)
+        workoutNamePicker.setHeader("NAME OF YOUR EXERCISE?")
         workoutNamePicker.delegate = self
         
         receiveHandler = { s in

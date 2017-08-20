@@ -123,6 +123,7 @@ final class ProfileController: UIViewController {
     private func setupSettingsButton() {
         settingsButton = UIButton(frame: CGRect.zero)
         settingsButton.setImage(UIImage(named: "settingsButtonRounded"), for: .normal)
+        settingsButton.addTarget(self, action: #selector(settingsButtonHandler), for: .touchUpInside)
         view.addSubview(settingsButton)
         
         // Layout
@@ -184,6 +185,11 @@ final class ProfileController: UIViewController {
             box.deleteWarning()
             box.removeFromSuperview()
         }
+    }
+    
+    @objc private func settingsButtonHandler() {
+        let preferenceController = PreferencesViewController()
+        navigationController?.pushViewController(preferenceController, animated: true)
     }
 }
 

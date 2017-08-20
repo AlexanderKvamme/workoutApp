@@ -15,9 +15,13 @@ import UIKit
 
 class InputView: UIView {
     
-    var header = UILabel()
+    // MARK: - Properties
+    
+    private var header = UILabel()
+    private var stack = UIStackView()
     var textField = UITextField(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: 100))
-    var stack = UIStackView()
+    
+    // MARK: - Initializers
     
     init(inputStyle: CustomInputStyle) {
         super.init(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: 200))
@@ -25,7 +29,6 @@ class InputView: UIView {
         // Set Default texts
         switch inputStyle{
         case .text:
-            header.text = "NAME OF YOUR WORKOUT?"
             textField.placeholder = "Fist Pumps"
         case .time:
             header.text = "HOW MUCH TIME WILL YOU REST?"
@@ -100,9 +103,15 @@ class InputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Methods
+    
     // MARK: - Helpers
     
-    public func setDebugColors() {
+    func setHeaderText(_ str: String) {
+        header.text = str
+    }
+    
+    func setDebugColors() {
         backgroundColor = .red
         textField.backgroundColor = .green
         header.backgroundColor = .brown
