@@ -116,9 +116,10 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     // MARK: TextField Delegate Methods
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let text = textField.text {
-            sendStringBack(text)
-        }
+        guard let text = textField.text else { return }
+        
+        if text.characters.count > 0 { sendStringBack(text) }
+        
         navigationController?.popViewController(animated: true)
     }
     
