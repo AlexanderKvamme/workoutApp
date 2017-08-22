@@ -44,7 +44,7 @@ class PickerCell: UITableViewCell {
         // customize the label
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = UIColor.faded
-        // label.applyCustomAttributes(.more) // FIXME: - This one gets bugged sometimes check it out
+        label.applyCustomAttributes(.more) // FIXME: - This one gets bugged sometimes check it out
         
         setLabelConstraints()
     }

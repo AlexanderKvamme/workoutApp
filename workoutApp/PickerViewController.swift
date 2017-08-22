@@ -7,24 +7,29 @@
 //
 
 import Foundation
+import CoreData
+
 
 /*
  This PickerView is used to pick workout styles/muscles. 
  It is actually a ViewController containing a tableView. Since these are fantastically customizable.
  */
 
+
 import UIKit
 
-class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, isStringSender {
+class PickerViewController<T: pickableEntity>: UIViewController, UITableViewDelegate, UITableViewDataSource, isStringSender {
+    
+    // MARK: - Properties
     
     var table: UITableView!
     var header: TwoLabelStack!
     var footer: ButtonFooter!
     var selectedIndexPath: IndexPath?
+    var selectionChoices: [T]!
     
     let tableVerticalInset: CGFloat = 102
     
-    var selectionChoices = [String]()
     var stringToSelect: String?
     
     let cellIdentifier = "cellIdentifier"
@@ -40,71 +45,31 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     weak var delegate: isStringReceiver?
     
     func sendStringBack(_ string: String) {
-        delegate?.receive(string)
+        delegate?.receiveString(string)
     }
+
+    // MARK: - Initializers
     
-    // Initializers
-    
-    init() {
-        print("im initted without parameters")
+    init(withPicksFrom array: [pickableEntity], withPreselection preselection: String?) {
         super.init(nibName: nil, bundle: nil)
-    }
-    
-    // Initializer with choices
-    
-    init(withChoices choices: [String], withPreselection preselection: String?) {
+        
+        selectionChoices = array as! [T]
         
         if let preselection = preselection {
             self.currentlySelectedString = preselection
         }
-        selectionChoices = choices
-        
-        super.init(nibName: nil, bundle: nil)
-        setupHeader()
-        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup
-        view.backgroundColor = UIColor.light
-        hidesBottomBarWhenPushed = true
-        
-        // Header
-
-        view.addSubview(header)
-        
-        // Table
-        table = UITableView(frame: CGRect(x: inset,
-                                          y: header.frame.maxY + 50,
-                                          width: screenWidth - 2*inset,
-                                          height: 200))
-        table.reloadData()
-        
-        // MARK: - Table setup
-        
-        // Table
-        table.register(PickerCell.self, forCellReuseIdentifier: cellIdentifier)
-        table.backgroundColor = .clear
-        
-        table.dataSource = self
-        table.delegate = self
-        
-        view.addSubview(table)
-        
-        // Footer
-        footer = ButtonFooter(withColor: .secondary)
-        footer.frame.origin.y = Constant.UI.height - footer.frame.height
-        footer.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
-        footer.approveButton.addTarget(self, action: #selector(confirmAndDismiss), for: .touchUpInside)
-        
-        view.addSubview(footer)
-        
+        setupView()
+        setupFooter()
         setupTable()
         
         // preselection
@@ -116,20 +81,19 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         view.setNeedsLayout()
     }
     
-    // MARK: - Data Source
+    // MARK: - Methods
+    // MARK: Data Source
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PickerCell
         configure(cell, forIndexPath: indexPath)
-        cell.label.text = selectionChoices[indexPath.row].uppercased()
+        cell.label.text = selectionChoices[indexPath.row].name
         cell.label.applyCustomAttributes(.more)
         cell.sizeToFit()
         return cell
     }
     
     func configure(_ cell: PickerCell, forIndexPath indexPath: IndexPath) {
-     
         if selectedIndexPath == indexPath {
             cell.label.font = fontWhenSelected
             cell.label.textColor = textColorWhenSelected
@@ -139,7 +103,7 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    // MARK: - TableView Delegate methods
+    // MARK: TableView Delegate methods
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 30
@@ -173,18 +137,32 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return 1
     }
     
-    // MARK: - Helpers
+    // MARK: Helpers
+    
+    private func setupView() {
+        setupHeader()
+        hidesBottomBarWhenPushed = true
+        view.backgroundColor = UIColor.light
+    }
+    
+    private func setupFooter() {
+        footer = ButtonFooter(withColor: .secondary)
+        footer.frame.origin.y = Constant.UI.height - footer.frame.height
+        footer.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        footer.approveButton.addTarget(self, action: #selector(confirmAndDismiss), for: .touchUpInside)
+        
+        view.addSubview(footer)
+    }
     
     private func setupHeader() {
-        let headerFrame = CGRect(x: 0, y: 50,
-                                 width: Constant.UI.width,
-                                 height: 100)
+        let headerFrame = CGRect(x: 0, y: 50, width: Constant.UI.width, height: 100)
         header = TwoLabelStack(frame: headerFrame,
                                topText: "SELECT",
                                topFont: .custom(style: .bold, ofSize: .big),
                                topColor: .secondary,
                                bottomText: "",
                                bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .black, fadedBottomLabel: false)
+        view.addSubview(header)
     }
     
     func setHeaderTitle(_ newTitle: String) {
@@ -192,6 +170,17 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func setupTable() {
+        table = UITableView(frame: CGRect(x: inset, y: header.frame.maxY + 50, width: screenWidth - 2*inset, height: 200))
+        table.reloadData()
+        
+        table.register(PickerCell.self, forCellReuseIdentifier: cellIdentifier)
+        table.backgroundColor = .clear
+        
+        table.dataSource = self
+        table.delegate = self
+        
+        view.addSubview(table)
+        
         table.translatesAutoresizingMaskIntoConstraints = false
         table.clipsToBounds = true
         table.allowsMultipleSelection = false
@@ -202,8 +191,8 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let tableTopConstraint = table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 0)
         
         NSLayoutConstraint.activate([
-            tableBotConstraint,
             tableTopConstraint,
+            tableBotConstraint,
             table.widthAnchor.constraint(equalToConstant: screenWidth),
             ])
         
@@ -225,7 +214,6 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
             table.contentInset = UIEdgeInsets(top: verticalOffset, left: 0, bottom: verticalOffset, right: 0)
         } else if contentHeight > tableHeight {
             // If you have to scroll anyways, make insets to center content in the screen to make it look nicer
-            
             tableBotConstraint.constant = -tableVerticalInset
             tableTopConstraint.constant = tableVerticalInset
             table.updateConstraints()
@@ -234,11 +222,17 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func selectRow(withString string: String) {
         
-        if let indexOfA = selectionChoices.index(of: string) {
-            let ip = IndexPath(row: indexOfA, section: 0)
-            table.selectRow(at: ip, animated: false, scrollPosition: .none)
-            selectedIndexPath = ip
+        guard let indexOfString = selectionChoices.index(where: { (pickableEntity) -> Bool in
+            guard let name = pickableEntity.name else { return false }
+            print("tryna select: ", name)
+            return name == string
+        }) else {
+            return
         }
+        // find index of the one 
+        let ip = IndexPath(row: indexOfString, section: 0)
+        table.selectRow(at: ip, animated: false, scrollPosition: .none)
+        selectedIndexPath = ip
     }
     
     func setDebugColors() {
@@ -250,12 +244,12 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func drawDiagonalLineThroughTable() {
         let v = UIView(frame: table.frame)
         v.frame.size = CGSize(width: v.frame.height - 200, height:  v.frame.width - 200)
-        v.center.y = table.center.y + CGFloat(tableVerticalInset)
+        v.center.y = table.center.y + 75
         v.center.x = table.center.x
         drawDiagonalLineThrough(v, inView: view)
     }
     
-    // MARK: - Selectors
+    // MARK: Selectors
     
     func dismissView() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
@@ -263,9 +257,9 @@ class PickerViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func confirmAndDismiss() {
         if let currentlySelectedString = currentlySelectedString {
-            delegate?.receive(currentlySelectedString)
+            delegate?.receiveString(currentlySelectedString)
         } else {
-            delegate?.receive("NORMAL")
+            delegate?.receiveString("NORMAL")
         }
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }

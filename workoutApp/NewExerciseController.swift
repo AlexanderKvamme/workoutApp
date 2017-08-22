@@ -13,9 +13,10 @@ protocol NewExerciseReceiver: class {
     func receiveNewExercise(_ exercise: Exercise)
 }
 
-class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameReceiver {
-    
-    var receiveHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of muscle/type/weight/time pickers
+class NewExerciseController: UIViewController, isExerciseReceiver, isStringReceiver {
+    var receiveExercises: (([Exercise]) -> ()) = { _ in }
+
+    var stringReceivedHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of muscle/type/weight/time pickers
     
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
@@ -144,7 +145,7 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
         workoutNamePicker.setHeader("NAME OF YOUR EXERCISE?")
         workoutNamePicker.delegate = self
         
-        receiveHandler = { s in
+        stringReceivedHandler = { s in
             self.header.bottomLabel.text = s
         }
         navigationController?.pushViewController(workoutNamePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
@@ -152,22 +153,16 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
-        let currentlySelectedType = typeSelecter.bottomLabel.text
-//        let exerciseStyles = DatabaseController.fetchManagedObjectsForEntity(.ExerciseStyle) as! [ExerciseStyle]
+        let currentlySelectedExerciseType = typeSelecter.bottomLabel.text
         let exerciseStyles = DatabaseFacade.fetchExerciseStyles()
-        var exerciseNames = [String]()
         
-        for ws in exerciseStyles {
-            if let name = ws.name {
-                exerciseNames.append(name)
-            }
-        }
-        
-        let typePicker = PickerViewController(withChoices: exerciseNames, withPreselection: currentlySelectedType)
+        // let typePicker = PickerViewController(withChoices: exerciseNames, withPreselection: currentlySelectedType)
+        // let typePicker = PickerViewController(pickFrom: exerciseStyles, withPreselection: currentlySelectedType)
+        let typePicker = PickerViewController<ExerciseStyle>(withPicksFrom: exerciseStyles, withPreselection: currentlySelectedExerciseType)
         typePicker.delegate = self
         
         // When receivng a selection of workout type
-        receiveHandler = { s in
+        stringReceivedHandler = { s in
             self.typeSelecter.bottomLabel.text = s
         }
         navigationController?.pushViewController(typePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
@@ -176,21 +171,15 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
         let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
-        var muscleNames = [String]()
         // Fetch unique muscles
         let musclesFromCoreData = DatabaseFacade.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
         
-        for m in musclesFromCoreData {
-            if let name = m.name {
-                muscleNames.append(name.uppercased() )
-            }
-        }
-        
-        let musclePicker = PickerViewController(withChoices: muscleNames, withPreselection: currentlySelectedMuscle)
+        let musclePicker = PickerViewController<Muscle>(withPicksFrom: musclesFromCoreData,
+                                                withPreselection: currentlySelectedMuscle)
         musclePicker.delegate = self
         
         // When receiving a selection of workout musclegroup
-        receiveHandler = {
+        stringReceivedHandler = {
             s in
             self.muscleSelecter.bottomLabel.text = s
         }
@@ -199,19 +188,12 @@ class NewExerciseController: UIViewController, isStringReceiver, isExerciseNameR
     
     @objc private func measurementTapHandler() {
         let currentlySelectedMeasurement = measurementSelecter.bottomLabel.text
-        var measurementNames = [String]()
         
         let measurementsFromCoreData = DatabaseFacade.fetchManagedObjectsForEntity(.MeasurementStyle) as! [MeasurementStyle]
         
-        for measurementStyle in measurementsFromCoreData {
-            if let name = measurementStyle.name {
-                measurementNames.append(name)
-            }
-        }
-        
-        let measurementStylePicker = PickerViewController(withChoices: measurementNames, withPreselection: currentlySelectedMeasurement)
+        let measurementStylePicker = PickerViewController<MeasurementStyle>(withPicksFrom: measurementsFromCoreData, withPreselection: currentlySelectedMeasurement)
         measurementStylePicker.delegate = self
-        receiveHandler = {
+        stringReceivedHandler = {
             s in
             print("received back: ", s)
             self.measurementSelecter.bottomLabel.text = s

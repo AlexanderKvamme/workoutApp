@@ -225,6 +225,24 @@ final class DatabaseFacade {
         }
     }
     
+    // DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciss: currentlySelectedExercises)
+    static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exercises: [Exercise]) {
+        
+        // FIXME: - This method should ultimately not receive any strings other than workoutName, the rest should be actual values
+        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
+        let muscle = DatabaseFacade.getMuscle(named: muscleName)
+        let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
+        
+        workoutRecord.name = workoutName
+        workoutRecord.muscleUsed = muscle
+        workoutRecord.workoutStyle = workoutStyle
+        
+        // Add Exercises to the Workout
+        for exercise in exercises {
+            workoutRecord.addToExercises(exercise)
+        }
+    }
+    
     // MARK: - Fetch/get methods
     
     static func fetchManagedObjectsForEntity(_ entity: Entity) -> [NSManagedObject] {

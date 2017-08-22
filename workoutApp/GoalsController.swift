@@ -18,7 +18,7 @@ class GoalsController: UIViewController, isStringReceiver {
     private var goals: [Goal]?
     private var stackOfGoalButtons: UIStackView = UIStackView()
     
-    var receiveHandler: ((String) -> Void) = { _ in }
+    var stringReceivedHandler: ((String) -> Void) = { _ in }
     
     // MARK: - Initializers
     
@@ -162,7 +162,7 @@ class GoalsController: UIViewController, isStringReceiver {
     }
     
     private func setupReceiveHandler() {
-        receiveHandler = { str in
+        stringReceivedHandler = { str in
             let goal = DatabaseFacade.makeGoal()
             goal.dateMade = Date() as NSDate
             goal.text = str

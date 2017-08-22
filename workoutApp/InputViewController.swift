@@ -140,7 +140,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     // MARK: isStringSender protocol requirements
     
     func sendStringBack(_ string: String) {
-        delegate?.receive(string)
+        delegate?.receiveString(string)
     }
     
     // MARK: API
