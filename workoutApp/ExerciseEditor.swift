@@ -158,7 +158,6 @@ final class ExerciseEditor: UIViewController {
         guard let styleName = exercise.style?.name else {
             print("ERROR: exercise had no styleName")
             fatalError()
-            return
         }
         // Type selecter
         self.exerciseStyleSelecter = PickerLabelStack(topText: "TYPE", bottomText: styleName)

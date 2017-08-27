@@ -451,12 +451,12 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DDD290A61EDCCD1500048BC9 /* TestViewController */,
 				DD0D42D21F4CCE4B00502C02 /* Editors */,
 				DD0D42D11F4CCE2900502C02 /* Components */,
 				DD06118D1F4B013300AEACCF /* Pickers */,
 				DD0EB2731F48EAF700CDA1CF /* Preferences */,
 				DD34C5791F46579E0050BDB0 /* TableViews */,
-				DDD290A61EDCCD1500048BC9 /* TestViewController */,
 				DD7600461EDF23E900871DD8 /* New Workout / Exercise */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DD98A5021F13AAAE002985BF /* Custom Keyboard */,

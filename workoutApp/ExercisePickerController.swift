@@ -168,7 +168,10 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
     func removeFromDataSource(exercise: Exercise) {
     
         print("\n pre removal")
-        print("selectedExercises: ", selectedExercises)
+        print("selectedExercises: ")
+        for e in selectedExercises {
+            print(e.name)
+        }
         print("selectedIndexPaths: ", selectedIndexPaths)
         
         print("selectedExercises count: ", selectedExercises.count)
@@ -184,7 +187,10 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
             }
             
             print("\n AFTER removal")
-            print("selectedExercises: ", selectedExercises)
+            print("selectedExercises: ")
+            for e in selectedExercises {
+                print(e.name)
+            }
             print("selectedIndexPaths: ", selectedIndexPaths)
             
             print("selectedExercises count: ", selectedExercises.count)
@@ -206,7 +212,6 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
     // MARK: Helper methods
     
     func addNewExerciseButton() {
-        let width: CGFloat = 25
         
         let img = UIImage(named: "newButton")?.withRenderingMode(.alwaysTemplate)
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
@@ -220,8 +225,8 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
-            button.heightAnchor.constraint(equalToConstant: width),
-            button.widthAnchor.constraint(equalToConstant: width),
+            button.heightAnchor.constraint(equalToConstant: 25),
+            button.widthAnchor.constraint(equalToConstant: 25),
             ])
         
         // On tap: present newExerciseController
