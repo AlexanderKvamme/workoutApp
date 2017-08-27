@@ -2,7 +2,7 @@
 //  ExerciseStyle+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 16/08/2017.
+//  Created by Alexander Kvamme on 26/08/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -17,6 +17,23 @@ extension ExerciseStyle {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var usedInExercises: Exercise?
+    @NSManaged public var usedInExercises: NSSet?
+
+}
+
+// MARK: Generated accessors for usedInExercises
+extension ExerciseStyle {
+
+    @objc(addUsedInExercisesObject:)
+    @NSManaged public func addToUsedInExercises(_ value: Exercise)
+
+    @objc(removeUsedInExercisesObject:)
+    @NSManaged public func removeFromUsedInExercises(_ value: Exercise)
+
+    @objc(addUsedInExercises:)
+    @NSManaged public func addToUsedInExercises(_ values: NSSet)
+
+    @objc(removeUsedInExercises:)
+    @NSManaged public func removeFromUsedInExercises(_ values: NSSet)
 
 }

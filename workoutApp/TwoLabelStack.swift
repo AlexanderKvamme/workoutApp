@@ -8,22 +8,19 @@
 
 import UIKit
 
+// MARK: - Class
+
+/// Stack of a topLabel and a bottomlabel, with a button
 class TwoLabelStack: UIView {
     
-    /*
-     Stack of a topLabel and a bottomlabel, with a button
-     */
-    
+    // MARK: - Properties
+
     var topLabel: UILabel!
-    var bottomLabel: UILabel! {
-        didSet {
-            print("bottomLabel didSet")
-        }
-    }
     var button: UIButton!
     var verticalStack = UIStackView()
+    var bottomLabel: UILabel!
     
-    // MARK: - Init
+    // MARK: - Initializers
     
     init(frame: CGRect, topText: String, topFont: UIFont, topColor: UIColor, bottomText: String, bottomFont: UIFont, bottomColor: UIColor, fadedBottomLabel: Bool) {
         super.init(frame: frame)
@@ -71,7 +68,9 @@ class TwoLabelStack: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Helpers
+    // MARK: - Life Cycle
+    
+    // MARK: - Methods
     
     private func setup(){
         setupStack()
@@ -114,6 +113,16 @@ class TwoLabelStack: UIView {
             button.rightAnchor.constraint(equalTo: rightAnchor),
             ])
         setNeedsLayout()
+    }
+    
+    // MARK: public methods
+    
+    public func setBottomText(_ str: String) {
+        bottomLabel.text = str
+    }
+    
+    public func getBottomText() -> String {
+        return bottomLabel.text ?? "NO TEXT"
     }
     
     public func setDebugColors() {

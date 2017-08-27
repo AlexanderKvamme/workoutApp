@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Exercise" representedClassName="Exercise" syncable="YES">
-        <attribute name="muscle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="loggedInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="exerciseDesign" inverseEntity="ExerciseLog" syncable="YES"/>
         <relationship name="measurementStyle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MeasurementStyle" inverseName="usedInExercises" inverseEntity="MeasurementStyle" syncable="YES"/>
         <relationship name="musclesUsed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInExercises" inverseEntity="Muscle" syncable="YES"/>
@@ -18,7 +16,7 @@
     </entity>
     <entity name="ExerciseStyle" representedClassName="ExerciseStyle" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="style" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="usedInExercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="style" inverseEntity="Exercise" syncable="YES"/>
     </entity>
     <entity name="Goal" representedClassName="Goal" syncable="YES">
         <attribute name="dateMade" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -64,7 +62,7 @@
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="workoutStyle" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Exercise" positionX="-396" positionY="3591" width="128" height="165"/>
+        <element name="Exercise" positionX="-396" positionY="3591" width="128" height="135"/>
         <element name="ExerciseLog" positionX="-461" positionY="3900" width="128" height="105"/>
         <element name="ExerciseStyle" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Goal" positionX="-450" positionY="3726" width="128" height="75"/>

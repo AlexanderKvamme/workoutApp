@@ -31,6 +31,31 @@ final class DatabaseFacade {
         return DatabaseFacade.persistentContainer.viewContext
     }()
     
+    // Defaults
+    
+    // TODO: Make sure defaultMuscle and defaultExerciseStyle are not deletebale
+    
+    static var defaultMuscle: Muscle = {
+        // return undefined
+        let defaultMuscle = getMuscle(named: "UNDEFINED")!
+        return defaultMuscle
+    }()
+    
+    static var defaultExerciseStyle: ExerciseStyle = {
+        let style = getExerciseStyle(named: "NORMAL")!
+        return style
+    }()
+
+    static var defaultWorkoutStyle: WorkoutStyle = {
+        let style = getWorkoutStyle(named: "NORMAL")!
+        return style
+    }()
+    
+    static var defaultMeasurementStyle: MeasurementStyle = {
+        let style = getMeasurementStyle(named: "SETS")!
+        return style
+    }()
+    
     // MARK: - Methods
     
     // MARK: - Counting methods
@@ -179,7 +204,7 @@ final class DatabaseFacade {
     
     static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
         
-        let newExercise = createManagedObjectForEntity(.Exercise) as! Exercise
+        let newExercise = makeExercise()
         
         // Fetch correct type, muscle, measurement style from Core Data
         
@@ -188,6 +213,18 @@ final class DatabaseFacade {
         let measurementStyle = DatabaseFacade.getMeasurementStyle(named: measurementStyleName)
         
         newExercise.name = exerciseName
+        newExercise.musclesUsed = muscle
+        newExercise.style = exerciseStyle
+        newExercise.measurementStyle = measurementStyle
+        
+        return newExercise
+    }
+    
+    static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscle: Muscle, measurementStyle: MeasurementStyle) -> Exercise {
+        
+        let newExercise = makeExercise()
+        
+        newExercise.name = name
         newExercise.musclesUsed = muscle
         newExercise.style = exerciseStyle
         newExercise.measurementStyle = measurementStyle
@@ -272,6 +309,12 @@ final class DatabaseFacade {
     static func fetchMuscles() -> [Muscle] {
         let muscles = fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
         return muscles
+    }
+    
+    // fetch MeasurementStyles
+    static func fetchMeasurementStyles() -> [MeasurementStyle] {
+        let measurements = fetchManagedObjectsForEntity(.MeasurementStyle) as! [MeasurementStyle]
+        return measurements
     }
     
     // fetch Goals

@@ -27,6 +27,8 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         // MARK: Progress
         
         let progressController = TestViewController()
+//        let testExercises = DatabaseFacade.fetchExercise(named: "THE UNDEFINED")!
+//        let progressController = ExerciseEditor(for: testExercises)
         
         // MARK: History
         

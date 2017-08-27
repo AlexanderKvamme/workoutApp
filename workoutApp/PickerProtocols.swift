@@ -47,3 +47,4 @@ extension isExerciseReceiver {
         receiveExercises(exercises)
     }
 }
+

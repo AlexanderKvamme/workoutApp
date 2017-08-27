@@ -16,7 +16,7 @@ import CoreData
 final class DataSeeder {
     
     typealias DummyWorkout = (name: String, muscle: Muscle, type: String)
-    typealias DummyExercise = (name: String, muscle: Muscle, plannedSets: Int16, type: String)
+    typealias DummyExercise = (name: String, muscle: Muscle, plannedSets: Int16, type: ExerciseStyle)
     
     private let context: NSManagedObjectContext
     
@@ -51,6 +51,7 @@ final class DataSeeder {
         // Workouts
         let backMuscle = DatabaseFacade.getMuscle(named: "BACK")!
         let armsMuscle = DatabaseFacade.getMuscle(named: "ARMS")!
+        let style = DatabaseFacade.getExerciseStyle(named: "Drop Set")!
         
         let backWorkoutDropSet: DummyWorkout = (name: "Back", muscle: backMuscle, type: "Drop Set")
         let backWorkoutNormal: DummyWorkout = (name: "Back", muscle: backMuscle, type: "Normal")
@@ -60,35 +61,35 @@ final class DataSeeder {
         
         // Back - Drop set
         let exercisesForBackDropSet: [DummyExercise] = [
-            (name: "Pullup", muscle: backMuscle, plannedSets: 4, type: typeString),
-            (name: "Backflip", muscle: backMuscle, plannedSets: 3, type: typeString),
-            (name: "Muscleup", muscle: backMuscle, plannedSets: 3, type: typeString),
-            (name: "Bridge", muscle: backMuscle, plannedSets: 3, type: typeString),
-            (name: "Back Extension", muscle: backMuscle, plannedSets: 3, type: typeString),
-            (name: "Inverted Flies", muscle: backMuscle, plannedSets: 3, type: typeString),]
+            (name: "Pullup", muscle: backMuscle, plannedSets: 4, type: style),
+            (name: "Backflip", muscle: backMuscle, plannedSets: 3, type: style),
+            (name: "Muscleup", muscle: backMuscle, plannedSets: 3, type: style),
+            (name: "Bridge", muscle: backMuscle, plannedSets: 3, type: style),
+            (name: "Back Extension", muscle: backMuscle, plannedSets: 3, type: style),
+            (name: "Inverted Flies", muscle: backMuscle, plannedSets: 3, type: style),]
         
         // Back - Normal
         typeString = CDModels.workout.type.normal.rawValue
         
         let exercisesForBackNormal: [DummyExercise] = [
-            (name: "Pull ups", muscle: backMuscle, plannedSets: 2, type: typeString),
-            (name: "Australian pull ups", muscle: backMuscle, plannedSets: 2, type: typeString),
-            (name: "Chin ups", muscle: backMuscle, plannedSets: 1, type: typeString),
-            (name: "Australian chin ups", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Pull ups", muscle: backMuscle, plannedSets: 2, type: style),
+            (name: "Australian pull ups", muscle: backMuscle, plannedSets: 2, type: style),
+            (name: "Chin ups", muscle: backMuscle, plannedSets: 1, type: style),
+            (name: "Australian chin ups", muscle: backMuscle, plannedSets: 1, type: style),
             ]
         
         // Arms - Normal
         typeString = CDModels.workout.type.dropSet.rawValue
         
         let exercisesForBicepsAndTricepsDropSet: [DummyExercise] = [
-            (name: "Bicep Curls", muscle: backMuscle, plannedSets: 2, type: typeString),
-            (name: "Hammer Curls", muscle: backMuscle, plannedSets: 2, type: typeString),
-            (name: "Fist pumps", muscle: backMuscle, plannedSets: 1, type: typeString),
-            (name: "Bicep Pumps", muscle: backMuscle, plannedSets: 1, type: typeString),
-            (name: "Biceps Flex", muscle: backMuscle, plannedSets: 1, type: typeString),
-            (name: "Chin Ups", muscle: backMuscle, plannedSets: 1, type: typeString),
-            (name: "Chin up negatives", muscle: backMuscle, plannedSets: 1, type: typeString),
-            (name: "Australian chin ups", muscle: backMuscle, plannedSets: 1, type: typeString),
+            (name: "Bicep Curls", muscle: backMuscle, plannedSets: 2, type: style),
+            (name: "Hammer Curls", muscle: backMuscle, plannedSets: 2, type: style),
+            (name: "Fist pumps", muscle: backMuscle, plannedSets: 1, type: style),
+            (name: "Bicep Pumps", muscle: backMuscle, plannedSets: 1, type: style),
+            (name: "Biceps Flex", muscle: backMuscle, plannedSets: 1, type: style),
+            (name: "Chin Ups", muscle: backMuscle, plannedSets: 1, type: style),
+            (name: "Chin up negatives", muscle: backMuscle, plannedSets: 1, type: style),
+            (name: "Australian chin ups", muscle: backMuscle, plannedSets: 1, type: style),
             ]
         
         // Seed into Core Data
@@ -156,10 +157,9 @@ final class DataSeeder {
             let exerciseRecord = DatabaseFacade.makeExercise()
             
             exerciseRecord.name = exercise.name
-            exerciseRecord.muscle = exercise.muscle.name
-            
+            exerciseRecord.style = exercise.type
             exerciseRecord.musclesUsed = exercise.muscle
-            exerciseRecord.type = exercise.type
+            exerciseRecord.style = exercise.type
             exerciseRecord.addToUsedInWorkouts(workoutRecord)
             
             // Simulate this exercise having been used
@@ -319,8 +319,8 @@ final class DataSeeder {
             for exercise in allExercises {
                 print()
                 print("Name: ", exercise.name ?? "")
-                print("Muscle: ", exercise.muscle ?? "")
-                print("Type: ", exercise.type ?? "")
+                print("Muscle: ", exercise.musclesUsed?.name ?? "")
+                print("Type: ", exercise.style?.name ?? "")
             }
         } catch {
             print("error in printing exercises")

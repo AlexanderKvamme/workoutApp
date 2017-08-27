@@ -81,6 +81,10 @@ enum Constant {
             }
         }
         
+        enum PickerLabelStack {
+            static let height: CGFloat = 150
+        }
+        
         enum SelectionVC {
             enum Header {
                 static let spacingTop: CGFloat = 100
@@ -89,6 +93,13 @@ enum Constant {
             enum Stack {
                 static let spacing: CGFloat = 15
             }
+        }
+        
+        enum exerciseTableCells {
+            static let fontWhenSelected = UIFont.custom(style: .bold, ofSize: .big)
+            static let fontWhenDeselected = UIFont.custom(style: .bold, ofSize: .medium)
+            static let textColorWhenSelected = UIColor.darkest
+            static let textColorWhenDeselected = UIColor.faded
         }
     }
     enum Animation {

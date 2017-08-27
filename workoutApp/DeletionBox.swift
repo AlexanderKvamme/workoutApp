@@ -1,19 +1,25 @@
-
+//
+//  DeletionBox.swift
+//  workoutApp
+//
+//  Created by Alexander Kvamme on 23/08/2017.
+//  Copyright © 2017 Alexander Kvamme. All rights reserved.
+//
 
 import Foundation
 import UIKit
 
-class Warningbox: Box {
+// MARK: Class
+
+class DeletionBox: Box {
     
     // MARK: - Properties
     
-    var warning: Warning? = nil
-    
     // MARK: - Initializers
     
-    init(withWarning newWarning: Warning) {
+    init(withText text: String) {
         
-        let boxFactory = BoxFactory.makeFactory(type: .WarningBox)
+        let boxFactory = BoxFactory.makeFactory(type: .DeletionBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
         let boxFrame = boxFactory.makeBoxFrame()
@@ -22,11 +28,7 @@ class Warningbox: Box {
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         setupBoxFrameUsingAutolayout()
         
-        self.warning = newWarning
-        
-        if let message = warning?.message {
-            setMessage(message)
-        }
+        boxContent?.messageLabel?.text = "DELETE"
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -35,15 +37,14 @@ class Warningbox: Box {
     
     // MARK: - Methods
     
-    func getWarning() -> Warning? {
-        if warning != nil { return warning } else { return nil }
-    }
-    
     private func setupBoxFrameUsingAutolayout() {
         // check if the frame supports autolayout ( only warning box does int he first place), and if so, set i up real nice.
         let contentInsets: CGFloat = 10
         
-        guard let content = content else { return }
+        guard let content = content else {
+            print("no content")
+            return
+        }
         
         // setup boxFrame
         if boxFrame.usesAutoLayout { // har nå kun WarningBoxFrame - Senere vil jeg sette alle opp med autolayout
@@ -52,8 +53,8 @@ class Warningbox: Box {
             NSLayoutConstraint.activate([
                 boxFrame.leftAnchor.constraint(equalTo: leftAnchor),
                 boxFrame.topAnchor.constraint(equalTo: topAnchor),
-                boxFrame.widthAnchor.constraint(equalToConstant: Constant.UI.width),
-                boxFrame.heightAnchor.constraint(greaterThanOrEqualToConstant: 50),
+                boxFrame.widthAnchor.constraint(equalToConstant: Constant.UI.width/2),
+                boxFrame.heightAnchor.constraint(greaterThanOrEqualToConstant: 10),       
                 ])
         }
         
@@ -79,16 +80,19 @@ class Warningbox: Box {
             leftAnchor.constraint(equalTo: boxFrame.leftAnchor),
             rightAnchor.constraint(equalTo: boxFrame.rightAnchor),
             ])
-    }
-    
-    func setMessage(_ message: String) {
-        content?.messageLabel?.text = message.uppercased()
-    }
-    
-    func deleteWarning() {
-        if let warning = warning {
-            DatabaseFacade.delete(warning)
-        }
+        
+        // setup button
+        
+        button = UIButton()
+        addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            button.leftAnchor.constraint(equalTo: boxFrame.leftAnchor),
+            button.rightAnchor.constraint(equalTo: boxFrame.rightAnchor),
+            button.topAnchor.constraint(equalTo: boxFrame.topAnchor),
+            button.bottomAnchor.constraint(equalTo: boxFrame.bottomAnchor),
+            ])
     }
 }
 

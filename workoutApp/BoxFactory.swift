@@ -18,6 +18,7 @@ public enum BoxType {
     case SelectionBox
     case WarningBox
     case ExerciseProgressBox
+    case DeletionBox
 }
 
 public class BoxFactory {
@@ -54,6 +55,8 @@ public class BoxFactory {
             factory = ExerciseProgressBoxFactory()
         case .WarningBox:
             factory = WarningBoxFactory()
+        case .DeletionBox:
+            factory = DeletionBoxFactory()
         }
         return factory
     }
@@ -177,6 +180,27 @@ fileprivate class WarningBoxFactory: BoxFactory {
     
     public override func makeBoxContent() -> BoxContent? {
         return WarningBoxContent()
+    }
+}
+
+// Deletion Box Factory
+
+fileprivate class DeletionBoxFactory: BoxFactory {
+    
+    public override func makeBoxHeader() -> BoxHeader? {
+        return nil
+    }
+    
+    public override func makeBoxSubHeader() -> BoxSubHeader? {
+        return nil
+    }
+    
+    public override func makeBoxFrame() -> BoxFrame? {
+        return DeletionBoxFrame()
+    }
+    
+    public override func makeBoxContent() -> BoxContent? {
+        return DeletionBoxContent()
     }
 }
 
@@ -612,6 +636,46 @@ fileprivate class WarningBoxContent: BoxContent {
     }
 }
 
+// MARK: DeletionBoxContent
+
+fileprivate class DeletionBoxContent: BoxContent {
+    
+    // Initializers
+    
+    init() {
+        super.init(frame: CGRect.zero)
+        let horizontalInsets: CGFloat = 10
+        
+        usesAutoLayout = true
+        
+        // The message
+        messageLabel = UILabel(frame: CGRect.zero)
+        guard let messageLabel = messageLabel else { return }
+        addSubview(messageLabel)
+        
+        messageLabel.font = UIFont.custom(style: .bold, ofSize: .big)
+        messageLabel.textColor = .light
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.text = "Message".uppercased()
+        messageLabel.applyCustomAttributes(.more)
+        
+        // Message Layout
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            messageLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: horizontalInsets),
+            messageLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -horizontalInsets),
+            messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            ])
+        messageLabel.setContentCompressionResistancePriority(1000, for: .vertical)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 // MARK: - BoxFrames
 
 /// Boxframe is a class that contains a background and a shimmer. Both are inset from the class itself, so that the class can be set to the edges of wherever you want to display it, and it automatically shows insets.
@@ -698,6 +762,54 @@ fileprivate class SelectionBoxFrame: BoxFrame {
         // Add a button to be placed over the BoxFrame, to allow user input
         let button = UIButton(frame: frame)
         addSubview(button)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class DeletionBoxFrame: BoxFrame {
+    
+    override init(){
+        super.init()
+        
+        usesAutoLayout = true // Lets Box class get set up using auto layout only for the warningBoxFrame, and eventually for all of them
+        
+        // Colored view behind shimmer
+        background.frame = CGRect.zero
+        background.backgroundColor = .secondary
+        
+        // Shimmer
+        let backgroundInset: CGFloat = 5
+        
+        shimmer.frame = CGRect.zero
+        frame.size = CGSize.zero
+        
+        addSubview(background)
+        addSubview(shimmer)
+        bringSubview(toFront: shimmer)
+        
+        // Set up background and shimmer to fill frame of the boxFrame, but with insets
+        translatesAutoresizingMaskIntoConstraints = false
+        shimmer.translatesAutoresizingMaskIntoConstraints = false
+        background.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Background
+        NSLayoutConstraint.activate([
+            background.topAnchor.constraint(equalTo: topAnchor, constant: backgroundInset),
+            background.leftAnchor.constraint(equalTo: leftAnchor, constant: backgroundInset),
+            background.rightAnchor.constraint(equalTo: rightAnchor, constant: -backgroundInset),
+            background.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -backgroundInset),
+            ])
+        
+        // Shimmer
+        NSLayoutConstraint.activate([
+            shimmer.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: -backgroundInset),
+            shimmer.topAnchor.constraint(equalTo: background.topAnchor, constant: backgroundInset),
+            shimmer.leftAnchor.constraint(equalTo: background.leftAnchor, constant: backgroundInset),
+            shimmer.rightAnchor.constraint(equalTo: background.rightAnchor, constant: -backgroundInset),
+            ])
     }
     
     required public init?(coder aDecoder: NSCoder) {

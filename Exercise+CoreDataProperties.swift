@@ -2,7 +2,7 @@
 //  Exercise+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 16/08/2017.
+//  Created by Alexander Kvamme on 26/08/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -16,9 +16,7 @@ extension Exercise {
         return NSFetchRequest<Exercise>(entityName: "Exercise")
     }
 
-    @NSManaged public var muscle: String?
     @NSManaged public var name: String?
-    @NSManaged public var type: String?
     @NSManaged public var loggedInstances: NSSet?
     @NSManaged public var measurementStyle: MeasurementStyle?
     @NSManaged public var musclesUsed: Muscle?

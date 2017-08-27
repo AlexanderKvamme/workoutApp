@@ -8,14 +8,14 @@
 
 import Foundation
 
-@objc protocol pickableEntity {
+@objc protocol PickableEntity {
     @objc var name: String? { get set }
 }
 
 // Extend entities
 
-extension MeasurementStyle: pickableEntity {}
-extension ExerciseStyle: pickableEntity {}
-extension Muscle: pickableEntity {}
-extension WorkoutStyle: pickableEntity {}
-extension Exercise: pickableEntity {}
+extension MeasurementStyle: PickableEntity {}
+extension ExerciseStyle: PickableEntity {}
+extension Muscle: PickableEntity {}
+extension WorkoutStyle: PickableEntity {}
+extension Exercise: PickableEntity {}

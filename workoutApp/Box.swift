@@ -3,6 +3,8 @@
 import Foundation
 import UIKit
 
+// Class
+
 public class Box: UIView {
     
     // MARK: - Properties

@@ -14,9 +14,11 @@ protocol NewExerciseReceiver: class {
 }
 
 class NewExerciseController: UIViewController, isExerciseReceiver, isStringReceiver {
+    
+    // MARK: - Properties
+    
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
-
-    var stringReceivedHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of muscle/type/weight/time pickers
+    var stringReceivedHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of name/time pickers
     
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
@@ -25,19 +27,30 @@ class NewExerciseController: UIViewController, isExerciseReceiver, isStringRecei
     var typeSelecter: TwoLabelStack!
     var muscleSelecter: TwoLabelStack!
     var measurementSelecter: TwoLabelStack!
-    var nameOfCurrentlySelectedExercises = [String]()
-    var preselectedMuscle: Muscle? = nil
+
+    fileprivate var currentExerciseStyle: ExerciseStyle!
+    fileprivate var currentMuscle: Muscle!
+    fileprivate var currentMeasurementStyle: MeasurementStyle!
     
     weak var exercisePickerDelegate: NewExerciseReceiver?
+    
+    // MARK: - Initializers
     
     init(withPreselectedMuscle muscle: Muscle?) {
         super.init(nibName: nil, bundle: nil)
         
-        preselectedMuscle = muscle
+        currentMuscle = muscle ?? DatabaseFacade.defaultMuscle
+        currentMeasurementStyle = DatabaseFacade.defaultMeasurementStyle
+        currentExerciseStyle = DatabaseFacade.defaultExerciseStyle
+        
         hidesBottomBarWhenPushed = true
     }
     
-    // MARK: - ViewWillAppear
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Life Cycle
     
     override func viewWillAppear(_ animated: Bool) {
         // Hide tab bar's selection indicator
@@ -47,76 +60,33 @@ class NewExerciseController: UIViewController, isExerciseReceiver, isStringRecei
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - ViewDidLoad
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .light
         
-        // Remove tab and navigationcontrollers
-        
         let darkHeaderFont = UIFont.custom(style: .bold, ofSize: .medium)
         let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
         
-        // Setup of buttons: Header, muscle, type, rest, and exercises
-        
-        header = TwoLabelStack(frame: CGRect(x: 0, y: 100,
-                                             width: Constant.UI.width,
-                                             height: 70),
-                               topText: "Name",
-                               topFont: UIFont.custom(style: .bold, ofSize: .medium),
-                               topColor: UIColor.medium,
-                               bottomText: "Your exercise",
-                               bottomFont: UIFont.custom(style: .bold, ofSize: .big),
-                               bottomColor: UIColor.darkest,
-                               fadedBottomLabel: false)
+        // Setup Header, muscle, type, rest, and exercises
+        header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
         header.bottomLabel.adjustsFontSizeToFitWidth = true
         
         // Type selecter
-        
-        typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
-                                     topText: "Type",
-                                     topFont: darkHeaderFont,
-                                     topColor: .dark,
-                                     bottomText: Constant.defaultValues.exerciseType,
-                                     bottomFont: darkSubHeaderFont,
-                                     bottomColor: UIColor.dark,
-                                     fadedBottomLabel: false)
+        typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
         typeSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
         
         // Muscle selecter
-        
         let muscleFrame = CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight)
-        muscleSelecter = TwoLabelStack(frame: muscleFrame,
-                                       topText: "Muscle",
-                                       topFont: darkHeaderFont,
-                                       topColor: .dark,
-                                       bottomText: preselectedMuscle?.name ?? Constant.defaultValues.muscle,
-                                       bottomFont: darkSubHeaderFont,
-                                       bottomColor: .dark,
-                                       fadedBottomLabel: false)
+        muscleSelecter = TwoLabelStack(frame: muscleFrame, topText: "Muscle", topFont: darkHeaderFont, topColor: .dark, bottomText: currentMuscle?.name ?? Constant.defaultValues.muscle, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
         // Measurement style
-        
         let frameForMeasurementStyle = CGRect(x: 0, y: muscleSelecter.frame.maxY, width: screenWidth, height: selecterHeight)
-        measurementSelecter = TwoLabelStack(frame: frameForMeasurementStyle,
-                                                topText: "Measurement",
-                                                topFont: darkHeaderFont,
-                                                topColor: .dark,
-                                                bottomText: Constant.defaultValues.measurement      ,
-                                                bottomFont: darkSubHeaderFont,
-                                                bottomColor: .dark,
-                                                fadedBottomLabel: false)
+        measurementSelecter = TwoLabelStack(frame: frameForMeasurementStyle, topText: "Measurement", topFont: darkHeaderFont, topColor: .dark, bottomText: DatabaseFacade.defaultMeasurementStyle.name!, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
         measurementSelecter.button.addTarget(self, action: #selector(measurementTapHandler), for: .touchUpInside)
         
         // Footer
-        
         let buttonFooter = ButtonFooter(withColor: .darkest)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
         buttonFooter.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -127,18 +97,11 @@ class NewExerciseController: UIViewController, isExerciseReceiver, isStringRecei
         view.addSubview(muscleSelecter)
         view.addSubview(measurementSelecter)
         view.addSubview(buttonFooter)
-        
-//        header.setDebugColors()
-//        typeSelecter.setDebugColors()
-//        muscleSelecter.setDebugColors()
-//        measurementSelecter.setDebugColors()
     }
     
-    func dismissVC() {
-        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
-    }
+    // MARK: - Methods
     
-    // MARK: - Tap handlers
+    // MARK: Tap handlers
     
     @objc private func headerTapHandler() {
         let workoutNamePicker = InputViewController(inputStyle: .text)
@@ -153,13 +116,9 @@ class NewExerciseController: UIViewController, isExerciseReceiver, isStringRecei
     
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
-        let currentlySelectedExerciseType = typeSelecter.bottomLabel.text
         let exerciseStyles = DatabaseFacade.fetchExerciseStyles()
-        
-        // let typePicker = PickerViewController(withChoices: exerciseNames, withPreselection: currentlySelectedType)
-        // let typePicker = PickerViewController(pickFrom: exerciseStyles, withPreselection: currentlySelectedType)
-        let typePicker = PickerViewController<ExerciseStyle>(withPicksFrom: exerciseStyles, withPreselection: currentlySelectedExerciseType)
-        typePicker.delegate = self
+        let typePicker = PickerController<ExerciseStyle>(withPicksFrom: exerciseStyles, withPreselection: currentExerciseStyle)
+        typePicker.pickableReceiver = self
         
         // When receivng a selection of workout type
         stringReceivedHandler = { s in
@@ -170,13 +129,10 @@ class NewExerciseController: UIViewController, isExerciseReceiver, isStringRecei
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let currentlySelectedMuscle = muscleSelecter.bottomLabel.text
-        // Fetch unique muscles
-        let musclesFromCoreData = DatabaseFacade.fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
-        
-        let musclePicker = PickerViewController<Muscle>(withPicksFrom: musclesFromCoreData,
-                                                withPreselection: currentlySelectedMuscle)
-        musclePicker.delegate = self
+        let allMuscles = DatabaseFacade.fetchMuscles()
+        let musclePicker = PickerController<Muscle>(withPicksFrom: allMuscles, withPreselection: currentMuscle)
+    
+        musclePicker.pickableReceiver = self
         
         // When receiving a selection of workout musclegroup
         stringReceivedHandler = {
@@ -187,41 +143,68 @@ class NewExerciseController: UIViewController, isExerciseReceiver, isStringRecei
     }
     
     @objc private func measurementTapHandler() {
-        let currentlySelectedMeasurement = measurementSelecter.bottomLabel.text
         
-        let measurementsFromCoreData = DatabaseFacade.fetchManagedObjectsForEntity(.MeasurementStyle) as! [MeasurementStyle]
+        let allMeasurements = DatabaseFacade.fetchMeasurementStyles()
+        let measurementStylePicker = PickerController<MeasurementStyle>(withPicksFrom: allMeasurements, withPreselection: currentMeasurementStyle)
         
-        let measurementStylePicker = PickerViewController<MeasurementStyle>(withPicksFrom: measurementsFromCoreData, withPreselection: currentlySelectedMeasurement)
-        measurementStylePicker.delegate = self
+        measurementStylePicker.pickableReceiver = self
+        
         stringReceivedHandler = {
             s in
             print("received back: ", s)
             self.measurementSelecter.bottomLabel.text = s
         }
         navigationController?.pushViewController(measurementStylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
- }
+ 
+    }
+    
+    // Approve and dismiss
     
     @objc private func approveTapHandler() {
-        // Make exercise and save to core data
         
-        // Unwrap user selections to 
-        if let name = header.bottomLabel.text, let exerciseStyle = typeSelecter.bottomLabel.text, let muscleName = muscleSelecter.bottomLabel.text, let measurementStyle = measurementSelecter.bottomLabel.text {
+        // Make exercise and save to core data
+        if let name = header.bottomLabel.text {
+            guard name.characters.count > 0 else {
+                let modal = CustomAlertView(type: .message, messageContent: "Pick a longer name!")
+                modal.show(animated: true)
+                return
+            }
             
-            let newExercise = DatabaseFacade.makeExercise(withName: name, styleName: exerciseStyle, muscleName: muscleName, measurementStyleName: measurementStyle)
+            let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscle: currentMuscle, measurementStyle: currentMeasurementStyle)
             
+            print("made exercise: ", newExercise)
             // Signal to delegate ( exercisePicker ) that user made a new exercise, and that the VC is supposed to mark it as selected
             exercisePickerDelegate?.receiveNewExercise(newExercise)
+            DatabaseFacade.saveContext()
         }
-
+        
+        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+    }
+    
+    func dismissVC() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
     // MARK: - Helper methods
-    
-    // MARK: - Delegate methods
-    
-    func receiveExerciseNames(_ exerciseNames: [String]) {
-        nameOfCurrentlySelectedExercises = exerciseNames
+}
+
+extension NewExerciseController: PickableReceiver {
+    func receivePickable(_ object: PickableEntity) {
+        print(" received object: ", object)
+        
+        switch object {
+        case is Muscle:
+            currentMuscle = object as! Muscle
+            muscleSelecter.setBottomText(object.name!)
+        case is ExerciseStyle:
+            currentExerciseStyle = object as! ExerciseStyle
+            typeSelecter.setBottomText(object.name!)
+        case is MeasurementStyle:
+            currentMeasurementStyle = object as! MeasurementStyle
+            measurementSelecter.setBottomText(object.name!)
+        default:
+            print("Was something else entirely")
+        }
     }
 }
 
