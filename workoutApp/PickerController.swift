@@ -55,7 +55,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
-        print("regular old init")
     }
     
     init(withPicksFrom array: [PickableEntity], withPreselection preselection: Pickable) {
@@ -63,7 +62,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         
         selectionChoices = array as! [T]
         selectedPickable = preselection
-        print("\n\n init: selectedPIckable and preselection: ", selectedPickable.name)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -119,9 +117,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print("did select: ", indexPath)
-        
+
         if selectedIndexPath == indexPath {
             selectedIndexPath = nil
         } else {
@@ -176,7 +172,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         
         table.register(PickerCell.self, forCellReuseIdentifier: cellIdentifier)
         table.backgroundColor = .clear
-        table.backgroundColor = .green
         
         table.dataSource = self
         table.delegate = self
@@ -253,18 +248,9 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
             return
         }
         
-//        guard let indexOfPickable = selectionChoices.index(where: { (pickableEntity) -> Bool in
-////            guard let pickable = pickableEntity.name else { return false }
-//            return pickable == pickableEntity
-//        }) else {
-//            print(" found no index")
-//            return
-//        }
-        
         // find index of the one
         let ip = IndexPath(row: indexOfPickable, section: 0)
         table.selectRow(at: ip, animated: false, scrollPosition: .none)
-        print("resulted in ip:", ip)
         selectedIndexPath = ip
     }
     

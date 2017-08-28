@@ -38,12 +38,12 @@ protocol isExerciseSender {
     func sendExerciseBack(_ exercise: Exercise)
 }
 
-protocol isExerciseReceiver: class {
+protocol ExerciseReceiver: class {
     var receiveExercises: (([Exercise]) -> ()) { get set }
 }
 
-extension isExerciseReceiver {
-    func receive(_ exercises: [Exercise]){
+extension ExerciseReceiver {
+    func receive(exercises: [Exercise]){
         receiveExercises(exercises)
     }
 }

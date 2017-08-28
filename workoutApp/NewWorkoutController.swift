@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Class
 
-class NewWorkoutController: UIViewController, isExerciseReceiver {
+class NewWorkoutController: UIViewController, ExerciseReceiver {
 
     // MARK: - Properties
 

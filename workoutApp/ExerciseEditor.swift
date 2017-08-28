@@ -9,23 +9,54 @@
 import Foundation
 import UIKit
 
-// MARK: - Class
+// MARK: Class
 
 final class ExerciseEditor: UIViewController {
 
     // MARK: - Properties
     
     fileprivate var exercise: Exercise!
-    fileprivate var currentExerciseStyle: ExerciseStyle!
+    fileprivate var exerciseStyle: ExerciseStyle!
     fileprivate var currentMuscle: Muscle!
+    fileprivate var initialName: String!
+    fileprivate var didChangeName = false
     
     // Components
-    fileprivate var header: TwoRowHeader!
-    fileprivate var muscleSelecter: PickerLabelStack!
-    fileprivate var exerciseStyleSelecter: PickerLabelStack!
+    fileprivate var header: TwoRowHeader = {
+        let headerLabelStack = TwoRowHeader(topText: "Current exercise name", bottomText: "NEW NAME")
+        headerLabelStack.button.addTarget(self, action: #selector(editName), for: .touchUpInside)
+        
+        return headerLabelStack
+    }()
     
-    private var deletionBox: DeletionBox!
-    private var footer: ButtonFooter!
+    fileprivate var muscleSelecter: PickerLabelStack = {
+        let selecter = PickerLabelStack(topText: "MUSCLE", bottomText: "NAME")
+        selecter.button.addTarget(self, action: #selector(editMuscle), for: .touchUpInside)
+    
+        return selecter
+    }()
+    
+    fileprivate var exerciseStyleSelecter: PickerLabelStack = {
+        let selector = PickerLabelStack(topText: "TYPE", bottomText: "NAME")
+        selector.button.addTarget(self, action: #selector(editExerciseStyle), for: .touchUpInside)
+        
+        return selector
+    }()
+    
+    private var deletionBox: DeletionBox = {
+        let deletionBox = DeletionBox(withText: "DELETE")
+        deletionBox.button.addTarget(self, action: #selector(deleteExercise), for: .touchUpInside)
+        
+        return deletionBox
+    }()
+    
+    private var footer: ButtonFooter = {
+        let f = ButtonFooter(withColor: .dark)
+        f.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        f.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
+        
+        return f
+    }()
     
     // Delegates
     var stringReceivedHandler: ((String) -> Void) = { _ in }
@@ -36,10 +67,18 @@ final class ExerciseEditor: UIViewController {
     init(for exercise: Exercise) {
         super.init(nibName: nil, bundle: nil)
         self.exercise = exercise
-        self.currentExerciseStyle = exercise.style
+        self.exerciseStyle = exercise.style
         self.currentMuscle = exercise.musclesUsed
+        self.initialName = exercise.name
         
-        print("\nexercise to edit: ", exercise)
+        guard let exerciseName = exercise.name, let muscleName = currentMuscle.name, let exerciseStyleName = exerciseStyle.name else {
+            return
+        }
+        
+        // Set labels with current exercise/muscle/style
+        header.setTopText(exerciseName)
+        muscleSelecter.setBottomText(muscleName)
+        exerciseStyleSelecter.setBottomText(exerciseStyleName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,74 +90,53 @@ final class ExerciseEditor: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .light
         
-        // add components
-        addHeader(forExercise: self.exercise)
-        addTypeSelecter()
-        addMuscleSelecter()
-        addDeletionBox()
-        addFooter()
+        addSubViewsAndConstraints()
         
-        setLayout()
-        
-        view.layoutIfNeeded()
+        view.layoutIfNeeded() // WHAT?
     }
     
     // MARK: - Methods
-    
-    // Header
-
-    private func addHeader(forExercise exercise: Exercise) {
-        self.header = TwoRowHeader(topText: exercise.name ?? "HAD NO NAME", bottomText: "NEW NAME")
+    private func addSubViewsAndConstraints() {
+        
         view.addSubview(header)
-
-        header.button.addTarget(self, action: #selector(editName), for: .touchUpInside)
-    }
-    
-    // Delete button
-    
-    private func addDeletionBox() {
-        self.deletionBox = DeletionBox(withText: "DELETE")
         view.addSubview(deletionBox)
-   
-        deletionBox.button.addTarget(self, action: #selector(deleteExercise), for: .touchUpInside)
-    }
-    
-    // Layout
-    
-    private func setLayout() {
+        view.addSubview(exerciseStyleSelecter)
+        view.addSubview(muscleSelecter)
+        view.addSubview(footer)
+        
         // Header
         self.header.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([header.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-                                     header.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
-                                     ])
-        
-        // Type
         self.exerciseStyleSelecter.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([exerciseStyleSelecter.topAnchor.constraint(equalTo: header.bottomAnchor),
-                                     exerciseStyleSelecter.leftAnchor.constraint(equalTo: view.leftAnchor)])
-        
-        // Muscle
         self.muscleSelecter.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([muscleSelecter.topAnchor.constraint(equalTo: header.bottomAnchor),
-                                     muscleSelecter.rightAnchor.constraint(equalTo: view.rightAnchor)])
-        
-        // Deletion
-        deletionBox.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([deletionBox.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                     deletionBox.topAnchor.constraint(equalTo: muscleSelecter.bottomAnchor, constant: 20)])
-        
-        // Footer
+        self.deletionBox.translatesAutoresizingMaskIntoConstraints = false
         self.footer.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                                     footer.centerXAnchor.constraint(equalTo: view.centerXAnchor)])
+        NSLayoutConstraint.activate([
+            // Header
+            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            header.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
+            
+            // Type
+            exerciseStyleSelecter.topAnchor.constraint(equalTo: header.bottomAnchor),
+            exerciseStyleSelecter.leftAnchor.constraint(equalTo: view.leftAnchor),
+            
+            // Muscle
+            muscleSelecter.topAnchor.constraint(equalTo: header.bottomAnchor),
+            muscleSelecter.rightAnchor.constraint(equalTo: view.rightAnchor),
+            
+            // Deletion
+            deletionBox.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            deletionBox.topAnchor.constraint(equalTo: muscleSelecter.bottomAnchor, constant: 20),
+            
+            // Footer
+            footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
     }
     
-    func deleteExercise() {
+    // MARK: Data management
+    
+    @objc private func deleteExercise() {
         editorDataSource?.removeFromDataSource(exercise: exercise)
         DatabaseFacade.delete(exercise)
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
@@ -139,53 +157,23 @@ final class ExerciseEditor: UIViewController {
     }
     
     @objc private func editName() {
-        let inp = InputViewController(inputStyle: .text)
-        inp.delegate = self
+        let inputController = InputViewController(inputStyle: .text)
+        inputController.delegate = self
         
         // Returning string should update exercise and VC header
         stringReceivedHandler = { str in
             self.exercise.name = str
             self.header.setBottomText(str)
+            
+            if str != self.initialName {
+                self.didChangeName = true
+            }
         }
         
-        navigationController?.pushViewController(inp, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+        navigationController?.pushViewController(inputController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
-    // MARK: Style and muscle
-    
-    private func addTypeSelecter() {
-        // Style
-        guard let styleName = exercise.style?.name else {
-            print("ERROR: exercise had no styleName")
-            fatalError()
-        }
-        // Type selecter
-        self.exerciseStyleSelecter = PickerLabelStack(topText: "TYPE", bottomText: styleName)
-        view.addSubview(exerciseStyleSelecter)
-
-        exerciseStyleSelecter.button.addTarget(self, action: #selector(editExerciseStyle), for: .touchUpInside)
-    }
-    
-    private func addMuscleSelecter() {
-        guard let muscleName = exercise.musclesUsed?.name else {
-            return
-        }
-        // Muscle selecter
-        self.muscleSelecter = PickerLabelStack(topText: "MUSCLE", bottomText: muscleName)
-        view.addSubview(muscleSelecter)
-        
-        muscleSelecter.button.addTarget(self, action: #selector(editMuscle), for: .touchUpInside)
-    }
-    
-    // MARK: Footer
-    
-    private func addFooter() {
-        footer = ButtonFooter(withColor: .dark)
-        view.addSubview(footer)
-
-        footer.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-        footer.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
-    }
+    // MARK: Exit methods
     
     @objc private func dismissVC() {
         // dismiss without committing changes to core data
@@ -194,10 +182,11 @@ final class ExerciseEditor: UIViewController {
     
     @objc private func approveAndDismissVC() {
         // Push changes to core data
-        exercise.name = header.getBottomText()
-        exercise.style = currentExerciseStyle
-        print("setting : ", exercise.style)
-        print("style : ", currentExerciseStyle)
+        if self.didChangeName {
+            exercise.name = header.getBottomText()
+        }
+        
+        exercise.style = exerciseStyle
         exercise.musclesUsed = currentMuscle
         DatabaseFacade.saveContext()
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
@@ -214,7 +203,7 @@ extension ExerciseEditor: PickableReceiver {
             currentMuscle = object as? Muscle
             muscleSelecter.setBottomText(object.name!)
         case is ExerciseStyle:
-            currentExerciseStyle = object as? ExerciseStyle
+            exerciseStyle = object as? ExerciseStyle
             exerciseStyleSelecter.setBottomText(object.name!)
         default:
             print("Received a pickable not yet implemented")

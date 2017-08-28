@@ -117,15 +117,19 @@ class TwoLabelStack: UIView {
     
     // MARK: public methods
     
-    public func setBottomText(_ str: String) {
+    func setTopText(_ str: String) {
+        topLabel.text = str
+    }
+    
+    func setBottomText(_ str: String) {
         bottomLabel.text = str
     }
     
-    public func getBottomText() -> String {
+    func getBottomText() -> String {
         return bottomLabel.text ?? "NO TEXT"
     }
     
-    public func setDebugColors() {
+    func setDebugColors() {
         topLabel.backgroundColor = .purple
         bottomLabel.backgroundColor = .green
         button.backgroundColor = .yellow

@@ -13,7 +13,7 @@ protocol NewExerciseReceiver: class {
     func receiveNewExercise(_ exercise: Exercise)
 }
 
-class NewExerciseController: UIViewController, isExerciseReceiver, isStringReceiver {
+class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // MARK: - Properties
     
