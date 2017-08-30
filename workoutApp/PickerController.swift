@@ -290,7 +290,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
 extension PickerController: PickableSender {
     
     func sendBack(pickable: T) {
-        pickableReceiver?.receivePickable(pickable)
+        pickableReceiver?.receive(pickable: pickable)
     }
 }
 

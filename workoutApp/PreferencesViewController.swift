@@ -12,11 +12,20 @@ class PreferencesViewController: UIViewController {
 
     // MARK: - Properties
     
+    private lazy var header: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.text = "PREFERENCES"
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.sizeToFit()
+        label.center = self.view.center // lazy is executed once so reference to self is not stored
+        
+        return label
+    }()
+    
     // MARK: - Initializers
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        print("initializing")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,12 +40,6 @@ class PreferencesViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .light
-
-        let header = UILabel(frame: .zero)
-        header.text = "PREFERENCES"
-        header.font = UIFont.custom(style: .bold, ofSize: .big)
-        header.sizeToFit()
-        header.center = view.center
         
         view.addSubview(header)
     }

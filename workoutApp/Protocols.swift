@@ -9,7 +9,7 @@
 import Foundation
 
 
-// MARK: Sender
+// MARK: Pickable Sender
 
 protocol PickableSender: class {
     associatedtype Pickable
@@ -18,28 +18,9 @@ protocol PickableSender: class {
     weak var pickableReceiver: PickableReceiver? { get set }
 }
 
-// MARK: Receiver
+// MARK: Pickable Receiver
 
 protocol PickableReceiver: class {
-    func receivePickable(_ : PickableEntity)
+    func receive(pickable: PickableEntity)
 }
 
-
-
-
-
-
-
-
-
-// MARK: ExerciseStyle sender/receiver protocols
-
-protocol isExerciseStyleReceiver: class {
-    func receiveExerciseStyle(_ :ExerciseStyle) -> Void
-}
-
-protocol isExerciseStyleSender {
-    weak var exerciseStyleReceiverDelegate: isExerciseStyleReceiver? { get set }
-    
-    func sendExerciseStyleBack(_ :ExerciseStyle) -> Void
-}

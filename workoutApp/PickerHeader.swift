@@ -7,22 +7,12 @@
 //
 
 import Foundation
-
-//      let labelStack = TwoLabelStack(frame: .zero, topText: "SELECT", topFont: .custom(style: .bold, ofSize: .big), topColor: .secondary, bottomText: "", bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .black, fadedBottomLabel: false)
-
-//
-//  HeaderLabelStack.swift
-//  workoutApp
-//
-//  Created by Alexander Kvamme on 22/08/2017.
-//  Copyright © 2017 Alexander Kvamme. All rights reserved.
-//
-
-import Foundation
 import UIKit
 
 
 class PickerHeader: TwoLabelStack {
+    
+    // MARK: - Initializer
     
     init(text: String) {
         

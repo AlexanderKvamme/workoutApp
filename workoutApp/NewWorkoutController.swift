@@ -184,7 +184,6 @@ class NewWorkoutController: UIViewController, ExerciseReceiver {
         let selectedMuscle = DatabaseFacade.getMuscle(named: muscleName)! // Only existing muscles are displayed so force unwrap
         let exercisePicker = ExercisePickerController(forMuscle: selectedMuscle, withPreselectedExercises: currentExercise)
         
-        exercisePicker.setHeaderTitle("\(muscleName) EXERCISES")
         exercisePicker.pickableReceiver = self
         exercisePicker.exerciseReceiver = self
         
@@ -253,15 +252,15 @@ class NewWorkoutController: UIViewController, ExerciseReceiver {
 
 extension NewWorkoutController: PickableReceiver {
     // Receive Muscle, ExerciseStyle, and WorkoutStyle
-    func receivePickable(_ object: PickableEntity) {
+    func receive(pickable: PickableEntity) {
 
-        switch object {
+        switch pickable {
         case is Muscle:
-            currentMuscle = object as! Muscle
+            currentMuscle = pickable as! Muscle
             muscleSelecter.bottomLabel.text = currentMuscle.name
             self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
         case is WorkoutStyle:
-            currentWorkoutStyle = object as! WorkoutStyle
+            currentWorkoutStyle = pickable as! WorkoutStyle
             workoutStyleSelecter.bottomLabel.text = currentWorkoutStyle.name
         default:
             print("Received something wierd")

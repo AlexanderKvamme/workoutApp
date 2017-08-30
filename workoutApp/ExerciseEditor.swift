@@ -196,15 +196,16 @@ final class ExerciseEditor: UIViewController {
 // MARK: - Extensions
 
 extension ExerciseEditor: PickableReceiver {
-    func receivePickable(_ object :PickableEntity) {
+    func receive(pickable :PickableEntity) {
+        
         // update current exercise with the new object
-        switch object {
+        switch pickable {
         case is Muscle:
-            currentMuscle = object as? Muscle
-            muscleSelecter.setBottomText(object.name!)
+            currentMuscle = pickable as? Muscle
+            muscleSelecter.setBottomText(pickable.name!)
         case is ExerciseStyle:
-            exerciseStyle = object as? ExerciseStyle
-            exerciseStyleSelecter.setBottomText(object.name!)
+            exerciseStyle = pickable as? ExerciseStyle
+            exerciseStyleSelecter.setBottomText(pickable.name!)
         default:
             print("Received a pickable not yet implemented")
         }

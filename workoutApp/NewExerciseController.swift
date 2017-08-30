@@ -189,19 +189,18 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
 }
 
 extension NewExerciseController: PickableReceiver {
-    func receivePickable(_ object: PickableEntity) {
-        print(" received object: ", object)
+    func receive(pickable: PickableEntity) {
         
-        switch object {
+        switch pickable {
         case is Muscle:
-            currentMuscle = object as! Muscle
-            muscleSelecter.setBottomText(object.name!)
+            currentMuscle = pickable as! Muscle
+            muscleSelecter.setBottomText(pickable.name!)
         case is ExerciseStyle:
-            currentExerciseStyle = object as! ExerciseStyle
-            typeSelecter.setBottomText(object.name!)
+            currentExerciseStyle = pickable as! ExerciseStyle
+            typeSelecter.setBottomText(pickable.name!)
         case is MeasurementStyle:
-            currentMeasurementStyle = object as! MeasurementStyle
-            measurementSelecter.setBottomText(object.name!)
+            currentMeasurementStyle = pickable as! MeasurementStyle
+            measurementSelecter.setBottomText(pickable.name!)
         default:
             print("Was something else entirely")
         }

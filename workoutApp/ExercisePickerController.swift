@@ -8,15 +8,9 @@
 
 import UIKit
 
-// MARK: ExerciseEditorDataSource
-
-protocol ExerciseEditorDataSource: class {
-    func removeFromDataSource(exercise: Exercise)
-}
-
 // MARK: Class
 
-class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
+class ExercisePickerController: UIViewController {
     
     // MARK: - Properties
     
@@ -53,9 +47,20 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
         return headerLabel
     }()
     
-    let cellIdentifier = "cellIdentifier"
-    var selectedExercises = [Exercise]()
+    private lazy var plusButton: UIButton = {
+        let image = UIImage(named: "newButton")?.withRenderingMode(.alwaysTemplate)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        button.setImage(image, for: .normal)
+        button.alpha = Constant.alpha.faded
+        button.tintColor = UIColor.faded
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(presentNewExerciseController), for: .touchUpInside)
+        
+        return button
+    }()
+    
     var selectionChoices = [Exercise]()
+    var selectedExercises = [Exercise]()
     var selectedMuscle: Muscle! // used to refresh the picker after returning from making new exercise
     
     // Delegates
@@ -85,7 +90,6 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
         }
         
         super.init(nibName: nil, bundle: nil)
-        addNewExerciseButton()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -96,26 +100,20 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
     
     override func viewDidLoad() {
         addSubViewsAndConstraints()
+        view.backgroundColor = UIColor.light
         
         // Preselect
         for exercise in selectedExercises {
             selectExercise(exercise)
         }
-    
-        table.reloadData()
-        view.setNeedsLayout()
-        
-        print(table.frame)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         hidesBottomBarWhenPushed = true
         addLongPressGestureRecognizer()
         table.reloadData()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-
+        view.setNeedsLayout()
+        
         UIView.animate(withDuration: 0.5) {
             self.updateScrollingAndInsets()
         }
@@ -123,12 +121,30 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
     
     // MARK: - Methods
     
+    // MARK: Helper methods
+
+    @objc private func presentNewExerciseController() {
+        
+        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscle)
+        newExerciseController.exercisePickerDelegate = self
+        
+        // Make presentable outside of navigationController, used for testing
+        if let navigationController = navigationController {
+            navigationController.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+        } else {
+            present(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn, completion: nil)
+        }
+    }
+    
     func addSubViewsAndConstraints() {
         
         view.addSubview(header)
         view.addSubview(footer)
         view.addSubview(table)
+        view.addSubview(plusButton)
         
+        // Layout
+
         NSLayoutConstraint.activate([
             
             // Footer
@@ -139,6 +155,12 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
             header.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
+            // + button
+            plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
+            plusButton.heightAnchor.constraint(equalToConstant: 25),
+            plusButton.widthAnchor.constraint(equalToConstant: 25),
+            
             // Table
             table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),
             table.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: -100),
@@ -147,12 +169,6 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
             ])
         
         updateScrollingAndInsets()
-        
-        view.backgroundColor = UIColor.light
-    }
-    
-    func setHeaderTitle(_ newTitle: String) {
-        header.topLabel.text = newTitle
     }
     
     func dismissView() {
@@ -161,14 +177,12 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
     
     // MARK: Delegate methods
     
-    // FIXME: - TEST INSETS
-    
     private func updateScrollingAndInsets() {
         
         table.layoutIfNeeded() // Update Content
         table.reloadData()
         
-        // disable scrolling if all content fits in the frame
+        // Disable scrolling if all content fits in the frame
         let tableHeight = table.frame.height
         let contentHeight = table.contentSize.height
         
@@ -183,6 +197,7 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
         }
     }
     
+    /// If contentView is smaller than the tableView. Add insets top and bottom to keep it centered.
     private func setTableInsets() {
         let tableHeight = table.frame.height
         let contentHeight = table.contentSize.height
@@ -193,73 +208,6 @@ class ExercisePickerController: UIViewController, ExerciseEditorDataSource {
             table.contentInset = UIEdgeInsets(top: difference/2, left: 0, bottom: difference/2, right: 0)
         } else {
             table.contentInset = UIEdgeInsets.zero
-        }
-    }
-    
-    
-    // Editor data source
-    
-    func removeFromDataSource(exercise: Exercise) {
-    
-        for e in selectedExercises {
-            print(e.name!)
-        }
-        
-        // Deselect if selected
-        if selectedExercises.contains(exercise) {
-            if let indexOfExercise = selectedExercises.index(of: exercise) {
-                selectedExercises.remove(at: indexOfExercise)
-            }
-            
-            for e in selectedExercises {
-                print(e.name!)
-            }
-        }
-        
-        // Remove from table and datasource
-        if let index = selectionChoices.index(of: exercise) {
-            let indexPath = IndexPath(row: index, section: 0)
-            selectionChoices.remove(at: index)
-            table.deleteRows(at: [indexPath], with: .fade)
-        }
-        
-        table.reloadData()
-    }
-
-    // MARK: Helper methods
-    
-    func addNewExerciseButton() {
-        
-        let img = UIImage(named: "newButton")?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        button.tintColor = UIColor.faded
-        button.alpha = Constant.alpha.faded
-        button.setImage(img, for: .normal)
-        view.addSubview(button)
-        
-        // Layout
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
-            button.heightAnchor.constraint(equalToConstant: 25),
-            button.widthAnchor.constraint(equalToConstant: 25),
-            ])
-        
-        // On tap: present newExerciseController
-        button.addTarget(self, action: #selector(newExerciseTapHandler), for: .touchUpInside)
-    }
-    
-    @objc private func newExerciseTapHandler() {
-    
-        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscle)
-        newExerciseController.exercisePickerDelegate = self
-        
-        // Make presentable outside of navigationController, used for testing
-        if let navigationController = navigationController {
-            navigationController.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-        } else {
-            present(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn, completion: nil)
         }
     }
     
@@ -388,35 +336,12 @@ extension ExercisePickerController: NewExerciseReceiver {
     }
 }
 
-// MARK: PickableReceiver
-
-extension ExercisePickerController: PickableReceiver {
-    func receivePickable(_ pickable: PickableEntity) {
-        print(" should receive: ", pickable)
-    }
-}
-
-// MARK: PickableSender
-
-extension ExercisePickerController: PickableSender {
-    func sendBack(pickable: Exercise) {
-        print("would send back pickable: ", pickable)
-    }
-
-    typealias Pickable = Exercise
-
-//    weak var pickableReceiver: PickableReceiver? {
-//        get { return self.pickableReceiver }
-//        set { self.pickableReceiver = newValue }
-//    }
-}
-
 // MARK: TableView DataSource
 
 extension ExercisePickerController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! PickerCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath) as! PickerCell
         
         configure(cell: cell, at: indexPath)
         cell.label.text = selectionChoices[indexPath.row].name
@@ -453,6 +378,38 @@ extension ExercisePickerController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 30
+    }
+}
+
+// MARK: ExerciseEditorDataSource
+
+protocol ExerciseEditorDataSource: class {
+    func removeFromDataSource(exercise: Exercise)
+}
+
+extension ExercisePickerController: ExerciseEditorDataSource {
+
+    func removeFromDataSource(exercise: Exercise) {
+        
+        for e in selectedExercises {
+            print(e.name!)
+        }
+        
+        // Deselect if selected
+        if selectedExercises.contains(exercise) {
+            if let indexOfExercise = selectedExercises.index(of: exercise) {
+                selectedExercises.remove(at: indexOfExercise)
+            }
+        }
+        
+        // Remove from table and datasource
+        if let index = selectionChoices.index(of: exercise) {
+            let indexPath = IndexPath(row: index, section: 0)
+            selectionChoices.remove(at: index)
+            table.deleteRows(at: [indexPath], with: .fade)
+        }
+        
+        table.reloadData()
     }
 }
 

@@ -10,7 +10,6 @@
 		DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */; };
-		DD0D42D41F4CCE6600502C02 /* isEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D31F4CCE6600502C02 /* isEditable.swift */; };
 		DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */; };
 		DD0D42D81F4DA38600502C02 /* PickerLabelStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D71F4DA38600502C02 /* PickerLabelStack.swift */; };
 		DD0D42DC1F4DB47A00502C02 /* DeletionBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42DB1F4DB47A00502C02 /* DeletionBox.swift */; };
@@ -127,7 +126,6 @@
 		DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarControllerDelegate.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerController.swift; sourceTree = "<group>"; };
-		DD0D42D31F4CCE6600502C02 /* isEditable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = isEditable.swift; sourceTree = "<group>"; };
 		DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowHeader.swift; sourceTree = "<group>"; };
 		DD0D42D71F4DA38600502C02 /* PickerLabelStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerLabelStack.swift; sourceTree = "<group>"; };
 		DD0D42DB1F4DB47A00502C02 /* DeletionBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletionBox.swift; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 			isa = PBXGroup;
 			children = (
 				DDB5FF3C1F4CC99B00202705 /* ExerciseEditor.swift */,
-				DD0D42D31F4CCE6600502C02 /* isEditable.swift */,
 			);
 			name = Editors;
 			sourceTree = "<group>";
@@ -869,7 +866,6 @@
 				DD34C5661F445C200050BDB0 /* Workout+CoreDataClass.swift in Sources */,
 				DD34C5621F445C200050BDB0 /* Lift+CoreDataClass.swift in Sources */,
 				DDF95B391ECA453A009E6925 /* StackView.swift in Sources */,
-				DD0D42D41F4CCE6600502C02 /* isEditable.swift in Sources */,
 				DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */,
 				DD34C56E1F445C200050BDB0 /* Goal+CoreDataClass.swift in Sources */,
 			);

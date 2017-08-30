@@ -34,10 +34,6 @@ extension isStringReceiver {
 
 // used to pass exercises to and from exercisePickersViewControllers from for example NewWorkoutController
 
-protocol isExerciseSender {
-    func sendExerciseBack(_ exercise: Exercise)
-}
-
 protocol ExerciseReceiver: class {
     var receiveExercises: (([Exercise]) -> ()) { get set }
 }
