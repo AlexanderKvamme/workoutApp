@@ -25,6 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
             modal.show(animated: true)
+            
+            // User Defaults
+            if !UserDefaultsFacade.hasInitialDefaults {
+                UserDefaultsFacade.seed()
+            }
         }
         
         // Appearance()
@@ -32,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Instantiate master View Controller
         let masterViewController = CustomTabBarController()
-//        masterViewController.delegate = CustomTabBarControllerDelegate()
         window?.rootViewController = masterViewController
         
         return true

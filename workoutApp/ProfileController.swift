@@ -188,8 +188,8 @@ final class ProfileController: UIViewController {
     }
     
     @objc private func settingsButtonHandler() {
-        let preferenceController = PreferencesViewController()
-        navigationController?.pushViewController(preferenceController, animated: true)
+        let preferencesController = PreferencesController()
+        navigationController?.pushViewController(preferencesController, animated: true)
     }
 }
 

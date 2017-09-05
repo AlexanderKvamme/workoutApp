@@ -58,6 +58,16 @@ enum Constant {
     }
     
     enum components {
+        enum headers {
+            enum pickerHeader {
+                static var topSpacing: CGFloat = 100
+            }
+        }
+        
+        enum footer {
+            static var height: CGFloat = 65
+        }
+        
         enum Box {
             static let spacingFromSides: CGFloat = 10
             static let shimmerInset: CGFloat = 7

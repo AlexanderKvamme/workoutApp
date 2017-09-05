@@ -17,12 +17,14 @@ public class ButtonFooter: UIView {
     
     var approveButton: UIButton!
     var cancelButton: UIButton!
-    let footerHeight: CGFloat = 65
-    let buttonWidth: CGFloat = Constant.UI.width/2
     
     // MARK: - Initializers
     
     init(withColor color: UIColor) {
+        
+        let footerHeight = Constant.components.footer.height
+        let buttonWidth: CGFloat = Constant.UI.width/2
+        
         super.init(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: footerHeight))
         
         // Approve button
@@ -50,7 +52,7 @@ public class ButtonFooter: UIView {
     // MARK: - Methods
     
     public override var intrinsicContentSize: CGSize {
-        return CGSize(width: Constant.UI.width, height: self.footerHeight)
+        return CGSize(width: Constant.UI.width, height: Constant.components.footer.height)
     }
     
     // Debugging methods

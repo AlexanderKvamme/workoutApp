@@ -152,7 +152,7 @@ class ExercisePickerController: UIViewController {
             footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // Header
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // + button
