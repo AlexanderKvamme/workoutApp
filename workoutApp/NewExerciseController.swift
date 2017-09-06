@@ -55,7 +55,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     override func viewWillAppear(_ animated: Bool) {
         // Hide tab bar's selection indicator
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.hideSelectionIndicator()
+            customTabBarController.hideSelectionIndicator(shouldAnimate: false)
             navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }

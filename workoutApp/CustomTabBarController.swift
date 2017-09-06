@@ -20,8 +20,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        tabBar.delegate 
-        
         delegate = self
         
         // MARK: Progress
@@ -75,12 +73,20 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         selectionIndicator.moveToItem(item.tag, ofItemCount: (tabBar.items?.count)!)
     }
     
-    public func hideSelectionIndicator() {
-        selectionIndicator.isHidden = true
+    public func hideSelectionIndicator(shouldAnimate: Bool) {
+        if shouldAnimate {
+            UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                self.selectionIndicator.alpha = 0
+            }, completion: nil)
+        } else {
+            self.selectionIndicator.alpha = 0
+        }
     }
     
     public func showSelectionindicator() {
-        selectionIndicator.isHidden = false
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+            self.selectionIndicator.alpha = 1
+        }, completion: nil)
     }
     
     // Delegate methods

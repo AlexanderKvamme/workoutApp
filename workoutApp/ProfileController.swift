@@ -32,7 +32,7 @@ final class ProfileController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.hideSelectionIndicator()
+            customTabBarController.hideSelectionIndicator(shouldAnimate: true)
             navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }
