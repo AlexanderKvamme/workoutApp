@@ -17,7 +17,7 @@ final class PreferencePicker: UIViewController {
     
     let header: UILabel = {
         let label = UILabel()
-        label.font = UIFont.custom(style: .medium, ofSize: .medium)
+        label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = .dark
         return label
     }()
@@ -128,6 +128,7 @@ final class PreferencePicker: UIViewController {
     
     private func setHeader(to str: String) {
         self.header.text = str.uppercased()
+        self.header.applyCustomAttributes(.medium)
         self.header.sizeToFit()
     }
     

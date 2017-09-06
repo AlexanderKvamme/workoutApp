@@ -27,7 +27,6 @@ class TwoLabelStack: UIView {
         
         topLabel = UILabel()
         topLabel.text = topText.uppercased()
-        topLabel.applyCustomAttributes(.medium)
         topLabel.font = topFont
         topLabel.applyCustomAttributes(.medium)
         topLabel.textColor = topColor
@@ -39,7 +38,6 @@ class TwoLabelStack: UIView {
         bottomLabel.text = bottomText.uppercased()
         bottomLabel.font = bottomFont
         bottomLabel.textColor = bottomColor
-        bottomLabel.applyCustomAttributes(.medium)
         bottomLabel.sizeToFit()
         bottomLabel.numberOfLines = 2
         bottomLabel.preferredMaxLayoutWidth = Constant.UI.width * 0.75
@@ -47,8 +45,18 @@ class TwoLabelStack: UIView {
         bottomLabel.isUserInteractionEnabled = false
         addSubview(bottomLabel)
         
+        // Set alpha
         if fadedBottomLabel == true {
             bottomLabel.alpha = Constant.alpha.faded
+        }
+        
+        // Set spacing
+        if topLabel.hasCharacters {
+            topLabel.applyCustomAttributes(.medium)
+        }
+        
+        if bottomLabel.hasCharacters {
+            bottomLabel.applyCustomAttributes(.medium)
         }
         
         // Hidden button

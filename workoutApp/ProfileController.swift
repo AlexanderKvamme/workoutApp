@@ -17,8 +17,7 @@ final class ProfileController: UIViewController {
     private var settingsButton = UIButton()
     private var stackView = UIStackView()
     private var scrollView = UIScrollView()
-    private var header = UILabel()
-    
+    private var header = UILabel()    
     // MARK: - Initializers
     
     init() {
@@ -122,14 +121,14 @@ final class ProfileController: UIViewController {
     
     private func setupSettingsButton() {
         settingsButton = UIButton(frame: CGRect.zero)
-        settingsButton.setImage(UIImage(named: "settingsButtonRounded"), for: .normal)
+        settingsButton.setImage(UIImage(named: "wrench"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonHandler), for: .touchUpInside)
         view.addSubview(settingsButton)
         
         // Layout
         let rightInset: CGFloat = 10
         let topInset: CGFloat = 30
-        let buttonDiameter: CGFloat = 20
+        let buttonDiameter: CGFloat = 25
         
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

@@ -24,12 +24,11 @@ extension UILabel {
     }
     
     func applyCustomAttributes(_ spacing: Constant.Attributes.letterSpacing) {
-        guard self.text != nil && self.text!.characters.count > 0 else {
-            print("applyCustomAttributes failed on \(String(describing: self.text))")
+        guard self.hasCharacters else  {
+            print("applyCustomAttributes failed on \(self)")
             return
         }
 
-        // TODO: - Utilize the spacing values
         var spacingValue: CGFloat = 0
     
         switch spacing {

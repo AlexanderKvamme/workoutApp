@@ -7,4 +7,11 @@ extension UILabel {
         let charSize: Int = lroundf(Float(self.font.pointSize))
         return rHeight / charSize
     }
+    
+    var hasCharacters: Bool {
+        if let text = self.text {
+            return text.characters.count > 0
+        }
+        return false
+    }
 }
