@@ -55,6 +55,7 @@
 		DD34C5761F445C200050BDB0 /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD34C5601F445C200050BDB0 /* Exercise+CoreDataClass.swift */; };
 		DD34C5771F445C200050BDB0 /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD34C5611F445C200050BDB0 /* Exercise+CoreDataProperties.swift */; };
 		DD36F5131F33D44300FD31B3 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36F5121F33D44300FD31B3 /* ProfileController.swift */; };
+		DD372BB01F635F76007C35B8 /* WorkoutLogExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */; };
 		DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44A1EE45A9300C55453 /* PickerCell.swift */; };
 		DD3AF44D1EE45AB500C55453 /* PickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44C1EE45AB500C55453 /* PickerController.swift */; };
 		DD41AAFC1F18F5C800CB08F5 /* NewExerciseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */; };
@@ -174,6 +175,7 @@
 		DD34C5601F445C200050BDB0 /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataClass.swift"; sourceTree = "<group>"; };
 		DD34C5611F445C200050BDB0 /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DD36F5121F33D44300FD31B3 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogExtensions.swift; sourceTree = "<group>"; };
 		DD3AF44A1EE45A9300C55453 /* PickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerCell.swift; sourceTree = "<group>"; };
 		DD3AF44C1EE45AB500C55453 /* PickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerController.swift; sourceTree = "<group>"; };
 		DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewExerciseController.swift; sourceTree = "<group>"; };
@@ -377,7 +379,7 @@
 		DD34C5791F46579E0050BDB0 /* TableViews */ = {
 			isa = PBXGroup;
 			children = (
-				DDDE6E521ED4DF4900A03886 /* Box Table Views */,
+				DDDE6E521ED4DF4900A03886 /* Box Tables */,
 				DDF1F1EA1F07AAAF001A6F0C /* Exercise Tables */,
 			);
 			name = TableViews;
@@ -605,6 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				DDB5FF3A1F4B806300202705 /* pickableEntity.swift */,
+				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -617,7 +620,7 @@
 			name = TestViewController;
 			sourceTree = "<group>";
 		};
-		DDDE6E521ED4DF4900A03886 /* Box Table Views */ = {
+		DDDE6E521ED4DF4900A03886 /* Box Tables */ = {
 			isa = PBXGroup;
 			children = (
 				DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */,
@@ -626,7 +629,7 @@
 				DD468F861F2E8B9200A945A9 /* Workout Table */,
 				DDB539AA1F2E014600824CFC /* WorkoutLog History Table */,
 			);
-			name = "Box Table Views";
+			name = "Box Tables";
 			sourceTree = "<group>";
 		};
 		DDE55B991F2FB53C00ED1D15 /* Managed Object Subclass Extensions */ = {
@@ -828,6 +831,7 @@
 				DD0D42DC1F4DB47A00502C02 /* DeletionBox.swift in Sources */,
 				DD41AAFC1F18F5C800CB08F5 /* NewExerciseController.swift in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
+				DD372BB01F635F76007C35B8 /* WorkoutLogExtensions.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* tabBarSelectionIndicatorView.swift in Sources */,
 				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,

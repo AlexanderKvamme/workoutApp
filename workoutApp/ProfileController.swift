@@ -18,6 +18,7 @@ final class ProfileController: UIViewController {
     private var stackView = UIStackView()
     private var scrollView = UIScrollView()
     private var header = UILabel()    
+    
     // MARK: - Initializers
     
     init() {

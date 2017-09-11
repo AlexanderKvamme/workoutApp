@@ -25,7 +25,7 @@ enum Constant {
     }
     
     enum exampleValues {
-        static let exampleMuscles = ["Undefined","Biceps", "Triceps", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core"]
+        static let exampleMuscles = ["Undefined", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core"]
         static let workoutStyles = ["Normal", "Drop Set", "Superset", "Cardio", "For fun"]
         static let exerciseStyles = ["Normal", "Assisted", "Weighted", "Slow", "Explosive", "Inclined"]
         static let measurementStyles = ["Timer", "Countdown", "Sets"]

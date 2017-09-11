@@ -36,6 +36,7 @@
     </entity>
     <entity name="Muscle" representedClassName="Muscle" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mostRecentUse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" syncable="YES"/>
         <relationship name="usedInExercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="muscleUsed" inverseEntity="Workout" syncable="YES"/>
     </entity>
@@ -68,7 +69,7 @@
         <element name="Goal" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Lift" positionX="-191" positionY="3765" width="128" height="135"/>
         <element name="MeasurementStyle" positionX="-182" positionY="3588" width="128" height="73"/>
-        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="90"/>
+        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="105"/>
         <element name="Warning" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Workout" positionX="-639" positionY="3573" width="128" height="135"/>
         <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="105"/>
