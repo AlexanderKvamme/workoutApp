@@ -12,17 +12,15 @@ class TestViewController: UIViewController {
 
     // MARK: - Properties
     
-    private lazy var header: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.text = "PREFERENCES"
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.sizeToFit()
-        label.center = self.view.center // lazy is executed once due to being a computed property and lazy, so reference to self is not stored. and doesnt create strong reference cycle.
-        
-        return label
+    private lazy var progressPlaceholderImageView: UIImageView = {
+        let image = UIImage(named: "progressPlaceholder")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
-    // MARK: - Initializers
+    // MARK: Initializers
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -32,16 +30,27 @@ class TestViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Life Cycle
-    
-    // MARK: - Methods
-    
+    // MARK: Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .light
+        addSubviewsAndConstraints()
+    }
+    
+    // MARK: Methods
+    
+    private func addSubviewsAndConstraints() {
         
-        view.addSubview(header)
+        // progressPlaceholder
+        view.addSubview(progressPlaceholderImageView)
+        let progressSpacing: CGFloat = 20
+        NSLayoutConstraint.activate([
+            progressPlaceholderImageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: progressSpacing),
+            progressPlaceholderImageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -progressSpacing),
+            progressPlaceholderImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ])
     }
 }
 
