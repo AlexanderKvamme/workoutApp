@@ -77,7 +77,6 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     func getWorkoutLog(at indexPath: IndexPath) -> WorkoutLog {
         let workoutLog = fetchedWorkoutLogs[indexPath.row]
-        print("would return workoutLog: ", workoutLog.design?.name)
         return workoutLog
     }
     

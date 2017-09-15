@@ -87,7 +87,6 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     @available(iOS 6.0, *)
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("liftsToDisplay.count: ", liftsToDisplay.count)
         return liftsToDisplay.count
     }
     

@@ -2,7 +2,7 @@
 //  Muscle+CoreDataProperties.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 08/09/2017.
+//  Created by Alexander Kvamme on 14/09/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
@@ -17,9 +17,9 @@ extension Muscle {
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var mostRecentUse: WorkoutLog?
     @NSManaged public var usedInExercises: NSSet?
     @NSManaged public var usedInWorkouts: NSSet?
-    @NSManaged public var mostRecentUse: WorkoutLog?
 
 }
 

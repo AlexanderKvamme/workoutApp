@@ -25,6 +25,9 @@ extension WorkoutLog: Comparable {
         return (lhs.dateEnded! as Date) < (rhs.dateEnded! as Date)
     }
 
+    func markAsLatestperformence() {
+        self.design?.latestPerformence = self
+    }
     
     
 }

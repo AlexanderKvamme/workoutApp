@@ -100,12 +100,26 @@ final class DatabaseFacade {
     
     // MARK: - Delete methods
     
+    /// Allow for custom deletion behaviour based on type, while DatabaseFacade exposes this simple abstraction
     static func delete(_ objectToDelete : NSManagedObject) {
-        persistentContainer.viewContext.delete(objectToDelete)
+        
+        switch objectToDelete {
+        case let workoutLog as WorkoutLog:
+            deleteWorkoutLog(workoutLog)
+        default:
+            persistentContainer.viewContext.delete(objectToDelete)
+        }
     }
     
     static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
         // loop through its Exerciselogs, delete their lifts, then delete exerciselog and then delete workoutLog
+        
+        // mark the predecessing workoutLog as latestPerformence
+        if let workoutDesign = workoutLogToDelete.design, let latestPerformence = workoutDesign.latestPerformence {
+            if latestPerformence === workoutLogToDelete {
+                setPreviousWorkoutLogAsLatestPerformence(forWorkout: workoutDesign)
+            }
+        }
         
         let orderedExerciseLogs: NSMutableOrderedSet = workoutLogToDelete.mutableOrderedSetValue(forKey: "loggedExercises")
         
@@ -128,7 +142,7 @@ final class DatabaseFacade {
             }
             delete(exerciseLog)
         }
-        delete(workoutLogToDelete)
+        persistentContainer.viewContext.delete(workoutLogToDelete)
     }
     
     static func deleteWorkout(_ workoutToDelete: Workout) {
@@ -138,7 +152,8 @@ final class DatabaseFacade {
         }
         
         for workoutLog in loggedWorkouts {
-            delete(workoutLog) // NOTE: - This leaves any exercises associated with these workoutLogs still in existance in the persistentStore
+            // NOTE: - This leaves any exercises associated with these workoutLogs still in existance in the persistentStore
+            delete(workoutLog)
         }
         delete(workoutToDelete)
     }
@@ -533,6 +548,26 @@ final class DatabaseFacade {
             }
         } else {
             print("no changes to save")
+        }
+    }
+}
+
+// MARK: Helpers
+
+fileprivate extension DatabaseFacade {
+    
+    /// when deleting a workoutLog, you would want to make the previous performance the new "latestPerformance" of its kind.
+    static func setPreviousWorkoutLogAsLatestPerformence(forWorkout workout: Workout) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        fetchRequest.predicate = NSPredicate(format: "design == %@", workout)
+        fetchRequest.fetchLimit = 2
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateEnded", ascending: false)]
+        
+        do {
+            let result = try DatabaseFacade.context.fetch(fetchRequest) as! [WorkoutLog]
+            result[1].markAsLatestperformence()
+        } catch let error as NSError {
+            print("error in deleteWorkoutLog: \(error.localizedDescription)")
         }
     }
 }

@@ -63,13 +63,11 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     // FIXME: - tappable cells
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected: " ,indexPath)
 
         //let newDataSource = dataSource as! HistoryTableViewDataSource
         let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
         let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
-                
-        print(" WOULD PRESENT DETAILED THING")
+            
         let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
         navigationController?.pushViewController(workoutLogTable, animated: true)
     }

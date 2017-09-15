@@ -79,6 +79,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             // Save as most recent use of current muscle
             updateLatestUseOfMuscle()
             deleteUnperformedLifts()
+            dataSourceWorkoutLog.markAsLatestperformence()
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
