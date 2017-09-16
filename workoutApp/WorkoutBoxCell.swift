@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class WorkoutBoxCell: UITableViewCell {
+class WorkoutBoxCell: SwipeTableViewCell {
     
     let box: Box!
     

@@ -105,7 +105,7 @@ final class ProfileController: UIViewController {
     
     private func setupHeader() {
         header.text = "DASHBOARD"
-        header.font = UIFont.custom(style: .bold, ofSize: .medium   )
+        header.font = UIFont.custom(style: .bold, ofSize: .medium)
         header.textColor = .dark
         header.textAlignment = .center
         header.sizeToFit()

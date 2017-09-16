@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 import CoreData
-
+import SwipeCellKit
 
 class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
+
+    weak var owner: SwipeTableViewCellDelegate? //the delegate must have reference from dataSource
     
     // MARK: - Properties
     

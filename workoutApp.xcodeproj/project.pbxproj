@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		93BA6FD1343231141B90EC94 /* Pods_workoutApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF8FB46A79315CA483AE7121 /* Pods_workoutApp.framework */; };
 		DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */; };
@@ -65,6 +66,10 @@
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
 		DD4B1C101EC8606F00BD313B /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0F1EC8606F00BD313B /* PreferencesController.swift */; };
 		DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C111EC8616800BD313B /* SelectionViewController.swift */; };
+		DD4FF0151F6C3383005040A0 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF0141F6C3383005040A0 /* UIImage.swift */; };
+		DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF0161F6D320C005040A0 /* NewWorkoutController.swift */; };
+		DD4FF0191F6D3A8B005040A0 /* WorkoutEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF0181F6D3A8B005040A0 /* WorkoutEditor.swift */; };
+		DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */; };
 		DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D461EC4D53900962B19 /* AppDelegate.swift */; };
 		DD585D4C1EC4D53900962B19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD585D4A1EC4D53900962B19 /* Main.storyboard */; };
 		DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */; };
@@ -77,13 +82,12 @@
 		DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6C1EC5E39F00962B19 /* Constants.swift */; };
 		DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */; };
 		DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D941EC6734100962B19 /* SelectionViewHeader.swift */; };
-		DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */; };
 		DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59B0931EE1C1FA006443D4 /* Typography.swift */; };
 		DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59B0951EE2B989006443D4 /* ButtonFooter.swift */; };
 		DD5CD5D01F4660A500672A1E /* ExerciseHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5CD5CF1F4660A500672A1E /* ExerciseHistoryTableViewController.swift */; };
 		DD5CD5D21F46EECA00672A1E /* ExerciseHistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5CD5D11F46EECA00672A1E /* ExerciseHistoryTableViewDataSource.swift */; };
 		DD5ED8381ECA5F5100D3EB1A /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5ED8371ECA5F5100D3EB1A /* CustomAlertView.swift */; };
-		DD7600481EDF240D00871DD8 /* NewWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */; };
+		DD7600481EDF240D00871DD8 /* WorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600471EDF240D00871DD8 /* WorkoutController.swift */; };
 		DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */; };
 		DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */; };
 		DD9838731F12717B00B876C7 /* CustomNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9838721F12717B00B876C7 /* CustomNotifications.swift */; };
@@ -127,6 +131,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		63E346831A7CE52FC6E0BEE0 /* Pods-workoutApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp.debug.xcconfig"; sourceTree = "<group>"; };
+		70BE2069C38F0C976927ED6C /* Pods-workoutApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp.release.xcconfig"; sourceTree = "<group>"; };
 		DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarControllerDelegate.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerController.swift; sourceTree = "<group>"; };
@@ -185,6 +191,10 @@
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
 		DD4B1C0F1EC8606F00BD313B /* PreferencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		DD4B1C111EC8616800BD313B /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		DD4FF0141F6C3383005040A0 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		DD4FF0161F6D320C005040A0 /* NewWorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewWorkoutController.swift; sourceTree = "<group>"; };
+		DD4FF0181F6D3A8B005040A0 /* WorkoutEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutEditor.swift; sourceTree = "<group>"; };
+		DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutExtensions.swift; sourceTree = "<group>"; };
 		DD585D431EC4D53900962B19 /* workoutApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = workoutApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD585D461EC4D53900962B19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD585D4B1EC4D53900962B19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -199,13 +209,12 @@
 		DD585D6C1EC5E39F00962B19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButton.swift; sourceTree = "<group>"; };
 		DD585D941EC6734100962B19 /* SelectionViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewHeader.swift; sourceTree = "<group>"; };
-		DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = temporaryDummyData.swift; sourceTree = "<group>"; };
 		DD59B0931EE1C1FA006443D4 /* Typography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		DD59B0951EE2B989006443D4 /* ButtonFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonFooter.swift; sourceTree = "<group>"; };
 		DD5CD5CF1F4660A500672A1E /* ExerciseHistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryTableViewController.swift; sourceTree = "<group>"; };
 		DD5CD5D11F46EECA00672A1E /* ExerciseHistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryTableViewDataSource.swift; sourceTree = "<group>"; };
 		DD5ED8371ECA5F5100D3EB1A /* CustomAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
-		DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewWorkoutController.swift; sourceTree = "<group>"; };
+		DD7600471EDF240D00871DD8 /* WorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutController.swift; sourceTree = "<group>"; };
 		DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoLabelStack.swift; sourceTree = "<group>"; };
 		DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlView.swift; sourceTree = "<group>"; };
 		DD9838721F12717B00B876C7 /* CustomNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotifications.swift; sourceTree = "<group>"; };
@@ -246,6 +255,7 @@
 		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsFacade.swift; sourceTree = "<group>"; };
 		DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencePicker.swift; sourceTree = "<group>"; };
+		DF8FB46A79315CA483AE7121 /* Pods_workoutApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_workoutApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,12 +263,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93BA6FD1343231141B90EC94 /* Pods_workoutApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		38709445547C5C0A771DD6F6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				63E346831A7CE52FC6E0BEE0 /* Pods-workoutApp.debug.xcconfig */,
+				70BE2069C38F0C976927ED6C /* Pods-workoutApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8700045E68E513DDEDCEFDB2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DF8FB46A79315CA483AE7121 /* Pods_workoutApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DD06118D1F4B013300AEACCF /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				DDB5FF3C1F4CC99B00202705 /* ExerciseEditor.swift */,
+				DD4FF0181F6D3A8B005040A0 /* WorkoutEditor.swift */,
 			);
 			name = Editors;
 			sourceTree = "<group>";
@@ -345,6 +374,7 @@
 				DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */,
 				DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */,
 				DD2DDD761F3338EF00614788 /* Navbar.swift */,
+				DD4FF0141F6C3383005040A0 /* UIImage.swift */,
 			);
 			name = "Native Extensions";
 			sourceTree = "<group>";
@@ -445,6 +475,8 @@
 				DDA7276C1ED5BA3500068AD4 /* Core Data */,
 				DD585D451EC4D53900962B19 /* workoutApp */,
 				DD585D441EC4D53900962B19 /* Products */,
+				38709445547C5C0A771DD6F6 /* Pods */,
+				8700045E68E513DDEDCEFDB2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -464,7 +496,7 @@
 				DD0D42D11F4CCE2900502C02 /* Components */,
 				DD06118D1F4B013300AEACCF /* Pickers */,
 				DD34C5791F46579E0050BDB0 /* TableViews */,
-				DD7600461EDF23E900871DD8 /* New Workout / Exercise */,
+				DD7600461EDF23E900871DD8 /* Workout / Exercise */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DD98A5021F13AAAE002985BF /* Custom Keyboard */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
@@ -534,15 +566,15 @@
 			name = Modal;
 			sourceTree = "<group>";
 		};
-		DD7600461EDF23E900871DD8 /* New Workout / Exercise */ = {
+		DD7600461EDF23E900871DD8 /* Workout / Exercise */ = {
 			isa = PBXGroup;
 			children = (
 				DD1EA1121EE9434800EBB7B7 /* InputViewController */,
-				DD7600471EDF240D00871DD8 /* NewWorkoutController.swift */,
+				DD7600471EDF240D00871DD8 /* WorkoutController.swift */,
+				DD4FF0161F6D320C005040A0 /* NewWorkoutController.swift */,
 				DD41AAFB1F18F5C800CB08F5 /* NewExerciseController.swift */,
-				DD58794C1EE7395D002DC25B /* temporaryDummyData.swift */,
 			);
-			name = "New Workout / Exercise";
+			name = "Workout / Exercise";
 			sourceTree = "<group>";
 		};
 		DD90AF2A1EDED25600A560F0 /* refreshControl */ = {
@@ -583,11 +615,11 @@
 		DDA7276C1ED5BA3500068AD4 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				DDB5FF391F4B804600202705 /* Extensions */,
-				DDE55B991F2FB53C00ED1D15 /* Managed Object Subclass Extensions */,
 				DDA54AD81ED84B1B008C601C /* ModelEnums.swift */,
 				DD491B7B1ED7464E008A4619 /* DataSeeder.swift */,
 				DDA54B021EDB426D008C601C /* DatabaseFacade.swift */,
+				DDB5FF391F4B804600202705 /* Extensions */,
+				DDE55B991F2FB53C00ED1D15 /* Managed Object Subclass Extensions */,
 			);
 			name = "Core Data";
 			path = workoutApp;
@@ -608,6 +640,7 @@
 			children = (
 				DDB5FF3A1F4B806300202705 /* pickableEntity.swift */,
 				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
+				DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -712,9 +745,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DD585D581EC4D53900962B19 /* Build configuration list for PBXNativeTarget "workoutApp" */;
 			buildPhases = (
+				A1772F20424F5805CD7FA8BD /* [CP] Check Pods Manifest.lock */,
 				DD585D3F1EC4D53900962B19 /* Sources */,
 				DD585D401EC4D53900962B19 /* Frameworks */,
 				DD585D411EC4D53900962B19 /* Resources */,
+				16766AD6807D59FF75408A1C /* [CP] Embed Pods Frameworks */,
+				014D582AFE8B2DA99329CDA9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -774,6 +810,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		014D582AFE8B2DA99329CDA9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		16766AD6807D59FF75408A1C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1772F20424F5805CD7FA8BD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DD585D3F1EC4D53900962B19 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -795,12 +879,12 @@
 				DD23AA8A1F6B2D0D0068B2A7 /* WorkoutStyle+CoreDataProperties.swift in Sources */,
 				DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */,
 				DD0EB2501F4707E000CDA1CF /* ExerciseHistorySetCollectionViewcell.swift in Sources */,
-				DD58794D1EE7395D002DC25B /* temporaryDummyData.swift in Sources */,
 				DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */,
 				DD468F851F2E875000A945A9 /* WorkoutTableViewController.swift in Sources */,
 				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DD23AA861F6B2D0D0068B2A7 /* ExerciseStyle+CoreDataProperties.swift in Sources */,
 				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
+				DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */,
 				DDBFCA621F2CA43000ABB241 /* ReusableComponents.swift in Sources */,
 				DDB5FF3B1F4B806300202705 /* pickableEntity.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
@@ -848,6 +932,7 @@
 				DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */,
 				DD0EB2751F48EB8600CDA1CF /* test.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
+				DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */,
 				DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,
 				DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */,
@@ -885,11 +970,13 @@
 				DD23AA7F1F6B2D0D0068B2A7 /* Muscle+CoreDataClass.swift in Sources */,
 				DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */,
 				DD1EA1621EEC1CBC00EBB7B7 /* Keyboard.swift in Sources */,
+				DD4FF0191F6D3A8B005040A0 /* WorkoutEditor.swift in Sources */,
 				DD1EA1641EEC1CC900EBB7B7 /* InputViewController.swift in Sources */,
 				DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */,
-				DD7600481EDF240D00871DD8 /* NewWorkoutController.swift in Sources */,
+				DD7600481EDF240D00871DD8 /* WorkoutController.swift in Sources */,
 				DDB539AC1F2E017600824CFC /* WorkoutLogHistoryTableViewController.swift in Sources */,
 				DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */,
+				DD4FF0151F6C3383005040A0 /* UIImage.swift in Sources */,
 				DDF95B391ECA453A009E6925 /* StackView.swift in Sources */,
 				DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */,
 			);
@@ -1012,6 +1099,7 @@
 		};
 		DD585D591EC4D53900962B19 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 63E346831A7CE52FC6E0BEE0 /* Pods-workoutApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = RMURDMDZGD;
@@ -1026,6 +1114,7 @@
 		};
 		DD585D5A1EC4D53900962B19 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70BE2069C38F0C976927ED6C /* Pods-workoutApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = RMURDMDZGD;

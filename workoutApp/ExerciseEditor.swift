@@ -51,11 +51,10 @@ final class ExerciseEditor: UIViewController {
     }()
     
     private var footer: ButtonFooter = {
-        let f = ButtonFooter(withColor: .dark)
-        f.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-        f.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
-        
-        return f
+        let footer = ButtonFooter(withColor: .dark)
+        footer.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        footer.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
+        return footer
     }()
     
     // Delegates
@@ -91,8 +90,6 @@ final class ExerciseEditor: UIViewController {
         view.backgroundColor = .light
         
         addSubViewsAndConstraints()
-        
-        view.layoutIfNeeded() // WHAT?
     }
     
     // MARK: - Methods

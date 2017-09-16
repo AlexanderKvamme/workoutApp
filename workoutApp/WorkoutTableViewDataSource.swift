@@ -9,15 +9,16 @@
 import Foundation
 import UIKit
 import CoreData
+import SwipeCellKit
 
-
-class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
+class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     
     // MARK: - Properties
     
     var cellIdentifier = "WorkoutBoxCell"
     var workoutStyleName: String?
     var fetchedWorkouts = [Workout]()
+    weak var owner: SwipeTableViewCellDelegate?
     
     // MARK: - Initializers
     
@@ -42,9 +43,8 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
         }
         if let workoutStyleName = workoutStyleName {
             cell.box.setSubHeader(workoutStyleName)
-        } else {
-            print("No subheader to set")
         }
+        cell.delegate = owner
         return cell
     }
     
@@ -52,6 +52,10 @@ class WorkoutTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     func getData() -> [NSManagedObject]? {
         return fetchedWorkouts
+    }
+    
+    func getWorkout(at indexPath: IndexPath) -> Workout {
+        return fetchedWorkouts[indexPath.row]
     }
     
     func deleteDataAt(_ indexPath: IndexPath) {

@@ -15,7 +15,6 @@ class BoxTableViewController: UITableViewController {
     var workoutStyleName: String?
     var cellIdentifier: String
     var customRefreshView: RefreshControlView!
-    var dataSource: isBoxTableViewDataSource!
     
     // MARK: - Initializers
     
@@ -31,21 +30,6 @@ class BoxTableViewController: UITableViewController {
     }
     
     // MARK: - Life cycle
-    
-    override func viewDidLoad() {
-        view.backgroundColor = .light
-        super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        // Show SelectionIndicator over tab bar
-        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.showSelectionindicator()
-        }
-        refreshControl?.endRefreshing()
-        dataSource.refreshDataSource()
-        tableView.reloadData()
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         resetRefreshControlAnimation()

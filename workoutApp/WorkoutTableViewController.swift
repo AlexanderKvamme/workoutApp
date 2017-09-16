@@ -8,8 +8,24 @@
 
 import UIKit
 import CoreData
+import SwipeCellKit
 
-class WorkoutTableViewController: BoxTableViewController {
+class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
+    
+    // MARK: - Properties
+    
+    var dataSource: isWorkoutTableViewDataSource!
+    
+    lazy var wrenchImage: UIImage = {
+        let wrench = UIImage(named: "wrench")!
+        let test = wrench.resize(maxWidthHeight: 36)!
+        return test
+    }()
+    
+    lazy var ximage: UIImage = {
+        let img = UIImage(named: "xmark")!
+        return img
+    }()
     
     // MARK: - Initializers
     
@@ -26,19 +42,34 @@ class WorkoutTableViewController: BoxTableViewController {
     
     // MARK: - Life cycle
     
-    // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .light
+        
         setupDataSource()
         setupTableView()
         setupRefreshControl()
         resetRefreshControlAnimation()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        // Show SelectionIndicator over tab bar
+        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+            customTabBarController.showSelectionindicator()
+        }
+        
+        // Update views
+        refreshControl?.endRefreshing()
+        dataSource.refreshDataSource()
+        tableView.reloadData()
+    }
+    
     // MARK: - Methods
     
     private func setupDataSource() {
         dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
+        dataSource.owner = self
         tableView.dataSource = dataSource
     }
     
@@ -61,14 +92,41 @@ class WorkoutTableViewController: BoxTableViewController {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "DELETE") { (action, indexPath) in
-            self.dataSource.deleteDataAt(indexPath)
-            self.tableView.reloadData()
+    // Left swipe
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+
+        switch orientation {
+        case .right:
+            let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+                self.dataSource.deleteDataAt(indexPath)
+                self.tableView.reloadData()
+            }
+            
+            // customize the action appearance
+            deleteAction.image = ximage
+            deleteAction.backgroundColor = .secondary
+            
+            return [deleteAction]
+        default: // user swiped left
+            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+                print("would open a workoutEditor")
+                
+                // FIXME: - Present WorkoutEditor with this workout
+                
+                let wo = self.dataSource.getWorkout(at: indexPath)
+                print("received workout: ", wo)
+                let workoutEditor = WorkoutEditor(with: wo)
+                
+                self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+                
+            }
+            
+            editAction.image = self.wrenchImage
+            editAction.backgroundColor = .light
+            
+            return [editAction]
         }
-        
-        delete.backgroundColor = .secondary
-        return [delete]
     }
 }
 

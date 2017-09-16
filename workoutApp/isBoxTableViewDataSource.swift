@@ -9,13 +9,20 @@
 import Foundation
 import UIKit
 import CoreData
+import SwipeCellKit
 
-protocol isBoxTableViewDataSource: UITableViewDataSource {
+protocol isBoxTableViewDataSource: class, UITableViewDataSource {
+    init(workoutStyleName: String?)
+    
     var cellIdentifier: String {get set}
     var workoutStyleName: String? {get set}
+    weak var owner: SwipeTableViewCellDelegate? {get set}
+    
     func refreshDataSource()
     func getData() -> [NSManagedObject]?
-    func deleteDataAt(_ indexPath: IndexPath)
-    init(workoutStyleName: String?)
+    func deleteDataAt(_ indexPath: IndexPath)   
 }
 
+protocol isWorkoutTableViewDataSource: isBoxTableViewDataSource {
+    func getWorkout(at indexPath: IndexPath) -> Workout
+}

@@ -13,6 +13,8 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     
     // MARK: - Initializers
     
+    var dataSource: isBoxTableViewDataSource!
+    
     init(workoutStyleName: String?) {
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell")
 //        tableView.register(HistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -30,6 +32,8 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .light
+        
         setupDataSource()
         setupTableView()
         setupRefreshControl()
@@ -39,9 +43,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     // MARK: - Methods
     
     private func setupDataSource() {
-//        dataSource = HistoryTable
         dataSource = WorkoutLogHistoryTableViewDataSource(workoutStyleName: workoutStyleName)
-//        dataSource = HistoryTableViewDataSource(workoutStyleName: workoutStyleName)
         tableView.dataSource = dataSource
     }
     
