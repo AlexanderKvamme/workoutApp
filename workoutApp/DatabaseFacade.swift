@@ -252,6 +252,14 @@ final class DatabaseFacade {
         return logItem
     }
     
+    static func makeExerciseLog(forExercise design: Exercise) -> ExerciseLog {
+        let newLog = makeExerciseLog()
+        newLog.exerciseDesign = design
+        newLog.datePerformed = Date() as NSDate
+
+        return newLog
+    }
+    
     static func makeWorkoutLog() -> WorkoutLog {
         let logItem = createManagedObjectForEntity(.WorkoutLog) as! WorkoutLog
         return logItem

@@ -28,8 +28,10 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         super.init()
         // setup data source to use the most recent performance, or the workoutlog if it has not been performed.
         if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
+            print("setupUsingWorkoutLog")
             setupUsingWorkoutLog(mostRecentPerformance: lastPerformance)
         } else {
+            print("setupUsingWorkout")
             setupUsingWorkout(withDesign: workout)
         }
     }
@@ -204,7 +206,7 @@ private extension ExerciseTableViewDataSource {
     
     // MARK: Setup methods
     
-    // convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
+    // Convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
     func setupUsingWorkoutLog(mostRecentPerformance inputtedWorkoutLog: WorkoutLog) {
         exerciseLogsAsArray = [ExerciseLog]()
         
@@ -213,54 +215,8 @@ private extension ExerciseTableViewDataSource {
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         dataSourceWorkoutLog.design = inputtedWorkoutLog.design
         
-        //if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises as? Set<ExerciseLog> {
-        
-        if let exercisesFromInputtedWorkoutLog = inputtedWorkoutLog.loggedExercises?.array as? [ExerciseLog] {
-            
-            totalLiftsToDisplay = Array(repeating: [Lift](), count: exercisesFromInputtedWorkoutLog.count)
-            
-            var i = 0
-            
-            // for each exercise, make a copy of its exerciseLog so that it can be manipulated by user and saved later
-            
-            for exercise in exercisesFromInputtedWorkoutLog {
-                
-                //make new ExerciseLog
-                let newExerciseLog = DatabaseFacade.makeExerciseLog()
-                newExerciseLog.exerciseDesign = exercise.exerciseDesign
-                newExerciseLog.usedIn = dataSourceWorkoutLog
-                newExerciseLog.datePerformed = Date() as NSDate
-                
-                var liftCopies = [Lift]()
-                
-                // Copy values from the most recently performed ExerciseLog to the newly created one
-                
-                // SortDescriptor
-                let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
-                let sortedRecentLifts = exercise.lifts?.sortedArray(using: [dateSortDescriptor]) as! [Lift]
-                
-                // copy each Lift and add them to the newExerciseLog
-                for lift in sortedRecentLifts {
-                    let newLift = DatabaseFacade.makeLift()
-                    newLift.reps = lift.reps
-                    newLift.datePerformed = lift.datePerformed // use original time for sorting
-                    newLift.time = lift.time
-                    newLift.weight = lift.weight
-                    newLift.owner = newExerciseLog
-                    
-                    liftCopies.append(newLift)
-                }
-                
-                // Save to datasources
-                exerciseLogsAsArray.append(newExerciseLog)
-                totalLiftsToDisplay[i] = liftCopies
-                i += 1
-            }
-            
-        } else {
-            print("ERROR: failed unwrapping exercisesFromWorkout")
-            exerciseLogsAsArray = [ExerciseLog]()
-        }
+        addPerformedExercises(toWorkoutLog: inputtedWorkoutLog)
+        addUnperformedExercises(toWorkoutLog: inputtedWorkoutLog)
     }
     
     func setupUsingWorkout(withDesign workout: Workout) {
@@ -340,6 +296,79 @@ private extension ExerciseTableViewDataSource {
             }
         }
         return performedLifts
+    }
+    
+    private func addPerformedExercises(toWorkoutLog workoutLog: WorkoutLog) {
+        if let exercisesFromInputtedWorkoutLog = workoutLog.loggedExercises?.array as? [ExerciseLog] {
+            
+            var i = 0
+            totalLiftsToDisplay = Array(repeating: [Lift](), count: exercisesFromInputtedWorkoutLog.count)
+            
+            // for each exercise, make a copy of its exerciseLog so that it can be manipulated by user and saved later
+            for exercise in exercisesFromInputtedWorkoutLog {
+                
+                // make new ExerciseLog
+                let newExerciseLog = DatabaseFacade.makeExerciseLog()
+                newExerciseLog.exerciseDesign = exercise.exerciseDesign
+                newExerciseLog.usedIn = dataSourceWorkoutLog
+                newExerciseLog.datePerformed = Date() as NSDate
+                
+                var liftCopies = [Lift]()
+                
+                // Copy values from the most recently performed ExerciseLog to the newly created one
+                
+                // SortDescriptor
+                let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: true)
+                let sortedRecentLifts = exercise.lifts?.sortedArray(using: [dateSortDescriptor]) as! [Lift]
+                
+                // copy each Lift and add them to the newExerciseLog
+                for lift in sortedRecentLifts {
+                    let newLift = DatabaseFacade.makeLift()
+                    newLift.reps = lift.reps
+                    newLift.datePerformed = lift.datePerformed // use original time for sorting
+                    newLift.time = lift.time
+                    newLift.weight = lift.weight
+                    newLift.owner = newExerciseLog
+                    
+                    liftCopies.append(newLift)
+                }
+                
+                // Save to datasources
+                exerciseLogsAsArray.append(newExerciseLog)
+                totalLiftsToDisplay[i] = liftCopies
+                i += 1
+            }
+        } else {
+            print("ERROR: failed unwrapping exercisesFromWorkout")
+            exerciseLogsAsArray = [ExerciseLog]()
+        }
+    }
+    
+    private func addUnperformedExercises(toWorkoutLog workoutLog: WorkoutLog) {
+        
+        if let allExercisesAsSet = workoutLog.design?.exercises?.set as? Set<Exercise> {
+            
+            if let exerciseLogsFromPreviousWorkoutLog = workoutLog.loggedExercises?.set as? Set<ExerciseLog> {
+                
+                var performedExercises = Set<Exercise>()
+                
+                for log in exerciseLogsFromPreviousWorkoutLog {
+                    if let exercise = log.exerciseDesign {
+                        performedExercises.insert(exercise)
+                    }
+                }
+                
+                let exercisesToAdd = allExercisesAsSet.subtracting(performedExercises)
+                
+                for exercise in exercisesToAdd {
+                    let newLog = DatabaseFacade.makeExerciseLog(forExercise: exercise)
+                    newLog.usedIn = dataSourceWorkoutLog
+                    
+                    exerciseLogsAsArray.append(newLog)
+                    totalLiftsToDisplay.append([Lift]())
+                }
+            }
+        }
     }
 }
 
