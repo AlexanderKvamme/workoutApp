@@ -37,7 +37,7 @@ class WorkoutEditor: WorkoutController {
         self.currentMuscle = workout.muscleUsed
         self.currentWorkoutStyle = workout.workoutStyle
         self.initialName = workout.name
-        self.currentExercises = workout.getExercises()
+        self.currentExercises = workout.getExercises(includeRetired: false)
         
         setupHeader(for: currentWorkout)
         setupTypeSelecter()

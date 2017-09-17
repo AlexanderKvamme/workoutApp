@@ -110,16 +110,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
             return [deleteAction]
         default: // user swiped left
             let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
-                print("would open a workoutEditor")
-                
-                // FIXME: - Present WorkoutEditor with this workout
-                
                 let wo = self.dataSource.getWorkout(at: indexPath)
-                print("received workout: ", wo)
                 let workoutEditor = WorkoutEditor(with: wo)
-                
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-                
             }
             
             editAction.image = self.wrenchImage

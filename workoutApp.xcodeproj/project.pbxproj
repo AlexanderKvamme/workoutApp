@@ -70,6 +70,7 @@
 		DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF0161F6D320C005040A0 /* NewWorkoutController.swift */; };
 		DD4FF0191F6D3A8B005040A0 /* WorkoutEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF0181F6D3A8B005040A0 /* WorkoutEditor.swift */; };
 		DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */; };
+		DD4FF01D1F6E9CCB005040A0 /* ExerciseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */; };
 		DD585D471EC4D53900962B19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D461EC4D53900962B19 /* AppDelegate.swift */; };
 		DD585D4C1EC4D53900962B19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD585D4A1EC4D53900962B19 /* Main.storyboard */; };
 		DD585D4F1EC4D53900962B19 /* workoutApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */; };
@@ -195,6 +196,7 @@
 		DD4FF0161F6D320C005040A0 /* NewWorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewWorkoutController.swift; sourceTree = "<group>"; };
 		DD4FF0181F6D3A8B005040A0 /* WorkoutEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutEditor.swift; sourceTree = "<group>"; };
 		DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutExtensions.swift; sourceTree = "<group>"; };
+		DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseExtensions.swift; sourceTree = "<group>"; };
 		DD585D431EC4D53900962B19 /* workoutApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = workoutApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD585D461EC4D53900962B19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD585D4B1EC4D53900962B19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -639,8 +641,9 @@
 			isa = PBXGroup;
 			children = (
 				DDB5FF3A1F4B806300202705 /* pickableEntity.swift */,
-				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
+				DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */,
 				DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */,
+				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -945,6 +948,7 @@
 				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DDB539AE1F2E074800824CFC /* WorkoutSelectionViewController.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
+				DD4FF01D1F6E9CCB005040A0 /* ExerciseExtensions.swift in Sources */,
 				DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */,
 				DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */,
 				DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */,

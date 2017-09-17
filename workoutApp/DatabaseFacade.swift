@@ -106,8 +106,32 @@ final class DatabaseFacade {
         switch objectToDelete {
         case let workoutLog as WorkoutLog:
             deleteWorkoutLog(workoutLog)
+        case let exercise as Exercise:
+            retireExercise(exercise)
         default:
             persistentContainer.viewContext.delete(objectToDelete)
+        }
+        
+        saveContext()
+    }
+    
+    private static func retireExercise(_ exercise: Exercise) {
+        print("would retire exercise")
+        exercise.isRetired = true
+        
+        // For any workout contaning this exercise. Remove it
+        exercise.removeFromAnyWorkouts()
+    }
+    
+    /// Removes exercise from any Workout using it, so that next workout of its type, this exercise will no longe appear. The exercise will appear in previously performed workouts git(WorkoutLogs) though.
+    static func removeExerciseFromAnyWorkouts(exercise: Exercise) {
+        
+        guard let matchingWorkouts = exercise.usedInWorkouts as? Set<Workout> else {
+            return
+        }
+
+        for workout in matchingWorkouts {
+            exercise.removeFromUsedInWorkouts(workout)
         }
     }
     
@@ -288,7 +312,6 @@ final class DatabaseFacade {
     // DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciss: currentlySelectedExercises)
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exercises: [Exercise]) {
         
-        // FIXME: - This method should ultimately not receive any strings other than workoutName, the rest should be actual values
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         let muscle = DatabaseFacade.getMuscle(named: muscleName)
         let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
@@ -475,7 +498,10 @@ final class DatabaseFacade {
     static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
         
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
-        fetchRequest.predicate = NSPredicate(format: "musclesUsed == %@", muscle)
+        let predicate1 = NSPredicate(format: "musclesUsed == %@", muscle)
+        let predicate2 = NSPredicate(format: "isRetired == false")
+        let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+        fetchRequest.predicate = andPredicate
         
         do {
             let result = try context.fetch(fetchRequest)
@@ -573,7 +599,9 @@ fileprivate extension DatabaseFacade {
         
         do {
             let result = try DatabaseFacade.context.fetch(fetchRequest) as! [WorkoutLog]
-            result[1].markAsLatestperformence()
+            if result.count > 2 {
+                result[1].markAsLatestperformence()
+            }
         } catch let error as NSError {
             print("error in deleteWorkoutLog: \(error.localizedDescription)")
         }

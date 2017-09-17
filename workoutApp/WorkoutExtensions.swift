@@ -12,16 +12,20 @@ extension Workout {
     
     // MARK: Getters
     
-    func getExercises() -> [Exercise] {
+    func getExercises(includeRetired: Bool) -> [Exercise] {
         
         var exercises = [Exercise]()
         
         if let e = self.exercises {
             let exercisesAsArray = e.array as! [Exercise]
-            exercises = exercisesAsArray
+            exercises = exercisesAsArray.filter({ (exercise) -> Bool in
+                exercise.isRetired == includeRetired
+            })
         }
         return exercises
     }
+    
+    
     
     // MARK: Setters
     
