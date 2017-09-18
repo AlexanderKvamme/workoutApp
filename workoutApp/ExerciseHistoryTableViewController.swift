@@ -46,7 +46,6 @@ class ExerciseHistoryTableViewController: UITableViewController {
         super.viewDidLoad()
 
         dataSource = ExerciseHistoryTableViewDataSource(workoutLog: currentWorkoutLog) // Make datasource out of the provided Workout
-        //dataSource = ExerciseTableViewDataSource(workoutLog: currentWorkoutLog)
         tableView.dataSource = dataSource
         dataSource.owner = self
         
@@ -93,8 +92,6 @@ class ExerciseHistoryTableViewController: UITableViewController {
     }
     
     // MARK: Helper methods
-    
-    // MARK: Handlers
     
     @objc private func xButtonHandler() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)

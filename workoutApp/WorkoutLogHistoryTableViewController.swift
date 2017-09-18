@@ -17,7 +17,6 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     
     init(workoutStyleName: String?) {
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell")
-//        tableView.register(HistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.register(WorkoutLogHistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         setUpNavigationBar(withTitle: self.workoutStyleName)
     }
@@ -38,6 +37,11 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
         setupTableView()
         setupRefreshControl()
         resetRefreshControlAnimation()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.dataSource.refreshDataSource()
+        self.tableView.reloadData()
     }
     
     // MARK: - Methods
@@ -62,8 +66,6 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
         return [delete]
     }
     
-    // FIXME: - tappable cells
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         //let newDataSource = dataSource as! HistoryTableViewDataSource
@@ -73,7 +75,5 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
         let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
         navigationController?.pushViewController(workoutLogTable, animated: true)
     }
-    
-    
 }
 

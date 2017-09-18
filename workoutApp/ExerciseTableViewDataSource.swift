@@ -28,10 +28,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         super.init()
         // setup data source to use the most recent performance, or the workoutlog if it has not been performed.
         if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
-            print("setupUsingWorkoutLog")
             setupUsingWorkoutLog(previousPerformance: lastPerformance)
         } else {
-            print("setupUsingWorkout")
             setupUsingWorkout(withDesign: workout)
         }
     }
@@ -77,8 +75,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             modal.show(animated: true)
         } else {
             // Save and pop viewController
-            
-            // Save as most recent use of current muscle
             updateLatestUseOfMuscle()
             deleteUnperformedLifts()
             dataSourceWorkoutLog.markAsLatestperformence()

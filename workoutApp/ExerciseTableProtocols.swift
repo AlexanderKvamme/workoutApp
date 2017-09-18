@@ -30,7 +30,6 @@ extension hasPreviousCell where Self: ExerciseTableViewCell {
         if let previousCell = previousCollectionViewCell {
             return previousCell
         } else {
-            print("there was no previous cell, so returning nil")
             return nil
         }
     }
