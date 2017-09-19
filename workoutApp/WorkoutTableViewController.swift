@@ -61,8 +61,12 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         
         // Update views
         refreshControl?.endRefreshing()
-        dataSource.refreshDataSource()
+        dataSource.refresh()
         tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        resetRefreshControlAnimation()
     }
     
     // MARK: - Methods
@@ -120,6 +124,10 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
             
             return [editAction]
         }
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        customRefreshView.label.alpha = customRefreshView.frame.height/100
     }
 }
 

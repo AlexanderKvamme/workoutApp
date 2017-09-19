@@ -1,9 +1,9 @@
 //
 //  Workout+CoreDataProperties.swift
-//  workoutApp
+//  
 //
-//  Created by Alexander Kvamme on 14/09/2017.
-//  Copyright © 2017 Alexander Kvamme. All rights reserved.
+//  Created by Alexander Kvamme on 18/09/2017.
+//
 //
 
 import Foundation
@@ -18,11 +18,13 @@ extension Workout {
 
     @NSManaged public var muscle: String?
     @NSManaged public var name: String?
+    @NSManaged public var totalTimeSpent: Double
+    @NSManaged public var performanceCount: Int16
     @NSManaged public var exercises: NSOrderedSet?
+    @NSManaged public var latestPerformence: WorkoutLog?
     @NSManaged public var loggedWorkouts: NSSet?
     @NSManaged public var muscleUsed: Muscle?
     @NSManaged public var workoutStyle: WorkoutStyle?
-    @NSManaged public var latestPerformence: WorkoutLog?
 
 }
 

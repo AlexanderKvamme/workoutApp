@@ -35,12 +35,13 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
         
         setupDataSource()
         setupTableView()
-        setupRefreshControl()
-        resetRefreshControlAnimation()
+//        setupRefreshControl()
+//        resetRefreshControlAnimation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.dataSource.refreshDataSource()
+        super.viewWillAppear(animated)
+        self.dataSource.refresh()
         self.tableView.reloadData()
     }
     

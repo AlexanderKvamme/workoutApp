@@ -36,10 +36,27 @@ extension WorkoutLog {
     }
     
     func getPerformedExercises(includeRetired: Bool) -> [Exercise] {
-        
-//        let exercises = getExerciseLogs().map { return $0.exerciseDesign }.flatMap{ return $0 }
         let exercises = getExerciseLogs().map { return $0.exerciseDesign }.flatMap { return $0 }.filter({ $0.isRetired == false })
         
         return exercises
+    }
+    
+    // MARK: Getters
+    
+    func getName() -> String {
+        return design?.name ?? "No Name"
+    }
+    
+    func getStyleName() -> String {
+        return design?.workoutStyle?.name ?? "No Style"
+    }
+    
+    func getTimeSpent() -> String {
+        
+        guard let end = dateEnded, let start = dateStarted else { return "NA" }
+        
+        let time = end.timeIntervalSince(start as Date)
+        
+        return time.asMinimalString()
     }
 }

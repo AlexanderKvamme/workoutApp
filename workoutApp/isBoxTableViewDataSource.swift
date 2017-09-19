@@ -18,7 +18,7 @@ protocol isBoxTableViewDataSource: class, UITableViewDataSource {
     var workoutStyleName: String? {get set}
     weak var owner: SwipeTableViewCellDelegate? {get set}
     
-    func refreshDataSource()
+    func refresh()
     func getData() -> [NSManagedObject]?
     func deleteDataAt(_ indexPath: IndexPath)   
 }

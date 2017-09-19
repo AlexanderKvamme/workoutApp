@@ -26,7 +26,7 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
         super.init()
         self.workoutStyleName = workoutStyleName
 
-        refreshDataSource()
+        refresh()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,17 +34,13 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let wo = fetchedWorkouts[indexPath.row]
+        let workout = fetchedWorkouts[indexPath.row]
         
         var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell
         cell = WorkoutBoxCell(style: .default, reuseIdentifier: cellIdentifier)
-        if let name = wo.name {
-            cell.box.setTitle(name)
-        }
-        if let workoutStyleName = workoutStyleName {
-            cell.box.setSubHeader(workoutStyleName)
-        }
+        cell.setupContent(withWorkout: workout)
         cell.delegate = owner
+        
         return cell
     }
     
@@ -64,15 +60,15 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
         DatabaseFacade.deleteWorkout(workoutToDelete)
     }
     
-    func refreshDataSource() {
+    func refresh() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
         let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!) // FIXME: BANG
         let predicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latestPerformence.dateEnded", ascending: false)]
         fetchRequest.predicate = predicate
         
+        // Fetch from Core Data
         do {
-            // Fetch from Core Data
             let results = try DatabaseFacade.context.fetch(fetchRequest)
             fetchedWorkouts = results
         } catch let err as NSError {

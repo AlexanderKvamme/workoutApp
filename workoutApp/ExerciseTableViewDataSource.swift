@@ -77,6 +77,13 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             // Save and pop viewController
             updateLatestUseOfMuscle()
             deleteUnperformedLifts()
+            
+            if let workoutDesign = dataSourceWorkoutLog.design {
+                workoutDesign.addPerformance(dataSourceWorkoutLog)
+            } else {
+                print("could not unwrap workoutDesign")
+            }
+            
             dataSourceWorkoutLog.markAsLatestperformence()
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")

@@ -126,7 +126,7 @@ private extension SuggestionController {
                     let workoutName = log.design?.muscleUsed?.name else { break }
                 
                 let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
-                let shortenedTimeString = stringifyTimeInterval(timeIntervalSinceWorkout)
+                let shortenedTimeString = timeIntervalSinceWorkout.asMinimalString()
                 let suggestion = ("\(shortenedTimeString) SINCE LAST WORKOUT:", workoutName)
                 
                 suggestionsToReturn.append(suggestion)
@@ -160,23 +160,25 @@ private extension SuggestionController {
         return boxes
     }
     
-    /// shortens to "10M", "10H", "10D", "10W" .etc
-    func stringifyTimeInterval(_ timeInterval: TimeInterval) -> String {
-        
-        let s = timeInterval
-        let m = Int(s/60)
-        let h = Int(m/60)
-        let d = Int(h/24)
-        
-        if d > 0 {
-            return "\(d)D"
-        } else if h > 0 {
-            return "\(h)H"
-        } else if m > 0 {
-            return "\(m)M"
-        } else {
-            return "\(s)S"
-        }
-    }
+//    /// shortens to "10M", "10H", "10D", "10W" .etc
+//    func stringifyTimeInterval(_ timeInterval: TimeInterval) -> String {
+//        
+//        let s = timeInterval
+//        let m = Int(s/60)
+//        let h = Int(m/60)
+//        let d = Int(h/24)
+//        
+//        if d > 0 {
+//            return "\(d)D"
+//        } else if h > 0 {
+//            return "\(h)H"
+//        } else if m > 0 {
+//            return "\(m)M"
+//        } else {
+//            return "\(s)S"
+//        }
+//    }
+    
+
 }
 

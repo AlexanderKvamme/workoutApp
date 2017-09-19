@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 
-
 public class TwoRowStack: UIStackView {
 
     private  var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
@@ -74,6 +73,10 @@ public class TwoRowStack: UIStackView {
     }
     
     // MARK: - Public Access
+    
+    func setTopText(_ str: String) {
+        topRow.text = str
+    }
     
     func setBottomText(_ str: String) {
         bottomRow.text = str

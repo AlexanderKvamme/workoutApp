@@ -18,7 +18,7 @@ class WorkoutBoxCell: SwipeTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         
         // Box
-        let boxFactory = BoxFactory.makeFactory(type: .HistoryBox)
+        let boxFactory = BoxFactory.makeFactory(type: .WorkoutBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
         let boxFrame = boxFactory.makeBoxFrame()
@@ -29,18 +29,19 @@ class WorkoutBoxCell: SwipeTableViewCell {
         box.isUserInteractionEnabled = false
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(box)
         
         backgroundColor = .clear
         selectionStyle = .none
-        setupTestViews()
+        addViewsAndConstraints()
     }
     
         required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupTestViews() {
+    func addViewsAndConstraints() {
+        
+        contentView.addSubview(box)
         let marginGuide = contentView.layoutMarginsGuide
         
         box.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +56,18 @@ class WorkoutBoxCell: SwipeTableViewCell {
         // Compression resistance
         box.setContentCompressionResistancePriority(1000, for: .vertical)
         contentView.setContentCompressionResistancePriority(0, for: .vertical)
+    }
+    
+    func setupContent(withWorkout workout: Workout) {
+        guard let name = workout.name else { return }
+        guard let styleName = workout.workoutStyle?.name else { return }
+        
+        box.setTitle(name)
+        box.setSubHeader(styleName)
+
+        if let content = box.content {
+            content.setup(usingWorkout: workout)
+        }
     }
 }
 

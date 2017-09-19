@@ -100,6 +100,10 @@ fileprivate class WorkoutBoxFactory: BoxFactory {
     override func makeBoxFrame() -> BoxFrame {
         return StandardBoxFrame()
     }
+    
+    override func makeBoxContent() -> BoxContent? {
+        return WorkoutBoxContent()
+    }
 }
 
 // Suggestion box factory
@@ -412,6 +416,24 @@ public class BoxContent: UIView {
     var label: UILabel?
     var messageLabel: UILabel?
     var usesAutoLayout = false
+    
+    /// Takes properties from the workout and sets up some stacks of information.
+    func setup(usingWorkout workout: Workout) {
+        if let cont = self as? WorkoutBoxContent {
+            if let firstStack = cont.contentStack?.firstStack {
+                firstStack.setTopText("LAST")
+                firstStack.setBottomText(workout.timeSinceLastPerformence())
+            }
+            if let secondStack = cont.contentStack?.secondStack {
+                secondStack.setTopText("AVG")
+                secondStack.setBottomText(workout.getAverageTime())
+            }
+            if let thirdStack = cont.contentStack?.thirdStack {
+                thirdStack.setTopText("COUNT")
+                thirdStack.setBottomText(String(workout.performanceCount))
+            }
+        }
+    }
 }
 
 fileprivate class HistoryBoxContent: BoxContent {
@@ -443,6 +465,44 @@ fileprivate class HistoryBoxContent: BoxContent {
         // Left and right margins
         contentStack.isLayoutMarginsRelativeArrangement = true
         contentStack.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// WorkoutBox content
+fileprivate class WorkoutBoxContent: BoxContent {
+    
+    var totalStack: TwoRowStack!
+    var timeStack: TwoRowStack!
+    var personalRecordStack: TwoRowStack!
+    
+    var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
+    
+    init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        
+        let leftStack = TwoRowStack(topText: "LAST", bottomText: "X")
+        let midStack = TwoRowStack(topText: "AVG", bottomText: "X")
+        let rightStack = TwoRowStack(topText: "COUNT", bottomText: "X")
+        
+        contentStack = ThreeColumnStack(withSubstacks: leftStack, midStack, rightStack)
+        if let contentStack = contentStack {
+            // content Stack - Fills entire box and arranges the 3 stacks horzontally
+            contentStack.frame.size = CGSize(width: Constant.components.Box.Standard.width, height: Constant.components.Box.Standard.height)
+            contentStack.distribution = .equalCentering
+            contentStack.alignment = .center
+            contentStack.axis = .horizontal
+            contentStack.spacing = 10
+            
+            addSubview(contentStack)
+            
+            // Left and right margins
+            contentStack.isLayoutMarginsRelativeArrangement = true
+            contentStack.layoutMargins = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
         }
     }
     
@@ -524,7 +584,7 @@ fileprivate class SuggestionBoxContent: BoxContent {
         messageLabel.numberOfLines = 0
         messageLabel.text = "MessagesLabel".uppercased()
         
-        // FIXME: - Remove header maybe
+        // NOTE: Remove header maybe
 //        
 //        messageLabel.backgroundColor = .green
 //        messageLabel.textAlignment = .center

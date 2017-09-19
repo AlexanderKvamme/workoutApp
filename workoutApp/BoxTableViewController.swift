@@ -30,10 +30,7 @@ class BoxTableViewController: UITableViewController {
     }
     
     // MARK: - Life cycle
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        resetRefreshControlAnimation()
-    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         showNavigationBar()
@@ -99,12 +96,6 @@ class BoxTableViewController: UITableViewController {
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         }
-    }
-    
-    // MARK: TableView delegate methods
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        customRefreshView.label.alpha = customRefreshView.frame.height/100
     }
 }
 
