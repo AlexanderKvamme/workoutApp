@@ -116,7 +116,6 @@ final class DatabaseFacade {
     }
     
     private static func retireExercise(_ exercise: Exercise) {
-        print("would retire exercise")
         exercise.isRetired = true
         
         // For any workout contaning this exercise. Remove it
@@ -480,6 +479,9 @@ final class DatabaseFacade {
     
     // get Muscle
     static func getMuscle(named name: String) -> Muscle? {
+        
+        let name = name.uppercased()
+        
         var muscle: Muscle? = nil
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Muscle.rawValue)
@@ -487,8 +489,7 @@ final class DatabaseFacade {
             
             fetchRequest.predicate = predicate
             let result = try context.fetch(fetchRequest)
-            muscle = result[0] as? Muscle
-            
+            muscle = result.first as? Muscle
         } catch let error as NSError {
             print("error fetching \(name): \(error.localizedDescription)")
         }
@@ -496,6 +497,9 @@ final class DatabaseFacade {
     }
     
     static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
+        
+        // FIXME: - fix
+        print("Would fetch every exercise")
         
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
         let predicate1 = NSPredicate(format: "musclesUsed == %@", muscle)

@@ -59,11 +59,12 @@ class ExercisePickerController: UIViewController {
         return button
     }()
     
+    // Properties
+    
     var selectionChoices = [Exercise]()
     var selectedExercises = [Exercise]()
     var selectedMuscle: Muscle! // used to refresh the picker after returning from making new exercise
     
-    // Delegates
     weak var exerciseReceiver: ExerciseReceiver?
     weak var pickableReceiver: PickableReceiver?
     
@@ -71,10 +72,11 @@ class ExercisePickerController: UIViewController {
     
     init(forMuscle muscle: Muscle, withPreselectedExercises preselectedExercises: [Exercise]?) {
         
-        // Setup avaiable choices
+        // Setup available choices
         self.selectedMuscle = muscle
         
         let exercises = DatabaseFacade.fetchExercises(usingMuscle: muscle)!
+        
         let orderedExercises = exercises.sorted(by: { (a, b) -> Bool in
             guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else {
                 return false
@@ -211,7 +213,7 @@ class ExercisePickerController: UIViewController {
         }
     }
     
-    // MARK: Cell configuration
+    // MARK: Cell configuration methods
     
     /// Takes a indexpath, and makes it look selected or not depending on if its he of selected indexPaths
     fileprivate func configure(cellAt indexPath: IndexPath) {

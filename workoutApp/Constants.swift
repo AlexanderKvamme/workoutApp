@@ -24,13 +24,6 @@ enum Constant {
         static let measurement = "Sets"
     }
     
-    enum exampleValues {
-        static let exampleMuscles = ["Undefined", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core"]
-        static let workoutStyles = ["Normal", "Drop Set", "Superset", "Cardio", "For fun"]
-        static let exerciseStyles = ["Normal", "Assisted", "Weighted", "Slow", "Explosive", "Inclined"]
-        static let measurementStyles = ["Timer", "Countdown", "Sets"]
-    }
-    
     enum UI {
         static let width = UIScreen.main.bounds.width
         static let height = UIScreen.main.bounds.height
@@ -112,6 +105,7 @@ enum Constant {
             static let textColorWhenDeselected = UIColor.faded
         }
     }
+    
     enum Animation {
         static let pickerVCsShouldAnimateIn = true
         static let pickerVCsShouldAnimateOut = true

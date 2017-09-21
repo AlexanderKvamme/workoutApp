@@ -16,12 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // seed Core Data with development Data
+        let context = DatabaseFacade.persistentContainer.viewContext
         
         if UserDefaults.isFirstLaunch() {
-            // Core data
-            let dataSeeder = DataSeeder(context: DatabaseFacade.persistentContainer.viewContext)
-            dataSeeder.seedCoreDataWithOnlyEssentials()
+            
+            // Seed Core data
+            let dataSeeder = DataSeeder(context: context)
+            dataSeeder.seedCoreData()
             
             let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
             modal.show(animated: true)
@@ -30,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if !UserDefaultsFacade.hasInitialDefaults {
                 UserDefaultsFacade.seed()
             }
+        } else {
+            let dataSeeder = DataSeeder(context: context)
+            dataSeeder.update()
         }
         
         // Appearance()

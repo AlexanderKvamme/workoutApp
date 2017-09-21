@@ -18,23 +18,27 @@ final class DataSeeder {
     typealias DummyWorkout = (name: String, muscle: Muscle, type: String)
     typealias DummyExercise = (name: String, muscle: Muscle, plannedSets: Int16, type: ExerciseStyle)
     
+    // MARK: Properties
+    
+    // Properties for seeding to Core Data
+    private let defaultMuscles = ["Undefined", "Arms", "Back", "Legs", "Glutes", "Shoulders", "Core", "Chest", "Mixed"]
+    private let defaultWorkoutStyles = ["Normal", "Drop Set", "Superset", "Cardio", "Fun", "Technique"]
+    private let defaultExerciseStyles = ["Normal", "Assisted", "Weighted", "Slow", "Explosive", "Inclined", "Declined"]
+    private let defaultMeasurementStyles = ["Timer", "Countdown", "Sets"]
+    
     private let context: NSManagedObjectContext
+    
+    // Properties
+    
+    // MARK: - Initializer
     
     init(context: NSManagedObjectContext) {
         self.context = context
     }
     
-    // MARK: - API
+    // MARK: - Methods
     
     public func seedCoreData() {
-        seedWithExampleMuscleGroups()
-        seedWithExampleWorkoutStyles()
-        seedWithExampleExerciseStyles()
-        seedWithExampleMeasurementStyles()
-        seedWithExampleWorkoutsAndExercies()
-    }
-    
-    public func seedCoreDataWithOnlyEssentials() {
         seedWithExampleMuscleGroups()
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
@@ -42,8 +46,49 @@ final class DataSeeder {
         seedWithExampleWarning()
     }
     
-    // MARK: - Seeding
+    /// If any new Muscles/Styles are added in code ie. in an update -> seed to core data
+    public func update() {
+        
+        // Muscles
+        for muscleName in defaultMuscles {
+            print("would fetch muscle named \(muscleName)")
+            if DatabaseFacade.getMuscle(named: muscleName) == nil {
+                print("didnt exist so making muscle named \(muscleName)")
+                makeMuscle(withName: muscleName)
+            }
+        }
+        
+        // Workout Styles
+        for styleName in defaultWorkoutStyles {
+            print("would fetch muscle named \(styleName)")
+            if DatabaseFacade.getMuscle(named: styleName) == nil {
+                print("didnt exist so making muscle named \(styleName)")
+                makeWorkoutStyle(withName: styleName)
+            }
+        }
+        
+        // Exercise Styles
+        for styleName in defaultWorkoutStyles {
+            print("would fetch muscle named \(styleName)")
+            if DatabaseFacade.getMuscle(named: styleName) == nil {
+                print("didnt exist so making muscle named \(styleName)")
+                makeWorkoutStyle(withName: styleName)
+            }
+        }
+        
+        // Exercise Styles
+        for exerciseStyle in defaultExerciseStyles {
+            print("would fetch muscle named \(exerciseStyle)")
+            if DatabaseFacade.getMuscle(named: exerciseStyle) == nil {
+                print("didnt exist so making muscle named \(exerciseStyle)")
+                makeWorkoutStyle(withName: exerciseStyle)
+            }
+        }
+    }
     
+    // MARK: - Seed Methods
+    
+    // NOTE: Give user the option to seed app with example workouts/exercises during onboarding
     private func seedWithExampleWorkoutsAndExercies() {
         
         var typeString: String = CDModels.workout.type.normal.rawValue
@@ -100,47 +145,36 @@ final class DataSeeder {
         printWorkouts()
     }
     
-    // Seed example muscles
-    
     private func seedWithExampleMuscleGroups() {
-        for m in Constant.exampleValues.exampleMuscles {
-            makeMuscle(withName: m.uppercased())
+        for muscle in defaultMuscles {
+            makeMuscle(withName: muscle.uppercased())
         }
-        printMuscles()
     }
-    
-    // Seed with welcome warning 
     
     private func seedWithExampleWarning() {
-        makeWarning(withMessage: "Remember to workout your legs tho")
+        makeWarning(withMessage: "Welcome to the workout app")
     }
     
-    // Seed example WorkoutStyles
-    
     private func seedWithExampleWorkoutStyles() {
-        for w in Constant.exampleValues.workoutStyles {
-            makeWorkoutStyle(withName: w)
+        for name in defaultWorkoutStyles {
+            makeWorkoutStyle(withName: name)
         }
         printWorkoutStyles()
     }
     
-    // Seed example ExerciseStyles
-    
     private func seedWithExampleExerciseStyles() {
-        for exerciseStyleName in Constant.exampleValues.exerciseStyles {
+        for exerciseStyleName in defaultExerciseStyles {
             makeExerciseStyle(withName: exerciseStyleName)
         }
     }
-    
-    // Seed example measurementStyles
-    
+
     private func seedWithExampleMeasurementStyles() {
-        for measurementStyleName in Constant.exampleValues.measurementStyles {
+        for measurementStyleName in defaultMeasurementStyles {
             makeMeasurementStyle(withName: measurementStyleName)
         }
     }
     
-    // MARK: - Helper Methods
+    //  MARK: - Maker methods
     
     // Takes a DummyWorkout (name: String, muscle: Muscle, type: String) and an array of exercises, and creates a new Workout into core data. 
     private func makeWorkout(_ dummyWorkout: DummyWorkout, withExercises exercises: [DummyExercise]) {
@@ -184,17 +218,11 @@ final class DataSeeder {
             }
         }
     }
-    
-    // MARK: - Record making functions
-    
-    // Make muscle
-    
+
     private func makeMuscle(withName name: String) {
         let muscleRecord = DatabaseFacade.makeMuscle()
         muscleRecord.name = name.uppercased()
     }
-    
-    // Make warning
     
     private func makeWarning(withMessage message: String) {
         let warningRecord = DatabaseFacade.makeWarning()
@@ -202,15 +230,10 @@ final class DataSeeder {
         warningRecord.message = message
     }
     
-    // Make WorkoutStyle
-    
     private func makeWorkoutStyle(withName name: String) {
-        print("making workoutstyle named \(name)")
         let workoutStyleRecord = DatabaseFacade.makeWorkoutStyle()
         workoutStyleRecord.name = name.uppercased()
     }
-    
-    // Make ExerciseStyle
     
     private func makeExerciseStyle(withName name: String) {
         let exerciseStyleRecord = DatabaseFacade.makeExerciseStyle()
@@ -220,29 +243,6 @@ final class DataSeeder {
     private func makeMeasurementStyle(withName name: String) {
         let measurementStyleRecord = DatabaseFacade.makeMeasurementStyle()
         measurementStyleRecord.name = name.uppercased()
-    }
-    
-    // MARK: - Exercise Helper Methods
-    
-    private func randomRepNumber() -> Int16 {
-        let result = Int16(arc4random_uniform(UInt32(99)))
-        return result
-    }
-    
-    func randomDate(daysBack: Int)-> NSDate? {
-        let day = arc4random_uniform(UInt32(daysBack))+1
-        let hour = arc4random_uniform(UInt32(23))
-        let minute = arc4random_uniform(UInt32(59))
-        
-        let today = Date(timeIntervalSinceNow: 0)
-        let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
-        var offsetComponents = DateComponents()
-        offsetComponents.day = Int(day - 1)
-        offsetComponents.hour = Int(hour)
-        offsetComponents.minute = Int(minute)
-        
-        let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
-        return randomDate as NSDate?
     }
     
     // MARK: - Print methods
@@ -256,8 +256,7 @@ final class DataSeeder {
             print("workout count: ", allWorkouts.count)
             
             for workout in allWorkouts {
-                print()
-                print("Name: ", workout.name ?? "")
+                print("\nName: ", workout.name ?? "")
                 print("----------------------")
                 
                 if let exercises = workout.exercises?.array as? [Exercise] {
@@ -317,6 +316,29 @@ final class DataSeeder {
         } catch {
             print("error in printing exercises")
         }
+    }
+    
+    // MARK: - Exercise Helper Methods
+    
+    private func randomRepNumber() -> Int16 {
+        let result = Int16(arc4random_uniform(UInt32(99)))
+        return result
+    }
+    
+    private func randomDate(daysBack: Int)-> NSDate? {
+        let day = arc4random_uniform(UInt32(daysBack))+1
+        let hour = arc4random_uniform(UInt32(23))
+        let minute = arc4random_uniform(UInt32(59))
+        
+        let today = Date(timeIntervalSinceNow: 0)
+        let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
+        var offsetComponents = DateComponents()
+        offsetComponents.day = Int(day - 1)
+        offsetComponents.hour = Int(hour)
+        offsetComponents.minute = Int(minute)
+        
+        let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
+        return randomDate as NSDate?
     }
 }
 
