@@ -149,7 +149,6 @@ final class DataSeeder {
         
         let workoutRecord = DatabaseFacade.makeWorkout()
         workoutRecord.name = dummyWorkout.name
-        workoutRecord.muscle = dummyWorkout.muscle.name
         workoutRecord.muscleUsed = dummyWorkout.muscle
         workoutRecord.workoutStyle = DatabaseFacade.getWorkoutStyle(named: dummyWorkout.type)
         
@@ -260,15 +259,8 @@ final class DataSeeder {
                 print()
                 print("Name: ", workout.name ?? "")
                 print("----------------------")
-                print("Muscle: ", workout.muscle ?? "")
                 
-                
-                
-//                if let exercises = workout.exercises?.allObjects as? [Exercise] {
                 if let exercises = workout.exercises?.array as? [Exercise] {
-                    
-//                if let exercises = workout.exercises as? [Exercise] {
-                
                     for exercise in exercises {
                         print(" - \(exercise.name ?? "fail")")
                     }

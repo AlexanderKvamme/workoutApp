@@ -506,7 +506,6 @@
 				DD98A5021F13AAAE002985BF /* Custom Keyboard */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
-				DD36F5111F33D41300FD31B3 /* Profile */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
@@ -654,6 +653,7 @@
 		DDD290A61EDCCD1500048BC9 /* TestViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DD36F5111F33D41300FD31B3 /* Profile */,
 				DD0EB2741F48EB8600CDA1CF /* test.swift */,
 			);
 			name = TestViewController;

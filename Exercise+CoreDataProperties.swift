@@ -2,7 +2,7 @@
 //  Exercise+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 17/09/2017.
+//  Created by Alexander Kvamme on 19/09/2017.
 //
 //
 
@@ -16,8 +16,8 @@ extension Exercise {
         return NSFetchRequest<Exercise>(entityName: "Exercise")
     }
 
-    @NSManaged public var name: String?
     @NSManaged public var isRetired: Bool
+    @NSManaged public var name: String?
     @NSManaged public var loggedInstances: NSSet?
     @NSManaged public var measurementStyle: MeasurementStyle?
     @NSManaged public var musclesUsed: Muscle?

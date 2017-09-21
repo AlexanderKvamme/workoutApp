@@ -10,12 +10,15 @@
 import Foundation
 import UIKit
 
-
+/// Makes and presents suggestionboxes. Updates every time the view appears.
 class SuggestionController: UIViewController {
     
     typealias Suggestion = (header: String, sub: String)
     
     // MARK: - Properties
+    
+    private var receiveHandler: ((String) -> Void) = { _ in }
+    
     fileprivate var header = UILabel(frame: CGRect.zero)
     fileprivate var stackOfSuggestions: UIStackView = UIStackView()
     fileprivate var suggestions: [Suggestion]? {
@@ -25,9 +28,6 @@ class SuggestionController: UIViewController {
             }
         }
     }
-    
-    
-    private var receiveHandler: ((String) -> Void) = { _ in }
     
     // MARK: - Initializers
     
@@ -48,13 +48,11 @@ class SuggestionController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.suggestions = generateSuggestions()
     }
-    
-    // MARK: - Methods
 }
 
-private extension SuggestionController {
-    
-    // MARK: Private methods
+// MARK: Private methods
+
+fileprivate extension SuggestionController {
     
     func setupView() {
         setupHeader()
@@ -98,42 +96,34 @@ private extension SuggestionController {
     
     /// sort muscles into used and neverused. Prefer to display the never before used
     func generateSuggestions() -> [Suggestion]? {
-        var previousUsesOfMuscles = [WorkoutLog]()
+        var mostRecentUseOfMuscle = [WorkoutLog]()
         var musclesNeverUsed = [Muscle]()
         
         // Fill arrays
         for muscle in DatabaseFacade.fetchMuscles() {
             if let mostRecentUse = muscle.mostRecentUse {
-                previousUsesOfMuscles.append(mostRecentUse)
+                mostRecentUseOfMuscle.append(mostRecentUse)
             } else {
                 musclesNeverUsed.append(muscle)
             }
         }
         
-        // If theres any never before used
+        // If theres any muscles that have never been worked out
         if musclesNeverUsed.count > 0 {
-            if let someMuscle = musclesNeverUsed.first {
-                return [("YOU HAVE YET TO WORKOUT:", someMuscle.name!)]
+            if let muscleName = musclesNeverUsed.first?.name {
+                return [("YOU HAVE YET TO WORKOUT:", muscleName)]
             }
         } else {
-            let workoutLogsByDate = previousUsesOfMuscles.sorted()
+            let workoutLogsByDate = mostRecentUseOfMuscle.sorted()
             var suggestionsToReturn = [Suggestion]()
             
             // return one or two suggestions
-            for (i, log) in workoutLogsByDate.enumerated() where i < 2 {
-                
-                guard let timeOfWorkout = log.dateEnded,
-                    let workoutName = log.design?.muscleUsed?.name else { break }
-                
-                let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
-                let shortenedTimeString = timeIntervalSinceWorkout.asMinimalString()
-                let suggestion = ("\(shortenedTimeString) SINCE LAST WORKOUT:", workoutName)
-                
+            for log in workoutLogsByDate[0...1]{
+                let suggestion = makeSuggestion(for: log)
                 suggestionsToReturn.append(suggestion)
             }
             return suggestionsToReturn
         }
-        
         return nil
     }
     
@@ -148,7 +138,6 @@ private extension SuggestionController {
     }
     
     func makeSuggestionBoxes(from suggestions: [Suggestion] ) -> [SuggestionBox] {
-        
         var boxes = [SuggestionBox]()
         
         for suggestion in suggestions {
@@ -159,26 +148,16 @@ private extension SuggestionController {
         }
         return boxes
     }
-    
-//    /// shortens to "10M", "10H", "10D", "10W" .etc
-//    func stringifyTimeInterval(_ timeInterval: TimeInterval) -> String {
-//        
-//        let s = timeInterval
-//        let m = Int(s/60)
-//        let h = Int(m/60)
-//        let d = Int(h/24)
-//        
-//        if d > 0 {
-//            return "\(d)D"
-//        } else if h > 0 {
-//            return "\(h)H"
-//        } else if m > 0 {
-//            return "\(m)M"
-//        } else {
-//            return "\(s)S"
-//        }
-//    }
-    
 
+    func makeSuggestion(for log: WorkoutLog) -> Suggestion {
+        let muscleName = log.getMuscleName()
+    
+        if let timeOfWorkout = log.dateEnded {
+            let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
+            let asShortString = timeIntervalSinceWorkout.asMinimalString()
+            return ("\(asShortString) SINCE LAST WORKOUT OF:", muscleName)
+        }
+        return ("X DAYS SINCE LAST WORKOUT OF:", muscleName)
+    }
 }
 

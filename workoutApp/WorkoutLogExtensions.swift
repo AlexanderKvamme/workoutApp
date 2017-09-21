@@ -20,8 +20,18 @@ extension WorkoutLog: Comparable {
 
 extension WorkoutLog {
     
+//    override public func willSave() {
+//        self.design?.latestPerformence = self
+//        if let muscle = self.design?.muscleUsed {
+//            muscle.
+//        }
+//    }
+    
     func markAsLatestperformence() {
         self.design?.latestPerformence = self
+        if let muscle = self.design?.muscleUsed {
+            muscle.mostRecentUse = self
+        }
     }
     
     func getExerciseLogs() -> [ExerciseLog] {
@@ -45,6 +55,10 @@ extension WorkoutLog {
     
     func getName() -> String {
         return design?.name ?? "No Name"
+    }
+    
+    func getMuscleName() -> String {
+        return design?.muscleUsed?.name ?? "No Name"
     }
     
     func getStyleName() -> String {

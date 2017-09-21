@@ -51,7 +51,6 @@ final class ProfileController: UIViewController {
     }
     
     // MARK: - Methods
-    // MARK: Setup
     
     private func setup() {
         setupSettingsButton()
@@ -64,8 +63,6 @@ final class ProfileController: UIViewController {
         addGoals(to: stackView)
         addSuggestions(to: stackView)
     }
-    
-    // MARK: Methods
     
     private func setupScrollView(){
         scrollView = UIScrollView(frame: CGRect.zero)

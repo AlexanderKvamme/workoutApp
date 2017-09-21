@@ -46,7 +46,6 @@
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES">
-        <attribute name="muscle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="performanceCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="totalTimeSpent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -75,7 +74,7 @@
         <element name="MeasurementStyle" positionX="-182" positionY="3588" width="128" height="73"/>
         <element name="Muscle" positionX="-450" positionY="3726" width="128" height="105"/>
         <element name="Warning" positionX="-450" positionY="3726" width="128" height="75"/>
-        <element name="Workout" positionX="-639" positionY="3573" width="128" height="180"/>
+        <element name="Workout" positionX="-639" positionY="3573" width="128" height="165"/>
         <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="105"/>
         <element name="WorkoutStyle" positionX="-441" positionY="3735" width="128" height="75"/>
     </elements>

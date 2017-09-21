@@ -146,6 +146,7 @@ private extension ExerciseTableViewDataSource {
     
     func updateLatestUseOfMuscle() {
         if let muscleUsed = dataSourceWorkoutLog.design?.muscleUsed {
+            print("updated muscle \(muscleUsed.name)'s latest use to this workout: ", dataSourceWorkoutLog.design?.name)
             muscleUsed.mostRecentUse = dataSourceWorkoutLog
         }
     }
@@ -172,7 +173,6 @@ private extension ExerciseTableViewDataSource {
     }
     
     private func printActualExerciseLogsFromAWorkoutLog() {
-        //if let el = dataSourceWorkoutLog.loggedExercises as? Set<ExerciseLog> {
         if let orderedExerciseLogs = dataSourceWorkoutLog.loggedExercises {
             let el = orderedExerciseLogs.array as! [ExerciseLog]
             
