@@ -176,7 +176,7 @@ final class ProfileController: UIViewController {
     
     // MARK: Handlers
     
-    func xButtonHandler(_ box: UIButton) {
+    @objc func xButtonHandler(_ box: UIButton) {
         if let box = box.superview?.superview as? Warningbox {
             stackView.removeArrangedSubview(box)
             box.deleteWarning()

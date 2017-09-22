@@ -71,8 +71,8 @@ class WorkoutLogHistoryBoxCell: UITableViewCell {
             ])
         
         // Compression resistance
-        box.setContentCompressionResistancePriority(1000, for: .vertical)
-        contentView.setContentCompressionResistancePriority(0, for: .vertical)
+        box.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
+        contentView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 0), for: .vertical)
     }
 }
 

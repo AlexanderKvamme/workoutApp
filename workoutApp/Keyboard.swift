@@ -67,7 +67,7 @@ class Keyboard: UIView {
         }
     }
     
-    func postNextKeyDidPressNotification() {
+    @objc func postNextKeyDidPressNotification() {
         NotificationCenter.default.post(name: .keyboardsNextButtonDidPress, object: nil)
     }
     

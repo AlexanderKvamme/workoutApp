@@ -644,7 +644,7 @@ fileprivate class WarningBoxContent: BoxContent {
             label.topAnchor.constraint(equalTo: topAnchor, constant: topLeftSpacing),
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: topLeftSpacing),
             ])
-        label.setContentCompressionResistancePriority(1000, for: .vertical)
+        label.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
         
         // xButton in the top right
         let xImage = UIImage(named: "xmarkBeige")?.withRenderingMode(.alwaysTemplate)
@@ -682,7 +682,7 @@ fileprivate class WarningBoxContent: BoxContent {
             messageLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
             messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
             ])
-        messageLabel.setContentCompressionResistancePriority(1000, for: .vertical)
+        messageLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -728,7 +728,7 @@ fileprivate class DeletionBoxContent: BoxContent {
             messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
             ])
-        messageLabel.setContentCompressionResistancePriority(1000, for: .vertical)
+        messageLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
     }
     
     required init?(coder aDecoder: NSCoder) {

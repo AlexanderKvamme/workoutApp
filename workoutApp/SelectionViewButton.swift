@@ -72,7 +72,7 @@ public class SelectionViewButton: UIView {
     }
     
     // UI components
-    func handleButtonTap(_ sender: SelectionViewButton) {
+    @objc func handleButtonTap(_ sender: SelectionViewButton) {
         showNotYetImplementedModal()
     }
     

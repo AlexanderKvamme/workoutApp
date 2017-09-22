@@ -83,7 +83,7 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
         setNeedsLayout()
     }
     
-    func plusButtonHandler() {
+    @objc func plusButtonHandler() {
         // select either first cell that isnt set, or make and select a new one
         let firstFreeCell = getFirstFreeCell()
         if firstFreeCell == nil {

@@ -183,7 +183,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         // Make a placeholder in a nice color
         let color = UIColor.light
         let font = UIFont.custom(style: .medium, ofSize: .big)
-        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSForegroundColorAttributeName : color, NSFontAttributeName: font])
+        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
         
         // Prepare for input
         NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
@@ -228,7 +228,7 @@ class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, 
         return previousCell
     }
     
-    func tapHandler() {
+    @objc func tapHandler() {
         // - Display keyboard, make first responder, and scroll to the first cell in colleciton that isnt performed
         // If there are cells before this one, that are not performed, jump to the first one of these instead
         

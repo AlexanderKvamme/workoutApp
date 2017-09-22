@@ -177,7 +177,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         navigationController?.pushViewController(newWorkoutController, animated: true)
     }
     
-    func buttonTapHandler(button: UIButton) {
+    @objc func buttonTapHandler(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
         let boxTableViewController = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)

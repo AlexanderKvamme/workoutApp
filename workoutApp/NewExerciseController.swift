@@ -181,7 +181,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
-    func dismissVC() {
+    @objc func dismissVC() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     

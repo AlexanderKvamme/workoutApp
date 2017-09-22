@@ -65,7 +65,7 @@ class InputView: UIView {
         // Stack: Contains header and textField
         stack = StackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.setContentCompressionResistancePriority(0, for: .horizontal)
+        stack.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 0), for: .horizontal)
         
         stack.axis = UILayoutConstraintAxis.vertical
         stack.distribution = UIStackViewDistribution.fill

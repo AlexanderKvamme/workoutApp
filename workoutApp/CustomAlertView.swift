@@ -140,7 +140,7 @@ class CustomAlertView: UIView, isModal {
             guard text.characters.count > 0 else { return }
             
             let attributedString = NSMutableAttributedString(string: contentLabel.text!)
-            attributedString.addAttribute(NSKernAttributeName,
+            attributedString.addAttribute(NSAttributedStringKey.kern,
                                           value: CGFloat(0.7),
                                           range: NSRange(location: 0, length: attributedString.length))
             contentLabel.attributedText = attributedString
@@ -182,7 +182,7 @@ class CustomAlertView: UIView, isModal {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func didTappedOnBackgroundView(){
+    @objc func didTappedOnBackgroundView(){
         dismiss(animated: true)
     }
     

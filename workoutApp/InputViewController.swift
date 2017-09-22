@@ -101,7 +101,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
     }
     
-    func keyboardWillShow(notification: Notification) {
+    @objc func keyboardWillShow(notification: Notification) {
         let userInfo: NSDictionary = notification.userInfo! as NSDictionary
         let keyboardFrame: NSValue = userInfo.value(forKey: UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue

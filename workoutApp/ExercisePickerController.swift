@@ -173,7 +173,7 @@ class ExercisePickerController: UIViewController {
         updateScrollingAndInsets()
     }
     
-    func dismissView() {
+    @objc func dismissView() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
@@ -317,7 +317,7 @@ class ExercisePickerController: UIViewController {
     
     // MARK: Exit methods
     
-    func confirmAndDismiss() {
+    @objc func confirmAndDismiss() {
         exerciseReceiver?.receive(exercises: selectedExercises)
         
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)

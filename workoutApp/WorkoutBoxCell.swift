@@ -54,8 +54,8 @@ class WorkoutBoxCell: SwipeTableViewCell {
             ])
         
         // Compression resistance
-        box.setContentCompressionResistancePriority(1000, for: .vertical)
-        contentView.setContentCompressionResistancePriority(0, for: .vertical)
+        box.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
+        contentView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 0), for: .vertical)
     }
     
     func setupContent(withWorkout workout: Workout) {

@@ -270,11 +270,11 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     
     // MARK: Selectors
     
-    func dismissView() {
+    @objc func dismissView() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
     
-    func confirmAndDismiss() {
+    @objc func confirmAndDismiss() {
         if let usersPick = selectedPickable {
             sendBack(pickable: usersPick)
         }

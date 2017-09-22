@@ -18,7 +18,7 @@ extension UILabel {
         
         let range = attributedString.mutableString.range(of: pSubString, options:NSString.CompareOptions.caseInsensitive)
         if range.location != NSNotFound {
-            attributedString.addAttribute(NSForegroundColorAttributeName, value: pColor, range: range);
+            attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: pColor, range: range);
         }
         self.attributedText = attributedString
     }
@@ -40,7 +40,7 @@ extension UILabel {
         
         let attributedString = NSMutableAttributedString(string: self.text!)
         
-        attributedString.addAttribute(NSKernAttributeName,
+        attributedString.addAttribute(NSAttributedStringKey.kern,
                                       value: spacingValue,
                                       range: NSRange(location: 0, length: attributedString.length))
         self.attributedText = attributedString

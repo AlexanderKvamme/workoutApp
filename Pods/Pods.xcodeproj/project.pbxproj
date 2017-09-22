@@ -43,7 +43,7 @@
 /* Begin PBXFileReference section */
 		00DC39A5C18490BFC978D8473BF38D24 /* Pods-workoutApp-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-workoutApp-frameworks.sh"; sourceTree = "<group>"; };
 		2050F68D7619186B379B747C7220FE4C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		21A4D87C8F12964CD62715FEF91FE80D /* Pods-workoutApp.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-workoutApp.modulemap"; sourceTree = "<group>"; };
+		21A4D87C8F12964CD62715FEF91FE80D /* Pods-workoutApp.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-workoutApp.modulemap"; sourceTree = "<group>"; };
 		2355D61646C8A3DC2B9B97D201ABE402 /* SwipeTransitionLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeTransitionLayout.swift; path = Source/SwipeTransitionLayout.swift; sourceTree = "<group>"; };
 		2A80A4F2F2113EE758CBE6855123A3CE /* SwipeAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeAnimator.swift; path = Source/SwipeAnimator.swift; sourceTree = "<group>"; };
 		31F385B7C752EF6245FDDC9F66BCD17C /* SwipeExpanding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeExpanding.swift; path = Source/SwipeExpanding.swift; sourceTree = "<group>"; };
@@ -54,7 +54,7 @@
 		52F3A715AC453E55302396031069AAD7 /* SwipeTableOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeTableOptions.swift; path = Source/SwipeTableOptions.swift; sourceTree = "<group>"; };
 		564BF8353794BC2DA036C0A75D6C59BC /* SwipeTableViewCell+Accessibility.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "SwipeTableViewCell+Accessibility.swift"; path = "Source/SwipeTableViewCell+Accessibility.swift"; sourceTree = "<group>"; };
 		5845CD2FB9C11F2430402D3F63FB5933 /* Pods-workoutApp-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-workoutApp-umbrella.h"; sourceTree = "<group>"; };
-		5958DC297CE9962BC962B986317642C5 /* Pods_workoutApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_workoutApp.framework; path = "Pods-workoutApp.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5958DC297CE9962BC962B986317642C5 /* Pods_workoutApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_workoutApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59E598D7AB92694051CA1DE13F3322D7 /* SwipeCellKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwipeCellKit-umbrella.h"; sourceTree = "<group>"; };
 		5A656B895086FDC84D4D7EE61A5D8C0F /* Pods-workoutApp-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-workoutApp-resources.sh"; sourceTree = "<group>"; };
 		65933408B6CF542BDAA5A57E13DDFF85 /* Pods-workoutApp-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-workoutApp-dummy.m"; sourceTree = "<group>"; };
@@ -62,11 +62,11 @@
 		6B3514069603618A436209A5D56DD0F2 /* Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Source/Extensions.swift; sourceTree = "<group>"; };
 		85A0BAE519E9B2D6C94F95DA32FE4AEF /* Pods-workoutApp-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-workoutApp-acknowledgements.markdown"; sourceTree = "<group>"; };
 		8FDCA4FDFE45742777DFB712C44C2DAE /* Pods-workoutApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-workoutApp.release.xcconfig"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9EE3FA0D6067C52DEEE473BD9309A3B5 /* SwipeCellKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwipeCellKit-dummy.m"; sourceTree = "<group>"; };
 		A62E457F60A8DD9EF041BACCFE1E014A /* SwipeActionButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeActionButton.swift; path = Source/SwipeActionButton.swift; sourceTree = "<group>"; };
-		A97BE9B34018DA5C4C654B4E4C286FC6 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwipeCellKit.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC8BF80FD229FB3D263C3866B7115044 /* SwipeCellKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SwipeCellKit.modulemap; sourceTree = "<group>"; };
+		A97BE9B34018DA5C4C654B4E4C286FC6 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC8BF80FD229FB3D263C3866B7115044 /* SwipeCellKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SwipeCellKit.modulemap; sourceTree = "<group>"; };
 		C373ED57ED1244903AF5DE69E0C53F98 /* Pods-workoutApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-workoutApp.debug.xcconfig"; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CC7F4EA4CF2965699E0E32FEA3192FFD /* SwipeTableViewCellDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeTableViewCellDelegate.swift; path = Source/SwipeTableViewCellDelegate.swift; sourceTree = "<group>"; };
@@ -164,7 +164,6 @@
 				2355D61646C8A3DC2B9B97D201ABE402 /* SwipeTransitionLayout.swift */,
 				99A4361C4D7D33FE49E4470568296AFE /* Support Files */,
 			);
-			name = SwipeCellKit;
 			path = SwipeCellKit;
 			sourceTree = "<group>";
 		};
@@ -270,7 +269,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0900;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -408,19 +407,29 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_RELEASE=1",
 					"$(inherited)",
@@ -434,6 +443,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SYMROOT = "${SRCROOT}/../build";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -519,20 +529,30 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_DEBUG=1",

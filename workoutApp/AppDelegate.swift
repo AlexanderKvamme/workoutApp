@@ -90,9 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
         
         UINavigationBar.appearance().titleTextAttributes = [
-            NSFontAttributeName: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
-            NSForegroundColorAttributeName: UIColor.faded,
-            NSKernAttributeName: 0.7,
+            NSAttributedStringKey.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
+            NSAttributedStringKey.foregroundColor: UIColor.faded,
+            NSAttributedStringKey.kern: 0.7,
         ]
     }
 }

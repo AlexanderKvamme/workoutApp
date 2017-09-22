@@ -54,7 +54,7 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     // MARK: Handlers and recognizers
     
-    func tapHandler() {
+    @objc func tapHandler() {
         print("tapped")
     }
     
