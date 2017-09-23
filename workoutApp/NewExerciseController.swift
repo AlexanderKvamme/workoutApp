@@ -13,11 +13,12 @@ protocol NewExerciseReceiver: class {
     func receiveNewExercise(_ exercise: Exercise)
 }
 
-class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceiver {
+class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver, isStringReceiver {
     
     // MARK: - Properties
     
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
+    var receiveMuscles: (([Muscle]) -> ())  = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of name/time pickers
     
     let halfScreenWidth = Constant.UI.width/2
@@ -29,17 +30,17 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     var measurementSelecter: TwoLabelStack!
 
     fileprivate var currentExerciseStyle: ExerciseStyle!
-    fileprivate var currentMuscle: Muscle!
+    fileprivate var currentMuscles: [Muscle]!
     fileprivate var currentMeasurementStyle: MeasurementStyle!
     
     weak var exercisePickerDelegate: NewExerciseReceiver?
     
     // MARK: - Initializers
     
-    init(withPreselectedMuscle muscle: Muscle?) {
+    init(withPreselectedMuscle muscles: [Muscle]?) {
         super.init(nibName: nil, bundle: nil)
         
-        currentMuscle = muscle ?? DatabaseFacade.defaultMuscle
+        currentMuscles = muscles ?? [DatabaseFacade.defaultMuscle]
         currentMeasurementStyle = DatabaseFacade.defaultMeasurementStyle
         currentExerciseStyle = DatabaseFacade.defaultExerciseStyle
         
@@ -78,7 +79,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
         
         // Muscle selecter
         let muscleFrame = CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight)
-        muscleSelecter = TwoLabelStack(frame: muscleFrame, topText: "Muscle", topFont: darkHeaderFont, topColor: .dark, bottomText: currentMuscle?.name ?? Constant.defaultValues.muscle, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
+        muscleSelecter = TwoLabelStack(frame: muscleFrame, topText: "Muscle", topFont: darkHeaderFont, topColor: .dark, bottomText: currentMuscles.getName(), bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
         // Measurement style
@@ -129,16 +130,23 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let allMuscles = DatabaseFacade.fetchMuscles()
-        let musclePicker = PickerController<Muscle>(withPicksFrom: allMuscles, withPreselection: currentMuscle)
+        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
     
-        musclePicker.pickableReceiver = self
+        musclePicker.muscleReceiver = self
+        
+        receiveMuscles = { musclesReceived in
+            print("received muscles: ", musclesReceived)
+            self.currentMuscles = musclesReceived
+            self.muscleSelecter.setBottomText(musclesReceived.getName())
+        }
         
         // When receiving a selection of workout musclegroup
         stringReceivedHandler = {
             s in
             self.muscleSelecter.bottomLabel.text = s
         }
+        
+        
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
@@ -170,7 +178,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
                 return
             }
             
-            let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscle: currentMuscle, measurementStyle: currentMeasurementStyle)
+            let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, measurementStyle: currentMeasurementStyle)
             
             print("made exercise: ", newExercise)
             // Signal to delegate ( exercisePicker ) that user made a new exercise, and that the VC is supposed to mark it as selected
@@ -192,9 +200,9 @@ extension NewExerciseController: PickableReceiver {
     func receive(pickable: PickableEntity) {
         
         switch pickable {
-        case is Muscle:
-            currentMuscle = pickable as! Muscle
-            muscleSelecter.setBottomText(pickable.name!)
+        case is [Muscle]:
+            currentMuscles = pickable as! [Muscle]
+            muscleSelecter.setBottomText(currentMuscles.getName())
         case is ExerciseStyle:
             currentExerciseStyle = pickable as! ExerciseStyle
             typeSelecter.setBottomText(pickable.name!)

@@ -26,7 +26,7 @@ class NewWorkoutController: WorkoutController {
         
         hidesBottomBarWhenPushed = true
         
-        currentMuscle = DatabaseFacade.defaultMuscle
+        currentMuscles = [DatabaseFacade.defaultMuscle]
         currentWorkoutStyle = DatabaseFacade.defaultWorkoutStyle
         
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)

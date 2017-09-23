@@ -145,9 +145,13 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
 private extension ExerciseTableViewDataSource {
     
     func updateLatestUseOfMuscle() {
-        if let muscleUsed = dataSourceWorkoutLog.design?.muscleUsed {
-            print("updated muscle \(muscleUsed.name)'s latest use to this workout: ", dataSourceWorkoutLog.design?.name)
-            muscleUsed.mostRecentUse = dataSourceWorkoutLog
+        
+        // FIXME: fix
+        let musclesUsed = dataSourceWorkoutLog.getMusclesUsed()
+        
+        for muscle in musclesUsed {
+            print("setting mostRecent used of \(muscle.name)...")
+            muscle.mostRecentUse = dataSourceWorkoutLog
         }
     }
     

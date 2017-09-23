@@ -37,7 +37,7 @@ final class DatabaseFacade {
     
     static var defaultMuscle: Muscle = {
         // return undefined
-        let defaultMuscle = getMuscle(named: "UNDEFINED")!
+        let defaultMuscle = getMuscle(named: "OTHER")!
         return defaultMuscle
     }()
     
@@ -240,35 +240,48 @@ final class DatabaseFacade {
         return newGoal
     }
     
-    static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
-        
-        let newExercise = makeExercise()
-        
-        // Fetch correct type, muscle, measurement style from Core Data
-        
-        let muscle = DatabaseFacade.getMuscle(named: muscleName)
-        let exerciseStyle = DatabaseFacade.getExerciseStyle(named: styleName)
-        let measurementStyle = DatabaseFacade.getMeasurementStyle(named: measurementStyleName)
-        
-        newExercise.name = exerciseName
-        newExercise.musclesUsed = muscle
-        newExercise.style = exerciseStyle
-        newExercise.measurementStyle = measurementStyle
-        
-        return newExercise
-    }
+//    static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
+//
+//        let newExercise = makeExercise()
+//
+//        // Fetch correct type, muscle, measurement style from Core Data
+//
+//        var muscle = [Muscle]()
+//            for m in musclDatabaseFacade.getMuscle(named: muscleName)
+//        let exerciseStyle = DatabaseFacade.getExerciseStyle(named: styleName)
+//        let measurementStyle = DatabaseFacade.getMeasurementStyle(named: measurementStyleName)
+//
+//        newExercise.name = exerciseName
+//        newExercise.setMuscles(muscles) = muscle
+//        newExercise.style = exerciseStyle
+//        newExercise.measurementStyle = measurementStyle
+//
+//        return newExercise
+//    }
     
-    static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscle: Muscle, measurementStyle: MeasurementStyle) -> Exercise {
+    static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
         
         let newExercise = makeExercise()
         
         newExercise.name = name
-        newExercise.musclesUsed = muscle
+        newExercise.setMuscles(muscles)
         newExercise.style = exerciseStyle
         newExercise.measurementStyle = measurementStyle
         
         return newExercise
     }
+
+//    static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
+//        
+//        let newExercise = makeExercise()
+//        
+//        newExercise.name = name
+//        newExercise.setMuscles(muscles)
+//        newExercise.style = exerciseStyle
+//        newExercise.measurementStyle = measurementStyle
+//        
+//        return newExercise
+//    }
     
     static func makeExerciseLog() -> ExerciseLog {
         let logItem = createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
@@ -289,15 +302,15 @@ final class DatabaseFacade {
     }
     
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exerciseNames: [String]) {
-        
+
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         let muscle = DatabaseFacade.getMuscle(named: muscleName)
         let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
-        
+
         workoutRecord.name = workoutName
-        workoutRecord.muscleUsed = muscle
+        workoutRecord.addToMusclesUsed(DatabaseFacade.getMuscle(named: muscleName)!)
         workoutRecord.workoutStyle = workoutStyle
-        
+
         // Add Exercises to the Workout
         for exerciseName in exerciseNames {
             if let e = DatabaseFacade.fetchExercise(named: exerciseName){
@@ -308,17 +321,16 @@ final class DatabaseFacade {
         }
     }
     
-    // DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exerciss: currentlySelectedExercises)
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exercises: [Exercise]) {
-        
+
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         let muscle = DatabaseFacade.getMuscle(named: muscleName)
         let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
-        
+
         workoutRecord.name = workoutName
-        workoutRecord.muscleUsed = muscle
+        workoutRecord.addToMusclesUsed(muscle!)
         workoutRecord.workoutStyle = workoutStyle
-        
+
         // Add Exercises to the Workout
         for exercise in exercises {
             workoutRecord.addToExercises(exercise)
@@ -420,7 +432,7 @@ final class DatabaseFacade {
             fetchRequest.predicate = predicate
             
             let result = try context.fetch(fetchRequest)
-            exerciseStyle = result[0] as? ExerciseStyle
+            exerciseStyle = result.first as? ExerciseStyle
         } catch let error as NSError {
             print(error.localizedDescription)
         }
@@ -446,12 +458,17 @@ final class DatabaseFacade {
     static func getMeasurementStyle(named name: String) -> MeasurementStyle? {
         var measurementStyle: MeasurementStyle? = nil
         
+        print("tryna fetch measurement: ", name)
+        
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.MeasurementStyle.rawValue)
-            let predicate = NSPredicate(format: "name == %@", name)
+            let predicate = NSPredicate(format: "name == %@", name.uppercased())
             fetchRequest.predicate = predicate
             
+            print("all styles", DatabaseFacade.fetchMeasurementStyles())
             let result = try context.fetch(fetchRequest)
+            
+            print("all: ", result)
             measurementStyle = result[0] as? MeasurementStyle
         } catch let error as NSError {
             print(error.localizedDescription)
@@ -465,7 +482,7 @@ final class DatabaseFacade {
         var exercise: Exercise? = nil
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Exercise.rawValue)
-        let predicate = NSPredicate(format: "name == %@", name)
+        let predicate = NSPredicate(format: "name == %@", name.uppercased())
         fetchRequest.predicate = predicate
         
         do {
@@ -485,7 +502,7 @@ final class DatabaseFacade {
         var muscle: Muscle? = nil
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Muscle.rawValue)
-            let predicate = NSPredicate(format: "name == %@", name)
+            let predicate = NSPredicate(format: "name == %@", name.uppercased())
             
             fetchRequest.predicate = predicate
             let result = try context.fetch(fetchRequest)
@@ -496,13 +513,9 @@ final class DatabaseFacade {
         return muscle
     }
     
-    static func fetchExercises(usingMuscle muscle: Muscle) -> [Exercise]? {
-        
-        // FIXME: - fix
-        print("Would fetch every exercise")
-        
+    static func fetchExercises(containing muscle: Muscle) -> [Exercise]? { 
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
-        let predicate1 = NSPredicate(format: "musclesUsed == %@", muscle)
+        let predicate1 = NSPredicate(format: "musclesUsed CONTAINS %@", muscle)
         let predicate2 = NSPredicate(format: "isRetired == false")
         let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
         fetchRequest.predicate = andPredicate

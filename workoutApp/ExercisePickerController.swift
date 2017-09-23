@@ -63,19 +63,50 @@ class ExercisePickerController: UIViewController {
     
     var selectionChoices = [Exercise]()
     var selectedExercises = [Exercise]()
-    var selectedMuscle: Muscle! // used to refresh the picker after returning from making new exercise
+    var selectedMuscles: [Muscle]! // used to refresh the picker after returning from making new exercise
     
     weak var exerciseReceiver: ExerciseReceiver?
     weak var pickableReceiver: PickableReceiver?
     
     // MARK: - Initializers
     
-    init(forMuscle muscle: Muscle, withPreselectedExercises preselectedExercises: [Exercise]?) {
+//    init(forMuscle muscle: Muscle, withPreselectedExercises preselectedExercises: [Exercise]?) {
+//
+//        // Setup available choices
+//        self.selectedMuscle = muscle
+//
+//        let exercises = DatabaseFacade.fetchExercises(usingMuscle: muscle)!
+//
+//        let orderedExercises = exercises.sorted(by: { (a, b) -> Bool in
+//            guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else {
+//                return false
+//            }
+//            return ac < bc
+//        })
+//
+//        selectionChoices = orderedExercises
+//
+//        // Preselect
+//        if let preselections = preselectedExercises {
+//            self.selectedExercises = preselections
+//        }
+//
+//        super.init(nibName: nil, bundle: nil)
+//    }
+    
+    init(forMuscle muscles: [Muscle], withPreselectedExercises preselectedExercises: [Exercise]?) {
         
         // Setup available choices
-        self.selectedMuscle = muscle
+        self.selectedMuscles = muscles
         
-        let exercises = DatabaseFacade.fetchExercises(usingMuscle: muscle)!
+//        let exercises = DatabaseFacade.fetchExercises(usingMuscle: muscle)!
+        
+        var exercises = [Exercise]()
+
+        for muscle in muscles {
+            let musclesExercises = DatabaseFacade.fetchExercises(containing: muscle)!
+            exercises.append(contentsOf: musclesExercises)
+        }
         
         let orderedExercises = exercises.sorted(by: { (a, b) -> Bool in
             guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else {
@@ -85,7 +116,7 @@ class ExercisePickerController: UIViewController {
         })
         
         selectionChoices = orderedExercises
-      
+        
         // Preselect
         if let preselections = preselectedExercises {
             self.selectedExercises = preselections
@@ -127,7 +158,7 @@ class ExercisePickerController: UIViewController {
 
     @objc private func presentNewExerciseController() {
         
-        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscle)
+        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscles)
         newExerciseController.exercisePickerDelegate = self
         
         // Make presentable outside of navigationController, used for testing

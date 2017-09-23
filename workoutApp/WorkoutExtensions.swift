@@ -25,6 +25,15 @@ extension Workout {
         return exercises
     }
     
+    func getMuscles() -> [Muscle] {
+        
+        guard let muscles = self.musclesUsed else {
+            fatalError()
+        }
+        
+        return Array(muscles) as! [Muscle]
+    }
+    
     // MARK: Setters
     
     @nonobjc func setName(_ newName: String) {
@@ -35,8 +44,11 @@ extension Workout {
         self.workoutStyle = style
     }
     
-    func setMuscle(_ muscle: Muscle) {
-        self.muscleUsed = muscle
+    func setMuscles(_ muscles: [Muscle]) {
+
+        for muscle in muscles {
+            self.addToMusclesUsed(muscle)
+        }
     }
     
     @nonobjc func setExercises(_ exercises: [Exercise]) {

@@ -19,9 +19,9 @@ fileprivate let standardBoxHeight: CGFloat = 80
 enum Constant {
     
     enum defaultValues {
-        static let muscle = "Undefined"
-        static let exerciseType = "Normal"
-        static let measurement = "Sets"
+        static let muscle = "OTHER"
+        static let exerciseType = "NORMAL"
+        static let measurement = "SETS"
     }
     
     enum UI {

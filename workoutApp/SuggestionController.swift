@@ -94,37 +94,56 @@ fileprivate extension SuggestionController {
             ])
     }
     
+//    /// sort muscles into used and neverused. Prefer to display the never before used
+//    func generateSuggestions() -> [Suggestion]? {
+//        var mostRecentUseOfMuscle = [WorkoutLog]()
+//        var musclesNeverUsed = [Muscle]()
+//
+//        // Fill arrays
+//        for muscle in DatabaseFacade.fetchMuscles() {
+//            if let mostRecentUse = muscle.mostRecentUse {
+//                mostRecentUseOfMuscle.append(mostRecentUse)
+//            } else {
+//                musclesNeverUsed.append(muscle)
+//            }
+//        }
+//
+//        // If theres any muscles that have never been worked out
+//        if musclesNeverUsed.count > 0 {
+//            if let muscleName = musclesNeverUsed.first?.name {
+//                return [("YOU HAVE YET TO WORKOUT:", muscleName)]
+//            }
+//        } else {
+//            let workoutLogsByDate = mostRecentUseOfMuscle.sorted()
+//            var suggestionsToReturn = [Suggestion]()
+//
+//            // return one or two suggestions
+//            for log in workoutLogsByDate[0...1]{
+//                let suggestion = makeSuggestion(for: log)
+//                suggestionsToReturn.append(suggestion)
+//            }
+//            return suggestionsToReturn
+//        }
+//        return nil
+        
+        // FIXME: - Make suggestions based purely on most recent muscles
+        
+//        Get all muscles
+//        Sort all muscles by dateperformed
+//        for X muscles
+//        generate suggestion from top 2 muscles
     /// sort muscles into used and neverused. Prefer to display the never before used
     func generateSuggestions() -> [Suggestion]? {
-        var mostRecentUseOfMuscle = [WorkoutLog]()
-        var musclesNeverUsed = [Muscle]()
+        let muscles = DatabaseFacade.fetchMuscles()
         
-        // Fill arrays
-        for muscle in DatabaseFacade.fetchMuscles() {
-            if let mostRecentUse = muscle.mostRecentUse {
-                mostRecentUseOfMuscle.append(mostRecentUse)
-            } else {
-                musclesNeverUsed.append(muscle)
-            }
+        let sortedMuscles = muscles.sortedByName()
+        print("sosrted")
+        for m in sortedMuscles {
+            print(m.getName())
         }
         
-        // If theres any muscles that have never been worked out
-        if musclesNeverUsed.count > 0 {
-            if let muscleName = musclesNeverUsed.first?.name {
-                return [("YOU HAVE YET TO WORKOUT:", muscleName)]
-            }
-        } else {
-            let workoutLogsByDate = mostRecentUseOfMuscle.sorted()
-            var suggestionsToReturn = [Suggestion]()
-            
-            // return one or two suggestions
-            for log in workoutLogsByDate[0...1]{
-                let suggestion = makeSuggestion(for: log)
-                suggestionsToReturn.append(suggestion)
-            }
-            return suggestionsToReturn
-        }
-        return nil
+        // FIXME: - return real values
+        return [Suggestion]()
     }
     
     func updateSuggestionStack(withSuggestions suggestions: [Suggestion]) {
@@ -149,13 +168,25 @@ fileprivate extension SuggestionController {
         return boxes
     }
 
-    func makeSuggestion(for log: WorkoutLog) -> Suggestion {
-        let muscleName = log.getMuscleName()
+//    func makeSuggestion(for log: WorkoutLog) -> Suggestion {
+//        let muscleName = log.getMuscleName()
+//
+//        if let timeOfWorkout = log.dateEnded {
+//            let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
+//            let shortDate = timeIntervalSinceWorkout.asMinimalString()
+//            return ("\(shortDate) SINCE LAST WORKOUT OF:", muscleName)
+//        }
+//        return ("X DAYS SINCE LAST WORKOUT OF:", muscleName)
+//    }
     
-        if let timeOfWorkout = log.dateEnded {
+    func makeSuggestion(for muscle: Muscle) -> Suggestion {
+        
+        let muscleName = muscle.getName()
+        
+        if let timeOfWorkout = muscle.lastPerformance() {
             let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
-            let asShortString = timeIntervalSinceWorkout.asMinimalString()
-            return ("\(asShortString) SINCE LAST WORKOUT OF:", muscleName)
+            let shortDate = timeIntervalSinceWorkout.asMinimalString()
+            return ("\(shortDate) SINCE LAST WORKOUT OF:", muscleName)
         }
         return ("X DAYS SINCE LAST WORKOUT OF:", muscleName)
     }

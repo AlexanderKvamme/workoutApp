@@ -11,9 +11,26 @@ import Foundation
 extension Exercise {
     
     func removeFromAnyWorkouts() {
-        print("would remove from any workouts")
-        
         DatabaseFacade.removeExerciseFromAnyWorkouts(exercise: self)
+    }
+    
+    func setMuscles(_ muscles: [Muscle]) {
+        for muscle in muscles {
+            addToMusclesUsed(muscle)
+        }
+    }
+
+    func getMuscles() -> [Muscle] {
+
+        return [Muscle]()
+//        guard var muscles = musclesUsed else { return [Muscle]() }
+        
+        if let mu = musclesUsed {
+            return Array(mu) as! [Muscle]
+        }
+        print("Exercise had no muscles")
+        return [Muscle]()
+//        return Array<Muscle>(muscles)
     }
 }
 

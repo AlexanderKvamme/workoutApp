@@ -11,13 +11,17 @@ import UIKit
 
 // MARK: Class
 
-final class ExerciseEditor: UIViewController {
+final class ExerciseEditor: UIViewController, MuscleReceiver {
+    var receiveMuscles: (([Muscle]) -> ()) = { _ in
+            print("bam")
+    }
+    
 
     // MARK: - Properties
     
     fileprivate var exercise: Exercise!
     fileprivate var exerciseStyle: ExerciseStyle!
-    fileprivate var currentMuscle: Muscle!
+    fileprivate var currentMuscles: [Muscle]!
     fileprivate var initialName: String!
     fileprivate var didChangeName = false
     
@@ -67,14 +71,17 @@ final class ExerciseEditor: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.exercise = exercise
         self.exerciseStyle = exercise.style
-        self.currentMuscle = exercise.musclesUsed
+        self.currentMuscles = exercise.getMuscles()
         self.initialName = exercise.name
         
-        guard let exerciseName = exercise.name, let muscleName = currentMuscle.name, let exerciseStyleName = exerciseStyle.name else {
+        guard let exerciseName = exercise.name,
+            let exerciseStyleName = exerciseStyle.name else {
             return
         }
         
         // Set labels with current exercise/muscle/style
+//        let muscleName = currentMuscle.name
+        let muscleName = currentMuscles.getName()
         header.setTopText(exerciseName)
         muscleSelecter.setBottomText(muscleName)
         exerciseStyleSelecter.setBottomText(exerciseStyleName)
@@ -140,9 +147,8 @@ final class ExerciseEditor: UIViewController {
     }
     
     @objc private func editMuscle() {
-        let allMuscles = DatabaseFacade.fetchMuscles()
-        let musclePicker = PickerController(withPicksFrom: allMuscles, withPreselection: exercise.musclesUsed!)
-        musclePicker.pickableReceiver = self
+        let musclePicker = MusclePickerController(withPreselectedMuscles: exercise.getMuscles())
+        musclePicker.muscleReceiver = self
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
@@ -184,7 +190,7 @@ final class ExerciseEditor: UIViewController {
         }
         
         exercise.style = exerciseStyle
-        exercise.musclesUsed = currentMuscle
+        exercise.setMuscles(currentMuscles)
         DatabaseFacade.saveContext()
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
@@ -197,8 +203,8 @@ extension ExerciseEditor: PickableReceiver {
         
         // update current exercise with the new object
         switch pickable {
-        case is Muscle:
-            currentMuscle = pickable as? Muscle
+        case is [Muscle]:
+            currentMuscles = pickable as? [Muscle]
             muscleSelecter.setBottomText(pickable.name!)
         case is ExerciseStyle:
             exerciseStyle = pickable as? ExerciseStyle

@@ -22,7 +22,8 @@ class BoxTableViewController: UITableViewController {
         self.cellIdentifier = cellIdentifier
         self.workoutStyleName = workoutStyleName
         super.init(nibName: nil, bundle: nil)
-        setUpNavigationBar(withTitle: workoutStyleName)
+        
+        setUpNavigationBar(withTitle: self.workoutStyleName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,9 +32,13 @@ class BoxTableViewController: UITableViewController {
     
     // MARK: - Life cycle
 
+    override func viewDidLoad() {
+        view.backgroundColor = .light
+        super.viewDidLoad()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
-        showNavigationBar()
+//        showNavigationBar()
     }
     
     // MARK: - Methods

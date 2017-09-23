@@ -34,7 +34,8 @@ class WorkoutEditor: WorkoutController {
         hidesBottomBarWhenPushed = true
         
         self.currentWorkout = workout
-        self.currentMuscle = workout.muscleUsed
+//        self.currentMuscle = workout.musclesUsed
+        self.currentMuscles = workout.getMuscles()
         self.currentWorkoutStyle = workout.workoutStyle
         self.initialName = workout.name
         self.currentExercises = workout.getExercises(includeRetired: false)
@@ -78,8 +79,8 @@ class WorkoutEditor: WorkoutController {
     }
     
     func setupMuscleSelecter() {
-        let muscleName = currentWorkout.muscleUsed?.name ?? "No Muscle"
-        self.muscleSelecter.setBottomText(muscleName)
+        let musclesUsed = currentWorkout.getMuscles()
+        self.muscleSelecter.setBottomText(musclesUsed.getName())
     }
     
     @objc private func editName() {
@@ -117,7 +118,8 @@ class WorkoutEditor: WorkoutController {
         }
         
         currentWorkout.setStyle(currentWorkoutStyle)
-        currentWorkout.setMuscle(currentMuscle)
+//        currentWorkout.addToMusclesUsed(currentMuscles)
+        currentWorkout.setMuscles(currentMuscles)
         currentWorkout.setExercises(currentExercises)
         DatabaseFacade.saveContext()
         

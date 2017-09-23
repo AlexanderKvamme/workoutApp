@@ -92,7 +92,8 @@ class ExerciseTableViewController: UITableViewController {
         // tableview setup
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
-        automaticallyAdjustsScrollViewInsets = false
+        automaticallyAdjustsScrollViewInsets = true
+//        automaticallyAdjustsScrollViewInsets = false
         tableView.separatorStyle = .none
         tableView.backgroundColor = .light
         

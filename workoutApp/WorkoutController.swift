@@ -10,15 +10,16 @@ import UIKit
 
 // MARK: - Class
 
-class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
-
+class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isStringReceiver {
+    
     // MARK: - Properties
     
-    var currentMuscle: Muscle!
+    var currentMuscles: [Muscle]!
     var currentWorkoutStyle: WorkoutStyle!
     
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // used to receiving of time and name from pickers
+    var receiveMuscles: (([Muscle]) -> ()) = { _ in }
     
     // Computed properties
     
@@ -116,10 +117,18 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let existingMuscles = DatabaseFacade.fetchMuscles()
-        let musclePicker = PickerController<Muscle>(withPicksFrom: existingMuscles, withPreselection: currentMuscle)
+        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
         
-        musclePicker.pickableReceiver = self
+        musclePicker.muscleReceiver = self
+        
+        receiveMuscles = { musclesReceived in
+            
+            
+            self.currentMuscles = musclesReceived
+            print("currentMuscles are now the received ones")
+            print(self.currentMuscles)
+            self.muscleSelecter.setBottomText(self.currentMuscles.getName())
+        }
         
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
@@ -139,7 +148,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     @objc private func exercisesTapHandler() {
         
-        let exercisePicker = ExercisePickerController(forMuscle: currentMuscle, withPreselectedExercises: currentExercises)
+        let exercisePicker = ExercisePickerController(forMuscle: currentMuscles, withPreselectedExercises: currentExercises)
         
         exercisePicker.pickableReceiver = self
         exercisePicker.exerciseReceiver = self
@@ -161,14 +170,25 @@ extension WorkoutController: PickableReceiver {
 
         switch pickable {
         case is Muscle:
-            currentMuscle = pickable as! Muscle
-            muscleSelecter.bottomLabel.text = currentMuscle.name
-            self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
+            currentMuscles = pickable as! [Muscle]
+            setMuscleName(currentMuscles)
+            //muscleSelecter.bottomLabel.text = currentMuscle.name
+            
+self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
         case is WorkoutStyle:
             currentWorkoutStyle = pickable as! WorkoutStyle
             workoutStyleSelecter.bottomLabel.text = currentWorkoutStyle.name
         default:
             print("Received something wierd")
+        }
+    }
+    
+    private func setMuscleName(_ muscles: [Muscle]) {
+        
+        if muscles.count == 1 {
+            muscleSelecter.bottomLabel.text = muscles.first!.name
+        } else {
+            muscleSelecter.bottomLabel.text = "MIXED"
         }
     }
 }
@@ -180,3 +200,4 @@ extension WorkoutController {
         return self.currentExercises.count > 0
     }
 }
+
