@@ -2,7 +2,7 @@
 //  Exercise+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 19/09/2017.
+//  Created by Alexander Kvamme on 22/09/2017.
 //
 //
 
@@ -20,7 +20,7 @@ extension Exercise {
     @NSManaged public var name: String?
     @NSManaged public var loggedInstances: NSSet?
     @NSManaged public var measurementStyle: MeasurementStyle?
-    @NSManaged public var musclesUsed: Muscle?
+    @NSManaged public var musclesUsed: NSSet?
     @NSManaged public var style: ExerciseStyle?
     @NSManaged public var usedInWorkouts: NSSet?
 
@@ -40,6 +40,23 @@ extension Exercise {
 
     @objc(removeLoggedInstances:)
     @NSManaged public func removeFromLoggedInstances(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for musclesUsed
+extension Exercise {
+
+    @objc(addMusclesUsedObject:)
+    @NSManaged public func addToMusclesUsed(_ value: Muscle)
+
+    @objc(removeMusclesUsedObject:)
+    @NSManaged public func removeFromMusclesUsed(_ value: Muscle)
+
+    @objc(addMusclesUsed:)
+    @NSManaged public func addToMusclesUsed(_ values: NSSet)
+
+    @objc(removeMusclesUsed:)
+    @NSManaged public func removeFromMusclesUsed(_ values: NSSet)
 
 }
 

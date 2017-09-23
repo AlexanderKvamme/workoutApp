@@ -2,7 +2,7 @@
 //  Warning+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 19/09/2017.
+//  Created by Alexander Kvamme on 22/09/2017.
 //
 //
 

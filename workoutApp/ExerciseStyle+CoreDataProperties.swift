@@ -1,8 +1,8 @@
 //
-//  MeasurementStyle+CoreDataProperties.swift
+//  ExerciseStyle+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 19/09/2017.
+//  Created by Alexander Kvamme on 22/09/2017.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension MeasurementStyle {
+extension ExerciseStyle {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<MeasurementStyle> {
-        return NSFetchRequest<MeasurementStyle>(entityName: "MeasurementStyle")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<ExerciseStyle> {
+        return NSFetchRequest<ExerciseStyle>(entityName: "ExerciseStyle")
     }
 
     @NSManaged public var name: String?
@@ -22,7 +22,7 @@ extension MeasurementStyle {
 }
 
 // MARK: Generated accessors for usedInExercises
-extension MeasurementStyle {
+extension ExerciseStyle {
 
     @objc(addUsedInExercisesObject:)
     @NSManaged public func addToUsedInExercises(_ value: Exercise)
