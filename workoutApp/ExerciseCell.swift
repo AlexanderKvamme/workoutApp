@@ -85,7 +85,7 @@ class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
         print("did select some item at indexpath \(indexPath)")
     }
     
-    @available(iOS 6.0, *)
+    @objc @available(iOS 6.0, *)
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return liftsToDisplay.count
     }

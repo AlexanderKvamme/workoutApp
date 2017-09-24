@@ -39,7 +39,7 @@ class ExerciseHistoryTableViewController: UITableViewController {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
-        setupNavigationBar()
+        //setupNavigationBar()
     }
     
     override func viewDidLoad() {

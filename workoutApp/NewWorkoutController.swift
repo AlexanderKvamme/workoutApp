@@ -74,14 +74,11 @@ class NewWorkoutController: WorkoutController {
             return
         }
         
-        if let workoutName = header.bottomLabel.text,
-            let workoutStyleName = workoutStyleSelecter.bottomLabel.text,
-            let muscleName = muscleSelecter.bottomLabel.text {
-            DatabaseFacade.makeWorkout(withName: workoutName, workoutStyleName: workoutStyleName, muscleName: muscleName, exercises: currentExercises)
-            DatabaseFacade.saveContext()
-        } else {
-            print("could not make workout")
-        }
+        let workoutName = header.getBottomText()
+        DatabaseFacade.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, exercises: currentExercises)
+        DatabaseFacade.saveContext()
+        
         navigationController?.popViewController(animated: true)
     }
 }
+

@@ -23,6 +23,8 @@ class BoxTableViewController: UITableViewController {
         self.workoutStyleName = workoutStyleName
         super.init(nibName: nil, bundle: nil)
         
+        print("box made")
+        
         setUpNavigationBar(withTitle: self.workoutStyleName)
     }
     

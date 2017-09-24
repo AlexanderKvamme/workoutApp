@@ -33,6 +33,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
+        print("WorkoutTableViewController made")
+        
+        
         setUpNavigationBar(withTitle: workoutStyleName)
     }
     
@@ -48,6 +51,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         view.backgroundColor = .light
         
         setupDataSource()
+        setupDelegate()
         setupTableView()
         setupRefreshControl()
         resetRefreshControlAnimation()
@@ -74,10 +78,15 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     private func setupDataSource() {
         dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
         dataSource.owner = self
+
         tableView.dataSource = dataSource
     }
     
     // MARK: - TableView delegate methods
+    
+    private func setupDelegate() {
+        tableView.delegate = self
+    }
     
     // Selection
     

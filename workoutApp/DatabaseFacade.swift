@@ -13,6 +13,11 @@ import CoreData
  */
 final class DatabaseFacade {
     
+    enum SortingOptions {
+        case name
+        case mostRecentUse
+    }
+    
     private init(){} // Disable instance creation
     
     // MARK: - Properties
@@ -301,25 +306,26 @@ final class DatabaseFacade {
         return logItem
     }
     
-    static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exerciseNames: [String]) {
-
-        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
-        let muscle = DatabaseFacade.getMuscle(named: muscleName)
-        let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
-
-        workoutRecord.name = workoutName
-        workoutRecord.addToMusclesUsed(DatabaseFacade.getMuscle(named: muscleName)!)
-        workoutRecord.workoutStyle = workoutStyle
-
-        // Add Exercises to the Workout
-        for exerciseName in exerciseNames {
-            if let e = DatabaseFacade.fetchExercise(named: exerciseName){
-                workoutRecord.addToExercises(e)
-            } else {
-                print("could not fetch exercise named \(exerciseName)")
-            }
-        }
-    }
+//    static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exerciseNames: [String]) {
+//
+//        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
+//        let muscle = DatabaseFacade.getMuscle(named: muscleName)
+//        let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
+//
+//        workoutRecord.name = workoutName
+//        workoutRecord.muscles
+//        workoutRecord.addToMusclesUsed(DatabaseFacade.getMuscle(named: muscleName)!)
+//        workoutRecord.workoutStyle = workoutStyle
+//
+//        // Add Exercises to the Workout
+//        for exerciseName in exerciseNames {
+//            if let e = DatabaseFacade.fetchExercise(named: exerciseName){
+//                workoutRecord.addToExercises(e)
+//            } else {
+//                print("could not fetch exercise named \(exerciseName)")
+//            }
+//        }
+//    }
     
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exercises: [Exercise]) {
 
@@ -331,6 +337,20 @@ final class DatabaseFacade {
         workoutRecord.addToMusclesUsed(muscle!)
         workoutRecord.workoutStyle = workoutStyle
 
+        // Add Exercises to the Workout
+        for exercise in exercises {
+            workoutRecord.addToExercises(exercise)
+        }
+    }
+    
+    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) {
+        
+        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
+        
+        workoutRecord.name = workoutName
+        workoutRecord.workoutStyle = workoutStyle
+        workoutRecord.musclesUsed = NSSet(array: muscles)
+        
         // Add Exercises to the Workout
         for exercise in exercises {
             workoutRecord.addToExercises(exercise)
@@ -365,6 +385,28 @@ final class DatabaseFacade {
     // fetch Muscles
     static func fetchMuscles() -> [Muscle] {
         let muscles = fetchManagedObjectsForEntity(.Muscle) as! [Muscle]
+        return muscles
+    }
+    
+    static func fetchMuscles(with sortingOption: SortingOptions, ascending: Bool) -> [Muscle] {
+        
+        var muscles = [Muscle]()
+        let fr = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
+        
+        // Set chosen sortDescriptor
+        switch sortingOption{
+        case .name:
+            fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: ascending)]
+        case .mostRecentUse:
+            fr.sortDescriptors = [NSSortDescriptor(key: "mostRecentUse.dateEnded", ascending: ascending)]
+        }
+        
+        do {
+            let result = try context.fetch(fr)
+            muscles = result
+        } catch {
+            print("error: ", error)
+        }
         return muscles
     }
     

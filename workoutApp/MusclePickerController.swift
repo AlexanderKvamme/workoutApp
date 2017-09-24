@@ -98,7 +98,7 @@ class MusclePickerController: UIViewController {
         
         // Preselect
         for muscle in selectedMuscles {
-            print("tryna select \(muscle.name)")
+            print("tryna select \(muscle.name ?? "")")
             selectMuscle(muscle)
         }
     }
@@ -295,8 +295,8 @@ class MusclePickerController: UIViewController {
     @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
         switch sender.state {
         case .began:
-            print("implementme")
-            let location = sender.location(in: table)
+            print("FIXME: - Implement muscle editor")
+//            let location = sender.location(in: table) 
 //            if let indexPath = table.indexPathForRow(at: location) {
 //                let exerciseToEdit = selectionChoices[indexPath.row]
 //                let editor = ExerciseEditor(for: exerciseToEdit)

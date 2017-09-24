@@ -107,6 +107,7 @@ class SwipeActionsView: UIView {
         let buttons: [SwipeActionButton] = actions.map({ action in
             let actionButton = SwipeActionButton(action: action)
             actionButton.addTarget(self, action: #selector(actionTapped(button:)), for: .touchUpInside)
+            actionButton.autoresizingMask = [.flexibleHeight, orientation == .right ? .flexibleRightMargin : .flexibleLeftMargin]
             actionButton.spacing = options.buttonSpacing ?? 8
             actionButton.contentEdgeInsets = buttonEdgeInsets(fromOptions: options)
             return actionButton
@@ -117,13 +118,15 @@ class SwipeActionsView: UIView {
         
         buttons.enumerated().forEach { (index, button) in
             let action = actions[index]
-            let frame = CGRect(origin: .zero, size: CGSize(width: size.width * 2, height: size.height))
+            let frame = CGRect(origin: .zero, size: CGSize(width: bounds.width, height: bounds.height))
             let wrapperView = SwipeActionButtonWrapperView(frame: frame, action: action, orientation: orientation, contentWidth: minimumButtonWidth)
+            wrapperView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
             wrapperView.addSubview(button)
             
             if let effect = action.backgroundEffect {
                 let effectView = UIVisualEffectView(effect: effect)
                 effectView.frame = wrapperView.frame
+                effectView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
                 effectView.contentView.addSubview(wrapperView)
                 addSubview(effectView)
             } else {
@@ -139,7 +142,7 @@ class SwipeActionsView: UIView {
         return buttons
     }
     
-    func actionTapped(button: SwipeActionButton) {
+    @objc func actionTapped(button: SwipeActionButton) {
         guard let index = buttons.index(of: button) else { return }
 
         delegate?.swipeActionsView(self, didSelect: actions[index])
@@ -188,7 +191,6 @@ class SwipeActionsView: UIView {
         DispatchQueue.main.async {
             oldWidths.enumerated().forEach { index, oldWidth in
                 let newWidth = newWidths[index]
-                
                 if oldWidth != newWidth {
                     let context = SwipeActionTransitioningContext(actionIdentifier: self.actions[index].identifier,
                                                              button: self.buttons[index],
@@ -206,6 +208,12 @@ class SwipeActionsView: UIView {
         guard let expandedButton = buttons.last else { return }
 
         expansionDelegate?.actionButton(expandedButton, didChange: expanded, otherActionButtons: buttons.dropLast().reversed())
+    }
+    
+    func createDeletionMask() -> UIView {
+        let mask = UIView(frame: CGRect(x: min(0, frame.minX), y: 0, width: bounds.width * 2, height: bounds.height))
+        mask.backgroundColor = UIColor.white
+        return mask
     }
     
     override func layoutSubviews() {

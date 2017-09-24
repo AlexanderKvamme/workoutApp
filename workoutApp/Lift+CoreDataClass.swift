@@ -2,7 +2,7 @@
 //  Lift+CoreDataClass.swift
 //  
 //
-//  Created by Alexander Kvamme on 22/09/2017.
+//  Created by Alexander Kvamme on 24/09/2017.
 //
 //
 

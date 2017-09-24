@@ -22,15 +22,18 @@ extension Exercise {
 
     func getMuscles() -> [Muscle] {
 
-        return [Muscle]()
-//        guard var muscles = musclesUsed else { return [Muscle]() }
-        
-        if let mu = musclesUsed {
-            return Array(mu) as! [Muscle]
+//        return [Muscle]()
+        guard let muscles = musclesUsed else {
+            fatalError("had no muscles")
         }
-        print("Exercise had no muscles")
-        return [Muscle]()
+        
+        return Array(muscles) as! [Muscle]
+        
+        
 //        return Array<Muscle>(muscles)
+        
+        
+        
     }
 }
 

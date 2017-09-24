@@ -99,7 +99,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
     
     // MARK: - Methods
     
-    func dismissVC() {
+    @objc func dismissVC() {
         navigationController?.popViewController(animated: true)
     }
     

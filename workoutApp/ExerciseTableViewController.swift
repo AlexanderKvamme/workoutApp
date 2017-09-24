@@ -38,7 +38,7 @@ class ExerciseTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
-        setupNavigationBar()
+        //setupNavigationBar()
     }
     
     override func viewDidLoad() {

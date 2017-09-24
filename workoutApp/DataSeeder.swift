@@ -52,7 +52,6 @@ final class DataSeeder {
       
         // Muscles
         for muscleName in defaultMuscles {
-            print("would fetch muscle named \(muscleName)")
             if DatabaseFacade.getMuscle(named: muscleName) == nil {
                 print("didnt exist so making muscle named \(muscleName)")
                 makeMuscle(withName: muscleName)
@@ -61,8 +60,6 @@ final class DataSeeder {
         
         // Workout Styles
         for styleName in defaultWorkoutStyles {
-            print("would fetch workoutstyle named \(styleName)")
-            
             if DatabaseFacade.getWorkoutStyle(named: styleName) == nil {
                 print("didnt exist so making workoutstyle named \(styleName)")
                 makeWorkoutStyle(withName: styleName)
@@ -71,19 +68,17 @@ final class DataSeeder {
         
         // Exercise Styles
         for styleName in defaultExerciseStyles {
-            print("would fetch exercisestyle named \(styleName)")
             if DatabaseFacade.getExerciseStyle(named: styleName) == nil {
                 print("didnt exist so making exercise named \(styleName)")
                 makeExerciseStyle(withName: styleName)
             }
         }
         
-        // Exercise Styles
-        for exerciseStyle in defaultExerciseStyles {
-            print("would fetch muscle named \(exerciseStyle)")
-            if DatabaseFacade.getMuscle(named: exerciseStyle) == nil {
-                print("didnt exist so making muscle named \(exerciseStyle)")
-                makeWorkoutStyle(withName: exerciseStyle)
+        // Workout Styles
+        for workoutStyle in defaultWorkoutStyles {
+            if DatabaseFacade.getWorkoutStyle(named: workoutStyle) == nil {
+                print("didnt exist so making muscle named \(workoutStyle)")
+                makeWorkoutStyle(withName: workoutStyle)
             }
         }
     }

@@ -2,7 +2,7 @@
 //  WorkoutLog+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 22/09/2017.
+//  Created by Alexander Kvamme on 24/09/2017.
 //
 //
 
@@ -20,6 +20,8 @@ extension WorkoutLog {
     @NSManaged public var dateStarted: NSDate?
     @NSManaged public var design: Workout?
     @NSManaged public var loggedExercises: NSOrderedSet?
+    @NSManaged public var latestPerformanceDesign: Workout?
+    @NSManaged public var isMostRecentUseOf: Muscle?
 
 }
 

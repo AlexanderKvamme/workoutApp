@@ -1,12 +1,22 @@
 PODS:
-  - SwipeCellKit (1.7.0)
+  - SwipeCellKit (1.9.1)
 
 DEPENDENCIES:
-  - SwipeCellKit
+  - SwipeCellKit (from `https://github.com/SwipeCellKit/SwipeCellKit.git`, branch `swift4`)
+
+EXTERNAL SOURCES:
+  SwipeCellKit:
+    :branch: swift4
+    :git: https://github.com/SwipeCellKit/SwipeCellKit.git
+
+CHECKOUT OPTIONS:
+  SwipeCellKit:
+    :commit: ec99d5fcb9181f0ee22552f13c176754d91c4d67
+    :git: https://github.com/SwipeCellKit/SwipeCellKit.git
 
 SPEC CHECKSUMS:
-  SwipeCellKit: 73440541f03434eaedc158e5aed9bc1e0d9b898e
+  SwipeCellKit: 9fa65dd73e52e8fd139fec4d8f7d7cb44fa00559
 
-PODFILE CHECKSUM: 4ec33e070ddf237d82ea17f7598df9c9764a7796
+PODFILE CHECKSUM: b589ce6aa46c51617000b0622090c7f9c18a0c82
 
 COCOAPODS: 1.2.0

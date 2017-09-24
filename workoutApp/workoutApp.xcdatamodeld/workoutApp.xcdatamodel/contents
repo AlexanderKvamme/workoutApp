@@ -37,7 +37,8 @@
     </entity>
     <entity name="Muscle" representedClassName="Muscle" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mostRecentUse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" syncable="YES"/>
+        <attribute name="performanceCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="mostRecentUse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="isMostRecentUseOf" inverseEntity="WorkoutLog" syncable="YES"/>
         <relationship name="usedInExercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="musclesUsed" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="musclesUsed" inverseEntity="Workout" syncable="YES"/>
     </entity>
@@ -50,7 +51,7 @@
         <attribute name="performanceCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="totalTimeSpent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="usedInWorkouts" inverseEntity="Exercise" syncable="YES"/>
-        <relationship name="latestPerformence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" syncable="YES"/>
+        <relationship name="latestPerformence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="latestPerformanceDesign" inverseEntity="WorkoutLog" syncable="YES"/>
         <relationship name="loggedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="design" inverseEntity="WorkoutLog" syncable="YES"/>
         <relationship name="musclesUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInWorkouts" inverseEntity="Muscle" syncable="YES"/>
         <relationship name="workoutStyle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutStyle" inverseName="usedInWorkouts" inverseEntity="WorkoutStyle" syncable="YES"/>
@@ -59,6 +60,8 @@
         <attribute name="dateEnded" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateStarted" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="design" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="loggedWorkouts" inverseEntity="Workout" syncable="YES"/>
+        <relationship name="isMostRecentUseOf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Muscle" inverseName="mostRecentUse" inverseEntity="Muscle" syncable="YES"/>
+        <relationship name="latestPerformanceDesign" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="latestPerformence" inverseEntity="Workout" syncable="YES"/>
         <relationship name="loggedExercises" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ExerciseLog" inverseName="usedIn" inverseEntity="ExerciseLog" syncable="YES"/>
     </entity>
     <entity name="WorkoutStyle" representedClassName="WorkoutStyle" syncable="YES">
@@ -72,10 +75,10 @@
         <element name="Goal" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Lift" positionX="-191" positionY="3765" width="128" height="135"/>
         <element name="MeasurementStyle" positionX="-182" positionY="3588" width="128" height="73"/>
-        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="105"/>
+        <element name="Muscle" positionX="-450" positionY="3726" width="128" height="120"/>
         <element name="Warning" positionX="-450" positionY="3726" width="128" height="75"/>
         <element name="Workout" positionX="-639" positionY="3573" width="128" height="165"/>
-        <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="105"/>
+        <element name="WorkoutLog" positionX="-657" positionY="3819" width="128" height="135"/>
         <element name="WorkoutStyle" positionX="-441" positionY="3735" width="128" height="75"/>
     </elements>
 </model>
