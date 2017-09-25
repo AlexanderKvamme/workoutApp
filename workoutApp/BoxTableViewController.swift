@@ -89,9 +89,18 @@ class BoxTableViewController: UITableViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         if let name = title {
-            self.title = "\(name) History".uppercased()
+            var suffix = ""
+            switch type(of: self) {
+            case is WorkoutLogHistoryTableViewController.Type:
+                suffix = "HISTORY"
+            case is WorkoutTableViewController.Type:
+                suffix = "WORKOUTS"
+            default:
+                break
+            }
+            self.title = "\(name.uppercased()) \(suffix)"
         } else {
-            self.title = "All History".uppercased()
+            self.title = "ALL HISTORY"
         }
         refreshControl?.endRefreshing()
         removeBackButton()

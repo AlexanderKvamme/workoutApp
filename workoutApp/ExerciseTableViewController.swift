@@ -41,6 +41,7 @@ class ExerciseTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
         setupNavigationBar()
+        enableSwipeBackGesture(false)
         self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
     }
     
@@ -65,11 +66,16 @@ class ExerciseTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
+        enableSwipeBackGesture(false)
     }
     
     // MARK: - Methods
     
     // MARK: setup methods
+    
+    private func enableSwipeBackGesture(_ b: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = b
+    }
     
     private func setupNavigationBar() {
         if let name = currentWorkout.name {
