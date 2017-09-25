@@ -148,7 +148,6 @@ private extension ExerciseTableViewDataSource {
         let musclesUsed = dataSourceWorkoutLog.getMusclesUsed()
         
         for muscle in musclesUsed {
-            print("setting mostRecent used of \(muscle.name ?? "tsgt")...")
             muscle.performanceCount += 1
             muscle.mostRecentUse = dataSourceWorkoutLog
         }

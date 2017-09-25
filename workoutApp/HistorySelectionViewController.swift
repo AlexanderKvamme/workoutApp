@@ -24,6 +24,14 @@ class HistorySelectionViewController: SelectionViewController {
 
     // MARK: - Lifecycle
     
+    // ViewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .light
+        setupStack()
+        setupLayout()
+    }
+    
     // ViewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,14 +40,6 @@ class HistorySelectionViewController: SelectionViewController {
         drawDiagonalLine()
         view.bringSubview(toFront: stack) // Bring it in front of diagonal line
         view.layoutIfNeeded()
-    }
-    
-    // ViewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .light
-        setupStack()
-        setupLayout()
     }
     
     // MARK: - Methods

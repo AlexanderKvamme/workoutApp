@@ -9,18 +9,14 @@
 import Foundation
 import UIKit
 
+// FIXME: - Delete
 
 extension UINavigationController {
     
     func addXButton() {
+        
         let navButtonRight = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: navButtonRight, style: .done, target: self, action: nil)
         self.navigationItem.rightBarButtonItem = rightButton
-    }
-    
-    func removeXButton() {
-        print("would try to remove x")
-        self.navigationItem.rightBarButtonItem = nil
-        self.navigationItem.setRightBarButton(nil, animated: true)
     }
 }

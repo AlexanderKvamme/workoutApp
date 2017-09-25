@@ -23,8 +23,6 @@ class BoxTableViewController: UITableViewController {
         self.workoutStyleName = workoutStyleName
         super.init(nibName: nil, bundle: nil)
         
-        print("box made")
-        
         setUpNavigationBar(withTitle: self.workoutStyleName)
     }
     
@@ -40,7 +38,7 @@ class BoxTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        showNavigationBar()
+        showNavigationBar()
     }
     
     // MARK: - Methods
@@ -85,13 +83,18 @@ class BoxTableViewController: UITableViewController {
     // MARK: Navigationbar
     
     func setUpNavigationBar(withTitle title: String?) {
+        
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        
         if let name = title {
             self.title = "\(name) History".uppercased()
         } else {
             self.title = "All History".uppercased()
         }
         refreshControl?.endRefreshing()
+        removeBackButton()
     }
     
     func showNavigationBar() {

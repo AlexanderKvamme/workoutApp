@@ -90,6 +90,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
+        
         // Hide tab bar's selection indicator
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.hideSelectionIndicator(shouldAnimate: false)

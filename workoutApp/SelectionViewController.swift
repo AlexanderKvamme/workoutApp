@@ -54,6 +54,14 @@ class SelectionViewController: UIViewController {
     
     // MARK: - Lifecycle
     
+    // ViewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .light
+        setupStack()
+        setupLayout()
+    }
+    
     // ViewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -64,13 +72,9 @@ class SelectionViewController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
-    
-    // ViewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .light
-        setupStack()
-        setupLayout()
+
+    override func viewWillDisappear(_ animated: Bool) {
+        title = "" // removes "Back" text on the back button in subsequent controllers
     }
     
     // MARK: - Setup Methods

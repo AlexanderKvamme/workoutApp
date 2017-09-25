@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// This TableView is the actual workout.
+
 class ExerciseTableViewController: UITableViewController {
     
     // MARK: - Properties
@@ -38,7 +40,8 @@ class ExerciseTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
-        //setupNavigationBar()
+        setupNavigationBar()
+        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
     }
     
     override func viewDidLoad() {
@@ -73,29 +76,37 @@ class ExerciseTableViewController: UITableViewController {
             self.title = name.uppercased()
         }
         
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        // Right navBar button
         let xIcon = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        
         self.navigationItem.hidesBackButton = true
     }
     
     private func setupTable() {
         // adjust to fit the navbar
+        
         if let navHeight = navigationController?.navigationBar.frame.height {
             let statusHeight = UIApplication.shared.statusBarFrame.height
             tableView.contentInset = UIEdgeInsets(top: navHeight + statusHeight, left: 0, bottom: 0, right: 0)
             tableView.headerView(forSection: 0)?.backgroundColor = .red
-            tableView.tableHeaderView?.backgroundColor = .green
         }
         
         // tableview setup
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
-        automaticallyAdjustsScrollViewInsets = true
-//        automaticallyAdjustsScrollViewInsets = false
+        automaticallyAdjustsScrollViewInsets = false
         tableView.separatorStyle = .none
         tableView.backgroundColor = .light
+        
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.never
+        } else {
+            // Fallback on earlier versions
+        }
         
         setupTableFooter()
         tableView.reloadData()

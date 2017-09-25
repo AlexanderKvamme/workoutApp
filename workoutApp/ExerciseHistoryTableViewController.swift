@@ -39,7 +39,7 @@ class ExerciseHistoryTableViewController: UITableViewController {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
-        //setupNavigationBar()
+        setupNavigationBar()
     }
     
     override func viewDidLoad() {
@@ -69,7 +69,12 @@ class ExerciseHistoryTableViewController: UITableViewController {
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.hidesBackButton = true
+        
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.never
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     private func setupTable() {

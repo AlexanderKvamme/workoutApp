@@ -95,6 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            NSAttributedStringKey.kern: 0.7,
 //        ]
 //    }
+    
     private func customizeUIAppearance() {
         
         // TextField Customization
@@ -107,7 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let renderedImage = backArrowImage?.withRenderingMode(.alwaysOriginal)
         UINavigationBar.appearance().backIndicatorImage = renderedImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
         
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),

@@ -95,6 +95,7 @@ fileprivate extension SuggestionController {
             let shortDate = timeIntervalSinceWorkout.asMinimalString()
             return ("\(shortDate) SINCE LAST WORKOUT OF:", muscle.getName())
         }
+        
         return ("X DAYS SINCE LAST WORKOUT OF:", muscle.getName())
     }
     
