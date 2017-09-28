@@ -53,6 +53,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         setupTableView()
         setupRefreshControl()
         resetRefreshControlAnimation()
+        addLongPressRecognizer()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,6 +77,26 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     // MARK: - Methods
+    
+    private func addLongPressRecognizer() {
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(showEditor(_:)))
+        view.addGestureRecognizer(longPress)
+    }
+    
+    @objc private func showEditor(_ gesture: UIGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            let location = gesture.location(in: self.view)
+            if let indexPathToEdit = tableView.indexPathForRow(at: location) {
+                indexPathBeingEdited = indexPathToEdit
+                let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
+                let editor = WorkoutEditor(with: workoutToEdit)
+                navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+            }
+        default:
+            return
+        }
+    }
     
     private func setupDataSource() {
         dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
@@ -111,18 +132,14 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         
-        var options = SwipeTableOptions()
         
-        // FIXME: - tryna make style
-        //var test = SwipeExpansionStyle(target: SwipeExpansionStyle.Target)
-        var myStyle = SwipeExpansionStyle(target: .percentage(0.5),
+        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
                                               additionalTriggers: [],
                                               elasticOverscroll: true,
                                               completionAnimation: .bounce)
         
+        var options = SwipeTableOptions()
         options.expansionStyle = myStyle
-        
-        // old
         options.backgroundColor = .light
         options.transitionStyle = .border
         return options
