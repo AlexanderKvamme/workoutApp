@@ -236,12 +236,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     func selectRow(withPickable pickable: Pickable) {
         
         guard let indexOfPickable = selectionChoices.index(where: { (element) -> Bool in
-            if element === selectedPickable {
-                print("was equal")
-                print(element)
-                print(" and " )
-                print(selectedPickable)
-            }
             return element === selectedPickable
         }) else {
             print("Error: Could not find index")

@@ -96,6 +96,7 @@ fileprivate extension SuggestionController {
             return ("\(shortDate) SINCE LAST WORKOUT OF:", muscle.getName())
         }
         
+        // If time of last workout of this workout is not 0, but cant be found
         return ("X DAYS SINCE LAST WORKOUT OF:", muscle.getName())
     }
     

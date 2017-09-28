@@ -499,18 +499,13 @@ final class DatabaseFacade {
     // get MeasurementStyle
     static func getMeasurementStyle(named name: String) -> MeasurementStyle? {
         var measurementStyle: MeasurementStyle? = nil
-        
-        print("tryna fetch measurement: ", name)
-        
+
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.MeasurementStyle.rawValue)
             let predicate = NSPredicate(format: "name == %@", name.uppercased())
             fetchRequest.predicate = predicate
             
-            print("all styles", DatabaseFacade.fetchMeasurementStyles())
             let result = try context.fetch(fetchRequest)
-            
-            print("all: ", result)
             measurementStyle = result[0] as? MeasurementStyle
         } catch let error as NSError {
             print(error.localizedDescription)

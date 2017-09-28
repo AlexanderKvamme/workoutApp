@@ -65,7 +65,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.showSelectionindicator()
         }
-        
         updateTableIfNeeded()
         
         // Update views
@@ -109,6 +108,25 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     // Left swipe
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        
+        var options = SwipeTableOptions()
+        
+        // FIXME: - tryna make style
+        //var test = SwipeExpansionStyle(target: SwipeExpansionStyle.Target)
+        var myStyle = SwipeExpansionStyle(target: .percentage(0.5),
+                                              additionalTriggers: [],
+                                              elasticOverscroll: true,
+                                              completionAnimation: .bounce)
+        
+        options.expansionStyle = myStyle
+        
+        // old
+        options.backgroundColor = .light
+        options.transitionStyle = .border
+        return options
+    }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
 
@@ -129,7 +147,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
                 let workoutEditor = WorkoutEditor(with: wo)
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
             }
-            
             editAction.image = self.wrenchImage
             editAction.backgroundColor = .light
             indexPathBeingEdited = indexPath
