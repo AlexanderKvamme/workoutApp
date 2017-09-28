@@ -59,28 +59,6 @@ class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
         plusButton.titleLabel?.backgroundColor = .yellow
     }
     
-    
-    
-    // MARK: - CollectionView delegate methods
-    
-//    @available(iOS 6.0, *)
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseSetCollectionViewCell
-//        cell.owner = self
-//        
-//        let liftToDisplay = liftsToDisplay[indexPath.row]
-//        let repFromLift = liftToDisplay.reps
-//        cell.setReps(repFromLift)
-//        cell.isPerformed = liftToDisplay.hasBeenPerformed // is it already performed this workout and should be tappable?
-//        
-//        // Make bold if it is performed
-//        if liftsToDisplay[indexPath.row].hasBeenPerformed {
-//            cell.makeTextBold()
-//        }
-//        return cell
-//    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("did select some item at indexpath \(indexPath)")
     }

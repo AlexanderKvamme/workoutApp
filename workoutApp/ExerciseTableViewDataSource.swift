@@ -27,6 +27,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
     init(workout: Workout) {
         super.init()
         // setup data source to use the most recent performance, or the workoutlog if it has not been performed.
+        
         if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
             setupUsingWorkoutLog(previousPerformance: lastPerformance)
         } else {
@@ -51,8 +52,6 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
-        
-        //cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
         cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
         cell.owner = self
         

@@ -724,7 +724,7 @@
 				DD0EB24C1F4702F200CDA1CF /* Cells */,
 				DDF1F1F31F07E14F001A6F0C /* Exercise TableView */,
 				DD34C5781F4657850050BDB0 /* Exercise History TableView */,
-				DDF1F1F41F07E162001A6F0C /* CollectionView Cells - Lifts */,
+				DDF1F1F41F07E162001A6F0C /* CollectionView Cells / Lifts */,
 			);
 			name = "Exercise Tables";
 			sourceTree = "<group>";
@@ -741,13 +741,13 @@
 			name = "Exercise TableView";
 			sourceTree = "<group>";
 		};
-		DDF1F1F41F07E162001A6F0C /* CollectionView Cells - Lifts */ = {
+		DDF1F1F41F07E162001A6F0C /* CollectionView Cells / Lifts */ = {
 			isa = PBXGroup;
 			children = (
 				DDF1F1EB1F07AC27001A6F0C /* ExerciseSetCollectionViewCell.swift */,
 				DD0EB24F1F4707E000CDA1CF /* ExerciseHistorySetCollectionViewcell.swift */,
 			);
-			name = "CollectionView Cells - Lifts";
+			name = "CollectionView Cells / Lifts";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

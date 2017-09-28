@@ -18,13 +18,13 @@ import UIKit
 
 class ExerciseSetCollectionViewCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     
-    var button: UIButton! // Button that covers entire cell, to handle taps
+    var button: UIButton! // Covers entire cell, to handle taps
     var repsField: UITextField!
     private var cellHasBeenEdited = false
     private var keyboard: Keyboard!
     var isPerformed = false // track if Lift should be tracked as completed
     var weightLabel: UILabel? // TODO
-    weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() methodpo
+    weak var owner: ExerciseTableViewCell! // Allows for accessing the owner's .getNextCell() method
     
     var initialRepValue: String {
         if let indexPath = owner.collectionView.indexPath(for: self) {
