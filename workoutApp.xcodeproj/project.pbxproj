@@ -93,6 +93,8 @@
 		DD7600481EDF240D00871DD8 /* WorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600471EDF240D00871DD8 /* WorkoutController.swift */; };
 		DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */; };
 		DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */; };
+		DD9477B61F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */; };
+		DD9477B81F7FE79500E01F81 /* MuscleBasedWorkoutTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */; };
 		DD9838731F12717B00B876C7 /* CustomNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9838721F12717B00B876C7 /* CustomNotifications.swift */; };
 		DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA169451F1E882900A82FBF /* TapAnywhere.swift */; };
 		DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA4A3A01F5EC7F40026882A /* ApproveButtonFooter.swift */; };
@@ -224,6 +226,8 @@
 		DD7600471EDF240D00871DD8 /* WorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutController.swift; sourceTree = "<group>"; };
 		DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoLabelStack.swift; sourceTree = "<group>"; };
 		DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlView.swift; sourceTree = "<group>"; };
+		DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleBasedWorkoutTableController.swift; sourceTree = "<group>"; };
+		DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleBasedWorkoutTableDataSource.swift; sourceTree = "<group>"; };
 		DD9838721F12717B00B876C7 /* CustomNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotifications.swift; sourceTree = "<group>"; };
 		DDA169451F1E882900A82FBF /* TapAnywhere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapAnywhere.swift; sourceTree = "<group>"; };
 		DDA4A3A01F5EC7F40026882A /* ApproveButtonFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveButtonFooter.swift; sourceTree = "<group>"; };
@@ -451,9 +455,8 @@
 		DD468F861F2E8B9200A945A9 /* Workout Table */ = {
 			isa = PBXGroup;
 			children = (
-				DD468F841F2E875000A945A9 /* WorkoutTableViewController.swift */,
-				DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */,
-				DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */,
+				DD9477B31F7FE4A200E01F81 /* MuscleBasedWorkoutTable */,
+				DD9477B41F7FE4C600E01F81 /* StyleBasedWorkoutTable */,
 			);
 			name = "Workout Table";
 			sourceTree = "<group>";
@@ -571,6 +574,25 @@
 				DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */,
 			);
 			name = refreshControl;
+			sourceTree = "<group>";
+		};
+		DD9477B31F7FE4A200E01F81 /* MuscleBasedWorkoutTable */ = {
+			isa = PBXGroup;
+			children = (
+				DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */,
+				DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */,
+			);
+			name = MuscleBasedWorkoutTable;
+			sourceTree = "<group>";
+		};
+		DD9477B41F7FE4C600E01F81 /* StyleBasedWorkoutTable */ = {
+			isa = PBXGroup;
+			children = (
+				DD468F841F2E875000A945A9 /* WorkoutTableViewController.swift */,
+				DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */,
+				DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */,
+			);
+			name = StyleBasedWorkoutTable;
 			sourceTree = "<group>";
 		};
 		DD9838711F12716900B876C7 /* Notifications */ = {
@@ -906,6 +928,7 @@
 				DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */,
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */,
+				DD9477B61F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift in Sources */,
 				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,
 				DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */,
 				DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */,
@@ -927,6 +950,7 @@
 				DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */,
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD5CD5D01F4660A500672A1E /* ExerciseHistoryTableViewController.swift in Sources */,
+				DD9477B81F7FE79500E01F81 /* MuscleBasedWorkoutTableDataSource.swift in Sources */,
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
 				DD0D42DC1F4DB47A00502C02 /* DeletionBox.swift in Sources */,
 				DD41AAFC1F18F5C800CB08F5 /* NewExerciseController.swift in Sources */,

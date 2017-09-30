@@ -12,10 +12,10 @@ import CoreData
 import SwipeCellKit
 
 protocol isBoxTableViewDataSource: class, UITableViewDataSource {
-    init(workoutStyleName: String?)
+//    init(workoutStyleName: String?)
     
     var cellIdentifier: String {get set}
-    var workoutStyleName: String? {get set}
+//    var workoutStyleName: String? {get set}
     weak var owner: SwipeTableViewCellDelegate? {get set}
     
     func refresh()

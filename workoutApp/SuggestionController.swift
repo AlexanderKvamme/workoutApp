@@ -75,7 +75,12 @@ fileprivate extension SuggestionController {
     }
     
     @objc func testPrint(sender:UIButton) {
+        
         print("Would present workoutpicker for: ", suggestedMuscles[sender.tag])
+        
+        let muscle = suggestedMuscles[sender.tag]
+        let muscleBasedWorkoutPicker = MuscleBasedWorkoutTableController(muscle: muscle)
+        navigationController?.pushViewController(muscleBasedWorkoutPicker, animated: true)
     }
     
     // MARK: Setup methods

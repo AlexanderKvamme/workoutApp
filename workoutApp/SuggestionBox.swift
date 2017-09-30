@@ -108,7 +108,6 @@ class SuggestionBox: Box {
     private func makeTappable() {
         clipsToBounds = true
         button.backgroundColor = .clear // alpha of 0 disables button
-        button.addTarget(self, action: #selector(testPrint), for: .touchUpInside)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -118,10 +117,6 @@ class SuggestionBox: Box {
             button.leftAnchor.constraint(equalTo: leftAnchor),
             button.rightAnchor.constraint(equalTo: rightAnchor),
             ])
-    }
-    
-    @objc func testPrint() {
-        print("printing frmo within suggestionBox")
     }
 }
 

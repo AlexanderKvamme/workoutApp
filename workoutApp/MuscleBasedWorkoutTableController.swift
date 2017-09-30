@@ -1,31 +1,44 @@
 //
-//  BoxTableViewController.swift
+//  MuscleBasedWorkoutTable.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 23/05/2017.
+//  Created by Alexander Kvamme on 30/09/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
+import Foundation
 import UIKit
-import CoreData
 import SwipeCellKit
 
-class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
+class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewCellDelegate {
     
     // MARK: - Properties
     
     var dataSource: isWorkoutTableViewDataSource!
     var indexPathBeingEdited: IndexPath?
+    var muscle: Muscle!
     
     // MARK: - Initializers
     
-    init(workoutStyleName: String?) {
-        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
+    init(muscle: Muscle) {
+        //        super.init(workoutStyleName: nil, cellIdentifier: "WorkoutBoxCell")
+        self.muscle = muscle
+        super.init(workoutStyleName: nil, cellIdentifier: "WorkoutBoxCell")
+        
+        print("done")
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
-        setUpNavigationBar(withTitle: workoutStyleName)
-        print("WorkoutTableViewController")
+        setUpNavigationBar(withTitle: nil)
+        print("WorkoutTableViewController finished init")
     }
+    
+//    init(workoutStyleName: String?) {
+//        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
+//        tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
+//
+//        setUpNavigationBar(withTitle: workoutStyleName)
+//        print("WorkoutTableViewController")
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -37,8 +50,8 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         super.viewDidLoad()
         
         view.backgroundColor = .light
-        
-        setupDataSource()
+        print("muscle was: ", muscle)
+        setupDataSource(with: muscle)
         setupDelegate()
         setupTableView()
         setupRefreshControl()
@@ -68,6 +81,15 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     // MARK: - Methods
     
+    override func setUpNavigationBar(withTitle title: String?) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        self.title = muscle.getName()
+        refreshControl?.endRefreshing()
+        removeBackButton()
+    }
+    
     private func addLongPressRecognizer() {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(showEditor(_:)))
         view.addGestureRecognizer(longPress)
@@ -88,10 +110,17 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         }
     }
     
-    private func setupDataSource() {
-        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
+//    private func setupDataSource() {
+//        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
+//        dataSource.owner = self
+//
+//        tableView.dataSource = dataSource
+//    }
+    
+    private func setupDataSource(with muscle: Muscle) {
+        dataSource = MuscleBasedWorkoutTableViewDataSource(muscle: muscle)
         dataSource.owner = self
-
+        
         tableView.dataSource = dataSource
     }
     
@@ -124,9 +153,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         
         
         let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
-                                              additionalTriggers: [],
-                                              elasticOverscroll: true,
-                                              completionAnimation: .bounce)
+                                          additionalTriggers: [],
+                                          elasticOverscroll: true,
+                                          completionAnimation: .bounce)
         
         var options = SwipeTableOptions()
         options.expansionStyle = myStyle
@@ -134,9 +163,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         options.transitionStyle = .border
         return options
     }
-
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-
+        
         switch orientation {
         case .right:
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
@@ -198,5 +227,10 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
             tableView.reloadData()
         }
     }
-}
+    
+    
 
+    
+
+
+}

@@ -167,34 +167,9 @@ class WorkoutSelectionViewController: SelectionViewController {
     @objc func buttonTapHandler(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
-        let boxTableViewController = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        let boxTable = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
         
-        navigationController?.pushViewController(boxTableViewController, animated: true)
+        navigationController?.pushViewController(boxTable, animated: true)
     }
-    
-//    func buttonTapHandler(button: UIButton) {
-//        // Identifies which choice was selected and creates a BoxTableView to display
-//        let tappedWorkoutStyleName = buttonNames[button.tag]
-//        let boxTableViewController = BoxTableViewController(workoutStyleName: tappedWorkoutStyleName)
-//        
-//        navigationController?.pushViewController(boxTableViewController, animated: true)
-//    }
-    
-    // MARK: - Helpers
-    
-//    private func getWorkoutStyles(withRequest request: NSFetchRequest<NSFetchRequestResult>) -> [WorkoutStyle] {
-//        var workoutStyles = [WorkoutStyle]()
-//        do {
-//            let results = try DatabaseController.getContext().fetch(request)
-//            // Append all received types
-//            for r in results as! [Workout] {
-//                if let workoutStyle = r.workoutStyle {
-//                    workoutStyles.append(workoutStyle)
-//                }
-//            }
-//        } catch let error as NSError {
-//            print("error in SelectionViewController : ", error.localizedDescription)
-//        }
-//        return workoutStyles
-//    }
 }
+

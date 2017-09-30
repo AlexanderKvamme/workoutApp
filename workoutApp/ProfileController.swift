@@ -23,6 +23,7 @@ final class ProfileController: UIViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        title = ""
     }
     
     required init?(coder aDecoder: NSCoder) {

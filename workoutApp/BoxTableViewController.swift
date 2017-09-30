@@ -16,6 +16,17 @@ class BoxTableViewController: UITableViewController {
     var cellIdentifier: String
     var customRefreshView: RefreshControlView!
     
+    lazy var wrenchImage: UIImage = {
+        let wrench = UIImage(named: "wrench")!
+        let test = wrench.resize(maxWidthHeight: 36)!
+        return test
+    }()
+    
+    lazy var ximage: UIImage = {
+        let img = UIImage(named: "xmark")!
+        return img
+    }()
+    
     // MARK: - Initializers
     
     init(workoutStyleName: String?, cellIdentifier: String) {
