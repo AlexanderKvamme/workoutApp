@@ -31,10 +31,33 @@ class SuggestionBox: Box {
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         
         setupViews()
+        makeTappable()
+    }
+    
+    /// Set header and subheader based on injected muscle
+    convenience init(withMuscle muscle: Muscle) {
+        self.init()
+        
+        var subHeaderText = ""
+        if let timeOfWorkout = muscle.lastPerformance() {
+            // Has been performed before
+            let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
+            let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
+            subHeaderText = "\(shortTimeInterval) SINCE LAST WORKOUT OF:"
+        } else {
+            subHeaderText =  "YET TO BE WORKED OUT"
+        }
+        
+        setSuggestionHeader(subHeaderText)
+        setSuggestionSubheader(muscle.getName())
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: Constant.UI.width, height: 80)
     }
     
     // MARK: - Methods
@@ -80,6 +103,25 @@ class SuggestionBox: Box {
         if let subheader = subheader {
             subheader.label.text = str
         }
+    }
+    
+    private func makeTappable() {
+        clipsToBounds = true
+        button.backgroundColor = .clear // alpha of 0 disables button
+        button.addTarget(self, action: #selector(testPrint), for: .touchUpInside)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: topAnchor),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor),
+            button.leftAnchor.constraint(equalTo: leftAnchor),
+            button.rightAnchor.constraint(equalTo: rightAnchor),
+            ])
+    }
+    
+    @objc func testPrint() {
+        print("printing frmo within suggestionBox")
     }
 }
 

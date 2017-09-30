@@ -67,6 +67,8 @@ final class ProfileController: UIViewController {
     private func setupScrollView(){
         scrollView = UIScrollView(frame: CGRect.zero)
         scrollView.isScrollEnabled = true
+        
+        scrollView.clipsToBounds = true
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,6 +90,8 @@ final class ProfileController: UIViewController {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
+        
+        stackView.clipsToBounds = true
         
         scrollView.addSubview(stackView)
         

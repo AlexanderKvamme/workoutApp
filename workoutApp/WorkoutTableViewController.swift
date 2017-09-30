@@ -35,6 +35,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
         setUpNavigationBar(withTitle: workoutStyleName)
+        print("WorkoutTableViewController")
     }
     
     required init?(coder aDecoder: NSCoder) {

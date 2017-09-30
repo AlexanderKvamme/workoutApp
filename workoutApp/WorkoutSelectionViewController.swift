@@ -11,22 +11,9 @@
 import UIKit
 import CoreData
 
-/*
- SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
- */
-
+/// WorkoutSelectionViewController is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
 class WorkoutSelectionViewController: SelectionViewController {
-    
-//    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch avaiable choices and display them as buttons
-//    var header: SelectionViewHeader!
-//    var buttons: [SelectionViewButton]!
-//    var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
-//    var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
-//    var stack: StackView!
-//    // button creation
-//    var buttonNames = [String]()
-//    var buttonIndex = 0
-    
+
     // MARK: - Initializers
     
     init() {

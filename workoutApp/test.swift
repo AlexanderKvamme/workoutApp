@@ -36,10 +36,22 @@ class TestViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .light
-        addSubviewsAndConstraints()
+//        addSubviewsAndConstraints()
+        
+        addProfileTest()
     }
     
     // MARK: Methods
+    
+    private func addProfileTest() {
+//        let pc = ProfileController()
+//        addChildViewController(pc)
+//        view.addSubview(pc.view)
+        
+        let sc = SuggestionController()
+        addChildViewController(sc)
+        view.addSubview(sc.view)
+    }
     
     private func addSubviewsAndConstraints() {
         
