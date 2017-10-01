@@ -46,6 +46,7 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         var cell: WorkoutLogHistoryBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutLogHistoryBoxCell
         cell = WorkoutLogHistoryBoxCell(style: .default, reuseIdentifier: cellIdentifier)
         cell.setupContent(with: workoutLog)
+        cell.delegate = owner
         
         return cell
     }

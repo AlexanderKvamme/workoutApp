@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 
-class WorkoutLogHistoryTableViewController: BoxTableViewController {
+class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
     
     // MARK: - Initializers
     
@@ -50,6 +51,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     private func setupDataSource() {
         dataSource = WorkoutLogHistoryTableViewDataSource(workoutStyleName: workoutStyleName)
         tableView.dataSource = dataSource
+        dataSource.owner = self
     }
     
     // Delete rows
@@ -57,24 +59,64 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: "DELETE") { (action, indexPath) in
-            self.dataSource.deleteDataAt(indexPath)
-            self.tableView.reloadData() // Add animation through tableView.deleteRows(at: [indexPath], with: .none)
-        }
-        delete.backgroundColor = UIColor.secondary
-        return [delete]
-    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         //let newDataSource = dataSource as! HistoryTableViewDataSource
         let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
         let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
-            
+        
         let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
         navigationController?.pushViewController(workoutLogTable, animated: true)
     }
+
+//    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        let delete = UITableViewRowAction(style: .destructive, title: "DELETE") { (action, indexPath) in
+//            self.dataSource.deleteDataAt(indexPath)
+//            self.tableView.reloadData() // Add animation through tableView.deleteRows(at: [indexPath], with: .none)
+//        }
+//        delete.backgroundColor = UIColor.secondary
+//        return [delete]
+//    }
+    
+    // MARK: SwipeCellKit
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        print("editActions")
+        
+        switch orientation {
+        case .right:
+            let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+                action.fulfill(with: .delete)
+                self.deleteCell(at: indexPath)
+            }
+            
+            // customize the action appearance
+            deleteAction.image = ximage
+            deleteAction.backgroundColor = .secondary
+            
+            return [deleteAction]
+        case .left: // user swiped left
+            return nil
+//            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+//                let wo = self.dataSource.getWorkout(at: indexPath)
+//                let workoutEditor = WorkoutEditor(with: wo)
+//                self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+//            }
+//            editAction.image = self.wrenchImage
+//            editAction.backgroundColor = .light
+//            indexPathBeingEdited = indexPath
+//
+//            return [editAction]
+        }
+    }
+        
+    private func deleteCell(at indexPath: IndexPath) {
+        tableView.beginUpdates()
+        self.dataSource.deleteDataAt(indexPath)
+        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        tableView.endUpdates()
+    }
+        
 }
 

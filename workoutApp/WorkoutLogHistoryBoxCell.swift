@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-
-class WorkoutLogHistoryBoxCell: UITableViewCell {
+class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
     
     let box: Box!
     
@@ -39,8 +39,6 @@ class WorkoutLogHistoryBoxCell: UITableViewCell {
     }
     
     func setupContent(with workoutLog: WorkoutLog) {
-        
-        // FIXME: right stack
         
         let name = workoutLog.getName()
         let styleName = workoutLog.getStyleName()
