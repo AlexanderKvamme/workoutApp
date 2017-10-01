@@ -53,13 +53,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Show SelectionIndicator over tab bar
-        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.showSelectionindicator()
-        }
+        showSelectionIndicator()
         updateTableIfNeeded()
         
-        // Update views
         refreshControl?.endRefreshing()
     }
     
@@ -95,7 +91,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
 
         tableView.dataSource = dataSource
     }
-    
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         customRefreshView.label.alpha = customRefreshView.frame.height/100
@@ -142,8 +137,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     // MARK: TableView delegate methods
     
-    // Selection
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wo = dataSource.getData() as? [Workout]
         if let wo = wo {
@@ -154,26 +147,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     // Editing and deletion
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    // Left swipe
-    
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
-        
-        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
-                                          additionalTriggers: [],
-                                          elasticOverscroll: true,
-                                          completionAnimation: .bounce)
-        
-        var options = SwipeTableOptions()
-        options.expansionStyle = myStyle
-        options.backgroundColor = .light
-        options.transitionStyle = .border
-        return options
-    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         

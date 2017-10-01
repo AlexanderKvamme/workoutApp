@@ -9,7 +9,6 @@
 import UIKit
 import SwipeCellKit
 
-
 class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
     
     // MARK: - Initializers
@@ -33,17 +32,19 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
         super.viewDidLoad()
         
         view.backgroundColor = .light
-        
         setupDataSource()
         setupTableView()
-//        setupRefreshControl()
-//        resetRefreshControlAnimation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.dataSource.refresh()
         self.tableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        showSelectionIndicator()
     }
     
     // MARK: - Methods
@@ -56,30 +57,9 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     
     // Delete rows
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        //let newDataSource = dataSource as! HistoryTableViewDataSource
-        let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
-        let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
-        
-        let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
-        navigationController?.pushViewController(workoutLogTable, animated: true)
+        showDetailedView(for: indexPath)
     }
-
-//    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-//        let delete = UITableViewRowAction(style: .destructive, title: "DELETE") { (action, indexPath) in
-//            self.dataSource.deleteDataAt(indexPath)
-//            self.tableView.reloadData() // Add animation through tableView.deleteRows(at: [indexPath], with: .none)
-//        }
-//        delete.backgroundColor = UIColor.secondary
-//        return [delete]
-//    }
-    
-    
     
     // MARK: SwipeCellKit
     
@@ -102,27 +82,19 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
         }
     }
     
-    // Fine tune swipeKit animations
-    
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
-        
-        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
-                                          additionalTriggers: [],
-                                          elasticOverscroll: true,
-                                          completionAnimation: .bounce)
-        
-        var options = SwipeTableOptions()
-        options.expansionStyle = myStyle
-        options.backgroundColor = .light
-        options.transitionStyle = .border
-        return options
-    }
-        
     private func deleteCell(at indexPath: IndexPath) {
         tableView.beginUpdates()
         self.dataSource.deleteDataAt(indexPath)
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         tableView.endUpdates()
+    }
+    
+    private func showDetailedView(for indexPath: IndexPath) {
+        let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
+        let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
+        let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
+        
+        navigationController?.pushViewController(workoutLogTable, animated: true)
     }
 }
 

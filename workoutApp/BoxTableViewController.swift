@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 class BoxTableViewController: UITableViewController {
     
@@ -126,6 +127,28 @@ class BoxTableViewController: UITableViewController {
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         }
+    }
+    
+    func showSelectionIndicator() {
+        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+            customTabBarController.showSelectionindicator()
+        }
+    }
+    
+    // MARK: SwipeCellKit
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        
+        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
+                                          additionalTriggers: [],
+                                          elasticOverscroll: true,
+                                          completionAnimation: .bounce)
+        
+        var options = SwipeTableOptions()
+        options.expansionStyle = myStyle
+        options.backgroundColor = .light
+        options.transitionStyle = .border
+        return options
     }
 }
 

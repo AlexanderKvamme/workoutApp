@@ -40,7 +40,6 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         
         view.backgroundColor = .light
         setupDataSource(with: muscle)
-        setupDelegate()
         setupTableView()
         setupRefreshControl()
         resetRefreshControlAnimation()
@@ -53,10 +52,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Show SelectionIndicator over tab bar
-        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.showSelectionindicator()
-        }
+        showSelectionIndicator()
         updateTableIfNeeded()
         
         // Update views
@@ -71,7 +67,6 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     
     override func setUpNavigationBar(withTitle title: String?) {
         navigationController?.setNavigationBarHidden(false, animated: true)
-        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         self.title = muscle.getName()
         refreshControl?.endRefreshing()
@@ -82,29 +77,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(showEditor(_:)))
         view.addGestureRecognizer(longPress)
     }
-    
-    @objc private func showEditor(_ gesture: UIGestureRecognizer) {
-        switch gesture.state {
-        case .began:
-            let location = gesture.location(in: self.view)
-            if let indexPathToEdit = tableView.indexPathForRow(at: location) {
-                indexPathBeingEdited = indexPathToEdit
-                let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
-                let editor = WorkoutEditor(with: workoutToEdit)
-                navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-            }
-        default:
-            return
-        }
-    }
-    
-//    private func setupDataSource() {
-//        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
-//        dataSource.owner = self
-//
-//        tableView.dataSource = dataSource
-//    }
-    
+
     private func setupDataSource(with muscle: Muscle) {
         dataSource = MuscleBasedWorkoutTableViewDataSource(muscle: muscle)
         dataSource.owner = self
@@ -113,12 +86,6 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     }
     
     // MARK: - TableView delegate methods
-    
-    private func setupDelegate() {
-        tableView.delegate = self
-    }
-    
-    // Selection
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wo = dataSource.getData() as? [Workout]
@@ -130,27 +97,6 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     }
     
     // Editing and deletion
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    // Left swipe
-    
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
-        
-        
-        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
-                                          additionalTriggers: [],
-                                          elasticOverscroll: true,
-                                          completionAnimation: .bounce)
-        
-        var options = SwipeTableOptions()
-        options.expansionStyle = myStyle
-        options.backgroundColor = .light
-        options.transitionStyle = .border
-        return options
-    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
@@ -196,6 +142,21 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
             })
             self.tableView.reloadRows(at: [indexPath], with: .left)
             CATransaction.commit()
+        }
+    }
+    
+    @objc private func showEditor(_ gesture: UIGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            let location = gesture.location(in: self.view)
+            if let indexPathToEdit = tableView.indexPathForRow(at: location) {
+                indexPathBeingEdited = indexPathToEdit
+                let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
+                let editor = WorkoutEditor(with: workoutToEdit)
+                navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+            }
+        default:
+            return
         }
     }
     
