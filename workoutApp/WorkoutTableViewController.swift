@@ -24,7 +24,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
         setUpNavigationBar(withTitle: workoutStyleName)
-        print("WorkoutTableViewController")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,75 +96,13 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         tableView.dataSource = dataSource
     }
     
-    // MARK: - TableView delegate methods
-    
-    private func setupDelegate() {
-        tableView.delegate = self
-    }
-    
-    // Selection
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let wo = dataSource.getData() as? [Workout]
-        if let wo = wo {
-            let selectedWorkout = wo[indexPath.row]
-            let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
-            navigationController?.pushViewController(detailedVC, animated: true)
-        }
-    }
-    
-    // Editing and deletion
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    // Left swipe
-    
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
-        
-        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
-                                              additionalTriggers: [],
-                                              elasticOverscroll: true,
-                                              completionAnimation: .bounce)
-        
-        var options = SwipeTableOptions()
-        options.expansionStyle = myStyle
-        options.backgroundColor = .light
-        options.transitionStyle = .border
-        return options
-    }
-
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-
-        switch orientation {
-        case .right:
-            let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
-                action.fulfill(with: .delete)
-                self.deleteCell(at: indexPath)
-            }
-            
-            // customize the action appearance
-            deleteAction.image = ximage
-            deleteAction.backgroundColor = .secondary
-            
-            return [deleteAction]
-        case .left: // user swiped left
-            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
-                let wo = self.dataSource.getWorkout(at: indexPath)
-                let workoutEditor = WorkoutEditor(with: wo)
-                self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-            }
-            editAction.image = self.wrenchImage
-            editAction.backgroundColor = .light
-            indexPathBeingEdited = indexPath
-            
-            return [editAction]
-        }
-    }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         customRefreshView.label.alpha = customRefreshView.frame.height/100
+    }
+    
+    private func setupDelegate() {
+        tableView.delegate = self
     }
     
     private func animateAnyChanges() {
@@ -200,6 +137,69 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         guard let dataCountPostUpdate = dataSource?.getData()?.count else { return }
         if dataCountPreUpdate != dataCountPostUpdate {
             tableView.reloadData()
+        }
+    }
+    
+    // MARK: TableView delegate methods
+    
+    // Selection
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let wo = dataSource.getData() as? [Workout]
+        if let wo = wo {
+            let selectedWorkout = wo[indexPath.row]
+            let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
+            navigationController?.pushViewController(detailedVC, animated: true)
+        }
+    }
+    
+    // Editing and deletion
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    // Left swipe
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        
+        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
+                                          additionalTriggers: [],
+                                          elasticOverscroll: true,
+                                          completionAnimation: .bounce)
+        
+        var options = SwipeTableOptions()
+        options.expansionStyle = myStyle
+        options.backgroundColor = .light
+        options.transitionStyle = .border
+        return options
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        switch orientation {
+        case .right:
+            let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+                action.fulfill(with: .delete)
+                self.deleteCell(at: indexPath)
+            }
+            
+            // customize the action appearance
+            deleteAction.image = ximage
+            deleteAction.backgroundColor = .secondary
+            
+            return [deleteAction]
+        case .left: // user swiped left
+            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+                let wo = self.dataSource.getWorkout(at: indexPath)
+                let workoutEditor = WorkoutEditor(with: wo)
+                self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+            }
+            editAction.image = self.wrenchImage
+            editAction.backgroundColor = .light
+            indexPathBeingEdited = indexPath
+            
+            return [editAction]
         }
     }
 }

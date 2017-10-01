@@ -79,16 +79,17 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
 //        return [delete]
 //    }
     
+    
+    
     // MARK: SwipeCellKit
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        print("editActions")
         
         switch orientation {
         case .right:
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
-                action.fulfill(with: .delete)
                 self.deleteCell(at: indexPath)
+                action.fulfill(with: .delete)
             }
             
             // customize the action appearance
@@ -98,17 +99,23 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
             return [deleteAction]
         case .left: // user swiped left
             return nil
-//            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
-//                let wo = self.dataSource.getWorkout(at: indexPath)
-//                let workoutEditor = WorkoutEditor(with: wo)
-//                self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-//            }
-//            editAction.image = self.wrenchImage
-//            editAction.backgroundColor = .light
-//            indexPathBeingEdited = indexPath
-//
-//            return [editAction]
         }
+    }
+    
+    // Fine tune swipeKit animations
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        
+        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
+                                          additionalTriggers: [],
+                                          elasticOverscroll: true,
+                                          completionAnimation: .bounce)
+        
+        var options = SwipeTableOptions()
+        options.expansionStyle = myStyle
+        options.backgroundColor = .light
+        options.transitionStyle = .border
+        return options
     }
         
     private func deleteCell(at indexPath: IndexPath) {
@@ -117,6 +124,5 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         tableView.endUpdates()
     }
-        
 }
 

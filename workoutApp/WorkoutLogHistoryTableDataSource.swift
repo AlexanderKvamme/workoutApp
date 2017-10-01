@@ -13,7 +13,7 @@ import SwipeCellKit
 
 class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
 
-    weak var owner: SwipeTableViewCellDelegate? //the delegate must have reference from dataSource
+    weak var owner: SwipeTableViewCellDelegate?
     
     // MARK: - Properties
     
@@ -80,11 +80,9 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     }
     
     func deleteDataAt(_ indexPath: IndexPath) {
-        print("was: ", fetchedWorkoutLogs.count)
         let woToDelete = fetchedWorkoutLogs[indexPath.row]
         fetchedWorkoutLogs.remove(at: indexPath.row)
         DatabaseFacade.deleteWorkoutLog(woToDelete)
-        print("now: ", fetchedWorkoutLogs.count)
     }
 }
 

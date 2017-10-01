@@ -21,25 +21,14 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     // MARK: - Initializers
     
     init(muscle: Muscle) {
-        //        super.init(workoutStyleName: nil, cellIdentifier: "WorkoutBoxCell")
         self.muscle = muscle
         super.init(workoutStyleName: nil, cellIdentifier: "WorkoutBoxCell")
         
-        print("done")
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
         setUpNavigationBar(withTitle: nil)
-        print("WorkoutTableViewController finished init")
     }
-    
-//    init(workoutStyleName: String?) {
-//        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
-//        tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
-//
-//        setUpNavigationBar(withTitle: workoutStyleName)
-//        print("WorkoutTableViewController")
-//    }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,7 +39,6 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         super.viewDidLoad()
         
         view.backgroundColor = .light
-        print("muscle was: ", muscle)
         setupDataSource(with: muscle)
         setupDelegate()
         setupTableView()
@@ -227,10 +215,5 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
             tableView.reloadData()
         }
     }
-    
-    
-
-    
-
-
 }
+
