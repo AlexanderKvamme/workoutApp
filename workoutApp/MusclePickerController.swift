@@ -71,15 +71,12 @@ class MusclePickerController: UIViewController {
     
     init(withPreselectedMuscles preselectedMuscles: [Muscle]?) {
         
-        print("INIT MUSCLEPICKER")
-        
         // Setup available choices
         self.selectedMuscles = preselectedMuscles
-        self.selectionChoices = DatabaseFacade.fetchMuscles()
+        self.selectionChoices = DatabaseFacade.fetchMuscles(with: .name, ascending: true)
 
         // Preselect
         if let preselections = preselectedMuscles {
-            print("had preselections: ", preselections)
             self.selectedMuscles = preselections
         }
         
@@ -98,7 +95,6 @@ class MusclePickerController: UIViewController {
         
         // Preselect
         for muscle in selectedMuscles {
-            print("tryna select \(muscle.name ?? "")")
             selectMuscle(muscle)
         }
     }
@@ -118,19 +114,6 @@ class MusclePickerController: UIViewController {
     
     // MARK: Helper methods
     
-//    @objc private func presentNewExerciseController() {
-//
-//        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscles)
-//        newExerciseController.exercisePickerDelegate = self
-//
-//        // Make presentable outside of navigationController, used for testing
-//        if let navigationController = navigationController {
-//            navigationController.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-//        } else {
-//            present(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn, completion: nil)
-//        }
-//    }
-    
     func addSubViewsAndConstraints() {
         
         view.addSubview(header)
@@ -138,9 +121,7 @@ class MusclePickerController: UIViewController {
         view.addSubview(table)
         view.addSubview(plusButton)
         
-        // Layout
         NSLayoutConstraint.activate([
-            
             // Footer
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -173,7 +154,7 @@ class MusclePickerController: UIViewController {
     
     private func updateScrollingAndInsets() {
         
-        table.layoutIfNeeded() // Update Content
+        table.layoutIfNeeded()
         table.reloadData()
         
         // Disable scrolling if all content fits in the frame

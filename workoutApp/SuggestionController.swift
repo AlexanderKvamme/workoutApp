@@ -67,17 +67,14 @@ fileprivate extension SuggestionController {
         
         for (i, suggestedMuscle) in musclesToDisplay.enumerated() {
             let box = SuggestionBox(withMuscle: suggestedMuscle)
-            box.button.addTarget(self, action: #selector(testPrint), for: .touchUpInside)
+            box.button.addTarget(self, action: #selector(presentWorkoutPicker), for: .touchUpInside)
             box.button.tag = i
             boxes.append(box)
         }
         return boxes
     }
     
-    @objc func testPrint(sender:UIButton) {
-        
-        print("Would present workoutpicker for: ", suggestedMuscles[sender.tag])
-        
+    @objc func presentWorkoutPicker(sender:UIButton) {
         let muscle = suggestedMuscles[sender.tag]
         let muscleBasedWorkoutPicker = MuscleBasedWorkoutTableController(muscle: muscle)
         navigationController?.pushViewController(muscleBasedWorkoutPicker, animated: true)
