@@ -67,12 +67,14 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         
         dataSourceWorkoutLog.dateEnded = Date() as NSDate
         
+        // FIXME: - uncomment to make sure that the workout has exercises before its made
+        
         // Delete or save
-        if countPerformedExercises() == 0 {
-            // present error
-            let modal = CustomAlertView(type: .error, messageContent: "Bro, you have to actually work out to be able to log an exercise!")
-            modal.show(animated: true)
-        } else {
+//        if countPerformedExercises() == 0 {
+//            // present error
+//            let modal = CustomAlertView(type: .error, messageContent: "Bro, you have to actually work out to be able to log an exercise!")
+//            modal.show(animated: true)
+//        } else {
             // Save and pop viewController
             updateLatestUseOfMuscle()
             deleteUnperformedLifts()
@@ -87,7 +89,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
-        }
+//        }
     }
     
     // Swap method used when moving cells

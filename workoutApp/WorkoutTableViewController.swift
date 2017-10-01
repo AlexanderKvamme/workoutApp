@@ -44,6 +44,8 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         setupRefreshControl()
         resetRefreshControlAnimation()
         addLongPressRecognizer()
+        
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,7 +124,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         
-        
         let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
                                               additionalTriggers: [],
                                               elasticOverscroll: true,
@@ -140,6 +141,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         switch orientation {
         case .right:
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+                action.fulfill(with: .delete)
                 self.deleteCell(at: indexPath)
             }
             
@@ -183,8 +185,10 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     private func deleteCell(at indexPath: IndexPath) {
+        tableView.beginUpdates()
         self.dataSource.deleteDataAt(indexPath)
         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        tableView.endUpdates()
     }
     
     // Update table only if new workouts are added
