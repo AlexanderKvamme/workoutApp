@@ -50,7 +50,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
     lazy var exerciseSelecter: TwoLabelStack = {
         
         let exerciseSelecter = TwoLabelStack(frame: CGRect(x: 0, y: self.restSelectionBox.frame.maxY + 20, width: Constant.UI.width, height: 100), topText: " Exercises Added", topFont: UIFont.custom(style: .bold, ofSize: .medium),
-                                         topColor: UIColor.faded, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.dark, fadedBottomLabel: false)
+                                             topColor: UIColor.faded, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.dark, fadedBottomLabel: false)
         exerciseSelecter.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
         return exerciseSelecter
     }()
@@ -86,7 +86,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
             self.exerciseSelecter.bottomLabel.text = String(count)
         }
     }
-
+    
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
@@ -112,22 +112,17 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
         let typePicker = PickerController<WorkoutStyle>(withPicksFrom: workoutStyles, withPreselection: currentWorkoutStyle)
         
         typePicker.pickableReceiver = self
-    
+        
         navigationController?.pushViewController(typePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
         let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
-        
         musclePicker.muscleReceiver = self
         
         receiveMuscles = { musclesReceived in
-            
-            
             self.currentMuscles = musclesReceived
-            print("currentMuscles are now the received ones")
-            print(self.currentMuscles)
             self.muscleSelecter.setBottomText(self.currentMuscles.getName())
         }
         
@@ -168,14 +163,13 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
 extension WorkoutController: PickableReceiver {
     // Receive Muscle, ExerciseStyle, and WorkoutStyle
     func receive(pickable: PickableEntity) {
-
+        
         switch pickable {
         case is Muscle:
             currentMuscles = pickable as! [Muscle]
             setMuscleName(currentMuscles)
-            //muscleSelecter.bottomLabel.text = currentMuscle.name
             
-self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
+            self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
         case is WorkoutStyle:
             currentWorkoutStyle = pickable as! WorkoutStyle
             workoutStyleSelecter.bottomLabel.text = currentWorkoutStyle.name
@@ -194,7 +188,7 @@ self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
     }
 }
 
-// Helpers
+// MARK: Helpers
 
 extension WorkoutController {
     var hasExercises: Bool {

@@ -39,7 +39,15 @@ class ExercisePickerController: UIViewController {
     }()
     
     private lazy var header: TwoLabelStack = {
-        let headerLabel = PickerHeader(text: "SELECT")
+        let headerLabel = PickerHeader(text: "SELECT EXERCISES")
+        var subheaderText = ""
+        var muscleName = self.selectedMuscles.getName()
+        if muscleName == "MULTIPLE" {
+            subheaderText = "FOR SELECTED MUSCLES"
+        } else {
+            subheaderText = "FOR \(muscleName)"
+        }
+        headerLabel.setBottomText(subheaderText)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return headerLabel
@@ -57,8 +65,6 @@ class ExercisePickerController: UIViewController {
         return button
     }()
     
-    // Properties
-    
     var selectionChoices = [Exercise]()
     var selectedExercises = [Exercise]()
     var selectedMuscles: [Muscle]! // used to refresh the picker after returning from making new exercise
@@ -69,7 +75,7 @@ class ExercisePickerController: UIViewController {
     // MARK: - Initializers
     
     init(forMuscle muscles: [Muscle], withPreselectedExercises preselectedExercises: [Exercise]?) {
-        // Setup available choices
+        
         self.selectedMuscles = muscles
         
         var exercises = [Exercise]()
@@ -144,10 +150,7 @@ class ExercisePickerController: UIViewController {
         view.addSubview(table)
         view.addSubview(plusButton)
         
-        // Layout
-
         NSLayoutConstraint.activate([
-            
             // Footer
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -158,7 +161,7 @@ class ExercisePickerController: UIViewController {
             
             // + button
             plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
+            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
             plusButton.heightAnchor.constraint(equalToConstant: 25),
             plusButton.widthAnchor.constraint(equalToConstant: 25),
             
@@ -204,7 +207,7 @@ class ExercisePickerController: UIViewController {
         let contentHeight = table.contentSize.height
         
         if tableHeight > contentHeight {
-            // make insets
+            // Make insets
             let difference = tableHeight-contentHeight
             table.contentInset = UIEdgeInsets(top: difference/2, left: 0, bottom: difference/2, right: 0)
         } else {

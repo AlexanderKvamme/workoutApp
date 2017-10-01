@@ -17,8 +17,13 @@ extension Muscle {
     func getName() -> String {
         return name ?? "NO NAME"
     }
-    
-    // Returns name if only collection contains 1 muscle, or "MULTIPLE" if several muscles
+}
+
+ // MARK: Extension to collections of elements
+ 
+ extension Collection where Iterator.Element == Muscle {
+ 
+ // Returns name if only collection contains 1 muscle, or "MULTIPLE" if several muscles
     func getName() -> String {
         
         if self.count == 0 {

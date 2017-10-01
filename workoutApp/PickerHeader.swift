@@ -23,8 +23,8 @@ class PickerHeader: TwoLabelStack {
                    topFont: UIFont.custom(style: .bold, ofSize: .big),
                    topColor: UIColor.secondary,
                    bottomText: "",
-                   bottomFont: UIFont.custom(style: .medium, ofSize: .small),
-                   bottomColor: UIColor.black,
+                   bottomFont: UIFont.custom(style: .bold, ofSize: .medium),
+                   bottomColor: UIColor.dark,
                    fadedBottomLabel: false)
     }
     
