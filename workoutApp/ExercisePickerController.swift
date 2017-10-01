@@ -8,8 +8,6 @@
 
 import UIKit
 
-// MARK: Class
-
 class ExercisePickerController: UIViewController {
     
     // MARK: - Properties
@@ -70,36 +68,9 @@ class ExercisePickerController: UIViewController {
     
     // MARK: - Initializers
     
-//    init(forMuscle muscle: Muscle, withPreselectedExercises preselectedExercises: [Exercise]?) {
-//
-//        // Setup available choices
-//        self.selectedMuscle = muscle
-//
-//        let exercises = DatabaseFacade.fetchExercises(usingMuscle: muscle)!
-//
-//        let orderedExercises = exercises.sorted(by: { (a, b) -> Bool in
-//            guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else {
-//                return false
-//            }
-//            return ac < bc
-//        })
-//
-//        selectionChoices = orderedExercises
-//
-//        // Preselect
-//        if let preselections = preselectedExercises {
-//            self.selectedExercises = preselections
-//        }
-//
-//        super.init(nibName: nil, bundle: nil)
-//    }
-    
     init(forMuscle muscles: [Muscle], withPreselectedExercises preselectedExercises: [Exercise]?) {
-        
         // Setup available choices
         self.selectedMuscles = muscles
-        
-//        let exercises = DatabaseFacade.fetchExercises(usingMuscle: muscle)!
         
         var exercises = [Exercise]()
 
@@ -108,14 +79,11 @@ class ExercisePickerController: UIViewController {
             exercises.append(contentsOf: musclesExercises)
         }
         
-        let orderedExercises = exercises.sorted(by: { (a, b) -> Bool in
-            guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else {
-                return false
-            }
-            return ac < bc
-        })
+        // Remove duplicates
+        let exercisesAsSet = Set(exercises)
+        exercises = Array(exercisesAsSet)
         
-        selectionChoices = orderedExercises
+        selectionChoices = exercises.sortedByName()
         
         // Preselect
         if let preselections = preselectedExercises {

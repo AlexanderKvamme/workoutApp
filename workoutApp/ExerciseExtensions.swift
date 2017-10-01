@@ -19,21 +19,28 @@ extension Exercise {
             addToMusclesUsed(muscle)
         }
     }
+    
+    func getName() -> String {
+        return name ?? "NO NAME"
+    }
 
     func getMuscles() -> [Muscle] {
 
-//        return [Muscle]()
         guard let muscles = musclesUsed else {
             fatalError("had no muscles")
         }
         
         return Array(muscles) as! [Muscle]
-        
-        
-//        return Array<Muscle>(muscles)
-        
-        
-        
+    }
+}
+
+extension Sequence where Iterator.Element == Exercise {
+    
+    func sortedByName() -> [Exercise] {
+        return self.sorted { (a, b) -> Bool in
+            guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else { return false }
+            return ac < bc
+        }
     }
 }
 

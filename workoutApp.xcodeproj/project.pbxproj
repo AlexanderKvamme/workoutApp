@@ -303,7 +303,9 @@
 			isa = PBXGroup;
 			children = (
 				DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */,
-				DD3AF4491EE45A7500C55453 /* Tableview and picker */,
+				DD3AF44A1EE45A9300C55453 /* PickerCell.swift */,
+				DD3AF44C1EE45AB500C55453 /* PickerController.swift */,
+				DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */,
 				DD0CD4C41F010122008544EE /* MuliplePickerController */,
 			);
 			name = Pickers;
@@ -440,16 +442,6 @@
 				DD109D7B1F3CA37A00228366 /* Helpers */,
 			);
 			name = Profile;
-			sourceTree = "<group>";
-		};
-		DD3AF4491EE45A7500C55453 /* Tableview and picker */ = {
-			isa = PBXGroup;
-			children = (
-				DD3AF44A1EE45A9300C55453 /* PickerCell.swift */,
-				DD3AF44C1EE45AB500C55453 /* PickerController.swift */,
-				DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */,
-			);
-			name = "Tableview and picker";
 			sourceTree = "<group>";
 		};
 		DD468F861F2E8B9200A945A9 /* Workout Table */ = {
