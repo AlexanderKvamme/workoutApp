@@ -14,6 +14,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
     
     // MARK: - Properties
     
+    // required properties
     var currentMuscles: [Muscle]!
     var currentWorkoutStyle: WorkoutStyle!
     

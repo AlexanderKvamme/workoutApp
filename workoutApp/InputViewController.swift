@@ -23,7 +23,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     // MARK: - Properties
     
     var kb: Keyboard!
-    var inputStyle: CustomInputStyle!
     var tf: UITextField!
     var customTextfieldContainer: InputView!
     
@@ -36,8 +35,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     
     init(inputStyle: CustomInputStyle) {
         super.init(nibName: nil, bundle: nil)
-        self.inputStyle = inputStyle
-        
         // set
         switch inputStyle {
         case CustomInputStyle.text:
@@ -51,7 +48,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         default:
             // Custom keyboard for inputting time and weight
             let kb = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-            kb.setKeyboardType(style: self.inputStyle)
+            kb.setKeyboardType(style: inputStyle)
             kb.delegate = self
             
             customTextfieldContainer = InputView(inputStyle: inputStyle)
