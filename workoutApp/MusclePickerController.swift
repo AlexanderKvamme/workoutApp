@@ -277,13 +277,6 @@ class MusclePickerController: UIViewController {
         switch sender.state {
         case .began:
             print("FIXME: - Implement muscle editor")
-//            let location = sender.location(in: table) 
-//            if let indexPath = table.indexPathForRow(at: location) {
-//                let exerciseToEdit = selectionChoices[indexPath.row]
-//                let editor = ExerciseEditor(for: exerciseToEdit)
-//                editor.editorDataSource = self
-//                navigationController?.pushViewController(editor, animated: true)
-//            }
         default:
             break
         }
@@ -292,6 +285,12 @@ class MusclePickerController: UIViewController {
     // MARK: Exit methods
     
     @objc func confirmAndDismiss() {
+        
+        guard selectedMuscles.count > 0 else {
+            navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+            return
+        }
+        
         muscleReceiver?.receive(muscles: selectedMuscles)
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
