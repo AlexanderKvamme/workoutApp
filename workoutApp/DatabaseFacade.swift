@@ -245,25 +245,6 @@ final class DatabaseFacade {
         return newGoal
     }
     
-//    static func makeExercise(withName exerciseName: String, styleName: String, muscleName: String, measurementStyleName: String) -> Exercise {
-//
-//        let newExercise = makeExercise()
-//
-//        // Fetch correct type, muscle, measurement style from Core Data
-//
-//        var muscle = [Muscle]()
-//            for m in musclDatabaseFacade.getMuscle(named: muscleName)
-//        let exerciseStyle = DatabaseFacade.getExerciseStyle(named: styleName)
-//        let measurementStyle = DatabaseFacade.getMeasurementStyle(named: measurementStyleName)
-//
-//        newExercise.name = exerciseName
-//        newExercise.setMuscles(muscles) = muscle
-//        newExercise.style = exerciseStyle
-//        newExercise.measurementStyle = measurementStyle
-//
-//        return newExercise
-//    }
-    
     static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
         
         let newExercise = makeExercise()
@@ -276,18 +257,6 @@ final class DatabaseFacade {
         return newExercise
     }
 
-//    static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
-//        
-//        let newExercise = makeExercise()
-//        
-//        newExercise.name = name
-//        newExercise.setMuscles(muscles)
-//        newExercise.style = exerciseStyle
-//        newExercise.measurementStyle = measurementStyle
-//        
-//        return newExercise
-//    }
-    
     static func makeExerciseLog() -> ExerciseLog {
         let logItem = createManagedObjectForEntity(.ExerciseLog) as! ExerciseLog
         return logItem
@@ -305,27 +274,6 @@ final class DatabaseFacade {
         let logItem = createManagedObjectForEntity(.WorkoutLog) as! WorkoutLog
         return logItem
     }
-    
-//    static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exerciseNames: [String]) {
-//
-//        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
-//        let muscle = DatabaseFacade.getMuscle(named: muscleName)
-//        let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
-//
-//        workoutRecord.name = workoutName
-//        workoutRecord.muscles
-//        workoutRecord.addToMusclesUsed(DatabaseFacade.getMuscle(named: muscleName)!)
-//        workoutRecord.workoutStyle = workoutStyle
-//
-//        // Add Exercises to the Workout
-//        for exerciseName in exerciseNames {
-//            if let e = DatabaseFacade.fetchExercise(named: exerciseName){
-//                workoutRecord.addToExercises(e)
-//            } else {
-//                print("could not fetch exercise named \(exerciseName)")
-//            }
-//        }
-//    }
     
     static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exercises: [Exercise]) {
 

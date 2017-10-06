@@ -24,9 +24,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         // MARK: Progress
         
-        let progressController = TestViewController()
-//        let testExercises = DatabaseFacade.fetchExercise(named: "THE UNDEFINED")!
-//        let progressController = ExerciseEditor(for: testExercises)
+//        let progressController = TestViewController()
         
         // MARK: History
         
@@ -43,12 +41,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
         // MARK: Set up navbar
-        viewControllers = [progressController, historyNavigationController, workoutNavigationController, profileNavigationController]
+        viewControllers = [historyNavigationController, workoutNavigationController, profileNavigationController]
         
-        progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
-        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 1)
-        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 2)
-        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 3)
+        //progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
+        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 0)
+        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 1)
+        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 2)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
         for item in tabBarItems {

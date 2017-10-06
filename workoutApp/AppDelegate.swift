@@ -75,27 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Custom Methods
     
-//    private func customizeUIAppearance() {
-//
-//        // TextField Customization
-//        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
-//        UITextField.appearance(whenContainedInInstancesOf: [ExerciseSetCollectionViewCell.self]).tintColor = .darkest
-//
-//        // Navigaiton bar customization
-//        UINavigationBar.appearance().barTintColor = UIColor.light
-//        let backArrowImage = UIImage(named: "arrow-back")
-//        let renderedImage = backArrowImage?.withRenderingMode(.alwaysOriginal)
-//        UINavigationBar.appearance().backIndicatorImage = renderedImage
-//        UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
-//        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
-//
-//        UINavigationBar.appearance().titleTextAttributes = [
-//            NSAttributedStringKey.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
-//            NSAttributedStringKey.foregroundColor: UIColor.faded,
-//            NSAttributedStringKey.kern: 0.7,
-//        ]
-//    }
-    
     private func customizeUIAppearance() {
         
         // TextField Customization
