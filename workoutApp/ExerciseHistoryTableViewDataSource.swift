@@ -35,7 +35,7 @@ class ExerciseHistoryTableViewDataSource: NSObject, UITableViewDataSource {
     
     private func setupUsingWorkoutLog(_ workoutLog: WorkoutLog) {
         
-        // Make new WorkoutLog and make it identical to the previous one
+        // Make new WorkoutLog with the same lifts as the previous one
         currentlyDisplayedWorkoutLog = workoutLog
         
         exerciseLogsAsArray = workoutLog.loggedExercises?.array as! [ExerciseLog]
@@ -67,11 +67,9 @@ class ExerciseHistoryTableViewDataSource: NSObject, UITableViewDataSource {
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseHistoryTableViewCell
         cell = ExerciseHistoryTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
+        cell.box.setTitle(exerciseLog.getName())
         cell.owner = self
         
-        if let name = exerciseLog.exerciseDesign?.name {
-            cell.box.setTitle(name)
-        }
         return cell
     }
 }

@@ -55,7 +55,7 @@ class ExerciseTableViewController: UITableViewController {
         
         // delegate setup
         tableView.delegate = self
-        tableView.register(ExerciseTableViewCell.self, forCellReuseIdentifier: "exerciseCell")
+        tableView.register(ExerciseTableCell.self, forCellReuseIdentifier: "exerciseCell")
         
         setupTable()
         
@@ -72,6 +72,11 @@ class ExerciseTableViewController: UITableViewController {
     // MARK: - Methods
     
     // MARK: setup methods
+    
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        // FIXME: - noe feil her
+//        return 100
+//    }
     
     private func enableSwipeBackGesture(_ b: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = b
@@ -94,7 +99,6 @@ class ExerciseTableViewController: UITableViewController {
     
     private func setupTable() {
         // adjust to fit the navbar
-        
         if let navHeight = navigationController?.navigationBar.frame.height {
             let statusHeight = UIApplication.shared.statusBarFrame.height
             tableView.contentInset = UIEdgeInsets(top: navHeight + statusHeight, left: 0, bottom: 0, right: 0)
@@ -102,7 +106,7 @@ class ExerciseTableViewController: UITableViewController {
         }
         
         // tableview setup
-        tableView.estimatedRowHeight = 55
+        tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         automaticallyAdjustsScrollViewInsets = false
         tableView.separatorStyle = .none

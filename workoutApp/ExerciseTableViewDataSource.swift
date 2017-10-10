@@ -51,13 +51,11 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableViewCell
-        cell = ExerciseTableViewCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableCell
+        cell = ExerciseTableCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
+        cell.box.setTitle(exerciseLog.getName())
         cell.owner = self
         
-        if let name = exerciseLog.exerciseDesign?.name {
-            cell.box.setTitle(name)
-        }
         return cell
     }
     
@@ -294,9 +292,10 @@ private extension ExerciseTableViewDataSource {
         
         if let orderedExercises = dataSourceWorkoutLog.loggedExercises {
             let exerciseSet = orderedExercises.array as! [ExerciseLog]
-            for el in exerciseSet {
-                if let lifts = el.lifts as? Set<Lift> {
+            for eLog in exerciseSet {
+                if let lifts = eLog.lifts as? Set<Lift> {
                     for lift in lifts {
+                        print("lift: \(lift.reps) hasBeenPerformed: \(lift.hasBeenPerformed)")
                         if lift.hasBeenPerformed { performedLifts += 1 }
                     }
                 }

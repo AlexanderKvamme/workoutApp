@@ -16,7 +16,7 @@ class Keyboard: UIView {
     
     weak var delegate: KeyboardDelegate?
 
-    @IBOutlet weak var bottomLeftButton: UIButton! // Will change according to setting between : and .
+    @IBOutlet weak var bottomLeftButton: UIButton! // Will change according to setting. Either ":" or "."
     @IBOutlet weak var topRightButton: UIButton! // + button
     @IBOutlet weak var middleRightButton: UIButton! // - button
     
@@ -46,25 +46,32 @@ class Keyboard: UIView {
         case .time:
             bottomLeftButton.setTitle(":", for: .normal)
         case .reps:
-            bottomLeftButton.setTitle("", for: .normal)
             topRightButton.setTitle("", for: .normal)
             middleRightButton.setTitle("", for: .normal)
-            
-            if let backArrowImage = UIImage(named: "arrow-back") {
-                let tintableImage = backArrowImage.withRenderingMode(.alwaysTemplate)
-                let rotatedImage = UIImage(cgImage: tintableImage.cgImage!, scale: 0, orientation: .down)
-                
-                middleRightButton.setImage(rotatedImage, for: .normal)
-                let inset: CGFloat = 22
-                middleRightButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
-                middleRightButton.image
-                middleRightButton.tintColor = .light
-            }
-            middleRightButton.addTarget(self, action: #selector(postNextKeyDidPressNotification), for: .touchUpInside)
-            
-        default:
+            bottomLeftButton.setTitle("", for: .normal)
+            addNextButton()
+        case .weight:
+            addNextButton()
+            topRightButton.setTitle("", for: .normal)
+            middleRightButton.setTitle("", for: .normal)
             bottomLeftButton.setTitle(".", for: .normal)
+        default:
+            fatalError("Keyboard style out of scope")
         }
+    }
+    
+    func addNextButton() {
+        if let backArrowImage = UIImage(named: "arrow-back") {
+            let tintableImage = backArrowImage.withRenderingMode(.alwaysTemplate)
+            let rotatedImage = UIImage(cgImage: tintableImage.cgImage!, scale: 0, orientation: .down)
+            
+            middleRightButton.setImage(rotatedImage, for: .normal)
+            let inset: CGFloat = 22
+            middleRightButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+            middleRightButton.image
+            middleRightButton.tintColor = .light
+        }
+        middleRightButton.addTarget(self, action: #selector(postNextKeyDidPressNotification), for: .touchUpInside)
     }
     
     @objc func postNextKeyDidPressNotification() {

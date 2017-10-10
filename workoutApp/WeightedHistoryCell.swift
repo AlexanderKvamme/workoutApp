@@ -1,41 +1,22 @@
 //
-//  ExerciseHistorySetCollectionViewcell.swift
+//  WeightedHistoryCell.swift
 //  workoutApp
 //
-//  Created by Alexander Kvamme on 18/08/2017.
+//  Created by Alexander Kvamme on 07/10/2017.
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-/* Every cell represents a "Lift"
- 
- Lift:
- - reps
- - weight (optional)
- 
-*/
 
-class ExerciseHistorySetCollectionViewCell: UICollectionViewCell {
+/*
+class WeightedHistoryLiftCell: LiftCell {
     
     // MARK: - Properties
     
-    var button: UIButton! // Button that covers entire cell, to handle taps
-    var repsField: UITextField!
     var weightLabel: UILabel? // TODO: - Let users work out with weights
-    weak var owner: ExerciseHistoryTableViewCell! // Makes the containincells data accessible
-    
-    // Computed properties
-    var initialRepValue: String {
-        if let indexPath = owner.collectionView.indexPath(for: self) {
-            let dataSourceIndexToUpdate = indexPath.row
-            let valueFromDatasource = owner.liftsToDisplay[dataSourceIndexToUpdate].reps
-            return String(valueFromDatasource)
-        } else {
-            return "Error fetching initial rep"
-        }
-    }
+    //    weak var owner: ExerciseHistoryTableViewCell! // Makes the containincells data accessible
     
     // MARK: - Initialization
     
@@ -54,7 +35,7 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     // MARK: Handlers and recognizers
     
-    @objc func tapHandler() {
+    @objc override func tapHandler() {
         print("tapped")
     }
     
@@ -92,24 +73,6 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell {
         addSubview(repsField)
     }
     
-    public func setReps(_ n: Int16) {
-        repsField.text = String(n)
-    }
-    
-    // DEBUG: Text methods
-    
-    func makeTextNormal() {
-        repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = .light
-        repsField.alpha = Constant.alpha.faded
-    }
-    
-    func makeTextBold() {
-        repsField.font = UIFont.custom(style: .bold, ofSize: .big)
-        repsField.textColor = .light
-        repsField.alpha = 1
-    }
-    
     // TODO: - Finish implementing the weight label to allow weighted exercises
     
     func setWeight(_ n: Int16) {
@@ -136,20 +99,5 @@ class ExerciseHistorySetCollectionViewCell: UICollectionViewCell {
         }
         print()
     }
-    
-    // MARK: Debug methods
-    
-    func setDebugColors() {
-        button.backgroundColor = .orange
-        button.alpha = 0.5
-        
-        repsField.backgroundColor = .purple
-        repsField.alpha = 0.5
-        
-        if let weightLabel = weightLabel {
-            weightLabel.backgroundColor = .yellow
-            weightLabel.alpha = 0.5
-        }
-    }
 }
-
+*/

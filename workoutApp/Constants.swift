@@ -51,6 +51,7 @@ enum Constant {
     }
     
     enum components {
+        
         enum headers {
             enum pickerHeader {
                 static var topSpacing: CGFloat = 100
@@ -61,12 +62,24 @@ enum Constant {
             static var height: CGFloat = 65
         }
         
+        enum collectionViewCells {
+            static let width: CGFloat = 50
+            static let weightedCellHeight: CGFloat = 80
+            static let unweightedCellHeight: CGFloat = 50
+        }
+        
         enum Box {
+            
             static let spacingFromSides: CGFloat = 10
             static let shimmerInset: CGFloat = 7
             
             enum Standard {
                 static let height = standardBoxHeight
+                static let width = standardBoxWidth
+            }
+            
+            enum StandardWeighted {
+                static let height = standardBoxHeight + 100
                 static let width = standardBoxWidth
             }
             
@@ -81,6 +94,11 @@ enum Constant {
             enum ExerciseProgress {
                 static let width: CGFloat = standardBoxWidth
                 static let height: CGFloat = 50
+            }
+            
+            enum TallExerciseProgress {
+                static let width: CGFloat = standardBoxWidth
+                static let height: CGFloat = Constant.components.collectionViewCells.weightedCellHeight
             }
         }
         

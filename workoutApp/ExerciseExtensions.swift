@@ -32,6 +32,13 @@ extension Exercise {
         
         return Array(muscles) as! [Muscle]
     }
+    
+    func isWeighted() -> Bool {
+        guard let styleName = style?.name else {
+            fatalError("Had no style")
+        }
+        return styleName == "WEIGHTED"
+    }
 }
 
 extension Sequence where Iterator.Element == Exercise {

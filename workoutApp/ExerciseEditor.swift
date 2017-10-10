@@ -12,11 +12,7 @@ import UIKit
 // MARK: Class
 
 final class ExerciseEditor: UIViewController, MuscleReceiver {
-    var receiveMuscles: (([Muscle]) -> ()) = { _ in
-            print("bam")
-    }
     
-
     // MARK: - Properties
     
     fileprivate var exercise: Exercise!
@@ -24,6 +20,8 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
     fileprivate var currentMuscles: [Muscle]!
     fileprivate var initialName: String!
     fileprivate var didChangeName = false
+    
+    var receiveMuscles: (([Muscle]) -> ()) = { _ in }
     
     // Components
     fileprivate var header: TwoRowHeader = {

@@ -24,7 +24,7 @@ final class DataSeeder {
     private let defaultMuscles = ["OTHER", "BACK", "LEGS", "GLUTES", "SHOULDERS", "CORE", "CHEST", "BICEPS", "TRICEPS", "CARDIO"]
     private let defaultWorkoutStyles = ["NORMAL", "DROP SET", "SUPERSET", "CARDIO", "FUN", "TECHNIQUE"]
     private let defaultExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
-    private let defaultMeasurementStyles = ["TIMER", "SETS"] // Add countdown
+    private let defaultMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
     
     private let context: NSManagedObjectContext
     

@@ -20,7 +20,9 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     var collectionView: UICollectionView!
     private var plusButton: UIButton!
     private var verticalInsetForBox: CGFloat = 10
-    private let collectionViewReuseIdentifier = "collectionViewCell"
+    private let unweightedCellID = "unweightedCell"
+    private let weightedCellID = "weightedCell"
+    private let unweightedHistoryLiftCellID = "unweightedHistoryLiftCellID"
     private var persistentContainer = NSPersistentContainer(name: Constant.coreData.name)
     var box: Box!
     
@@ -34,6 +36,8 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     init(withExerciseLog exerciseLog: ExerciseLog, andLifts lifts: [Lift], andIdentifier cellIdentifier: String) {
         super.init(style: .default, reuseIdentifier: cellIdentifier)
+        
+        print("ExerciseHistoryTableViewCell")
         
         liftsToDisplay = lifts
         
@@ -61,7 +65,6 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     }
     
     func setDebugColors() {
-        // collectionView
         self.collectionView.backgroundColor = .green
         self.collectionView.alpha = 0.5
     }
@@ -71,13 +74,29 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     @available(iOS 6.0, *)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseHistorySetCollectionViewCell
-        cell.owner = self
+        var cell: LiftCell!
+        
+        // FIXME: - removing to test new cell system
+        //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseHistorySetCollectionViewCell
+        
+//        cell.owner = self
+        
+//        if self.exercise.isWeighted() {
+        
+        // FIXME:
+        if 1 == 1 {
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: unweightedHistoryLiftCellID, for: indexPath) as! UnweightedHistoryLiftCell
+        } else {
+//            cell = collectionView.dequeueReusableCell(withReuseIdentifier: unweightedCellID, for: indexPath) as! UnweightedLiftCell
+        }
+        
+        // FIXME: - må ha tilgang til eierens dataSource for å kunne redigere set
+//        cell.owner = self
         
         let liftToDisplay = liftsToDisplay[indexPath.row]
         let repFromLift = liftToDisplay.reps
         cell.setReps(repFromLift)
-        cell.makeTextBold()
+        cell.makeRepTextBold()
         return cell
     }
     
@@ -94,7 +113,6 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     
     private func setupCollectionView() {
         
-        // CollectionView
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset,
@@ -102,7 +120,12 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
                                          width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset,
                                          height: box.boxFrame.frame.height)
         collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
-        collectionView.register(ExerciseHistorySetCollectionViewCell.self, forCellWithReuseIdentifier: collectionViewReuseIdentifier)
+        
+        // Register cells
+        collectionView.register(UnweightedLiftCell.self, forCellWithReuseIdentifier: unweightedCellID)
+        collectionView.register(WeightedLiftCell.self, forCellWithReuseIdentifier: weightedCellID)
+        collectionView.register(UnweightedHistoryLiftCell.self ,forCellWithReuseIdentifier: unweightedHistoryLiftCellID)
+        
         collectionView.alpha = 1
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
@@ -118,7 +141,7 @@ class ExerciseHistoryTableViewCell: UITableViewCell, UICollectionViewDelegate, U
     }
     
     private func setupBox() {
-        let boxFactory = BoxFactory.makeFactory(type: .ExerciseProgressBox)
+        let boxFactory = BoxFactory.makeFactory(type: .ExerciseTableCellBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
         let boxFrame = boxFactory.makeBoxFrame()

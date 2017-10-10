@@ -35,7 +35,7 @@ public class Box: UIView {
     
     // MARK: - Methods
     
-    fileprivate func setup() {
+    func setup() {
         var totalHeight: CGFloat = 0
          
         // BoxFrame
@@ -86,8 +86,6 @@ public class Box: UIView {
     
     // Box functions
     
-    // FIXME: - Refactor update of gui to a separate function and have setTitle() call it
-    
     public func setTitle(_ newText: String) {
         var totalHeight: CGFloat = 0
         
@@ -111,10 +109,7 @@ public class Box: UIView {
         
         totalHeight = header.label.frame.height + boxFrame.frame.height
         
-        frame = CGRect(x: 0,
-                       y: 0,
-                       width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides,
-                       height: totalHeight)
+        frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides, height: totalHeight)
         
         boxFrame.frame.origin.y = header.frame.height
         content?.frame.origin.y = header.frame.height

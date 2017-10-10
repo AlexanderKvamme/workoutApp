@@ -13,12 +13,16 @@ import CoreData
  ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
  */
 
-class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UICollectionViewDataSource {
+class ExerciseTableCell: ExerciseCell, hasNextCell, hasPreviousCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     private var plusButton: UIButton!
     private var verticalInsetForBox: CGFloat = 10
-    private let collectionViewReuseIdentifier = "collectionViewCell"
+
+    private let unweightedCellID = "unweigtedLiftcell"
+    private let weightedCellID = "weightedLiftCell"
+    
     private var persistentContainer = NSPersistentContainer(name: Constant.coreData.name)
+    private var exercise: Exercise!
     
     // MARK: - Initializers
     
@@ -31,8 +35,9 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
          reuseIdentifier: String) {
         
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        self.exercise = exerciseLog.getDesign()
         
-        setupBox()
+        setupBox(forExercise: exercise)
         setupCell()
         setupPlusButton()
         setupCollectionView()
@@ -89,13 +94,13 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
         if firstFreeCell == nil {
             insertNewCell()
         } else {
-            firstFreeCell!.tapHandler()
+            firstFreeCell!.repsFieldTapHandler()
         }
     }
     
     // MARK: - CollectionView delegate methods
     
-    func getFirstFreeCell() -> ExerciseSetCollectionViewCell? {
+    func getFirstFreeCell() -> LiftCell? {
         // use getNextCell until it has no other nextCell, return this last cell
         guard let firstCell = getFirstCell() else { return nil }
         
@@ -114,9 +119,9 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
         return nil
     }
     
-    func getFirstCell() -> ExerciseSetCollectionViewCell? {
+    func getFirstCell() -> LiftCell? {
         let ip = IndexPath(row: 0, section: 0)
-        if let firstCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell {
+        if let firstCell = collectionView.cellForItem(at: ip) as? LiftCell {
             return firstCell
         } else {
             return nil
@@ -152,9 +157,9 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
                        animations: { 
                         self.collectionView.scrollToItem(at: newIndexPath, at: .right, animated: false)
         }) { _ in
-            if let c = self.collectionView.cellForItem(at: newIndexPath) as? ExerciseSetCollectionViewCell {
+            if let c = self.collectionView.cellForItem(at: newIndexPath) as? LiftCell {
             self.collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
-                c.tapHandler()
+                c.repsFieldTapHandler()
             }
         }
     }
@@ -162,19 +167,52 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
     @available(iOS 6.0, *)
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewReuseIdentifier, for: indexPath) as! ExerciseSetCollectionViewCell
-        cell.owner = self
-        
         let liftToDisplay = liftsToDisplay[indexPath.row]
+        
+        var cell: LiftCell!
+        
+        if self.exercise.isWeighted() {
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: weightedCellID, for: indexPath) as! WeightedLiftCell
+        } else {
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: unweightedCellID, for: indexPath) as! UnweightedLiftCell
+        }
+        
+        cell.tableCell = self
+        
+        let liftIsPerformed = liftsToDisplay[indexPath.row].hasBeenPerformed
+        
         let repFromLift = liftToDisplay.reps
         cell.setReps(repFromLift)
-        cell.isPerformed = liftToDisplay.hasBeenPerformed // is it already performed this workout and should be tappable?
+        cell.isPerformed = liftToDisplay.hasBeenPerformed
+        
+        if let c = cell as? WeightedLiftCell {
+            c.setWeight(liftToDisplay.weight)
+            if liftIsPerformed {
+                c.makeWeightTextBold()
+            }
+        }
         
         // Make bold if it is performed
-        if liftsToDisplay[indexPath.row].hasBeenPerformed {
-            cell.makeTextBold()
+        if liftIsPerformed {
+            cell.makeRepTextBold()
         }
+        
         return cell
+    }
+    
+    // MARK: UICollectionViewDelegateFlowLayout methods
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        var cellHeight: CGFloat = 0
+        
+        switch exercise.isWeighted() {
+        case true:
+            cellHeight = Constant.components.collectionViewCells.weightedCellHeight
+        case false:
+            cellHeight = Constant.components.collectionViewCells.unweightedCellHeight
+        }
+        
+        return CGSize(width: Constant.components.collectionViewCells.width, height: cellHeight)
     }
     
     // MARK: - setup methods
@@ -184,20 +222,20 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
         // CollectionView
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset,
-                                         y: box.boxFrame.frame.minY + verticalInsetForBox,
-                                         width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset,
-                                         height: box.boxFrame.frame.height)
+        let leftInset: CGFloat = 10
+        let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset + leftInset, y: box.boxFrame.frame.minY + verticalInsetForBox, width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset - leftInset, height: box.boxFrame.frame.height)
         collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
-        collectionView.register(ExerciseSetCollectionViewCell.self, forCellWithReuseIdentifier: collectionViewReuseIdentifier)
+        
+        collectionView.register(UnweightedLiftCell.self, forCellWithReuseIdentifier: unweightedCellID)
+        collectionView.register(WeightedLiftCell.self, forCellWithReuseIdentifier: weightedCellID)
+        
         collectionView.alpha = 1
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
         addSubview(collectionView)
         
-        collectionView.frame.size = CGSize(width: collectionView.frame.width - plusButton.frame.width,
-                                           height: collectionView.frame.height)
+        collectionView.frame.size = CGSize(width: collectionView.frame.width - plusButton.frame.width, height: collectionView.frame.height)
     }
     
     private func setupCell() {
@@ -213,7 +251,7 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
             contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: -verticalInsetForBox),
             contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: verticalInsetForBox),
             contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
-                                    ])
+            ])
         
         // the box
         NSLayoutConstraint.activate([
@@ -221,6 +259,10 @@ class ExerciseTableViewCell: ExerciseCell, hasNextCell, hasPreviousCell, UIColle
             box.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
             box.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 0),
             ])
+    }
+    
+    private func setDebugColors() {
+        collectionView.backgroundColor = .blue
     }
 }
 

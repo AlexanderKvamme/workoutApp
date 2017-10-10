@@ -179,9 +179,6 @@ class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver,
             }
             
             let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, measurementStyle: currentMeasurementStyle)
-            
-            print("made exercise: ", newExercise)
-            // Signal to delegate ( exercisePicker ) that user made a new exercise, and that the VC is supposed to mark it as selected
             exercisePickerDelegate?.receiveNewExercise(newExercise)
             DatabaseFacade.saveContext()
         }

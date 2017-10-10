@@ -17,7 +17,8 @@ public enum BoxType {
     case SuggestionBox
     case SelectionBox
     case WarningBox
-    case ExerciseProgressBox
+    case ExerciseTableCellBox
+    case TallExerciseTableCellBox
     case DeletionBox
 }
 
@@ -51,8 +52,10 @@ public class BoxFactory {
             factory = SuggestionBoxFactory()
         case .SelectionBox:
             factory = SelectionBoxFactory()
-        case .ExerciseProgressBox:
-            factory = ExerciseProgressBoxFactory()
+        case .ExerciseTableCellBox:
+            factory = ExerciseCellBoxFactory()
+        case .TallExerciseTableCellBox:
+            factory = TallExerciseCellBoxFactory()
         case .WarningBox:
             factory = WarningBoxFactory()
         case .DeletionBox:
@@ -148,8 +151,8 @@ fileprivate class SelectionBoxFactory: BoxFactory {
 }
 
 // Exercise Progress Box Factory
-
-fileprivate class ExerciseProgressBoxFactory: BoxFactory {
+/// This box is the default one used in TableViewCells
+fileprivate class ExerciseCellBoxFactory: BoxFactory {
     public override func makeBoxHeader() -> BoxHeader? {
         return ExerciseProgressBoxHeader()
     }
@@ -166,6 +169,28 @@ fileprivate class ExerciseProgressBoxFactory: BoxFactory {
         return nil
     }
 }
+
+
+/// This is the boxed contained in the cells of the ExerciseTable, when the assosciated exercise is weighted and therefore needs additional height
+fileprivate class TallExerciseCellBoxFactory: BoxFactory {
+    public override func makeBoxHeader() -> BoxHeader? {
+        return ExerciseProgressBoxHeader()
+    }
+    
+    public override func makeBoxSubHeader() -> BoxSubHeader? {
+        return nil
+    }
+    
+    public override func makeBoxFrame() -> BoxFrame? {
+        return TallExerciseProgressBoxFrame()
+    }
+    
+    public override func makeBoxContent() -> BoxContent? {
+        return nil
+    }
+}
+
+
 
 // Warning Box Factory
 
@@ -877,7 +902,7 @@ fileprivate class DeletionBoxFrame: BoxFrame {
     }
 }
 
-
+/// The long and yellow/orange box used to hold a collection of Lifts
 fileprivate class ExerciseProgressBoxFrame: BoxFrame {
     
     override init(){
@@ -898,6 +923,38 @@ fileprivate class ExerciseProgressBoxFrame: BoxFrame {
                                height: background.frame.height - 2*shimmerInset)
         
         frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
+        
+        addSubview(background)
+        addSubview(shimmer)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+fileprivate class TallExerciseProgressBoxFrame: BoxFrame {
+    
+    override init(){
+        super.init()
+        
+        print("making TallExerciseProgressBoxFrame")
+        let tallBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
+        //                             height: Constant.components.Box.ExerciseProgress.height)
+            height: Constant.components.Box.TallExerciseProgress.height)
+        // Colored view behind shimmer
+        background.frame = CGRect(x: 0,
+                                  y: 0,
+                                  width: tallBoxSize.width,
+                                  height: tallBoxSize.height)
+        // Shimmer
+        let shimmerInset = Constant.components.Box.shimmerInset
+        shimmer.frame = CGRect(x: shimmerInset,
+                               y: shimmerInset,
+                               width: background.frame.width - 2*shimmerInset,
+                               height: background.frame.height - 2*shimmerInset)
+        
+        frame.size = CGSize(width: tallBoxSize.width, height:  tallBoxSize.height)
         
         addSubview(background)
         addSubview(shimmer)

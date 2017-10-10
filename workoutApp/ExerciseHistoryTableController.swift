@@ -48,8 +48,6 @@ class ExerciseHistoryTableViewController: UITableViewController {
         dataSource = ExerciseHistoryTableViewDataSource(workoutLog: currentWorkoutLog) // Make datasource out of the provided Workout
         tableView.dataSource = dataSource
         dataSource.owner = self
-        
-        // delegate setup
         tableView.delegate = self
         tableView.register(ExerciseHistoryTableViewCell.self, forCellReuseIdentifier: "exerciseHistoryCell")
         

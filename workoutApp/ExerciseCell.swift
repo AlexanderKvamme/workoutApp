@@ -19,12 +19,8 @@ class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
     
     var liftsToDisplay: [Lift]!
     var collectionView: UICollectionView!
-    private var plusButton: UIButton!
-    private var verticalInsetForBox: CGFloat = 10
-    private let collectionViewReuseIdentifier = "collectionViewCell"
-    var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog items are contained by a ExerciseLog item.
-    private var persistentContainer = NSPersistentContainer(name: Constant.coreData.name)
-    var box: Box!
+    var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog
+    var box: ExerciseTableCellBox!
     
     weak var owner: ExerciseTableViewDataSource!
     
@@ -49,20 +45,6 @@ class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
         return nil
     }
     
-    func setDebugColors() {
-        // collectionView
-        self.collectionView.backgroundColor = .green
-        self.collectionView.alpha = 0.5
-        
-        // + button
-        plusButton.backgroundColor = .red
-        plusButton.titleLabel?.backgroundColor = .yellow
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("did select some item at indexpath \(indexPath)")
-    }
-    
     @objc @available(iOS 6.0, *)
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return liftsToDisplay.count
@@ -74,35 +56,29 @@ class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
         backgroundColor = .light
     }
     
-    func setupBox() {
-        let boxFactory = BoxFactory.makeFactory(type: .ExerciseProgressBox)
+    func setupBox(forExercise exercise: Exercise) {
+        var boxFactory: BoxFactory!
+        
+        switch exercise.isWeighted() {
+        case true:
+            boxFactory = BoxFactory.makeFactory(type: .TallExerciseTableCellBox)
+        case false:
+            boxFactory = BoxFactory.makeFactory(type: .ExerciseTableCellBox)
+        }
+        
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         
-        box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
+        switch exercise.isWeighted(){
+        case true:
+            box = TallExerciseTableCellBox(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
+        case false:
+            box = ShortExerciseTableCellBox(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
+        }
         
         contentView.addSubview(box)
-    }
-    
-    private func setupConstraints() {
-        translatesAutoresizingMaskIntoConstraints = false
-        box.translatesAutoresizingMaskIntoConstraints = false
-        
-        // contentView
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: -verticalInsetForBox),
-            contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: verticalInsetForBox),
-            contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
-            ])
-        
-        // the box
-        NSLayoutConstraint.activate([
-            box.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            box.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
-            box.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 0),
-            ])
     }
 }
 

@@ -589,9 +589,8 @@ final class DatabaseFacade {
 }
 
 // MARK: Helpers
-
+ 
 fileprivate extension DatabaseFacade {
-    
     /// when deleting a workoutLog, you would want to make the previous performance the new "latestPerformance" of its kind.
     static func setPreviousWorkoutLogAsLatestPerformence(forWorkout workout: Workout) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)

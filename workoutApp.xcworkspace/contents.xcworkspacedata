@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Lift+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:workoutApp/Workout+CoreDataClass.swift">
    </FileRef>
    <FileRef

@@ -13,20 +13,20 @@ import Foundation
  */
 
 protocol hasNextCell: class {
-    func getNextCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
+    func getNextCell(fromIndexPath: IndexPath) -> LiftCell?
 }
 
 protocol hasPreviousCell: class {
-    func getPreviousCell(fromIndexPath: IndexPath) -> ExerciseSetCollectionViewCell?
+    func getPreviousCell(fromIndexPath: IndexPath) -> LiftCell?
 }
 
-extension hasPreviousCell where Self: ExerciseTableViewCell {
+extension hasPreviousCell where Self: ExerciseTableCell {
     // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the previous cell, or nil if it does not exist
-    func getPreviousCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell? {
+    func getPreviousCell(fromIndexPath indexPath: IndexPath) -> LiftCell? {
         var ip = indexPath
         ip.row -= 1
         
-        let previousCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
+        let previousCollectionViewCell = collectionView.cellForItem(at: ip) as? LiftCell
         if let previousCell = previousCollectionViewCell {
             return previousCell
         } else {
@@ -35,14 +35,14 @@ extension hasPreviousCell where Self: ExerciseTableViewCell {
     }
 }
 
-extension hasNextCell where Self: ExerciseTableViewCell {
+extension hasNextCell where Self: ExerciseTableCell {
     
     // receives the indexPath of one of this TableViewCell's collectionViewCells, should either return the next cell, or make a new one if it doesnt exist, to allow for fast input of sets for the user
-    func getNextCell(fromIndexPath indexPath: IndexPath) -> ExerciseSetCollectionViewCell? {
+    func getNextCell(fromIndexPath indexPath: IndexPath) -> LiftCell? {
         var ip = indexPath
         ip.row += 1
         
-        let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? ExerciseSetCollectionViewCell
+        let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? LiftCell
         if let nextCell = nextCollectionViewCell {
             return nextCell
         } else {
