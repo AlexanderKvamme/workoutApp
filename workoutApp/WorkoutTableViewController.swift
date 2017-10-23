@@ -16,6 +16,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     var dataSource: isWorkoutTableViewDataSource!
     var indexPathBeingEdited: IndexPath?
+    var shouldUpdateUponAppearing = false
     
     // MARK: - Initializers
     
@@ -125,13 +126,19 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     // Update table only if new workouts are added
     private func updateTableIfNeeded() {
+
         guard let dataCountPreUpdate = dataSource?.getData()?.count else { return }
         
         dataSource.refresh()
         
         guard let dataCountPostUpdate = dataSource?.getData()?.count else { return }
-        if dataCountPreUpdate != dataCountPostUpdate {
-            tableView.reloadData()
+        if dataCountPreUpdate != dataCountPostUpdate || shouldUpdateUponAppearing {
+
+            shouldUpdateUponAppearing = false // resetp
+            
+            let indexSet = NSIndexSet(index: 0) as IndexSet
+            tableView.reloadSections(indexSet, with: .automatic)
+                self.tableView.reloadData()
         }
     }
     
@@ -142,6 +149,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         if let wo = wo {
             let selectedWorkout = wo[indexPath.row]
             let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
+            detailedVC.presentingBoxTable = self
             navigationController?.pushViewController(detailedVC, animated: true)
         }
     }

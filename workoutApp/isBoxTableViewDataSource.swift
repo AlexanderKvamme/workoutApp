@@ -13,8 +13,8 @@ import SwipeCellKit
 
 protocol isBoxTableViewDataSource: class, UITableViewDataSource {
     
-    var cellIdentifier: String {get set}
-    weak var owner: SwipeTableViewCellDelegate? {get set}
+    var cellIdentifier: String { get set }
+    weak var owner: SwipeTableViewCellDelegate? { get set }
     
     func refresh()
     func getData() -> [NSManagedObject]?

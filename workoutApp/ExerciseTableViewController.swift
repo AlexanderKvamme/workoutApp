@@ -25,6 +25,8 @@ class ExerciseTableViewController: UITableViewController {
     private var location: CGPoint!
     private var sourceIndexPath: IndexPath!
     
+    weak var presentingBoxTable: WorkoutTableViewController?
+    
     // MARK: - Initializers
     
     init(withWorkout workout: Workout) {
@@ -72,11 +74,6 @@ class ExerciseTableViewController: UITableViewController {
     // MARK: - Methods
     
     // MARK: setup methods
-    
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        // FIXME: - noe feil her
-//        return 100
-//    }
     
     private func enableSwipeBackGesture(_ b: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = b
@@ -161,6 +158,7 @@ class ExerciseTableViewController: UITableViewController {
     
     @objc private func saveButtonHandler() {
         dataSource.saveWorkout()
+        presentingBoxTable?.shouldUpdateUponAppearing = true
     }
     
     @objc private func xButtonHandler() {

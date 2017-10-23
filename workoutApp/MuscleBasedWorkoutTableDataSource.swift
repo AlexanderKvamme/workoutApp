@@ -13,12 +13,12 @@ import SwipeCellKit
 
 class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     
-    var workoutStyleName: String?
-    
     // MARK: - Properties
     
     var cellIdentifier = "WorkoutBoxCell"
+    var workoutStyleName: String?
     var muscle: Muscle!
+    var lastUpdatedAt: Date!
     var fetchedWorkouts = [Workout]()
     weak var owner: SwipeTableViewCellDelegate?
     
@@ -60,13 +60,15 @@ class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSou
         let workoutToDelete = fetchedWorkouts[indexPath.row]
         fetchedWorkouts.remove(at: indexPath.row)
         DatabaseFacade.deleteWorkout(workoutToDelete)
+        lastUpdatedAt = Date()
     }
     
     func refresh() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
         let predicate = NSPredicate(format: "musclesUsed CONTAINS %@", muscle)
-//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latestPerformence.dateEnded", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latestPerformence.dateEnded", ascending: false)]
         fetchRequest.predicate = predicate
+        lastUpdatedAt = Date()
         
         // Fetch from Core Data
         do {

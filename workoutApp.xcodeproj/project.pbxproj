@@ -349,6 +349,7 @@
 		DD0D42D11F4CCE2900502C02 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DDA4A3A21F5ECD630026882A /* Footer */,
 				DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */,
 				DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */,
@@ -506,6 +507,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD36F5111F33D41300FD31B3 /* Profile */,
 				DD0D42D21F4CCE4B00502C02 /* Editors */,
 				DD0D42D11F4CCE2900502C02 /* Components */,
@@ -515,8 +517,6 @@
 				DD34C5791F46579E0050BDB0 /* TableViews */,
 				DD1DF75D1EDB77B100CD3426 /* NavigationController */,
 				DD98A5021F13AAAE002985BF /* Custom Keyboard */,
-				DD151E001ED47C200014DBC1 /* Native Extensions */,
-				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DD5ED8391ECA5F5800D3EB1A /* Modal */,
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
@@ -612,12 +612,12 @@
 			name = "TODO - Weighted Cells";
 			sourceTree = "<group>";
 		};
-		DD90AF2A1EDED25600A560F0 /* refreshControl */ = {
+		DD90AF2A1EDED25600A560F0 /* Refresh Control */ = {
 			isa = PBXGroup;
 			children = (
 				DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */,
 			);
-			name = refreshControl;
+			name = "Refresh Control";
 			sourceTree = "<group>";
 		};
 		DD9477B31F7FE4A200E01F81 /* MuscleBasedWorkoutTable */ = {
@@ -748,7 +748,7 @@
 			children = (
 				DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */,
 				DDE55B971F2F745F00ED1D15 /* isBoxTableViewDataSource.swift */,
-				DD90AF2A1EDED25600A560F0 /* refreshControl */,
+				DD90AF2A1EDED25600A560F0 /* Refresh Control */,
 				DD468F861F2E8B9200A945A9 /* Workout Table */,
 				DDB539AA1F2E014600824CFC /* WorkoutLog History Table */,
 			);

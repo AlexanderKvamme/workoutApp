@@ -52,7 +52,7 @@ class BoxTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         showNavigationBar()
     }
-    
+ 
     // MARK: - Methods
     
     func setupTableView() {
