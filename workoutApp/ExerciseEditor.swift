@@ -151,7 +151,8 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
     }
     
     @objc private func editExerciseStyle() {
-        let allStyles = DatabaseFacade.fetchExerciseStyles()
+        let allStyles = DatabaseFacade.getExerciseStyles()
+        print("allStles: ", allStyles)
         let stylePicker = PickerController(withPicksFrom: allStyles, withPreselection: exercise.style!)
         stylePicker.pickableReceiver = self
         navigationController?.pushViewController(stylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)

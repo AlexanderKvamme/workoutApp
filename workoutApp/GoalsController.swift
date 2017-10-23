@@ -82,15 +82,15 @@ class GoalsController: UIViewController, isStringReceiver {
         header.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            header.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30)
+            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
     }
     
     private func setupStack() {
         let sideInsets: CGFloat = 40
 
-        stackOfGoalButtons.spacing = 8
+        stackOfGoalButtons.spacing = 4
         stackOfGoalButtons.alignment = .leading
         stackOfGoalButtons.axis = .vertical
         stackOfGoalButtons.distribution = .equalSpacing
@@ -149,14 +149,15 @@ class GoalsController: UIViewController, isStringReceiver {
     }
     
     @objc private func goalLongPressHandler(_ gesture: UIGestureRecognizer) {
+        guard gesture.state == .began else {
+            return
+        }
         
-        if gesture.state == .began {
-            if let sender = gesture.view {
-                stackOfGoalButtons.removeArrangedSubview(sender)
-                sender.removeFromSuperview()
-                if let aButton = sender as? GoalButton {
-                    aButton.deleteFromCoreData()
-                }
+        if let sender = gesture.view {
+            stackOfGoalButtons.removeArrangedSubview(sender)
+            sender.removeFromSuperview()
+            if let aButton = sender as? GoalButton {
+                aButton.deleteFromCoreData()
             }
         }
     }

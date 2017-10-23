@@ -51,6 +51,9 @@ class NewWorkoutController: WorkoutController {
         view.addSubview(restSelectionBox)
         view.addSubview(exerciseSelecter)
         view.addSubview(footer)
+        
+        // TODO: Add timer functionality, and show this box
+        restSelectionBox.alpha = 0
     }
     
     @objc private func headerTapHandler() {
@@ -68,8 +71,7 @@ class NewWorkoutController: WorkoutController {
     @objc private func approveAndDismissVC() {
         // Present error modal if workout contains no exercises
         guard hasExercises else {
-            let errorMessage = "Add at least one exercise, please!"
-            let modal = CustomAlertView(type: .message, messageContent: errorMessage)
+            let modal = CustomAlertView(type: .message, messageContent: "Add at least one exercise, please!")
             modal.show(animated: true)
             return
         }

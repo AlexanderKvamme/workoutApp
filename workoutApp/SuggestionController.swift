@@ -99,7 +99,8 @@ fileprivate extension SuggestionController {
         
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            header.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30)
+//            header.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30)
+            header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
     }
     

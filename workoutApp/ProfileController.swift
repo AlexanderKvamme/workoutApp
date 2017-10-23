@@ -54,8 +54,11 @@ final class ProfileController: UIViewController {
     // MARK: - Methods
     
     private func setup() {
+        // TODO: Add preferences and show preferenceIcon
         setupSettingsButton()
-        setupHeader()
+        settingsButton.alpha = 0
+        
+//        setupHeader()
         setupScrollView()
         
         setupStackView()
@@ -74,7 +77,8 @@ final class ProfileController: UIViewController {
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5),
+            //scrollView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5), //
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -144,7 +148,7 @@ final class ProfileController: UIViewController {
     
     private func addGoals(to stackView: UIStackView) {
         let goalsController = GoalsController()
-        addChildViewController(goalsController) // NOTE: Needed to make it work as its own viewController (with its own selectors)
+        addChildViewController(goalsController)
         stackView.addArrangedSubview(goalsController.view)
     }
     

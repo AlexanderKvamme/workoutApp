@@ -43,22 +43,26 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
         let halfScreenWidth = Constant.UI.width/2
         let selecterHeight: CGFloat = 150
         
-        let stack = TwoLabelStack(frame: CGRect(x: 0, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
-        stack.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
-        return stack
+        let workoutStyleSelecter = TwoLabelStack(frame: CGRect(x: 0, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
+        workoutStyleSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
+        
+        return workoutStyleSelecter
     }()
     
     lazy var exerciseSelecter: TwoLabelStack = {
         
-        let exerciseSelecter = TwoLabelStack(frame: CGRect(x: 0, y: self.restSelectionBox.frame.maxY + 20, width: Constant.UI.width, height: 100), topText: " Exercises Added", topFont: UIFont.custom(style: .bold, ofSize: .medium),
-                                             topColor: UIColor.faded, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.dark, fadedBottomLabel: false)
+        let newframe = CGRect(x: 0, y: self.workoutStyleSelecter.frame.maxY - 30, width: Constant.UI.width, height: 100)
+        
+        let exerciseSelecter = TwoLabelStack(frame: newframe, topText: " Exercises Added", topFont: UIFont.custom(style: .medium, ofSize: .medium), topColor: UIColor.dark, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.dark, fadedBottomLabel: false)
         exerciseSelecter.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
+
         return exerciseSelecter
     }()
     
     lazy var header: TwoLabelStack = {
         let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
         stack.bottomLabel.adjustsFontSizeToFitWidth = true
+        
         return stack
     }()
     
@@ -109,7 +113,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
     
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
-        let workoutStyles = DatabaseFacade.fetchManagedObjectsForEntity(.WorkoutStyle) as! [WorkoutStyle]
+        let workoutStyles = DatabaseFacade.fetchWorkoutStyles()
         let typePicker = PickerController<WorkoutStyle>(withPicksFrom: workoutStyles, withPreselection: currentWorkoutStyle)
         
         typePicker.pickableReceiver = self

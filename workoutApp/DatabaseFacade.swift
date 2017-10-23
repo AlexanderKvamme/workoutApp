@@ -360,7 +360,20 @@ final class DatabaseFacade {
     
     // fetch MeasurementStyles
     static func fetchMeasurementStyles() -> [MeasurementStyle] {
-        let measurements = fetchManagedObjectsForEntity(.MeasurementStyle) as! [MeasurementStyle]
+
+        var measurements = [MeasurementStyle]()
+        
+        let fetchRequest = NSFetchRequest<MeasurementStyle>(entityName: Entity.MeasurementStyle.rawValue)
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            measurements = results
+        } catch let error as NSError {
+            print("Error in fetchMeasurementStyles ", error.localizedDescription)
+        }
+        
         return measurements
     }
     
@@ -412,21 +425,58 @@ final class DatabaseFacade {
         return workoutStyle
     }
     
+    /// Returns all workoutStyles sorted by name
+    static func fetchWorkoutStyles() -> [WorkoutStyle] {
+        
+        var workoutStyles = [WorkoutStyle]()
+        let fetchRequest = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        do {
+            let result = try context.fetch(fetchRequest)
+            workoutStyles = result as [WorkoutStyle]
+        } catch let error as NSError {
+            print("Error in fetchWorkoutStyles: \(error.localizedDescription)")
+        }
+        return workoutStyles
+    }
+    
     // get ExerciseStyle
     static func getExerciseStyle(named name: String) -> ExerciseStyle? {
         var exerciseStyle: ExerciseStyle? = nil
+        
+        // Execute Fetchrequest
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.ExerciseStyle.rawValue)
+        let predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = predicate
+        
         do {
-            // Execute Fetchrequest
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.ExerciseStyle.rawValue)
-            let predicate = NSPredicate(format: "name == %@", name)
-            fetchRequest.predicate = predicate
-            
             let result = try context.fetch(fetchRequest)
             exerciseStyle = result.first as? ExerciseStyle
         } catch let error as NSError {
             print(error.localizedDescription)
         }
         return exerciseStyle
+    }
+    
+    /// All ExerciseStyles sorted by name
+    static func getExerciseStyles() -> [ExerciseStyle] {
+        var exerciseStyles = [ExerciseStyle]()
+        
+        // Make FetchRequest
+        let fetchRequest = NSFetchRequest<ExerciseStyle>(entityName: Entity.ExerciseStyle.rawValue)
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        // Execute fetchRequest
+        do {
+            let result = try context.fetch(fetchRequest)
+            exerciseStyles = result
+        } catch let error as NSError {
+            print("Error in getExerciseStyles: ", error.localizedDescription)
+        }
+        return exerciseStyles
+        
     }
     
     // get WorkoutStyle
@@ -456,7 +506,7 @@ final class DatabaseFacade {
             fetchRequest.predicate = predicate
             
             let result = try context.fetch(fetchRequest)
-            measurementStyle = result[0] as? MeasurementStyle
+            measurementStyle = result.first as? MeasurementStyle
         } catch let error as NSError {
             print(error.localizedDescription)
         }

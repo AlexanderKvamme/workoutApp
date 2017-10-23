@@ -83,7 +83,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver,
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
         // Measurement style
-        let frameForMeasurementStyle = CGRect(x: 0, y: muscleSelecter.frame.maxY, width: screenWidth, height: selecterHeight)
+        let frameForMeasurementStyle = CGRect(x: 0, y: muscleSelecter.frame.maxY - 40, width: screenWidth, height: selecterHeight)
         measurementSelecter = TwoLabelStack(frame: frameForMeasurementStyle, topText: "Measurement", topFont: darkHeaderFont, topColor: .dark, bottomText: DatabaseFacade.defaultMeasurementStyle.name!, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
         measurementSelecter.button.addTarget(self, action: #selector(measurementTapHandler), for: .touchUpInside)
         
@@ -117,7 +117,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver,
     
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
-        let exerciseStyles = DatabaseFacade.fetchExerciseStyles()
+        let exerciseStyles = DatabaseFacade.getExerciseStyles()
         let typePicker = PickerController<ExerciseStyle>(withPicksFrom: exerciseStyles, withPreselection: currentExerciseStyle)
         typePicker.pickableReceiver = self
         
@@ -135,7 +135,6 @@ class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver,
         musclePicker.muscleReceiver = self
         
         receiveMuscles = { musclesReceived in
-            print("received muscles: ", musclesReceived)
             self.currentMuscles = musclesReceived
             self.muscleSelecter.setBottomText(musclesReceived.getName())
         }
@@ -159,7 +158,6 @@ class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver,
         
         stringReceivedHandler = {
             s in
-            print("received back: ", s)
             self.measurementSelecter.bottomLabel.text = s
         }
         navigationController?.pushViewController(measurementStylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)

@@ -47,7 +47,7 @@ final class DataSeeder {
         DatabaseFacade.saveContext()
     }
     
-    /// If any new Muscles/Styles are added in code ie. in an update -> seed to core data
+    /// If any new Muscles/Styles are added in code, for example in an update -> seed to core data
     public func update() {
       
         // Muscles
@@ -74,11 +74,11 @@ final class DataSeeder {
             }
         }
         
-        // Workout Styles
-        for workoutStyle in defaultWorkoutStyles {
-            if DatabaseFacade.getWorkoutStyle(named: workoutStyle) == nil {
-                print("didnt exist so making muscle named \(workoutStyle)")
-                makeWorkoutStyle(withName: workoutStyle)
+        // Measurement Styles
+        for measurementStyle in defaultMeasurementStyles {
+            if DatabaseFacade.getMeasurementStyle(named: measurementStyle) == nil {
+                print("didnt exist so making measurementStyle named \(measurementStyle)")
+                makeMeasurementStyle(withName: measurementStyle)
             }
         }
     }
