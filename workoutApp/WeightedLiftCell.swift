@@ -14,15 +14,28 @@ class WeightedLiftCell: LiftCell {
     // MARK: - Properties
 
     var weightField: UITextField!
-    var initialWeightValue: String {
-        guard let indexPath = tableCell.collectionView.indexPath(for: self) else {
-            fatalError()
-        }
-        
-        let dataSourceIndexToUpdate = indexPath.row
-        let valueFromDatasource = tableCell.liftsToDisplay[dataSourceIndexToUpdate].weight
-        return String(valueFromDatasource).replacingOccurrences(of: ".0", with: "")
+    var initialWeightAsString: String {
+        return String(initialWeight).replacingOccurrences(of: ".0", with: "")
     }
+    var initialWeight: Double {
+        guard let indexPath = superTableCell.collectionView.indexPath(for: self) else { fatalError() }
+        let dataSourceIndexToUpdate = indexPath.row
+        return superTableCell.liftsToDisplay[dataSourceIndexToUpdate].weight
+    }
+    
+    override var superTableCell: ExerciseCellBaseClass! {
+        didSet {
+            if let superduper = superTableCell as? ExerciseCellForWorkouts {
+                weightField.delegate = superduper
+            }
+        }
+    }
+    
+//    override var isPerformed: Bool {
+//        didSet {
+//
+//        }
+//    }
     
     // MARK: - Initializers
     
@@ -31,8 +44,7 @@ class WeightedLiftCell: LiftCell {
         super.init(frame: newFrame)
         
         setupViewsAndConstraints()
-        addLongPressRecognizer(to: overlayingButton)
-        // setDebugColors()
+        weightField.isUserInteractionEnabled = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,14 +53,14 @@ class WeightedLiftCell: LiftCell {
     
     // MARK: - Methods
     
+    // MARK: Setup methods
+    
     private func setupViewsAndConstraints() {
         setupRepsField()
         setupWeightField()
         setupView()
-        setupOverlayingButton()
+        setupButtonCoveringCell()
     }
-
-    // MARK: Setup methods
     
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -82,7 +94,6 @@ class WeightedLiftCell: LiftCell {
         weightField.textColor = UIColor.light
         weightField.backgroundColor = .clear
         weightField.alpha = Constant.alpha.faded
-        weightField.delegate = self
         weightField.sizeToFit()
 
         addSubview(weightField)
@@ -97,151 +108,102 @@ class WeightedLiftCell: LiftCell {
             ])
     }
     
-    // MARK: TextField Delegate
-    
-    override func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
-        
-        switch textField {
-        case weightField:
-            showWeightKeyboard()
-            prepareWeightFieldForEditing()
-        case repsField:
-            super.textFieldDidBeginEditing(textField)
-        default:
-            fatalError("TextField out of scope")
-        }
+    private func setupButtonCoveringCell() {
+        overlayingButton = UIButton(frame: frame)
+        overlayingButton.addTarget(self, action: #selector(focus), for: .touchUpInside)
+        addSubview(overlayingButton)
     }
     
-    override func textFieldDidEndEditing(_ textField: UITextField) {
-        validateRepsField()
-        validateWeightField()
-        
-        NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
-    }
-    
-    // MARK: Helpers
-    
-    @objc internal override func nextButtonTapHandler() {
-        // mark as performed, find next available
-        guard let activeField = UIResponder.currentFirst() else {
-            fatalError("Neither fields were selected")
-        }
-        
-        switch activeField {
-        case weightField:
-            validateRepsField()
-            validateWeightField()
-            goToNextCell()
-        case repsField:
-            weightField.becomeFirstResponder()
-        default:
-            return
-        }
-    }
-    
-    private func goToNextCell() {
-        // If there is no next cell, make one
-        guard let nextCell = tableCell.getFirstFreeCell() else {
-            tableCell.insertNewCell()
-            return
-        }
-
-        // Go to next cell
-        let ip = tableCell.collectionView.indexPath(for: nextCell)
-        tableCell.collectionView.selectItem(at: ip, animated: true, scrollPosition: .centeredVertically) // Scroll
-        nextCell.repsFieldTapHandler()
-    }
-    
-    
-    
-    func prepareWeightFieldForEditing() {
-        // Setup placeholder
-        let color = UIColor.light
-        let newString = String(initialWeightValue).replacingOccurrences(of: ".0", with: "")// remove .0
-
-        weightField.attributedPlaceholder = NSAttributedString(string: newString, attributes: [NSAttributedStringKey.foregroundColor : color])
-    
-        makeWeightTextBold()
-    }
+    // MARK: API
     
     public func setWeight(_ n: Double) {
         let newString = String(n).replacingOccurrences(of: ".0", with: "")
         weightField.text = newString
     }
     
-    @objc func showWeightKeyboard() {
+    @objc func showKeyboardOnWeightField() {
         // Make keyboard
         let screenWidth = Constant.UI.width
         let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
         keyboard.setKeyboardType(style: .weight)
         keyboard.delegate = self
-        
-        // Present keyboard
         weightField.inputView = keyboard
-        weightField.delegate = self
         weightField.becomeFirstResponder()
     }
     
-    // Private Helpers
+    // MARK: Helper methods
+    
+    override func setPlaceholderVisuals(_ textField: UITextField) {
+        
+        switch textField {
+        case repsField:
+            super.setPlaceholderVisuals(textField)
+        case weightField:
+            setPlaceholderVisualsOnWeightField()
+            makeWeightTextBold()
+        default:
+            return
+        }
+    }
+    
+    private func setPlaceholderVisualsOnWeightField(){
+        let color = UIColor.light
+        let font = UIFont.custom(style: .medium, ofSize: .medium)
+        weightField.attributedPlaceholder = NSAttributedString(string: initialWeightAsString, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
+    }
     
     private func saveWeightToDataSource(_ double: Double) {
     
-        guard let indexPath = tableCell.collectionView.indexPath(for: self) else {
+        guard let indexPath = superTableCell.collectionView.indexPath(for: self) else {
             fatalError("Unable to retrieve indexPath")
         }
         
         let liftRow = indexPath.row
-        // FIXME: store reference to this lift
-        tableCell.liftsToDisplay[liftRow].weight = double
-        tableCell.liftsToDisplay[liftRow].hasBeenPerformed = true
+        superTableCell.liftsToDisplay[liftRow].weight = double
+        superTableCell.liftsToDisplay[liftRow].hasBeenPerformed = true
         
         // Keeps lifts in order
-        if tableCell.liftsToDisplay[liftRow].datePerformed == nil {
-            tableCell.liftsToDisplay[liftRow].datePerformed = NSDate()
+        if superTableCell.liftsToDisplay[liftRow].datePerformed == nil {
+            superTableCell.liftsToDisplay[liftRow].datePerformed = NSDate()
         }
     }
     
-    private func setupOverlayingButton() {
-        
-        overlayingButton = UIButton()
-        overlayingButton.addTarget(self, action: #selector(repsFieldTapHandler), for: .touchUpInside)
-        addSubview(overlayingButton)
-        
-        overlayingButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            overlayingButton.leftAnchor.constraint(equalTo: leftAnchor),
-            overlayingButton.rightAnchor.constraint(equalTo: rightAnchor),
-            overlayingButton.topAnchor.constraint(equalTo: topAnchor),
-            overlayingButton.bottomAnchor.constraint(equalTo: bottomAnchor),
-            ])
+    override func OKHandler() {
+        validateFields()
     }
     
-    override func OKButtonHandler(onField textField: UITextField) {
-        switch textField {
-        case repsField:
+    override func validateFields() {
+        validateRepsField()
+        validateWeightField()
+    }
+ 
+    private func validateRepsField() {
+        // Has no text? - Return to initial value
+        guard let newText = repsField.text, newText != "" else {
+            weightField.isUserInteractionEnabled = true
+            repsField.text = initialRepValue
             isPerformed = true
+            saveRepsToDataSource(Int16(initialWeight))
+            makeRepTextBold()
+            makeWeightTextBold()
             endEditing(true)
-        case weightField:
-            validateRepsField()
-            validateWeightField()
-            endEditing(true)
-        default:
-            fatalError("Unsupported fields")
+            return
         }
+        // Has invalid number? - Return to initial value
+        guard let newRepValue = Int16(newText) else {
+            repsField.text = initialRepValue
+            makeRepTextNormal()
+            makeWeightTextBold()
+            return
+        }
+        // Has new text and is valid number: Save new Value
+        weightField.isUserInteractionEnabled = true
+        saveRepsToDataSource(newRepValue)
+        isPerformed = true
+        makeRepTextBold()
+        makeWeightTextBold()
+        endEditing(true)
     }
-    
-    // MARK: API
-    
-    func makeWeightTextBold() {
-        weightField.font = UIFont.custom(style: .bold, ofSize: .medium)
-        weightField.textColor = .light
-        weightField.alpha = 1
-    }
-    
-    // MARK: Helper methods
     
     private func validateWeightField() {
         // Save if convertible to Double
@@ -250,8 +212,15 @@ class WeightedLiftCell: LiftCell {
             weightField.text = String(newWeight).replacingOccurrences(of: ".0", with: "")
             makeWeightTextBold()
         } else {
-            weightField.text = initialWeightValue
+            weightField.text = initialWeightAsString
         }
+        endEditing(true)
+    }
+    
+    func makeWeightTextBold() {
+        weightField.font = UIFont.custom(style: .bold, ofSize: .medium)
+        weightField.textColor = .light
+        weightField.alpha = 1
     }
     
     // MARK: Debug methods
@@ -263,3 +232,28 @@ class WeightedLiftCell: LiftCell {
     }
 }
 
+extension WeightedLiftCell: NextableLift {
+    func NextHandler() {
+        // mark as performed, find next available
+        guard let activeField = UIResponder.currentFirst() else {
+            fatalError("Neither fields were selected")
+        }
+        
+        validateFields()
+        
+        // Go to next field or cell
+        switch activeField {
+        case weightField:
+            goToNextCell()
+        case repsField:
+            showKeyboardOnWeightField()
+        default:
+            return
+        }
+    }
+    
+    private func goToNextCell() {
+        // If there is no next cell, make one
+        (superTableCell as? ExerciseCellForWorkouts)?.nextOrNewLiftCell()
+    }
+}

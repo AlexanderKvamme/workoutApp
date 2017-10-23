@@ -12,7 +12,7 @@ import CoreData
 
 /// Data source for the exercise table view used to display all exercises assosciated with a workout. So you tap a workout, and you enter a tableview with all exercises owned by that workout. This class is the datasource that provides these items.
 
-class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
+class ExerciseTableDataSource: NSObject, UITableViewDataSource {
     
     private let cellIdentifier: String = "exerciseCell"
     
@@ -51,8 +51,8 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableCell
-        cell = ExerciseTableCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseCellForWorkouts
+        cell = ExerciseCellForWorkouts(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
         cell.box.setTitle(exerciseLog.getName())
         cell.owner = self
         
@@ -141,7 +141,7 @@ class ExerciseTableViewDataSource: NSObject, UITableViewDataSource {
 
 // MARK: - Private helpers
 
-private extension ExerciseTableViewDataSource {
+private extension ExerciseTableDataSource {
     
     func updateLatestUseOfMuscle() {
         let musclesUsed = dataSourceWorkoutLog.getMusclesUsed()
@@ -295,7 +295,6 @@ private extension ExerciseTableViewDataSource {
             for eLog in exerciseSet {
                 if let lifts = eLog.lifts as? Set<Lift> {
                     for lift in lifts {
-                        print("lift: \(lift.reps) hasBeenPerformed: \(lift.hasBeenPerformed)")
                         if lift.hasBeenPerformed { performedLifts += 1 }
                     }
                 }

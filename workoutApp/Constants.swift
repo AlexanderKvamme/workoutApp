@@ -64,8 +64,8 @@ enum Constant {
         
         enum collectionViewCells {
             static let width: CGFloat = 50
-            static let weightedCellHeight: CGFloat = 80
-            static let unweightedCellHeight: CGFloat = 50
+            static let weightedHeight: CGFloat = 80
+            static let unweightedHeight: CGFloat = 50
         }
         
         enum Box {
@@ -98,7 +98,7 @@ enum Constant {
             
             enum TallExerciseProgress {
                 static let width: CGFloat = standardBoxWidth
-                static let height: CGFloat = Constant.components.collectionViewCells.weightedCellHeight
+                static let height: CGFloat = Constant.components.collectionViewCells.weightedHeight
             }
         }
         

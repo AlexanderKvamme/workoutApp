@@ -74,10 +74,10 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
         
         let box = Box(header: restHeader, subheader: restSubHeader, bgFrame: restFrame!, content: restContent!)
         box.frame.origin = CGPoint(x: halfScreenWidth - box.frame.width/2, y: self.workoutStyleSelecter.frame.maxY)
-        box.setTitle("Rest")
-        box.setContentLabel("3:00")
-        
         box.button.addTarget(self, action: #selector(restTapHandler), for: .touchUpInside)
+        box.setContentLabel("3:00")
+        box.setTitle("Rest")
+        
         return box
     }()
     

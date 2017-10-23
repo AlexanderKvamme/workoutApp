@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import CoreData
 
-/// Data source for the exercise table view used to display all exercises assosciated with a workoutLog. This class is used to get an overview of the performed workout (a workoutLog) in retrospect. So this is not used to add new lifts etc.
+/// DataSource for a workoutLog, viewed in retrospect
 
-class ExerciseHistoryTableViewDataSource: NSObject, UITableViewDataSource {
+class ExerciseHistoryTableDataSource: NSObject, UITableViewDataSource {
     
     // MARK: - Properties
     
@@ -65,11 +65,20 @@ class ExerciseHistoryTableViewDataSource: NSObject, UITableViewDataSource {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseHistoryTableViewCell
-        cell = ExerciseHistoryTableViewCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
+//        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseHistoryTableCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseCellForHistory
+//        cell = ExerciseHistoryTableCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
+        cell = ExerciseCellForHistory(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
         cell.box.setTitle(exerciseLog.getName())
-        cell.owner = self
         
+        // FIXME: bam . owner
+//        cell.owner = self
+        
+        /*
+         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableCell
+         cell = ExerciseTableCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
+         */
+
         return cell
     }
 }

@@ -11,15 +11,12 @@ import UIKit
 
 class UnweightedLiftCell: LiftCell {
 
-    
     // MARK: - Initializers
     
- 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupRepsField()
         setupButtonCoveringCell()
-        addLongPressRecognizer(to: overlayingButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,10 +24,12 @@ class UnweightedLiftCell: LiftCell {
     }
     
     // MARK: - Methods
+
+    // MARK: Setup methods
     
     private func setupButtonCoveringCell() {
         overlayingButton = UIButton(frame: repsField.frame)
-        overlayingButton.addTarget(self, action: #selector(repsFieldTapHandler), for: .touchUpInside)
+        overlayingButton.addTarget(self, action: #selector(focus), for: .touchUpInside)
         addSubview(overlayingButton)
     }
     
@@ -44,4 +43,27 @@ class UnweightedLiftCell: LiftCell {
         repsField.clearsOnBeginEditing = true
         addSubview(repsField)
     }
+    
+    // MARK: Overrides
+    
+    override func OKHandler() {
+        validateFields()
+    }
 }
+
+// MARK: - NextableLift conformance
+
+extension UnweightedLiftCell: NextableLift {
+    func NextHandler() {
+        validateFields()
+        goToNextCell()
+    }
+    
+    private func goToNextCell() {
+        guard let superTableCell = superTableCell as? ExerciseCellForWorkouts else {
+            return
+        }
+        superTableCell.nextOrNewLiftCell()
+    }
+}
+

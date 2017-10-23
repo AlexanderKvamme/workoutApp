@@ -16,7 +16,7 @@ class ExerciseTableViewController: UITableViewController {
     
     var activeTableCell: UITableViewCell? // used by cell to make correct collectionView.label firstResponder
     private var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
-    private var dataSource: ExerciseTableViewDataSource!
+    private var dataSource: ExerciseTableDataSource!
     private var myWorkoutLog: WorkoutLog! // used in the end
     private var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
     
@@ -49,13 +49,13 @@ class ExerciseTableViewController: UITableViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
 
-        dataSource = ExerciseTableViewDataSource(workout: currentWorkout) // Make datasource out of the provided Workout
+        dataSource = ExerciseTableDataSource(workout: currentWorkout) // Make datasource out of the provided Workout
         tableView.dataSource = dataSource
         dataSource.owner = self
         
         // delegate setup
         tableView.delegate = self
-        tableView.register(ExerciseTableCell.self, forCellReuseIdentifier: "exerciseCell")
+        tableView.register(ExerciseCellForWorkouts.self, forCellReuseIdentifier: "exerciseCell")
         
         setupTable()
         

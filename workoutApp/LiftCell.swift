@@ -1,4 +1,4 @@
-//
+  //
 //  ExerciseCollectionViewCell.swift
 //  workoutApp
 //
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LiftCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
+class LiftCell: UICollectionViewCell {
     
     // MARK: - Properties
     
@@ -16,115 +16,23 @@ class LiftCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     var repsField: UITextField!
     var keyboard: Keyboard!
     var isPerformed = false
-
-    weak var tableCell: ExerciseTableCell!
     
     var initialRepValue: String {
-        guard let indexPath = tableCell.collectionView.indexPath(for: self) else { return "-2" }
-        let valueFromDatasource = tableCell.liftsToDisplay[indexPath.row].reps
+        // Fetches last accepted Repvalue
+        guard let indexPath = superTableCell.collectionView.indexPath(for: self) else { return "-2" }
+        let valueFromDatasource = superTableCell.liftsToDisplay[indexPath.row].reps
         return String(valueFromDatasource)
-        
-        /*
-         if let indexPath = owner.collectionView.indexPath(for: self) {
-         let dataSourceIndexToUpdate = indexPath.row
-         let valueFromDatasource = owner.liftsToDisplay[dataSourceIndexToUpdate].reps
-         return String(valueFromDatasource)
-         } else {
-         return "Error fetching initial rep"
-         }
-         */
     }
+
+    weak var superTableCell: ExerciseCellBaseClass!
     
-    // MARK: - Keyboard delegate method
-    
-    func buttonDidTap(keyName: String) {
-        // Target active textField
-        guard let activeTextField = UIResponder.currentFirst() as? UITextField else {
-            preconditionFailure("No textfield to write in")
-        }
-   
-        switch keyName{
-        case "OK":
-            OKButtonHandler(onField: activeTextField)
-        case "B": // Back
-            activeTextField.deleteBackward()
-            return
-        default:
-            activeTextField.insertText(keyName.uppercased())
-        }
-    }
-    
-    // MARK: - TextField Delegate
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // set field as active to make let the containing tableView scroll to active cell
-        if tableCell.owner.owner.activeTableCell != tableCell {
-            tableCell.owner.owner.activeTableCell = tableCell
-        }
-        // Make a placeholder in a nice color
-        let color = UIColor.light
-        let font = UIFont.custom(style: .medium, ofSize: .big)
-        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
-        // Prepare for input
-        NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
-        
-        makeRepTextBold()
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // Make sure input is convertable to an integer for Core Data
-        let allowedCharacters = CharacterSet.decimalDigits
-        let characterSet = CharacterSet(charactersIn: string)
-        return allowedCharacters.isSuperset(of: characterSet)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        validateRepsField()
-        
-        NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
-    }
-    
-    func validateRepsField() {
-        // Has no text? - Return to initial value
-        guard let newText = repsField.text, newText != "" else {
-            repsField.text = initialRepValue
-            isPerformed = true
-            makeRepTextBold()
-            return
-        }
-        // Has invalid number? - Return to initial value
-        guard let newRepValue = Int16(newText) else {
-            repsField.text = initialRepValue
-            makeRepTextNormal()
-            return
-        }
-        // Has new text and is valid number -> Save new Value
-        saveRepsToDataSource(newRepValue)
-        isPerformed = true
-        makeRepTextBold()
-    }
-   
-    func OKButtonHandler(onField textField: UITextField) {
-        endEditing(true)
-    }
-    
-    @objc func nextButtonTapHandler() {
-        // mark as performed, find next available
-        isPerformed = true
-        
-        if let nextAvailableCell = tableCell.getFirstFreeCell() {
-            let ip = tableCell.collectionView.indexPath(for: nextAvailableCell)
-            tableCell.collectionView.selectItem(at: ip, animated: true, scrollPosition: .centeredVertically)
-            nextAvailableCell.repsFieldTapHandler()
-        } else {
-            //Was nil, so there is no next. Make new cell, which is automatically selected
-            tableCell.insertNewCell()
-        }
-    }
-    
-    // MARK: - Navigation Methods
+    // MARK: - Methods
     
     func getNextCell() -> LiftCell? {
+        
+        guard let tableCell = superTableCell as? ExerciseCellForWorkouts else {
+            fatalError("Cannot getNextCell if not ExerciseCellForWorkouts")
+        }
         
         var nextCell: LiftCell? = nil
         
@@ -135,45 +43,74 @@ class LiftCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
         return nextCell
     }
     
-    func getPreviousCell() -> LiftCell? {
-        var previousCell: LiftCell? = nil
-        
-        if let currentIndexPath = tableCell.collectionView.indexPath(for: self) {
-            let refToPreviousCell = tableCell.getPreviousCell(fromIndexPath: currentIndexPath)
-            previousCell = refToPreviousCell
-        }
-        return previousCell
-    }
-    
-    // MARK: Gestures
-    
-    func addLongPressRecognizer(to btn: UIButton) {
-        let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
-        btn.addGestureRecognizer(longpressRecognizer)
-    }
-    
-    @objc func longPressOnCellHandler(_ gesture: UILongPressGestureRecognizer) {
-        
-        guard gesture.state == UIGestureRecognizerState.began else {
+    @objc func focus() {
+        // Focus on cell if its marked as performed, or
+        guard let exerciseTableCell = superTableCell as? ExerciseCellForWorkouts else {
+            print("ERROR: not focusable")
             return
         }
         
-        guard let indexPathToRemove = self.tableCell.collectionView.indexPath(for: self) else {
-            assertionFailure("Could not access indexPath")
+        guard isPerformed else {
+            exerciseTableCell.getFirstFreeCell()?.forceFocus()
             return
         }
         
-        tableCell.liftsToDisplay.remove(at: indexPathToRemove.row)
-        tableCell.collectionView.deleteItems(at: [indexPathToRemove])
+        exerciseTableCell.activeLiftCell = self
+        showKeyboardOnRepsField()
+    }
+    
+    @objc func showKeyboardOnRepsField() {
+        // Make keyboard
+        let screenWidth = Constant.UI.width
+        let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
+        keyboard.setKeyboardType(style: .reps)
+        keyboard.delegate = self
         
-        if let section = tableCell.owner.owner.tableView.indexPath(for: tableCell)?.section {
-            
-            tableCell.owner.totalLiftsToDisplay[section].oneLinePrint()
-            let liftToRemove = tableCell.owner.totalLiftsToDisplay[section][indexPathToRemove.row]
-            tableCell.owner.totalLiftsToDisplay[section].remove(at: indexPathToRemove.row)
-            tableCell.owner.totalLiftsToDisplay[section].oneLinePrint()
-            DatabaseFacade.delete(liftToRemove)
+        // Present keyboard
+        repsField.delegate = superTableCell as? ExerciseCellForWorkouts
+        repsField.inputView = keyboard
+        repsField.becomeFirstResponder()
+    }
+    
+    func forceFocus() {
+        isPerformed = true
+        focus()
+    }
+    
+    func setPlaceholderVisuals(_ textField: UITextField) {
+        // Make a placeholder in a nice color
+        let color = UIColor.light
+        let font = UIFont.custom(style: .medium, ofSize: .big)
+        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
+        
+        makeRepTextBold()
+    }
+    
+    func validateFields() {
+        validateRepsField()
+    }
+    
+    private func validateRepsField() {
+        // Has no text? - Return to initial value
+        guard let newText = repsField.text, newText != "" else {
+            repsField.text = initialRepValue
+            isPerformed = true
+            makeRepTextBold()
+            endEditing(true)
+            return
         }
+        // Has invalid number? - Return to initial value
+        guard let newRepValue = Int16(newText) else {
+            repsField.text = initialRepValue
+            makeRepTextNormal()
+            endEditing(true)
+            return
+        }
+        // Has new text and is valid number -> Save new Value
+        saveRepsToDataSource(newRepValue)
+        isPerformed = true
+        makeRepTextBold()
+        endEditing(true)
     }
 
     // MARK: API
@@ -184,30 +121,8 @@ class LiftCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     
     // MARK: Helpers
     
-    @objc func repsFieldTapHandler() {
-        // If the cell is not previously performed, go to the first unperformed cell
-        if !isPerformed {
-            guard let firstUnperformedCell = tableCell.getFirstFreeCell() else { return }
-            if firstUnperformedCell != self {
-                self.repsField.resignFirstResponder()
-                firstUnperformedCell.repsFieldTapHandler()
-                return
-            }
-        }
-        
-        // Custom keyboard for inputting time and weight
-        let screenWidth = Constant.UI.width
-        let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-        keyboard.setKeyboardType(style: .reps)
-        repsField.inputView = keyboard
-        keyboard.delegate = self
-        
-        // Present keyboard
-        repsField.inputView = keyboard
-        repsField.delegate = self
-        repsField.becomeFirstResponder()
-        
-        setNeedsLayout()
+    func OKHandler() {
+        preconditionFailure("override in subclasses")
     }
 
     func makeRepTextNormal() {
@@ -223,9 +138,9 @@ class LiftCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     }
     
     func saveRepsToDataSource(_ newValueAsInt16: Int16) {
-        guard let indexPath = tableCell.collectionView.indexPath(for: self) else { return }
+        guard let indexPath = superTableCell.collectionView.indexPath(for: self) else { return }
         
-        let lift = tableCell.liftsToDisplay[indexPath.row]
+        let lift = superTableCell.liftsToDisplay[indexPath.row]
         lift.reps = newValueAsInt16
         lift.hasBeenPerformed = true
         
@@ -236,11 +151,33 @@ class LiftCell: UICollectionViewCell, UITextFieldDelegate, KeyboardDelegate {
     
     func setDebugColors() {
         // Overlaying Button
-        overlayingButton.backgroundColor = .green
+        overlayingButton.backgroundColor = .red
         overlayingButton.alpha = 0.1
+        
         // Reps
         repsField.backgroundColor = .purple
         repsField.alpha = 0.5
     }
 }
-
+  
+  
+  // MARK: - KeyboardDelegate conformance
+  
+  extension LiftCell: KeyboardDelegate {
+    
+    func buttonDidTap(keyName: String) {
+        // Target active textField
+        guard let activeTextField = UIResponder.currentFirst() as? UITextField else {
+            preconditionFailure("No textfield to write in")
+        }
+        
+        switch keyName {
+        case "OK":
+            OKHandler()
+        case "B": // Back
+            activeTextField.deleteBackward()
+        default:
+            activeTextField.insertText(keyName.uppercased())
+        }
+    }
+  }

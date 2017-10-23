@@ -14,9 +14,9 @@ class ExerciseHistoryTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var activeTableCell: UITableViewCell? // used by cell to make correct collectionView.label firstResponder
+    var activeTableCell: ExerciseCellBaseClass? // used by cell to make correct collectionView.label firstResponder
     private var currentWorkoutLog: WorkoutLog! // The workoutLog that contains the exercises this tableVC is displaying
-    private var dataSource: ExerciseHistoryTableViewDataSource!
+    private var dataSource: ExerciseHistoryTableDataSource!
     private var myWorkoutLog: WorkoutLog! // used in the end
     private var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
     
@@ -45,11 +45,11 @@ class ExerciseHistoryTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource = ExerciseHistoryTableViewDataSource(workoutLog: currentWorkoutLog) // Make datasource out of the provided Workout
+        dataSource = ExerciseHistoryTableDataSource(workoutLog: currentWorkoutLog)
         tableView.dataSource = dataSource
         dataSource.owner = self
         tableView.delegate = self
-        tableView.register(ExerciseHistoryTableViewCell.self, forCellReuseIdentifier: "exerciseHistoryCell")
+        tableView.register(ExerciseCellForHistory.self, forCellReuseIdentifier: "exerciseHistoryCell")
         
         setupTable()    
     }
@@ -70,8 +70,6 @@ class ExerciseHistoryTableViewController: UITableViewController {
         
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.never
-        } else {
-            // Fallback on earlier versions
         }
     }
     

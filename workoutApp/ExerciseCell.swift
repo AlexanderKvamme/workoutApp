@@ -9,51 +9,58 @@
 import UIKit
 import CoreData
 
-/*
- ExerciseTableViewCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise.
- */
+ /// ExerciseCell is one cell in a table of exercises. So each cell represents one exercise, and contains any number of sets to be performed for the exercise. ExerciseCell can be either ExerciseCellForWorkout, or ExerciseCellForHistory
 
-class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
-
-    // MARK: - Properties
+class ExerciseCellBaseClass: UITableViewCell {
     
-    var liftsToDisplay: [Lift]!
+    var exercise: Exercise!
+    var currentCellExerciseLog: ExerciseLog!
+    var liftsToDisplay: [Lift] = []
     var collectionView: UICollectionView!
-    var currentCellExerciseLog: ExerciseLog! // each cell in this item, displays the Exercise, and all the LiftLog
     var box: ExerciseTableCellBox!
+    var verticalInsetForBox: CGFloat = 10
     
-    weak var owner: ExerciseTableViewDataSource!
+    weak var owner: ExerciseTableDataSource?
     
-    // MARK: - Initializers
+    // Optional Properties
+    var plusButton: UIButton?
+    
+    // MARK: Initializers
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .light
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+protocol LiftCellManager {}
+
+extension LiftCellManager where Self: ExerciseCellBaseClass, Self: UICollectionViewDataSource {
     
-    // MARK: - Helpers
-    
-    private func getIndexPath() -> IndexPath? {
-        if let indexPath = owner.owner.tableView.indexPath(for: self) {
-            return indexPath
-        } else {
-            print("ERROR: - Could not find indexPath")
-        }
-        return nil
-    }
-    
-    @objc @available(iOS 6.0, *)
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return liftsToDisplay.count
-    }
-    
-    // MARK: - setup methods
-    
-    private func setupCell() {
-        backgroundColor = .light
+    func setupCollectionView() {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let leftInset: CGFloat = 10
+        
+        let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset + leftInset, y: box.boxFrame.frame.minY + verticalInsetForBox, width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset - leftInset, height: box.boxFrame.frame.height)
+        collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
+        
+        collectionView.register(UnweightedLiftCell.self, forCellWithReuseIdentifier: CellID.unweighted)
+        collectionView.register(WeightedLiftCell.self, forCellWithReuseIdentifier: CellID.weighted)
+        
+        collectionView.alpha = 1
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        addSubview(collectionView)
+        
+        let plusButtonWidth: CGFloat = plusButton?.frame.width ?? 0
+        collectionView.frame.size = CGSize(width: collectionView.frame.width - plusButtonWidth, height: collectionView.frame.height)
     }
     
     func setupBox(forExercise exercise: Exercise) {
@@ -79,6 +86,351 @@ class ExerciseCell: UITableViewCell, UICollectionViewDelegate {
         }
         
         contentView.addSubview(box)
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout Conformance
+
+extension ExerciseCellBaseClass: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return getSize(for: indexPath)
+    }
+    
+    /// Calculates size of liftCell efficiently without using autolayout
+    private func getSize(for indexPath: IndexPath) -> CGSize {
+        // check dataSource if weighted or not
+        let isWeighted = liftsToDisplay[indexPath.row].isWeighted()
+        typealias cellSizes = Constant.components.collectionViewCells
+        
+        switch isWeighted {
+        case true:
+            return CGSize(width: cellSizes.width, height: cellSizes.weightedHeight)
+        case false:
+            return CGSize(width: cellSizes.width, height: cellSizes.unweightedHeight)
+        }
+    }
+}
+
+// FIXME: - Make longpressable
+
+extension ExerciseCellBaseClass {
+    
+    func addLongpressRecognizer() {
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        lpgr.minimumPressDuration = 0.5
+        lpgr.delaysTouchesBegan = true
+        lpgr.delegate = self
+        self.collectionView.addGestureRecognizer(lpgr)
+    }
+    
+    @objc func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
+        preconditionFailure("handle longpress in subclass")
+    }
+}
+
+// MARK: - ExerciceCell For Workout
+
+class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCell {
+
+    // MARK: Properties
+    
+    var activeLiftCell: LiftCell?
+    
+    // MARK: Initializer
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    init(withExerciseLog exerciseLog: ExerciseLog, lifts: [Lift], reuseIdentifier: String) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        self.exercise = exerciseLog.getDesign()
+        
+        setupBox(forExercise: exercise)
+        setupPlusButton()
+        setupCollectionView()
+        setupConstraints()
+        selectionStyle = .none
+        
+        currentCellExerciseLog = DatabaseFacade.makeExerciseLog()
+        liftsToDisplay = lifts
+        addLongpressRecognizer()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func handleTap(on ip: IndexPath) {
+        
+        guard let cell = self.collectionView(self.collectionView, cellForItemAt: ip) as? LiftCell else {
+            fatalError()
+        }
+        
+        switch cell.isPerformed {
+        case true:
+            cell.focus()
+        case false:
+            print("was not tappable. Selecting another cell")
+            if let firstUnperformedCell = getFirstFreeCell() {
+                print("got first free cell. now FORCE gonna focus it")
+                firstUnperformedCell.forceFocus()
+            } else {
+                insertNewCell()
+            }
+        }
+    }
+    
+    // MARK: Delegate Methods
+    
+    func liftCellTapHandler(at indexPath: IndexPath) {
+        print("received tap in EC, from LC: ", indexPath)
+    }
+    
+    // MARK: Methods
+    
+    @objc func plusButtonHandler() {
+        nextOrNewLiftCell()
+    }
+    
+    func nextOrNewLiftCell() {
+        let firstFreeCell = getFirstFreeCell()
+        if firstFreeCell == nil {
+            insertNewCell()
+        } else {
+            firstFreeCell!.focus()
+        }
+    }
+    
+    func getFirstFreeCell() -> LiftCell? {
+        // use getNextCell until it has no other nextCell, return this last cell
+        
+        guard let firstCell = getFirstCell() else {
+            print("could not cast to LiftCellForWorkouts - returning nil")
+            return nil
+        }
+        
+        var currentCell = firstCell
+        
+        if currentCell.isPerformed == false {
+            return currentCell
+        }
+        
+        while let nextCell = currentCell.getNextCell() {
+            currentCell = nextCell
+            if currentCell.isPerformed == false {
+                return currentCell
+            }
+        }
+        return nil
+    }
+    
+    private func getFirstCell() -> LiftCell? {
+        let ip = IndexPath(row: 0, section: 0)
+        if let firstCell = collectionView.cellForItem(at: ip) as? LiftCell {
+            return firstCell
+        } else {
+            return nil
+        }
+    }
+    
+    private func getIndexPath() -> IndexPath? {
+        guard let indexPath = owner?.owner.tableView.indexPath(for: self) else { return nil }
+        
+        return indexPath
+    }
+    
+    private func insertNewCell() {
+        
+        // make new lift value to be displayed
+        let newLift = DatabaseFacade.makeLift()
+        newLift.owner = self.currentCellExerciseLog
+        newLift.datePerformed = Date() as NSDate
+        newLift.weight = 0
+        newLift.reps = 0
+        
+        // add to dataSource and tableView
+        liftsToDisplay.append(newLift)
+        
+        if let ip = getIndexPath() {
+            owner?.totalLiftsToDisplay[ip.section].append(newLift)
+            owner?.totalLiftsToDisplay[ip.section].oneLinePrint()
+            owner?.exerciseLogsAsArray[ip.section].addToLifts(newLift)
+        }
+        
+        // Make it selected and show keyboard
+        let itemCount = collectionView.numberOfItems(inSection: 0)
+        let newIndexPath = IndexPath(item: itemCount, section: 0)
+        collectionView.insertItems(at: [newIndexPath])
+        collectionView.scrollToItem(at: newIndexPath, at: .right, animated: false)
+        //self.collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        
+        if let cell = self.collectionView.cellForItem(at: newIndexPath) as? LiftCell {
+            cell.focus()
+        }
+    }
+    
+    // Setup methods
+    
+    private func setupPlusButton() {
+        let shimmerHeight = box.boxFrame.shimmer.frame.height
+        plusButton = UIButton(frame: CGRect(x: 0, y: 0, width: shimmerHeight, height: shimmerHeight))
+        
+        guard let plusButton = plusButton else { return }
+        
+        plusButton.setTitle("+", for: .normal)
+        plusButton.setTitleColor(.light, for: .normal)
+        plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
+        plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)
+        
+        plusButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Layout
+        contentView.addSubview(plusButton)
+        
+        NSLayoutConstraint.activate([
+            plusButton.topAnchor.constraint(equalTo: box.boxFrame.topAnchor),
+            plusButton.bottomAnchor.constraint(equalTo: box.boxFrame.bottomAnchor),
+            plusButton.rightAnchor.constraint(equalTo: box.boxFrame.rightAnchor),
+            plusButton.centerYAnchor.constraint(equalTo: box.boxFrame.centerYAnchor),
+            plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor),
+            ])
+        setNeedsLayout()
+    }
+    
+    private func setupConstraints() {
+        translatesAutoresizingMaskIntoConstraints = false
+        box.translatesAutoresizingMaskIntoConstraints = false
+        
+        // contentView
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: box.topAnchor, constant: -verticalInsetForBox),
+            contentView.bottomAnchor.constraint(equalTo: box.bottomAnchor, constant: verticalInsetForBox),
+            contentView.widthAnchor.constraint(equalToConstant: Constant.UI.width),
+            ])
+        
+        // The box
+        NSLayoutConstraint.activate([
+            box.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            box.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
+            box.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 0),
+            ])
+    }
+}
+
+extension ExerciseCellForWorkouts {
+    
+    override func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
+        guard gestureReconizer.state == UIGestureRecognizerState.began else {
+            return
+        }
+        
+        // Get longpressed indexPath
+        let point = gestureReconizer.location(in: collectionView)
+        guard let ip = collectionView.indexPathForItem(at: point) else {
+            return
+        }
+
+        liftsToDisplay.remove(at: ip.row)
+        collectionView.deleteItems(at: [ip])
+        
+        if let section = owner?.owner.tableView.indexPath(for: self)?.section {
+            
+            let liftToRemove = owner?.totalLiftsToDisplay[section][ip.row]
+            owner?.totalLiftsToDisplay[section].remove(at: ip.row)
+            owner?.totalLiftsToDisplay[section].oneLinePrint()
+            
+            DatabaseFacade.delete(liftToRemove!)
+        }
+    }
+}
+
+// MARK: ExerciseCellForWorkouts - UITextFieldDelegate
+
+extension ExerciseCellForWorkouts: UITextFieldDelegate {
+    
+    // MARK: - TextField Delegate
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard let activeLiftCell = activeLiftCell else {
+            preconditionFailure("Field should be assosciated with a cell")
+        }
+
+        owner?.owner.activeTableCell = self
+        activeLiftCell.setPlaceholderVisuals(textField)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(nextButtonTapHandler), name: Notification.Name.keyboardsNextButtonDidPress, object: nil)
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Make sure input is convertable to an integer for Core Data
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeLiftCell?.validateFields()
+        NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
+    }
+    
+    // MARK: Clean this
+    
+    @objc func nextButtonTapHandler() {
+        // Make sure cell nextable
+        guard let activeLiftCell = activeLiftCell as? NextableLift else {
+            preconditionFailure("Was not nextable")
+        }
+        // Let cell handle
+        activeLiftCell.NextHandler()
+    }
+}
+
+// MARK: ExerciseCellForWorkouts - UICollectionViewDataSource
+
+extension ExerciseCellForWorkouts: UICollectionViewDataSource {
+    
+    // numberOfItemsInSection
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return liftsToDisplay.count
+    }
+    
+    // cellForItemAt
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let liftToDisplay = liftsToDisplay[indexPath.row]
+        
+        var cell: LiftCell!
+        
+        if self.exercise.isWeighted() {
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.weighted, for: indexPath) as! WeightedLiftCell
+            
+        } else {
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.unweighted, for: indexPath) as! UnweightedLiftCell
+        }
+        
+        cell.superTableCell = self
+        
+        let liftIsPerformed = liftToDisplay.hasBeenPerformed
+        
+        let repFromLift = liftToDisplay.reps
+        cell.setReps(repFromLift)
+        cell.isPerformed = liftIsPerformed
+        
+        if let c = cell as? WeightedLiftCell {
+            c.setWeight(liftToDisplay.weight)
+            if liftIsPerformed {
+                c.makeWeightTextBold()
+            }
+        }
+        
+        // Make bold if it is performed
+        if liftIsPerformed {
+            cell.makeRepTextBold()
+        }
+        
+        return cell
     }
 }
 

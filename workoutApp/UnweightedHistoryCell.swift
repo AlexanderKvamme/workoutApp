@@ -22,7 +22,7 @@ class UnweightedHistoryLiftCell: LiftCell {
         
         setupRepsField()
         setupButtonCoveringCell()
-        addLongPressRecognizer()
+//        addLongPressRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,30 +33,27 @@ class UnweightedHistoryLiftCell: LiftCell {
     
     // MARK: Handlers and recognizers
     
-    @objc override func repsFieldTapHandler() {
-        print("tapped")
-    }
     
-    // Remove cell when user uses long press on it
-    @objc override func longPressOnCellHandler(_ gesture: UILongPressGestureRecognizer) {
-        // TODO: Maybe let user edit or delete lifts here
-        if gesture.state == .began {
-            print("Long press detected: Decide what to do")
-        }
-    }
+    // FIXME: - Deal with this
+//    @objc override func longPressOnCellHandler(_ gesture: UILongPressGestureRecognizer) {
+//        // TODO: let user edit or delete lifts here
+//        if gesture.state == .began {
+//            print("FIXME: Decide what to do")
+//        }
+//    }
     
     // MARK: Helper methods
     
-    private func addLongPressRecognizer() {
-        let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
-        overlayingButton.addGestureRecognizer(longpressRecognizer)
-    }
+//    private func addLongPressRecognizer() {
+//        let longpressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressOnCellHandler(_:)))
+//        overlayingButton.addGestureRecognizer(longpressRecognizer)
+//    }
     
     // MARK: Setup functions
     
     private func setupButtonCoveringCell() {
         overlayingButton = UIButton(frame: repsField.frame)
-        overlayingButton.addTarget(self, action: #selector(repsFieldTapHandler), for: .touchUpInside)
+        overlayingButton.addTarget(self, action: #selector(focus), for: .touchUpInside)
         addSubview(overlayingButton)
     }
     
@@ -74,10 +71,7 @@ class UnweightedHistoryLiftCell: LiftCell {
     // TODO: - Finish implementing the weight label to allow weighted exercises
     
     func setWeight(_ n: Int16) {
-        weightLabel = UILabel(frame: CGRect(x: repsField.frame.minX,
-                                            y: repsField.frame.maxY,
-                                            width: repsField.frame.width,
-                                            height: 20))
+        weightLabel = UILabel(frame: CGRect(x: repsField.frame.minX, y: repsField.frame.maxY, width: repsField.frame.width, height: 20))
         
         if let weightLabel = weightLabel {
             weightLabel.text = String(n)

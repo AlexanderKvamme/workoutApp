@@ -437,7 +437,9 @@ final class DatabaseFacade {
             let predicate = NSPredicate(format: "name == %@", name.uppercased())
             fetchRequest.predicate = predicate
             let result = try context.fetch(fetchRequest)
-            workoutStyle = result[0] as? WorkoutStyle
+            if result.count > 0 {
+                workoutStyle = result.first as? WorkoutStyle
+            }
         } catch let error as NSError {
             print("could not getWorkoutStyle: \(error.localizedDescription)")
         }

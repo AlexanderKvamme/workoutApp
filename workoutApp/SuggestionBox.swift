@@ -43,7 +43,7 @@ class SuggestionBox: Box {
             // Has been performed before
             let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
             let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
-            subHeaderText = "\(shortTimeInterval) SINCE LAST WORKOUT OF:"
+            subHeaderText = "\(shortTimeInterval) SINCE:"
         } else {
             subHeaderText =  "YET TO BE WORKED OUT"
         }

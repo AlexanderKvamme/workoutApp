@@ -938,10 +938,7 @@ fileprivate class TallExerciseProgressBoxFrame: BoxFrame {
     override init(){
         super.init()
         
-        print("making TallExerciseProgressBoxFrame")
-        let tallBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
-        //                             height: Constant.components.Box.ExerciseProgress.height)
-            height: Constant.components.Box.TallExerciseProgress.height)
+        let tallBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides, height: Constant.components.Box.TallExerciseProgress.height)
         // Colored view behind shimmer
         background.frame = CGRect(x: 0,
                                   y: 0,
