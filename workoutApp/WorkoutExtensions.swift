@@ -45,6 +45,9 @@ extension Workout {
     }
     
     func setMuscles(_ muscles: [Muscle]) {
+        
+        // FIXME: - not working frmo exerciseEditor
+        print("tryna set muscles")
 
         for muscle in muscles {
             self.addToMusclesUsed(muscle)

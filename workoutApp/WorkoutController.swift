@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Class
 
-class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isStringReceiver {
+class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // MARK: - Properties
     
@@ -20,7 +20,6 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
     
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // used to receiving of time and name from pickers
-    var receiveMuscles: (([Muscle]) -> ()) = { _ in }
     
     // Computed properties
     
@@ -126,10 +125,7 @@ class WorkoutController: UIViewController, MuscleReceiver, ExerciseReceiver, isS
         let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
         musclePicker.muscleReceiver = self
         
-        receiveMuscles = { musclesReceived in
-            self.currentMuscles = musclesReceived
-            self.muscleSelecter.setBottomText(self.currentMuscles.getName())
-        }
+
         
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
@@ -200,4 +196,19 @@ extension WorkoutController {
         return self.currentExercises.count > 0
     }
 }
+
+extension WorkoutController: MuscleReceiver {
+    func receive(muscles: [Muscle]) {
+        self.currentMuscles = muscles
+        self.muscleSelecter.setBottomText(muscles.getName())
+    }
+}
+
+
+
+
+
+
+
+
 

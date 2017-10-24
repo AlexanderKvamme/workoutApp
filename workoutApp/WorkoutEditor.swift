@@ -60,7 +60,7 @@ class WorkoutEditor: WorkoutController {
         view.addSubview(header)
         view.addSubview(workoutStyleSelecter)
         view.addSubview(muscleSelecter)
-        view.addSubview(restSelectionBox)
+//        view.addSubview(restSelectionBox)
         view.addSubview(exerciseSelecter)
         view.addSubview(footer)
     }

@@ -13,12 +13,11 @@ protocol NewExerciseReceiver: class {
     func receiveNewExercise(_ exercise: Exercise)
 }
 
-class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver, isStringReceiver {
+class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // MARK: - Properties
     
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
-    var receiveMuscles: (([Muscle]) -> ())  = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // Required method to handle the receiving of a final selection of name/time pickers
     
     let halfScreenWidth = Constant.UI.width/2
@@ -134,11 +133,6 @@ class NewExerciseController: UIViewController, ExerciseReceiver, MuscleReceiver,
     
         musclePicker.muscleReceiver = self
         
-        receiveMuscles = { musclesReceived in
-            self.currentMuscles = musclesReceived
-            self.muscleSelecter.setBottomText(musclesReceived.getName())
-        }
-        
         // When receiving a selection of workout musclegroup
         stringReceivedHandler = {
             s in
@@ -207,6 +201,13 @@ extension NewExerciseController: PickableReceiver {
         default:
             print("Was something else entirely")
         }
+    }
+}
+
+extension NewExerciseController: MuscleReceiver {
+    func receive(muscles: [Muscle]) {
+        self.currentMuscles = muscles
+        self.muscleSelecter.setBottomText(muscles.getName())
     }
 }
 

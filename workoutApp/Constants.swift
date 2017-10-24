@@ -103,7 +103,7 @@ enum Constant {
         }
         
         enum PickerLabelStack {
-            static let height: CGFloat = 150
+            static let height: CGFloat = 90
         }
         
         enum SelectionVC {

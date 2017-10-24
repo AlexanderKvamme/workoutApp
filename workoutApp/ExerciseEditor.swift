@@ -11,18 +11,17 @@ import UIKit
 
 // MARK: Class
 
-final class ExerciseEditor: UIViewController, MuscleReceiver {
+final class ExerciseEditor: UIViewController {
     
     // MARK: - Properties
     
-    fileprivate var exercise: Exercise!
-    fileprivate var exerciseStyle: ExerciseStyle!
-    fileprivate var currentMuscles: [Muscle]!
-    fileprivate var initialName: String!
+    fileprivate var exercise: Exercise
+    fileprivate var currentExerciseStyle: ExerciseStyle
+    fileprivate var currentMuscles: [Muscle]
+    fileprivate var currentMeasurementStyle: MeasurementStyle
+    fileprivate var initialName: String
     fileprivate var didChangeName = false
-    
-    var receiveMuscles: (([Muscle]) -> ()) = { _ in }
-    
+
     // Components
     fileprivate var header: TwoRowHeader = {
         let headerLabelStack = TwoRowHeader(topText: "Current exercise name", bottomText: "NEW NAME")
@@ -34,15 +33,22 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
     fileprivate var muscleSelecter: PickerLabelStack = {
         let selecter = PickerLabelStack(topText: "MUSCLE", bottomText: "NAME")
         selecter.button.addTarget(self, action: #selector(editMuscle), for: .touchUpInside)
-    
+        
         return selecter
     }()
     
     fileprivate var exerciseStyleSelecter: PickerLabelStack = {
-        let selector = PickerLabelStack(topText: "TYPE", bottomText: "NAME")
-        selector.button.addTarget(self, action: #selector(editExerciseStyle), for: .touchUpInside)
+        let selecter = PickerLabelStack(topText: "STYLE", bottomText: "NAME")
+        selecter.button.addTarget(self, action: #selector(editExerciseStyle), for: .touchUpInside)
         
-        return selector
+        return selecter
+    }()
+    
+    fileprivate var measurementStyleSelecter: PickerLabelStack = {
+        let selecter = PickerLabelStack(topText: "MEASUREMENT", bottomText: "NAME")
+        selecter.button.addTarget(self, action: #selector(editMeasurementStyle), for: .touchUpInside)
+        
+        return selecter
     }()
     
     private var deletionBox: DeletionBox = {
@@ -66,23 +72,19 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
     // MARK: - Initializers
     
     init(for exercise: Exercise) {
-        super.init(nibName: nil, bundle: nil)
+        
         self.exercise = exercise
-        self.exerciseStyle = exercise.style
+        self.currentExerciseStyle = exercise.getExerciseStyle()
+        self.currentMeasurementStyle = exercise.getMeasurementStyle()
         self.currentMuscles = exercise.getMuscles()
-        self.initialName = exercise.name
+        self.initialName = exercise.getName()
         
-        guard let exerciseName = exercise.name,
-            let exerciseStyleName = exerciseStyle.name else {
-            return
-        }
+        super.init(nibName: nil, bundle: nil)
         
-        // Set labels with current exercise/muscle/style
-//        let muscleName = currentMuscle.name
-        let muscleName = currentMuscles.getName()
-        header.setTopText(exerciseName)
-        muscleSelecter.setBottomText(muscleName)
-        exerciseStyleSelecter.setBottomText(exerciseStyleName)
+        // Set labels with current exercise/muscle/styletM        header.setTopText(exercise.getName())
+        muscleSelecter.setBottomText(currentMuscles.getName())
+        exerciseStyleSelecter.setBottomText(currentExerciseStyle.getName())
+        measurementStyleSelecter.setBottomText(currentMeasurementStyle.getName())
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -101,15 +103,17 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
     private func addSubViewsAndConstraints() {
         
         view.addSubview(header)
-        view.addSubview(deletionBox)
         view.addSubview(exerciseStyleSelecter)
         view.addSubview(muscleSelecter)
+        view.addSubview(measurementStyleSelecter)
+        view.addSubview(deletionBox)
         view.addSubview(footer)
         
         // Header
         self.header.translatesAutoresizingMaskIntoConstraints = false
         self.exerciseStyleSelecter.translatesAutoresizingMaskIntoConstraints = false
         self.muscleSelecter.translatesAutoresizingMaskIntoConstraints = false
+        self.measurementStyleSelecter.translatesAutoresizingMaskIntoConstraints = false
         self.deletionBox.translatesAutoresizingMaskIntoConstraints = false
         self.footer.translatesAutoresizingMaskIntoConstraints = false
         
@@ -126,9 +130,13 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
             muscleSelecter.topAnchor.constraint(equalTo: header.bottomAnchor),
             muscleSelecter.rightAnchor.constraint(equalTo: view.rightAnchor),
             
+            // Measurement style
+            measurementStyleSelecter.topAnchor.constraint(equalTo: exerciseStyleSelecter.bottomAnchor),
+            measurementStyleSelecter.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
             // Deletion
             deletionBox.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            deletionBox.topAnchor.constraint(equalTo: muscleSelecter.bottomAnchor, constant: 20),
+            deletionBox.topAnchor.constraint(equalTo: measurementStyleSelecter.bottomAnchor, constant: 20),
             
             // Footer
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -145,8 +153,10 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
     }
     
     @objc private func editMuscle() {
-        let musclePicker = MusclePickerController(withPreselectedMuscles: exercise.getMuscles())
+        print("will edit muscle")
+        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
         musclePicker.muscleReceiver = self
+        print("gonna show musclepicker")
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
@@ -156,6 +166,15 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
         let stylePicker = PickerController(withPicksFrom: allStyles, withPreselection: exercise.style!)
         stylePicker.pickableReceiver = self
         navigationController?.pushViewController(stylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+    }
+    
+    @objc private func editMeasurementStyle() {
+        print("would edit MeasurementStyle")
+        let allMeasurementStyles = DatabaseFacade.fetchMeasurementStyles()
+        let measurementStylePicker = PickerController(withPicksFrom: allMeasurementStyles, withPreselection: exercise.measurementStyle!)
+        measurementStylePicker.pickableReceiver = self
+        
+        navigationController?.pushViewController(measurementStylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func editName() {
@@ -188,8 +207,9 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
             exercise.name = header.getBottomText()
         }
         
-        exercise.style = exerciseStyle
+        exercise.style = currentExerciseStyle
         exercise.setMuscles(currentMuscles)
+        exercise.measurementStyle = currentMeasurementStyle
         DatabaseFacade.saveContext()
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
@@ -198,19 +218,29 @@ final class ExerciseEditor: UIViewController, MuscleReceiver {
 // MARK: - Extensions
 
 extension ExerciseEditor: PickableReceiver {
-    func receive(pickable :PickableEntity) {
+    func receive(pickable: PickableEntity) {
         
         // update current exercise with the new object
         switch pickable {
-        case is [Muscle]:
-            currentMuscles = pickable as? [Muscle]
-            muscleSelecter.setBottomText(pickable.name!)
         case is ExerciseStyle:
-            exerciseStyle = pickable as? ExerciseStyle
-            exerciseStyleSelecter.setBottomText(pickable.name!)
+            guard let receivedExerciseStyle = pickable as? ExerciseStyle else { fatalError() }
+            currentExerciseStyle = receivedExerciseStyle
+            exerciseStyleSelecter.setBottomText(receivedExerciseStyle.getName())
+        case is MeasurementStyle:
+            guard let receivedMeasurementStyle = pickable as? MeasurementStyle else { fatalError() }
+            currentMeasurementStyle = receivedMeasurementStyle
+            measurementStyleSelecter.setBottomText(receivedMeasurementStyle.getName())
         default:
-            print("Received a pickable not yet implemented")
+            preconditionFailure("Received a pickable not yet implemented")
         }
+    }
+}
+
+extension ExerciseEditor: MuscleReceiver {
+    func receive(muscles: [Muscle]) {
+        currentMuscles = muscles
+        muscleSelecter.setBottomText(muscles.getName())
+        print("received muscles: ", muscles)
     }
 }
 

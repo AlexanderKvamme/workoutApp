@@ -24,6 +24,8 @@
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */; };
 		DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */; };
+		DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */; };
+		DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */; };
 		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
 		DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1131EE9435A00EBB7B7 /* InputView.swift */; };
 		DD1EA1601EEC1CB200EBB7B7 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */; };
@@ -168,6 +170,8 @@
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackViewExtensions.swift; sourceTree = "<group>"; };
 		DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerProtocols.swift; sourceTree = "<group>"; };
+		DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementStyleExtensions.swift; sourceTree = "<group>"; };
+		DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		DD1EA1131EE9435A00EBB7B7 /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
@@ -715,9 +719,11 @@
 			isa = PBXGroup;
 			children = (
 				DDB5FF3A1F4B806300202705 /* PickableEntity.swift */,
+				DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */,
 				DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */,
 				DD4025D61F87DB3F00A83D45 /* ExerciseLogExtensions.swift */,
 				DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */,
+				DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */,
 				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
 				DD642F961F75308A003D1177 /* MuscleExtensions.swift */,
 				DD49BAB41F98C29A001AFAE3 /* LiftExtensions.swift */,
@@ -1029,6 +1035,7 @@
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,
 				DDF1F1EC1F07AC27001A6F0C /* LiftCell.swift in Sources */,
 				DD71B5881F79694C00D8E104 /* Exercise+CoreDataProperties.swift in Sources */,
+				DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */,
 				DDE55B9B1F2FB55300ED1D15 /* WorkoutLog.swift in Sources */,
 				DDD73FC51F700681006B905D /* TimeIntervalExtensions.swift in Sources */,
 				DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */,
@@ -1041,6 +1048,7 @@
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */,
 				DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */,
+				DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */,
 				DD71B5801F79694C00D8E104 /* WorkoutLog+CoreDataClass.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,
 				DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */,

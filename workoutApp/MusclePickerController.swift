@@ -286,11 +286,15 @@ class MusclePickerController: UIViewController {
     
     @objc func confirmAndDismiss() {
         
+        print("confirming. gonna test count and then send back muscles")
+        
         guard selectedMuscles.count > 0 else {
             navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+            print("failed")
             return
         }
-        
+        print("sending back: ", selectedMuscles)
+        print("musclereceiver: ", muscleReceiver)
         muscleReceiver?.receive(muscles: selectedMuscles)
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }

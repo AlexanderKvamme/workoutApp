@@ -46,11 +46,13 @@ extension ExerciseReceiver {
 // MARK: - Muscle sender and receiver
 
 protocol MuscleReceiver: class {
-    var receiveMuscles: (([Muscle]) -> ()) { get set }
+//    var receiveMuscles: (([Muscle]) -> ()) { get set }
+    func receive(muscles: [Muscle])
 }
 
-extension MuscleReceiver {
-    func receive(muscles: [Muscle]){
-        receiveMuscles(muscles)
-    }
-}
+//extension MuscleReceiver {
+//    func receive(muscles: [Muscle]){
+//        receiveMuscles(muscles)
+//    }
+//}
+

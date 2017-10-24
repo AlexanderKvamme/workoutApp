@@ -15,9 +15,7 @@ extension Exercise {
     }
     
     func setMuscles(_ muscles: [Muscle]) {
-        for muscle in muscles {
-            addToMusclesUsed(muscle)
-        }
+        musclesUsed = NSSet(array: muscles)
     }
     
     func getName() -> String {
@@ -31,6 +29,20 @@ extension Exercise {
         }
         
         return Array(muscles) as! [Muscle]
+    }
+    
+    func getExerciseStyle() -> ExerciseStyle {
+        guard let exerciseStyle = self.style else { fatalError() }
+        
+        return exerciseStyle
+    }
+    
+    func getMeasurementStyle() -> MeasurementStyle {
+        guard let measurementStyle = measurementStyle else {
+            fatalError()
+        }
+        
+        return measurementStyle
     }
     
     func isWeighted() -> Bool {
