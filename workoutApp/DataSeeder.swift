@@ -26,6 +26,7 @@ final class DataSeeder {
     private let defaultExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
     private let defaultMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
     
+    
     private let context: NSManagedObjectContext
     
     // Properties

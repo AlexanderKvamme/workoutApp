@@ -602,20 +602,6 @@
 			name = "For History Table";
 			sourceTree = "<group>";
 		};
-		DD77AD131F8F83BD007A6759 /* For Workout Table */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "For Workout Table";
-			sourceTree = "<group>";
-		};
-		DD7C07011F89128B00EAC008 /* TODO - Weighted Cells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "TODO - Weighted Cells";
-			sourceTree = "<group>";
-		};
 		DD90AF2A1EDED25600A560F0 /* Refresh Control */ = {
 			isa = PBXGroup;
 			children = (
@@ -830,13 +816,11 @@
 				DDF1F1EB1F07AC27001A6F0C /* LiftCell.swift */,
 				DDCBF83C1F9622430044F545 /* LiftCellDelegate.swift */,
 				DD49BAB21F98A964001AFAE3 /* Nextable.swift */,
-				DD77AD131F8F83BD007A6759 /* For Workout Table */,
 				DD77AD121F8F839B007A6759 /* For History Table */,
 				DD4025D21F87AF4600A83D45 /* WeightedLiftCell.swift */,
 				DD4025D41F87AF6A00A83D45 /* UnweightedLiftCell.swift */,
 				DD7C06FD1F88FA6800EAC008 /* UnweightedHistoryCell.swift */,
 				DD7C06FF1F89118100EAC008 /* WeightedHistoryCell.swift */,
-				DD7C07011F89128B00EAC008 /* TODO - Weighted Cells */,
 			);
 			name = "CollectionView Cells / Lifts";
 			sourceTree = "<group>";

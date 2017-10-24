@@ -46,10 +46,7 @@ extension Exercise {
     }
     
     func isWeighted() -> Bool {
-        guard let styleName = style?.name else {
-            fatalError("Had no style")
-        }
-        return styleName == "WEIGHTED"
+        return getMeasurementStyle().getName() == Constant.measurementStyleNames.weighted
     }
 }
 

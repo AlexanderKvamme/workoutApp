@@ -199,7 +199,7 @@ extension NewExerciseController: PickableReceiver {
             currentMeasurementStyle = pickable as! MeasurementStyle
             measurementSelecter.setBottomText(pickable.name!)
         default:
-            print("Was something else entirely")
+            preconditionFailure("Was something else entirely")
         }
     }
 }

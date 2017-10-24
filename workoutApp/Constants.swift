@@ -24,6 +24,12 @@ enum Constant {
         static let measurement = "SETS"
     }
     
+    enum measurementStyleNames {
+        static let sets = "SETS"
+        static let weighted = "WEIGHTED SETS"
+        static let time = "TIME"
+    }
+    
     enum UI {
         static let width = UIScreen.main.bounds.width
         static let height = UIScreen.main.bounds.height

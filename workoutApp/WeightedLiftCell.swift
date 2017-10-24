@@ -31,12 +31,6 @@ class WeightedLiftCell: LiftCell {
         }
     }
     
-//    override var isPerformed: Bool {
-//        didSet {
-//
-//        }
-//    }
-    
     // MARK: - Initializers
     
     override init(frame: CGRect) {
@@ -153,6 +147,8 @@ class WeightedLiftCell: LiftCell {
     }
     
     private func saveWeightToDataSource(_ double: Double) {
+        
+        print("saveWeightToDataSource()")
     
         guard let indexPath = superTableCell.collectionView.indexPath(for: self) else {
             fatalError("Unable to retrieve indexPath")

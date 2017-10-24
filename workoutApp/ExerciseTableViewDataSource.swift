@@ -65,29 +65,25 @@ class ExerciseTableDataSource: NSObject, UITableViewDataSource {
         
         dataSourceWorkoutLog.dateEnded = Date() as NSDate
         
-        // FIXME: - uncomment to make sure that the workout has exercises before its made
-        
         // Delete or save
-//        if countPerformedExercises() == 0 {
-//            // present error
-//            let modal = CustomAlertView(type: .error, messageContent: "Bro, you have to actually work out to be able to log an exercise!")
-//            modal.show(animated: true)
-//        } else {
+        if countPerformedExercises() == 0 {
+            // present error
+            let modal = CustomAlertView(type: .error, messageContent: "You have to actually work out to be able to log an exercise!")
+            modal.show(animated: true)
+        } else {
             // Save and pop viewController
             updateLatestUseOfMuscle()
             deleteUnperformedLifts()
             
             if let workoutDesign = dataSourceWorkoutLog.design {
                 workoutDesign.addPerformance(dataSourceWorkoutLog)
-            } else {
-                print("could not unwrap workoutDesign")
             }
             
             dataSourceWorkoutLog.markAsLatestperformence()
             owner.navigationController?.popViewController(animated: true)
             let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
-//        }
+        }
     }
     
     // Swap method used when moving cells
@@ -213,6 +209,7 @@ private extension ExerciseTableDataSource {
     
     // Convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
     func setupUsingWorkoutLog(previousPerformance: WorkoutLog) {
+        print("setupUsingWorkoutLog")
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog and make it identical to the previous one
@@ -225,6 +222,7 @@ private extension ExerciseTableDataSource {
     }
     
     func setupUsingWorkout(withDesign workout: Workout) {
+        print("setupUsingWorkout")
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog to later to later be updated
@@ -267,7 +265,12 @@ private extension ExerciseTableDataSource {
                             newLift.reps = l.reps
                             newLift.datePerformed = Date() as NSDate
                             newLift.time = l.time
-                            newLift.weight = l.weight
+                            print("checking if weighted")
+                            if exercise.isWeighted() {
+                                newLift.weight = l.weight
+                            } else {
+                                newLift.weight = 0
+                            }
                             newLift.owner = newExerciseLog
                             
                             liftCopies.append(newLift)
@@ -343,7 +346,13 @@ private extension ExerciseTableDataSource {
                 newLift.reps = lift.reps
                 newLift.datePerformed = lift.datePerformed
                 newLift.time = lift.time
-                newLift.weight = lift.weight
+                
+                // If weighted, set placeholder weight equal to previous lift's weights
+                if exerciseLog.getDesign().isWeighted() {
+                    newLift.weight = lift.weight
+                } else {
+                    newLift.weight = 0
+                }
                 newLift.owner = newExerciseLog
                 
                 liftCopies.append(newLift)
