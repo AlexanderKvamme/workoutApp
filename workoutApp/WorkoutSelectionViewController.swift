@@ -14,6 +14,8 @@ import CoreData
 /// WorkoutSelectionViewController is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
 class WorkoutSelectionViewController: SelectionViewController {
 
+    let plusButton = PlusButton()
+    
     // MARK: - Initializers
     
     init() {
@@ -138,17 +140,15 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     private func addNewWorkoutButton() {
         
-        let plusButton = ReusableComponents.makePlusButton()
-        
         if buttons.count > 0 {
             // Already has selection choices, so place button under the header
+            let plusButtonTopSpacing = Constant.UI.headers.headerToPlusButtonSpacing
+            
             view.addSubview(plusButton)
             plusButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                plusButton.heightAnchor.constraint(equalToConstant: 20),
-                plusButton.widthAnchor.constraint(equalToConstant: 20),
                 plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                plusButton.centerYAnchor.constraint(equalTo: header.bottomAnchor, constant: 20),
+                plusButton.centerYAnchor.constraint(equalTo: header.bottomAnchor, constant: plusButtonTopSpacing),
                 ])
         } else {
             // add to stackView as only button

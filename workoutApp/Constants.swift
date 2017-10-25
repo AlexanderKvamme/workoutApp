@@ -33,6 +33,10 @@ enum Constant {
     enum UI {
         static let width = UIScreen.main.bounds.width
         static let height = UIScreen.main.bounds.height
+        
+        enum headers {
+            static let headerToPlusButtonSpacing: CGFloat = 14
+        }
     }
     
     enum alpha {
@@ -58,7 +62,12 @@ enum Constant {
     
     enum components {
         
+        enum plusButton {
+            static let dimensions: CGFloat = 20
+        }
+        
         enum headers {
+            
             enum pickerHeader {
                 static var topSpacing: CGFloat = 100
             }

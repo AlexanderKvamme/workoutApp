@@ -15,7 +15,7 @@ class HistorySelectionViewController: SelectionViewController {
     // MARK: - Initializers
     
     init() {
-        super.init(header: SelectionViewHeader(header: "Recent Workouts", subheader: "History"))
+        super.init(header: SelectionViewHeader(header: "Workout", subheader: "History"))
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -48,7 +48,7 @@ class MusclePickerController: UIViewController {
     }()
     
     private lazy var plusButton: UIButton = {
-        let image = UIImage(named: "newButton")?.withRenderingMode(.alwaysTemplate)
+        let image = UIImage(named: "plusButton")?.withRenderingMode(.alwaysTemplate)
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
         button.setImage(image, for: .normal)
         button.alpha = Constant.alpha.faded
@@ -119,7 +119,7 @@ class MusclePickerController: UIViewController {
         view.addSubview(header)
         view.addSubview(footer)
         view.addSubview(table)
-        view.addSubview(plusButton)
+//        view.addSubview(plusButton)
         
         NSLayoutConstraint.activate([
             // Footer
@@ -131,10 +131,10 @@ class MusclePickerController: UIViewController {
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             // + button
-            plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
-            plusButton.heightAnchor.constraint(equalToConstant: 25),
-            plusButton.widthAnchor.constraint(equalToConstant: 25),
+//            plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
+//            plusButton.heightAnchor.constraint(equalToConstant: 25),
+//            plusButton.widthAnchor.constraint(equalToConstant: 25),
             
             // Table
             table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),

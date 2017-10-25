@@ -26,9 +26,9 @@ class SelectionViewHeader: UIView {
         headerLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
         headerLabel.textAlignment = .center
         headerLabel.textColor = UIColor.secondary
-        headerLabel.alpha = Constant.alpha.faded
         headerLabel.sizeToFit()
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerLabel.applyCustomAttributes(.medium)
         
         subheaderLabel.text = subheader.uppercased()
         subheaderLabel.font = UIFont.custom(style: .bold, ofSize: .big)

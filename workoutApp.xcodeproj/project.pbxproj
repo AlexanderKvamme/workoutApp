@@ -115,7 +115,7 @@
 		DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB5FF3A1F4B806300202705 /* PickableEntity.swift */; };
 		DDB5FF3D1F4CC99B00202705 /* ExerciseEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB5FF3C1F4CC99B00202705 /* ExerciseEditor.swift */; };
 		DDBEE8AD1F50695900A3BDA7 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */; };
-		DDBFCA621F2CA43000ABB241 /* ReusableComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBFCA611F2CA43000ABB241 /* ReusableComponents.swift */; };
+		DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBFCA611F2CA43000ABB241 /* PlusButton.swift */; };
 		DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */; };
 		DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */; };
 		DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC660B01EE6BE9900122543 /* DrawingMethods.swift */; };
@@ -263,7 +263,7 @@
 		DDB5FF3A1F4B806300202705 /* PickableEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickableEntity.swift; sourceTree = "<group>"; };
 		DDB5FF3C1F4CC99B00202705 /* ExerciseEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseEditor.swift; sourceTree = "<group>"; };
 		DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
-		DDBFCA611F2CA43000ABB241 /* ReusableComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableComponents.swift; sourceTree = "<group>"; };
+		DDBFCA611F2CA43000ABB241 /* PlusButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
 		DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityHelperExtensions.swift; sourceTree = "<group>"; };
 		DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sorting Functions.swift"; sourceTree = "<group>"; };
 		DDC660B01EE6BE9900122543 /* DrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingMethods.swift; sourceTree = "<group>"; };
@@ -353,6 +353,7 @@
 		DD0D42D11F4CCE2900502C02 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DDBFCA611F2CA43000ABB241 /* PlusButton.swift */,
 				DD151DFD1ED1DD6F0014DBC1 /* Box Abstract Factory */,
 				DDA4A3A21F5ECD630026882A /* Footer */,
 				DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */,
@@ -543,7 +544,6 @@
 			isa = PBXGroup;
 			children = (
 				DD585D5C1EC4D7CC00962B19 /* Colors.swift */,
-				DDBFCA611F2CA43000ABB241 /* ReusableComponents.swift */,
 				DD585D5E1EC4DC3400962B19 /* Fonts.swift */,
 				DD59B0931EE1C1FA006443D4 /* Typography.swift */,
 				DDC660B01EE6BE9900122543 /* DrawingMethods.swift */,
@@ -974,7 +974,7 @@
 				DD71B58A1F79694C00D8E104 /* ExerciseLog+CoreDataProperties.swift in Sources */,
 				DD71B58F1F79694C00D8E104 /* WorkoutLog+CoreDataProperties.swift in Sources */,
 				DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */,
-				DDBFCA621F2CA43000ABB241 /* ReusableComponents.swift in Sources */,
+				DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */,
 				DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				DD77AD151F8F9CF1007A6759 /* CellIdentifiers.swift in Sources */,

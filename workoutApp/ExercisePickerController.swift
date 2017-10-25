@@ -54,11 +54,7 @@ class ExercisePickerController: UIViewController {
     }()
     
     private lazy var plusButton: UIButton = {
-        let image = UIImage(named: "newButton")?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        button.setImage(image, for: .normal)
-        button.alpha = Constant.alpha.faded
-        button.tintColor = UIColor.faded
+        let button = PlusButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(presentNewExerciseController), for: .touchUpInside)
         
@@ -150,6 +146,8 @@ class ExercisePickerController: UIViewController {
         view.addSubview(table)
         view.addSubview(plusButton)
         
+        let plusButtonTopSpacing = Constant.UI.headers.headerToPlusButtonSpacing
+        
         NSLayoutConstraint.activate([
             // Footer
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -161,9 +159,7 @@ class ExercisePickerController: UIViewController {
             
             // + button
             plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 16),
-            plusButton.heightAnchor.constraint(equalToConstant: 25),
-            plusButton.widthAnchor.constraint(equalToConstant: 25),
+            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: plusButtonTopSpacing),
             
             // Table
             table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),
