@@ -23,12 +23,8 @@ extension hasNextCell where Self: ExerciseCellBaseClass {
         ip.row += 1
         
         let nextCollectionViewCell = collectionView.cellForItem(at: ip) as? LiftCell
-        if let nextCell = nextCollectionViewCell {
-            return nextCell
-        } else {
-            print("there was no next cell, so returning nil")
-            return nil
-        }
+        
+        return nextCollectionViewCell ?? nil
     }
 }
 
@@ -45,11 +41,7 @@ extension hasPreviousCell where Self: ExerciseCellBaseClass {
         ip.row -= 1
         
         let previousCollectionViewCell = collectionView.cellForItem(at: ip) as? LiftCell
-        if let previousCell = previousCollectionViewCell {
-            return previousCell
-        } else {
-            return nil
-        }
+        return previousCollectionViewCell ?? nil
     }
 }
 
