@@ -21,11 +21,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         
         delegate = self
-        
-        // MARK: Progress
-        
-//        let progressController = TestViewController()
-        
+
         // MARK: History
         
         // Embed to enable user to navigate back through stack
@@ -49,6 +45,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 2)
 
         let tabBarItems = tabBar.items! as [UITabBarItem]
+        
         for item in tabBarItems {
             item.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         }

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		93BA6FD1343231141B90EC94 /* Pods_workoutApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF8FB46A79315CA483AE7121 /* Pods_workoutApp.framework */; };
-		DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */; };
 		DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */; };
@@ -154,7 +153,6 @@
 /* Begin PBXFileReference section */
 		63E346831A7CE52FC6E0BEE0 /* Pods-workoutApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp.debug.xcconfig"; sourceTree = "<group>"; };
 		70BE2069C38F0C976927ED6C /* Pods-workoutApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp.release.xcconfig"; sourceTree = "<group>"; };
-		DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarControllerDelegate.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerController.swift; sourceTree = "<group>"; };
 		DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowHeader.swift; sourceTree = "<group>"; };
@@ -555,7 +553,6 @@
 			isa = PBXGroup;
 			children = (
 				DD585D681EC5B27B00962B19 /* CustomTabBarController.swift */,
-				DD007E061F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift */,
 				DD585D6A1EC5E03800962B19 /* tabBarSelectionIndicatorView.swift */,
 			);
 			name = "Tab bar";
@@ -980,7 +977,6 @@
 				DD77AD151F8F9CF1007A6759 /* CellIdentifiers.swift in Sources */,
 				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
-				DD007E071F4A3BC100DCF01D /* CustomTabBarControllerDelegate.swift in Sources */,
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */,
 				DD7C07001F89118100EAC008 /* WeightedHistoryCell.swift in Sources */,

@@ -51,7 +51,7 @@ class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
         // The Three Stacks
         box.content?.contentStack?.firstStack.setBottomText(String(liftCount))
         box.content?.contentStack?.secondStack.setBottomText(timeSpent)
-        box.content?.contentStack?.thirdStack.setBottomText("TST")
+        box.content?.contentStack?.thirdStack.setBottomText("N/A")
     }
     
     func addViewsAndConstraints() {
