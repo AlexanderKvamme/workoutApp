@@ -78,7 +78,7 @@ final class ProfileController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             //scrollView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5), //
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
             scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -93,8 +93,9 @@ final class ProfileController: UIViewController {
         stackView = UIStackView(frame: CGRect.zero)
         stackView.backgroundColor = .dark
         stackView.axis = .vertical
-        stackView.alignment = .fill
+        stackView.alignment = .center
         stackView.distribution = .equalSpacing
+        stackView.spacing = 24
         
         stackView.clipsToBounds = true
         

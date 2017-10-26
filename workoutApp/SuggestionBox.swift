@@ -45,7 +45,7 @@ class SuggestionBox: Box {
             let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
             subHeaderText = "\(shortTimeInterval) SINCE:"
         } else {
-            subHeaderText =  "YET TO BE WORKED OUT"
+            subHeaderText =  "NEVER PERFORMED"
         }
         
         setSuggestionHeader(subHeaderText)
