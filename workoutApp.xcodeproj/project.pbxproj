@@ -98,6 +98,8 @@
 		DD7600481EDF240D00871DD8 /* WorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600471EDF240D00871DD8 /* WorkoutController.swift */; };
 		DD76004A1EDF27B600871DD8 /* TwoLabelStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */; };
 		DD77AD151F8F9CF1007A6759 /* CellIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD77AD141F8F9CF1007A6759 /* CellIdentifiers.swift */; };
+		DD7A27E21FA3404F00832030 /* workoutAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7A27E11FA3404F00832030 /* workoutAppUITests.swift */; };
+		DD7A27EA1FA340E400832030 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7A27E91FA340E400832030 /* SnapshotHelper.swift */; };
 		DD7C06FE1F88FA6800EAC008 /* UnweightedHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C06FD1F88FA6800EAC008 /* UnweightedHistoryCell.swift */; };
 		DD7C07001F89118100EAC008 /* WeightedHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C06FF1F89118100EAC008 /* WeightedHistoryCell.swift */; };
 		DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */; };
@@ -149,6 +151,16 @@
 		DDFA50FF1F571E7E00AF28A4 /* UserDefaultsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */; };
 		DDFA51011F583AE900AF28A4 /* PreferencePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DD7A27E41FA3404F00832030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD585D3B1EC4D53900962B19 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD585D421EC4D53900962B19;
+			remoteInfo = workoutApp;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		63E346831A7CE52FC6E0BEE0 /* Pods-workoutApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-workoutApp/Pods-workoutApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -245,6 +257,10 @@
 		DD7600471EDF240D00871DD8 /* WorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutController.swift; sourceTree = "<group>"; };
 		DD7600491EDF27B600871DD8 /* TwoLabelStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoLabelStack.swift; sourceTree = "<group>"; };
 		DD77AD141F8F9CF1007A6759 /* CellIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellIdentifiers.swift; sourceTree = "<group>"; };
+		DD7A27DF1FA3404F00832030 /* workoutAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = workoutAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD7A27E11FA3404F00832030 /* workoutAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = workoutAppUITests.swift; sourceTree = "<group>"; };
+		DD7A27E31FA3404F00832030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DD7A27E91FA340E400832030 /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		DD7C06FD1F88FA6800EAC008 /* UnweightedHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnweightedHistoryCell.swift; sourceTree = "<group>"; };
 		DD7C06FF1F89118100EAC008 /* WeightedHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedHistoryCell.swift; sourceTree = "<group>"; };
 		DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlView.swift; sourceTree = "<group>"; };
@@ -304,6 +320,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				93BA6FD1343231141B90EC94 /* Pods_workoutApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7A27DC1FA3404F00832030 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +516,7 @@
 			children = (
 				DDA7276C1ED5BA3500068AD4 /* Core Data */,
 				DD585D451EC4D53900962B19 /* workoutApp */,
+				DD7A27E01FA3404F00832030 /* workoutAppUITests */,
 				DD585D441EC4D53900962B19 /* Products */,
 				38709445547C5C0A771DD6F6 /* Pods */,
 				8700045E68E513DDEDCEFDB2 /* Frameworks */,
@@ -503,6 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				DD585D431EC4D53900962B19 /* workoutApp.app */,
+				DD7A27DF1FA3404F00832030 /* workoutAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -597,6 +622,16 @@
 			children = (
 			);
 			name = "For History Table";
+			sourceTree = "<group>";
+		};
+		DD7A27E01FA3404F00832030 /* workoutAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DD7A27E91FA340E400832030 /* SnapshotHelper.swift */,
+				DD7A27E11FA3404F00832030 /* workoutAppUITests.swift */,
+				DD7A27E31FA3404F00832030 /* Info.plist */,
+			);
+			path = workoutAppUITests;
 			sourceTree = "<group>";
 		};
 		DD90AF2A1EDED25600A560F0 /* Refresh Control */ = {
@@ -845,13 +880,31 @@
 			productReference = DD585D431EC4D53900962B19 /* workoutApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DD7A27DE1FA3404F00832030 /* workoutAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD7A27E81FA3404F00832030 /* Build configuration list for PBXNativeTarget "workoutAppUITests" */;
+			buildPhases = (
+				DD7A27DB1FA3404F00832030 /* Sources */,
+				DD7A27DC1FA3404F00832030 /* Frameworks */,
+				DD7A27DD1FA3404F00832030 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD7A27E51FA3404F00832030 /* PBXTargetDependency */,
+			);
+			name = workoutAppUITests;
+			productName = workoutAppUITests;
+			productReference = DD7A27DF1FA3404F00832030 /* workoutAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		DD585D3B1EC4D53900962B19 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
+				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Alexander Kvamme";
 				TargetAttributes = {
@@ -860,6 +913,12 @@
 						DevelopmentTeam = 52VSB9N5CT;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+					};
+					DD7A27DE1FA3404F00832030 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = 52VSB9N5CT;
+						ProvisioningStyle = Automatic;
+						TestTargetID = DD585D421EC4D53900962B19;
 					};
 				};
 			};
@@ -877,6 +936,7 @@
 			projectRoot = "";
 			targets = (
 				DD585D421EC4D53900962B19 /* workoutApp */,
+				DD7A27DE1FA3404F00832030 /* workoutAppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -890,6 +950,13 @@
 				DD585D511EC4D53900962B19 /* Assets.xcassets in Resources */,
 				DD1EA1601EEC1CB200EBB7B7 /* Keyboard.xib in Resources */,
 				DD585D4C1EC4D53900962B19 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD7A27DD1FA3404F00832030 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,7 +1154,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD7A27DB1FA3404F00832030 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD7A27E21FA3404F00832030 /* workoutAppUITests.swift in Sources */,
+				DD7A27EA1FA340E400832030 /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD7A27E51FA3404F00832030 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD585D421EC4D53900962B19 /* workoutApp */;
+			targetProxy = DD7A27E41FA3404F00832030 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		DD585D4A1EC4D53900962B19 /* Main.storyboard */ = {
@@ -1246,6 +1330,48 @@
 			};
 			name = Release;
 		};
+		DD7A27E61FA3404F00832030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 52VSB9N5CT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = workoutAppUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = HomeOfficesInternational.workoutAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = workoutApp;
+			};
+			name = Debug;
+		};
+		DD7A27E71FA3404F00832030 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 52VSB9N5CT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = workoutAppUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = HomeOfficesInternational.workoutAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = workoutApp;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1263,6 +1389,15 @@
 			buildConfigurations = (
 				DD585D591EC4D53900962B19 /* Debug */,
 				DD585D5A1EC4D53900962B19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD7A27E81FA3404F00832030 /* Build configuration list for PBXNativeTarget "workoutAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD7A27E61FA3404F00832030 /* Debug */,
+				DD7A27E71FA3404F00832030 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

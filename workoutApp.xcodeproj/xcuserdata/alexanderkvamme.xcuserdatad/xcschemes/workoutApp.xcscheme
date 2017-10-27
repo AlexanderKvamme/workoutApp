@@ -29,6 +29,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DD7A27DE1FA3404F00832030"
+               BuildableName = "workoutAppUITests.xctest"
+               BlueprintName = "workoutAppUITests"
+               ReferencedContainer = "container:workoutApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
