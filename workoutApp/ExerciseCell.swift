@@ -47,7 +47,7 @@ extension LiftCellManager where Self: ExerciseCellBaseClass, Self: UICollectionV
         layout.scrollDirection = .horizontal
         let leftInset: CGFloat = 10
         
-        let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.Box.shimmerInset + leftInset, y: box.boxFrame.frame.minY + verticalInsetForBox, width: box.boxFrame.frame.width - 2*Constant.components.Box.shimmerInset - leftInset, height: box.boxFrame.frame.height)
+        let collectionViewFrame = CGRect(x: box.boxFrame.frame.minX + Constant.components.box.shimmerInset + leftInset, y: box.boxFrame.frame.minY + verticalInsetForBox, width: box.boxFrame.frame.width - 2*Constant.components.box.shimmerInset - leftInset, height: box.boxFrame.frame.height)
         collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
         
         collectionView.register(UnweightedLiftCell.self, forCellWithReuseIdentifier: CellID.unweighted)

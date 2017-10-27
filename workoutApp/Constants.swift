@@ -11,7 +11,7 @@ import UIKit
 
 // MARK: - Fileprivate
 
-fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Constant.components.Box.spacingFromSides
+fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Constant.components.box.spacingFromSides
 fileprivate let standardBoxHeight: CGFloat = 80
 
 // MARK: - Globals
@@ -83,10 +83,16 @@ enum Constant {
             static let unweightedHeight: CGFloat = 50
         }
         
-        enum Box {
+        enum box {
             
             static let spacingFromSides: CGFloat = 10
             static let shimmerInset: CGFloat = 7
+            
+            enum suggestion {
+                static let width: CGFloat = 240
+                static let height: CGFloat = standardBoxHeight
+                static let shimmerInset: CGFloat = box.shimmerInset
+            }
             
             enum Standard {
                 static let height = standardBoxHeight

@@ -16,9 +16,7 @@ import UIKit
  */
 
 class SuggestionBox: Box {
-    
-    // MARK: - Properties
-    
+
     // MARK: - Initializers
     
     init() {
@@ -29,6 +27,8 @@ class SuggestionBox: Box {
         let boxContent = boxFactory.makeBoxContent()
         
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
+        
+        backgroundColor = .blue
         
         setupViews()
         makeTappable()
@@ -57,7 +57,7 @@ class SuggestionBox: Box {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: Constant.UI.width, height: 80)
+        return CGSize(width: Constant.components.box.suggestion.width, height: 80)
     }
     
     // MARK: - Methods
@@ -65,6 +65,36 @@ class SuggestionBox: Box {
     private func setupViews() {
         setupHeader()
         setupSubheader()
+        setupBoxFrame()
+        setupShimmer()
+    }
+    
+    private func setupBoxFrame() {
+        // Position boxFrame via autolayout
+        clipsToBounds = false
+        
+        boxFrame.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            boxFrame.leftAnchor.constraint(equalTo: leftAnchor),
+            boxFrame.rightAnchor.constraint(equalTo: rightAnchor),
+            boxFrame.topAnchor.constraint(equalTo: topAnchor),
+            boxFrame.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
+    }
+    
+    private func setupShimmer() {
+        // Position shimmer via autolayout
+        let shimmerInset = Constant.components.box.suggestion.shimmerInset
+        
+        boxFrame.shimmer.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            boxFrame.shimmer.leftAnchor.constraint(equalTo: boxFrame.leftAnchor, constant: shimmerInset),
+            boxFrame.shimmer.rightAnchor.constraint(equalTo: boxFrame.rightAnchor, constant: -shimmerInset),
+            boxFrame.shimmer.topAnchor.constraint(equalTo: boxFrame.topAnchor, constant: shimmerInset),
+            boxFrame.shimmer.bottomAnchor.constraint(equalTo: boxFrame.bottomAnchor, constant: -shimmerInset),
+            ])
     }
     
     private func setupHeader() {
@@ -119,4 +149,5 @@ class SuggestionBox: Box {
             ])
     }
 }
+
 

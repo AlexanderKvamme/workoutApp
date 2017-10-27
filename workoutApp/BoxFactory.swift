@@ -262,10 +262,7 @@ fileprivate class WarningBoxHeader: BoxHeader {
         label.text = "WARNING"
         label.sizeToFit()
         addSubview(label)
-        frame = CGRect(x: Constant.components.Box.spacingFromSides,
-                       y: 0,
-                       width: Constant.components.Box.Standard.width,
-                       height: label.frame.height)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.Standard.width, height: label.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -309,9 +306,9 @@ fileprivate class StandardBoxHeader: BoxHeader {
         label.numberOfLines = 2
         label.sizeToFit()
         addSubview(label)
-        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+        frame = CGRect(x: Constant.components.box.spacingFromSides,
                        y: 0,
-                       width: Constant.components.Box.Standard.width,
+                       width: Constant.components.box.Standard.width,
                        height: label.frame.height)
     }
     
@@ -328,14 +325,14 @@ fileprivate class ExerciseProgressBoxHeader: BoxHeader {
         label.numberOfLines = 2
         label.sizeToFit() // Fixes height. Adjust length
         addSubview(label)
-        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+        frame = CGRect(x: Constant.components.box.spacingFromSides,
                        y: 0,
-                       width: Constant.components.Box.ExerciseProgress.width,
+                       width: Constant.components.box.ExerciseProgress.width,
                        height: label.frame.height)
     
-        label.frame = CGRect(x: Constant.components.Box.spacingFromSides,
+        label.frame = CGRect(x: Constant.components.box.spacingFromSides,
                              y: 0,
-                             width: Constant.components.Box.ExerciseProgress.width - Constant.components.Box.spacingFromSides,
+                             width: Constant.components.box.ExerciseProgress.width - Constant.components.box.spacingFromSides,
                              height: label.frame.height)        
     }
     
@@ -357,8 +354,8 @@ fileprivate class SelectionBoxHeader: BoxHeader {
         
         label.textAlignment = .center
         
-        let selectionBoxFrameWidth = Constant.components.Box.Selection.width - 2*Constant.components.Box.spacingFromSides
-        frame = CGRect(x: Constant.components.Box.spacingFromSides,
+        let selectionBoxFrameWidth = Constant.components.box.Selection.width - 2*Constant.components.box.spacingFromSides
+        frame = CGRect(x: Constant.components.box.spacingFromSides,
                        y: 0,
                        width: selectionBoxFrameWidth,
                        height: templabel.frame.height)
@@ -396,7 +393,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
         label.sizeToFit()
         label.textAlignment = .right
         addSubview(label)
-        self.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Standard.width, height: label.frame.height)
+        self.frame = CGRect(x: 0, y: 0, width: Constant.components.box.Standard.width, height: label.frame.height)
         label.frame = self.frame
     }
     
@@ -414,7 +411,7 @@ fileprivate class SuggestionBoxSubHeader: BoxSubHeader {
         label.sizeToFit()
         label.textAlignment = .center
         addSubview(label)
-        self.frame = CGRect(x: 0, y: 0, width: Constant.components.Box.Standard.width, height: label.frame.height)
+        self.frame = CGRect(x: 0, y: 0, width: Constant.components.box.Standard.width, height: label.frame.height)
         label.frame = self.frame
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -479,7 +476,7 @@ fileprivate class HistoryBoxContent: BoxContent {
         contentStack = ThreeColumnStack(withSubstacks: totalStack, timeStack, PRStack)
         if let contentStack = contentStack {
         // content Stack - Fills entire box and arranges the 3 stacks horzontally
-        contentStack.frame.size = CGSize(width: Constant.components.Box.Standard.width, height: Constant.components.Box.Standard.height)
+            contentStack.frame.size = CGSize(width: Constant.components.box.Standard.width, height: Constant.components.box.Standard.height)
         contentStack.distribution = .equalCentering
         contentStack.alignment = .center
         contentStack.axis = .horizontal
@@ -517,7 +514,7 @@ fileprivate class WorkoutBoxContent: BoxContent {
         contentStack = ThreeColumnStack(withSubstacks: leftStack, midStack, rightStack)
         if let contentStack = contentStack {
             // content Stack - Fills entire box and arranges the 3 stacks horzontally
-            contentStack.frame.size = CGSize(width: Constant.components.Box.Standard.width, height: Constant.components.Box.Standard.height)
+            contentStack.frame.size = CGSize(width: Constant.components.box.Standard.width, height: Constant.components.box.Standard.height)
             contentStack.distribution = .equalCentering
             contentStack.alignment = .center
             contentStack.axis = .horizontal
@@ -541,11 +538,11 @@ fileprivate class WorkoutBoxContent: BoxContent {
 fileprivate class SelectionBoxContent: BoxContent {
     
     init() {
-        let contentWidth = Constant.components.Box.Selection.width - 2*Constant.components.Box.spacingFromSides
+        let contentWidth = Constant.components.box.Selection.width - 2*Constant.components.box.spacingFromSides
         
         super.init(frame: CGRect(x: 0, y: 0,
                                  width: contentWidth,
-                                 height: Constant.components.Box.Selection.height))
+                                 height: Constant.components.box.Selection.height))
         label = UILabel()
         guard let label = label else {
             print("error in selectionboxcontent with optional label creation")
@@ -591,14 +588,6 @@ fileprivate class SuggestionBoxContent: BoxContent {
         label.sizeToFit()
         addSubview(label)
         
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            label.topAnchor.constraint(equalTo: topAnchor, constant: topLeftSpacing),
-//            label.centerXAnchor.constraint(equalTo: centerXAnchor, constant: topLeftSpacing),
-//            ])
-//        label.setContentCompressionResistancePriority(1000, for: .vertical)
-        
         // The message
         messageLabel = UILabel(frame: CGRect.zero)
         guard let messageLabel = messageLabel else { return }
@@ -608,21 +597,6 @@ fileprivate class SuggestionBoxContent: BoxContent {
         messageLabel.textColor = .light
         messageLabel.numberOfLines = 0
         messageLabel.text = "MessagesLabel".uppercased()
-        
-        // NOTE: Remove header maybe
-//        
-//        messageLabel.backgroundColor = .green
-//        messageLabel.textAlignment = .center
-//        
-//        // Message Layout
-//        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            messageLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: topRightInsets),
-//            messageLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -topRightInsets),
-//            messageLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
-//            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-//            ])
-////        messageLabel.setContentCompressionResistancePriority(1000, for: .vertical)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -789,15 +763,15 @@ fileprivate class StandardBoxFrame: BoxFrame {
     override init(){
         super.init()
         
-        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
-                                     height: Constant.components.Box.Standard.height)
+        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides,
+                                     height: Constant.components.box.Standard.height)
         // Colored view behind shimmer
         background.frame = CGRect(x: 0,
                                   y: 0,
                                   width: standardBoxSize.width,
                                   height: standardBoxSize.height)
         // Shimmer
-        let shimmerInset = Constant.components.Box.shimmerInset
+        let shimmerInset = Constant.components.box.shimmerInset
         shimmer.frame = CGRect(x: shimmerInset,
                                y: shimmerInset,
                                width: background.frame.width - 2*shimmerInset,
@@ -819,20 +793,20 @@ fileprivate class SelectionBoxFrame: BoxFrame {
         super.init()
         
         let boxWidth: CGFloat = 140
-        let boxHeight = Constant.components.Box.Selection.height
-        let spacingFromSides = 2*Constant.components.Box.spacingFromSides
+        let boxHeight = Constant.components.box.Selection.height
+        let spacingFromSides = 2*Constant.components.box.spacingFromSides
         
         let boxSize = CGSize(width: boxWidth-2*spacingFromSides,
                              height: boxHeight)
         
-        frame.size = CGSize(width: Constant.UI.width/2 - 2*Constant.components.Box.spacingFromSides,
-                            height: Constant.components.Box.Selection.height)
+        frame.size = CGSize(width: Constant.UI.width/2 - 2*Constant.components.box.spacingFromSides,
+                            height: Constant.components.box.Selection.height)
         
         // Colored background
         background.frame.size = CGSize(width: boxSize.width, height: boxSize.height)
         
         // Shimmer
-        let shimmerInset = Constant.components.Box.shimmerInset * 2
+        let shimmerInset = Constant.components.box.shimmerInset * 2
         shimmer.frame.size = CGSize(width: boxSize.width - shimmerInset,
                                     height: boxSize.height - shimmerInset)
         
@@ -908,15 +882,15 @@ fileprivate class ExerciseProgressBoxFrame: BoxFrame {
     override init(){
         super.init()
         
-        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides,
-                                     height: Constant.components.Box.ExerciseProgress.height)
+        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides,
+                                     height: Constant.components.box.ExerciseProgress.height)
         // Colored view behind shimmer
         background.frame = CGRect(x: 0,
                                   y: 0,
                                   width: standardBoxSize.width,
                                   height: standardBoxSize.height)
         // Shimmer
-        let shimmerInset = Constant.components.Box.shimmerInset
+        let shimmerInset = Constant.components.box.shimmerInset
         shimmer.frame = CGRect(x: shimmerInset,
                                y: shimmerInset,
                                width: background.frame.width - 2*shimmerInset,
@@ -938,14 +912,14 @@ fileprivate class TallExerciseProgressBoxFrame: BoxFrame {
     override init(){
         super.init()
         
-        let tallBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.Box.spacingFromSides, height: Constant.components.Box.TallExerciseProgress.height)
+        let tallBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides, height: Constant.components.box.TallExerciseProgress.height)
         // Colored view behind shimmer
         background.frame = CGRect(x: 0,
                                   y: 0,
                                   width: tallBoxSize.width,
                                   height: tallBoxSize.height)
         // Shimmer
-        let shimmerInset = Constant.components.Box.shimmerInset
+        let shimmerInset = Constant.components.box.shimmerInset
         shimmer.frame = CGRect(x: shimmerInset,
                                y: shimmerInset,
                                width: background.frame.width - 2*shimmerInset,

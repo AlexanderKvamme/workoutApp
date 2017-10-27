@@ -16,7 +16,7 @@ class ShortExerciseTableCellBox: ExerciseTableCellBox {
          var totalHeight: CGFloat = 0
          
          // BoxFrame
-         boxFrame.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides, y: header?.frame.height ?? 0)
+        boxFrame.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header?.frame.height ?? 0)
          addSubview(boxFrame)
          
          // Content
@@ -35,13 +35,13 @@ class ShortExerciseTableCellBox: ExerciseTableCellBox {
          // Calculate the frame
          totalHeight += boxFrame.frame.height
          frame = CGRect(x: 0, y: 0,
-         width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides,
+                        width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides,
          height: totalHeight)
          
          // Subheader
          if let subheader = subheader {
          addSubview(subheader)
-         subheader.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides,
+            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides,
          y: header!.label.frame.maxY - subheader.frame.height)
          bringSubview(toFront: subheader)
          }

@@ -39,7 +39,7 @@ public class Box: UIView {
         var totalHeight: CGFloat = 0
          
         // BoxFrame
-        boxFrame.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides, y: header?.frame.height ?? 0)
+        boxFrame.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header?.frame.height ?? 0)
         addSubview(boxFrame)
         
         // Content
@@ -58,13 +58,13 @@ public class Box: UIView {
         // Calculate the frame
         totalHeight += boxFrame.frame.height
         frame = CGRect(x: 0, y: 0,
-                       width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides,
+                       width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides,
                        height: totalHeight)
         
         // Subheader
         if let subheader = subheader {
             addSubview(subheader)
-            subheader.frame.origin = CGPoint(x: Constant.components.Box.spacingFromSides,
+            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides,
                                              y: header!.label.frame.maxY - subheader.frame.height)
             bringSubview(toFront: subheader)
         }
@@ -109,7 +109,7 @@ public class Box: UIView {
         
         totalHeight = header.label.frame.height + boxFrame.frame.height
         
-        frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.Box.spacingFromSides, height: totalHeight)
+        frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides, height: totalHeight)
         
         boxFrame.frame.origin.y = header.frame.height
         content?.frame.origin.y = header.frame.height
