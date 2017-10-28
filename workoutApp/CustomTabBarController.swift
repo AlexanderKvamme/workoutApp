@@ -43,7 +43,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 0)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 1)
         profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 2)
-
+        
+        // Accessibility
+        workoutNavigationController.tabBarItem.accessibilityIdentifier = "workout-tab"
+        historyNavigationController.tabBarItem.accessibilityIdentifier = "history-tab"
+        profileController.tabBarItem.accessibilityIdentifier = "profile-tab"
+        
         let tabBarItems = tabBar.items! as [UITabBarItem]
         
         for item in tabBarItems {

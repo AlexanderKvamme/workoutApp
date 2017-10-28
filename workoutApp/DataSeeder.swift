@@ -15,9 +15,6 @@ import CoreData
 
 final class DataSeeder {
     
-    typealias DummyWorkout = (name: String, muscle: Muscle, type: String)
-    typealias DummyExercise = (name: String, muscle: Muscle, plannedSets: Int16, type: ExerciseStyle)
-    
     // MARK: Properties
     
     // Properties for seeding to Core Data
@@ -46,6 +43,15 @@ final class DataSeeder {
         seedWithExampleMeasurementStyles()
         seedWithExampleWarning()
         DatabaseFacade.saveContext()
+    }
+    
+    public func seedCoreDataForFastlaneSnapshots() {
+
+        // Make a workout
+
+        // FIXME: - Screenshot har kun weighted, så lag enda en workout av type normal og en av technique
+        
+        
     }
     
     /// If any new Muscles/Styles are added in code, for example in an update -> seed to core data

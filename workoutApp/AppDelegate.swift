@@ -16,7 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        // Seed Core data if necessary
         let context = DatabaseFacade.persistentContainer.viewContext
+        
+        // Seed for Fastlane Snapshot data
+        if CommandLine.arguments.contains("--fastlaneSnapshot") {
+            print("would seed")
+            let seeder = DataSeeder(context: context)
+            seeder.seedCoreDataForFastlaneSnapshots()
+        }
         
         if UserDefaults.isFirstLaunch() {
             
