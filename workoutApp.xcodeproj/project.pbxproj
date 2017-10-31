@@ -118,7 +118,6 @@
 		DDBEE8AD1F50695900A3BDA7 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */; };
 		DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBFCA611F2CA43000ABB241 /* PlusButton.swift */; };
 		DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */; };
-		DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */; };
 		DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC660B01EE6BE9900122543 /* DrawingMethods.swift */; };
 		DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */; };
 		DDCBF83D1F9622430044F545 /* LiftCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCBF83C1F9622430044F545 /* LiftCellDelegate.swift */; };
@@ -279,7 +278,6 @@
 		DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DDBFCA611F2CA43000ABB241 /* PlusButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
 		DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityHelperExtensions.swift; sourceTree = "<group>"; };
-		DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sorting Functions.swift"; sourceTree = "<group>"; };
 		DDC660B01EE6BE9900122543 /* DrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingMethods.swift; sourceTree = "<group>"; };
 		DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDCBF83C1F9622430044F545 /* LiftCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiftCellDelegate.swift; sourceTree = "<group>"; };
@@ -556,7 +554,6 @@
 				DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */,
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
 				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
-				DDC4C5C11F2A668000B511A3 /* Sorting Functions.swift */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
 			);
@@ -1067,7 +1064,6 @@
 				DD3AF44D1EE45AB500C55453 /* PickerController.swift in Sources */,
 				DD71B5831F79694C00D8E104 /* ExerciseStyle+CoreDataClass.swift in Sources */,
 				DD71B58E1F79694C00D8E104 /* WorkoutStyle+CoreDataProperties.swift in Sources */,
-				DDC4C5C21F2A668000B511A3 /* Sorting Functions.swift in Sources */,
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DD5CD5D01F4660A500672A1E /* ExerciseHistoryTableController.swift in Sources */,
 				DD9477B81F7FE79500E01F81 /* MuscleBasedWorkoutTableDataSource.swift in Sources */,

@@ -10,7 +10,9 @@ import XCTest
 
 
 class workoutAppUITests: XCTestCase {
-        
+    
+    // MARK: Setup
+    
     override func setUp() {
         super.setUp()
         
@@ -20,8 +22,6 @@ class workoutAppUITests: XCTestCase {
         app.launch()
         
         continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        // XCUIApplication().launch()
     }
     
     override func tearDown() {
@@ -29,12 +29,14 @@ class workoutAppUITests: XCTestCase {
         super.tearDown()
     }
     
-    // Fastlane Snapshot
+    // MARK: Tests
     
     func testFastlaneSnapshots() {
         snapshotOfWorkoutInUse()
         snapshotOfOtherThings()
     }
+    
+    // MARK: Methods
     
     func snapshotOfWorkoutInUse() {
         
@@ -111,6 +113,8 @@ class workoutAppUITests: XCTestCase {
         // Make new workout, and snapshot the comparison between current, and old ghost lifts
         
         app.cells["PULL DAY"].tap()
+        snapshot("Clean workout")
+        
         app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
         
         app.buttons["9"].tap()
@@ -146,11 +150,7 @@ class workoutAppUITests: XCTestCase {
         // navigate back to menu
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
-        // TEMP
         app.tabBars.buttons["workout-tab"].tap()
-//        app.buttons["NORMAL"].tap()
-
-        // NOT TEMP
 
         // Screenshot of New workout being made
         app.buttons["plus-button"].tap()
@@ -171,7 +171,7 @@ class workoutAppUITests: XCTestCase {
         // Snapshot of Muscle type picker
         app.buttons["muscle-picker-button"].tap()
         snapshot("6-muscle-picker")
-        app.buttons["approve-button"].tap() // return to newWorkout
+        app.buttons["approve-button"].tap()
 
         // Snapshot of adding an exercise
         app.buttons["exercise-picker-button"].tap()
@@ -200,19 +200,8 @@ class workoutAppUITests: XCTestCase {
 
         // Save workout
         app.buttons["approve-button"].tap()
-
-        // Snapshot of a Workout in action
-
-        // FIXME: Select the plusbutton of the first cell
-//        app.tables.cells["WEIGHTED PULL UP"].children(matching: .button).element(boundBy: 1).forceTap()
-
-        //app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
-//        app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].tap()
-
-        sleep(10)
     }
 }
-
 
 extension XCUIElement {
     func forceTap() {

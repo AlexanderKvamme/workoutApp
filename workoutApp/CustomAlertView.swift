@@ -41,9 +41,6 @@ class CustomAlertView: UIView, isModal {
         // "Error" and errorNumber - Switch på CustomModalStyle... case "Message" eller "Error". Følgende er case Message
         
         // Message
-        
-        // Pseudo: make a stack... fill with either "message"/"error"... position stack
-        
         let typeStack = UIStackView() // message or error
         var typeStackHeight: CGFloat = 0
         typeStack.axis = UILayoutConstraintAxis.vertical
@@ -97,8 +94,9 @@ class CustomAlertView: UIView, isModal {
         typeStack.widthAnchor.constraint(equalToConstant: 300).isActive = true
         
         // top right x mark
-        let xView = UIImageView()
-        xView.image = UIImage(named: "xmarkDarkBlue")
+        let xView = UIButton()
+        xView.setImage(UIImage(named: "xmarkDarkBlue"), for: .normal)
+        xView.addTarget(self, action: #selector(checkmarkButtonhandler), for: .touchUpInside)
         xView.sizeToFit()
         
         modalView.addSubview(xView)
@@ -110,7 +108,6 @@ class CustomAlertView: UIView, isModal {
         
         // Header
         // - Make label
-        // - Switch on customStyle... if message -> headerLabel.text = PSST!
         let headerLabel = UILabel()
         headerLabel.text = "PSST!"
         headerLabel.textAlignment = .center
@@ -136,7 +133,6 @@ class CustomAlertView: UIView, isModal {
         
         // Add line spacing
         if let text = contentLabel.text {
-            
             guard text.characters.count > 0 else { return }
             
             let attributedString = NSMutableAttributedString(string: contentLabel.text!)

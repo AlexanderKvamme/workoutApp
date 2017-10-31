@@ -118,7 +118,6 @@ class WorkoutEditor: WorkoutController {
         }
         
         currentWorkout.setStyle(currentWorkoutStyle)
-//        currentWorkout.addToMusclesUsed(currentMuscles)
         currentWorkout.setMuscles(currentMuscles)
         currentWorkout.setExercises(currentExercises)
         DatabaseFacade.saveContext()

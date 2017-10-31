@@ -82,7 +82,7 @@ class ExerciseTableDataSource: NSObject, UITableViewDataSource {
             
             dataSourceWorkoutLog.markAsLatestperformence()
             owner.navigationController?.popViewController(animated: true)
-            let modal = CustomAlertView(type: .error, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
+            let modal = CustomAlertView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) exercises")
             modal.show(animated: true)
         }
     }
