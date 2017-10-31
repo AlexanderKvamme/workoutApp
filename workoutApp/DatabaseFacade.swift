@@ -205,7 +205,13 @@ final class DatabaseFacade {
         return newMuscle
     }
     
-    static func makeExercise() -> Exercise {
+    @discardableResult static func makeMuscle(named name: String) -> Muscle {
+        let newMuscle = makeMuscle()
+        newMuscle.name = name
+        return newMuscle
+    }
+    
+    @discardableResult static func makeExercise() -> Exercise {
         let newExercise = createManagedObjectForEntity(.Exercise) as! Exercise
         return newExercise
     }
@@ -215,9 +221,21 @@ final class DatabaseFacade {
         return newExerciseStyle
     }
     
+    static func makeExerciseStyle(named name: String) -> ExerciseStyle {
+        let newStyle = makeExerciseStyle()
+        newStyle.name = name
+        return newStyle
+    }
+    
     static func makeWorkoutStyle() -> WorkoutStyle {
         let newWorkoutStyle = createManagedObjectForEntity(.WorkoutStyle) as! WorkoutStyle
         return newWorkoutStyle
+    }
+    
+    static func makeWorkoutStyle(named name: String) -> WorkoutStyle {
+        let newStyle = makeWorkoutStyle()
+        newStyle.name = name
+        return newStyle
     }
     
     static func makeWarning() -> Warning {
@@ -228,6 +246,13 @@ final class DatabaseFacade {
     static func makeMeasurementStyle() -> MeasurementStyle {
         let newMeasurementStyle = createManagedObjectForEntity(.MeasurementStyle) as! MeasurementStyle
         return newMeasurementStyle
+    }
+    
+    static func makeMeasurementStyle(named name: String) -> MeasurementStyle {
+        let newStyle = makeMeasurementStyle()
+        newStyle.name = name
+        
+        return newStyle
     }
     
     static func makeLift() -> Lift {
@@ -325,7 +350,7 @@ final class DatabaseFacade {
     }
     
     // fetch Exercise Style
-    static func fetchExerciseStyles() -> [ExerciseStyle] {
+    static func getExerciseStyles() -> [ExerciseStyle] {
         let exerciseStyles = fetchManagedObjectsForEntity(.ExerciseStyle) as! [ExerciseStyle]
         return exerciseStyles
     }
@@ -356,6 +381,40 @@ final class DatabaseFacade {
             print("error: ", error)
         }
         return muscles
+    }
+    
+    // Fetch all exercises
+    static func fetchAllExercises() -> [Exercise] {
+        var allExercises = [Exercise]()
+        
+        let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            allExercises = results
+        } catch let error as NSError {
+            print("Error in fetchMeasurementStyles ", error.localizedDescription)
+        }
+        
+        return allExercises
+    }
+    
+    
+    // Fetch Workouts
+    static func fetchAllWorkouts() -> [Workout] {
+        
+        var allWorkouts = [Workout]()
+        
+        let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            allWorkouts = results
+        } catch let error as NSError {
+            print("Error in fetchMeasurementStyles ", error.localizedDescription)
+        }
+        
+        return allWorkouts
     }
     
     // fetch MeasurementStyles
@@ -392,6 +451,25 @@ final class DatabaseFacade {
             print("error in fetchGoals: \(error.localizedDescription)")
         }
         return goals
+    }
+    
+    static func getGoals() -> [Goal] {
+        return DatabaseFacade.fetchGoals() ?? makeExampleGoals()
+    }
+    
+    static private func makeExampleGoals() -> [Goal] {
+        
+        let exampleGoal1 = makeGoal("Hold goals to delete a goal")
+        let exampleGoal2 = makeGoal("Or hold header to create a new one")
+        
+        return [exampleGoal1, exampleGoal2]
+    }
+    
+    @discardableResult static func makeGoal(_ str: String) -> Goal {
+        let newGoal = DatabaseFacade.makeGoal()
+        newGoal.dateMade = Date() as NSDate
+        newGoal.text = str.uppercased()
+        return newGoal
     }
     
     // fetch Warnings
@@ -460,7 +538,7 @@ final class DatabaseFacade {
     }
     
     /// All ExerciseStyles sorted by name
-    static func getExerciseStyles() -> [ExerciseStyle] {
+    static func getAllExerciseStyles() -> [ExerciseStyle] {
         var exerciseStyles = [ExerciseStyle]()
         
         // Make FetchRequest
@@ -476,7 +554,6 @@ final class DatabaseFacade {
             print("Error in getExerciseStyles: ", error.localizedDescription)
         }
         return exerciseStyles
-        
     }
     
     // get WorkoutStyle
@@ -514,7 +591,7 @@ final class DatabaseFacade {
     }
     
     // fetch Exercise
-    static func fetchExercise(named name: String) -> Exercise? {
+    static func getExercise(named name: String) -> Exercise? {
         
         var exercise: Exercise? = nil
         
@@ -524,7 +601,7 @@ final class DatabaseFacade {
         
         do {
             let result = try context.fetch(fetchRequest)
-            exercise = result[0] as? Exercise
+            exercise = result.first as? Exercise
         } catch let error as NSError {
             print("error fetching exercise \(error.localizedDescription)")
         }

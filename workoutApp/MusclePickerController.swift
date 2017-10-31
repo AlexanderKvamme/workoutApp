@@ -32,9 +32,8 @@ class MusclePickerController: UIViewController {
     
     private lazy var footer: ButtonFooter = {
         let view = ButtonFooter(withColor: .secondary)
-        
-        view.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         view.approveButton.addTarget(self, action: #selector(confirmAndDismiss), for: .touchUpInside)
+        view.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
@@ -286,15 +285,10 @@ class MusclePickerController: UIViewController {
     
     @objc func confirmAndDismiss() {
         
-        print("confirming. gonna test count and then send back muscles")
-        
         guard selectedMuscles.count > 0 else {
             navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
-            print("failed")
             return
         }
-        print("sending back: ", selectedMuscles)
-        print("musclereceiver: ", muscleReceiver)
         muscleReceiver?.receive(muscles: selectedMuscles)
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }

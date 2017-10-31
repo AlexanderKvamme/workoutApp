@@ -12,6 +12,10 @@ extension Workout {
     
     // MARK: Getters
     
+    func getName() -> String {
+        return name ?? "NO NAME"
+    }
+    
     func getExercises(includeRetired: Bool) -> [Exercise] {
         
         var exercises = [Exercise]()

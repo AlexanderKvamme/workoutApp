@@ -17,7 +17,9 @@ class NewWorkoutController: WorkoutController {
         let footer = ButtonFooter(withColor: .darkest)
         footer.frame.origin.y = self.view.frame.maxY - footer.frame.height
         footer.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
+        footer.approveButton.accessibilityIdentifier = "approve-button"
         footer.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        footer.cancelButton.accessibilityIdentifier = "cancel-button"
         return footer
     }()
     

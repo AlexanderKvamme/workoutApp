@@ -36,9 +36,9 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let workout = fetchedWorkouts[indexPath.row]
-        
         var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell
         cell = WorkoutBoxCell(style: .default, reuseIdentifier: cellIdentifier)
+        cell.accessibilityIdentifier = workout.getName()
         cell.setupContent(withWorkout: workout)
         cell.delegate = owner
         

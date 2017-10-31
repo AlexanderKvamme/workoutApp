@@ -40,6 +40,7 @@ class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSou
         
         var cell: WorkoutBoxCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! WorkoutBoxCell
         cell = WorkoutBoxCell(style: .default, reuseIdentifier: cellIdentifier)
+        cell.accessibilityIdentifier = workout.getName()
         cell.setupContent(withWorkout: workout)
         cell.delegate = owner
         

@@ -21,8 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
-            print("would seed")
+            
             let seeder = DataSeeder(context: context)
+            
+            // Seed snapshot goals
+            DataSeeder.clearGoals()
+            
+            // Exercises and workouts
             seeder.seedCoreDataForFastlaneSnapshots()
         }
         

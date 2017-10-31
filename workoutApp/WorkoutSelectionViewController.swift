@@ -109,11 +109,11 @@ class WorkoutSelectionViewController: SelectionViewController {
                 return "\(count) WORKOUT"
             }()
             
-            let newButton = SelectionViewButton(header: styleName,
-                                                subheader: subheaderString)
+            let newButton = SelectionViewButton(header: styleName, subheader: subheaderString)
             
             // Set up button names etc
             newButton.button.tag = buttonIndex
+            newButton.button.accessibilityIdentifier = "\(styleName)"
             buttonIndex += 1
             buttonNames.append(styleName)
             
@@ -143,6 +143,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         if buttons.count > 0 {
             // Already has selection choices, so place button under the header
             let plusButtonTopSpacing = Constant.UI.headers.headerToPlusButtonSpacing
+            plusButton.accessibilityIdentifier = "plus-button"
             
             view.addSubview(plusButton)
             plusButton.translatesAutoresizingMaskIntoConstraints = false

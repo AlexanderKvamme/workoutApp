@@ -9,10 +9,14 @@
 import Foundation
 import UIKit
 
-// MARK: - Fileprivate
+// MARK: - Fileprivate Properties
 
 fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Constant.components.box.spacingFromSides
 fileprivate let standardBoxHeight: CGFloat = 80
+
+enum AccessibilityIdentifiers {
+    static let musclePicker = "musclePickerButton"
+}
 
 // MARK: - Globals
 

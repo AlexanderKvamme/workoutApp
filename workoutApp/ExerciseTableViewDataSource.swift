@@ -53,6 +53,7 @@ class ExerciseTableDataSource: NSObject, UITableViewDataSource {
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseCellForWorkouts
         cell = ExerciseCellForWorkouts(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
+        cell.accessibilityIdentifier = exerciseLog.getName()
         cell.box.setTitle(exerciseLog.getName())
         cell.owner = self
         

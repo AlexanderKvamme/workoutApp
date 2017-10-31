@@ -282,6 +282,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         plusButton.setTitle("+", for: .normal)
         plusButton.setTitleColor(.light, for: .normal)
         plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
+        plusButton.accessibilityIdentifier = "cell-plus-button"
         plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)
         
         plusButton.translatesAutoresizingMaskIntoConstraints = false

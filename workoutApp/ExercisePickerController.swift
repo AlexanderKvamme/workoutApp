@@ -57,7 +57,6 @@ class ExercisePickerController: UIViewController {
         let button = PlusButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(presentNewExerciseController), for: .touchUpInside)
-        
         return button
     }()
     

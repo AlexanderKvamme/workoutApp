@@ -9,6 +9,7 @@
 import UIKit
 import SwipeCellKit
 
+
 class WorkoutBoxCell: SwipeTableViewCell {
     
     let box: Box!

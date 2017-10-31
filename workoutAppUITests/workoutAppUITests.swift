@@ -8,6 +8,7 @@
 
 import XCTest
 
+
 class workoutAppUITests: XCTestCase {
         
     override func setUp() {
@@ -18,14 +19,9 @@ class workoutAppUITests: XCTestCase {
         setupSnapshot(app)
         app.launch()
         
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         // XCUIApplication().launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
     
     override func tearDown() {
@@ -33,64 +29,200 @@ class workoutAppUITests: XCTestCase {
         super.tearDown()
     }
     
-//    func testExample() {
-//        // Use recording to get started writing UI tests.
-//        // Use XCTAssert and related functions to verify your tests produce the correct results.
-//    }
+    // Fastlane Snapshot
     
-    // Fastlane Snapshots
-//    func testScreenshots() {
+    func testFastlaneSnapshots() {
+        snapshotOfWorkoutInUse()
+        snapshotOfOtherThings()
+    }
     
-        // FIXME: - Add my own screenshotting automation
-        
-//        let app = XCUIApplication()
-//        XCUIDevice.shared.orientation = .portrait
-//        
-//        let tabBarsQuery = XCUIApplication().tabBars
-//        // Home
-//        tabBarsQuery.buttons.element(boundBy: 0).tap()
-//        snapshot("0-Home")
-//        
-//        // Map
-//        tabBarsQuery.buttons.element(boundBy: 1).tap()
-//        app.otherElements["eventlocation"].tap()
-//        snapshot("1-Map")
-//        
-//        // Twitter
-//        tabBarsQuery.buttons.element(boundBy: 2).tap()
-//        snapshot("2-Twiter")
-//    }
-    
-    func testShotting() {
+    func snapshotOfWorkoutInUse() {
         
         let app = XCUIApplication()
-        app.launchArguments.append("--uitesting")
+        setupSnapshot(app)
+        app.launchArguments.append("--fastlaneSnapshotu")
         app.launch()
         
+        app.tabBars.buttons["workout-tab"].tap()
+        app.buttons["NORMAL"].tap()
+        app.cells["PULL DAY"].tap()
+        
+        // Enter first Exercise
+        app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
+        
+        let okButton = app.buttons["OK"]
+        let nextButton = app.children(matching: .window).element(boundBy: 3).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element(boundBy: 7)
+        
+        // First lift
+        app.buttons["8"].tap()
+        nextButton.tap()
+        app.buttons["1"].tap()
+        app.buttons["0"].tap()
+        nextButton.tap()
+        
+        // Second lift
+        app.buttons["6"].tap()
+        nextButton.tap()
+        app.buttons["2"].tap()
+        app.buttons["0"].tap()
+        nextButton.tap()
+        
+        // Enter third lift
+        app.buttons["4"].tap()
+        nextButton.tap()
+        app.buttons["3"].tap()
+        app.buttons["0"].tap()
+        okButton.tap()
+        
+        // Second Exercise
+        app.cells["PULL UP"].buttons["cell-plus-button"].forceTap()
+        
+        app.buttons["1"].tap()
+        app.buttons["2"].tap()
+        nextButton.tap()
+        
+        app.buttons["1"].tap()
+        app.buttons["0"].tap()
+        nextButton.tap()
+        
+        app.buttons["0"].tap()
+        okButton.tap()
+        
+        // Third Exercise
+        app.cells["AUSTRALIAN PULL UP"].buttons["cell-plus-button"].forceTap()
+        app.buttons["1"].tap()
+        app.buttons["7"].tap()
+        nextButton.tap()
+        
+        app.buttons["1"].tap()
+        app.buttons["4"].tap()
+        nextButton.tap()
+        
+        app.buttons["1"].tap()
+        app.buttons["3"].tap()
+        okButton.tap()
+        
+        // Save button
+        app.buttons["footer-save-button"].tap()
+        snapshot("great job 9 exercises")
+        app.buttons["approve-modal-button"].tap()
+        
+        // PART 2
+        // Make new workout, and snapshot the comparison between current, and old ghost lifts
+        
+        app.cells["PULL DAY"].tap()
+        app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
+        
+        app.buttons["9"].tap()
+        nextButton.tap()
+        
+        app.buttons["1"].tap()
+        app.buttons["5"].tap()
+        snapshot("ghost lifts")
+
+        okButton.tap()
+    }
+
+    func snapshotOfOtherThings() {
+
+        let app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments.append("--fastlaneSnapshotu")
+        app.launch()
+
+        // Screenshot of profile tab
         app.tabBars.buttons["profile-tab"].tap()
         snapshot("0-profile")
-        sleep(1)
-        
-        // Screenshot of
+
+        // Screenshot of WO style picker
         app.tabBars.buttons["workout-tab"].tap()
         snapshot("1-workout")
-        
-        // Screenshot of workout
-        
-//        app.staticTexts["profile-tab"].tap()
-//        app.tables["Empty list"].tap()
-//        app.buttons["plusButton"].tap()
-//        app.staticTexts["YOUR EXERCISE"].tap()
-//        app.textFields["Fist Pumps"].typeText("test pistol squat")
-//        app.typeText("\r")
-//        app.staticTexts["MEASUREMENT"].tap()
-//        app.tables/*@START_MENU_TOKEN@*/.staticTexts["WEIGHTED SETS"]/*[[".cells.staticTexts[\"WEIGHTED SETS\"]",".staticTexts[\"WEIGHTED SETS\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-//
-//        let checkmarkblueButton = app.buttons["checkmarkBlue"]
-//        checkmarkblueButton.tap()
-//        checkmarkblueButton.tap()
-//        checkmarkblueButton.tap()
-//        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 4).children(matching: .button).element(boundBy: 0).tap()
-//
+
+        // Screenshot of inside of Normal
+        app.buttons["NORMAL"].tap()
+        snapshot("2-normal-workouts")
+        sleep(1)
+
+        // navigate back to menu
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        // TEMP
+        app.tabBars.buttons["workout-tab"].tap()
+//        app.buttons["NORMAL"].tap()
+
+        // NOT TEMP
+
+        // Screenshot of New workout being made
+        app.buttons["plus-button"].tap()
+        snapshot("3-new-workout")
+
+        // Snapshot of inputting new Name
+        app.buttons["workout-name-button"].tap()
+        let textField = app.textFields["textfield"]
+        textField.typeText("MUSCLE FLEXERS")
+        snapshot("4-name-of-new-workout")
+        textField.typeText("\r")
+
+        // Snapshot of Exercise type picker
+        app.buttons["workout-style-picker-button"].tap()
+        snapshot("5-workout-type-picker")
+        app.buttons["approve-button"].tap()
+
+        // Snapshot of Muscle type picker
+        app.buttons["muscle-picker-button"].tap()
+        snapshot("6-muscle-picker")
+        app.buttons["approve-button"].tap() // return to newWorkout
+
+        // Snapshot of adding an exercise
+        app.buttons["exercise-picker-button"].tap()
+
+        // Make new Exercise
+        app.buttons["plus-button"].tap()
+        snapshot("6-new-exercise")
+        app.buttons["approve-button"].tap()
+
+        // Make second exercise
+        app.buttons["plus-button"].tap()
+        app.buttons["exercise-name-button"].tap()
+        textField.typeText("MY SECOND EXERCISE")
+        textField.typeText("\r")
+        app.buttons["approve-button"].tap()
+
+        // Make third exercise
+        app.buttons["plus-button"].tap()
+        app.buttons["exercise-name-button"].tap()
+        textField.typeText("MY THIRD EXERCISE")
+        textField.typeText("\r")
+        app.buttons["approve-button"].tap()
+
+        // Save the chose new 3 Exercises
+        app.buttons["approve-button"].tap()
+
+        // Save workout
+        app.buttons["approve-button"].tap()
+
+        // Snapshot of a Workout in action
+
+        // FIXME: Select the plusbutton of the first cell
+//        app.tables.cells["WEIGHTED PULL UP"].children(matching: .button).element(boundBy: 1).forceTap()
+
+        //app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
+//        app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].tap()
+
+        sleep(10)
     }
 }
+
+
+extension XCUIElement {
+    func forceTap() {
+        if self.isHittable {
+            self.tap()
+        } else {
+            // let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(0.0, 0.0))
+            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            coordinate.tap()
+        }
+    }
+}
+

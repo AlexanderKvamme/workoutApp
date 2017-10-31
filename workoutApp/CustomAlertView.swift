@@ -157,6 +157,7 @@ class CustomAlertView: UIView, isModal {
         let checkmarkView = UIButton()
         checkmarkView.setImage(UIImage(named: "checkmarkBlue"), for: .normal)
         checkmarkView.sizeToFit()
+        checkmarkView.accessibilityIdentifier = "approve-modal-button"
         checkmarkView.addTarget(self, action: #selector(checkmarkButtonhandler), for: .touchUpInside)
         
         modalView.addSubview(checkmarkView)

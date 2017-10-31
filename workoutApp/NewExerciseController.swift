@@ -69,6 +69,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
         
         // Setup Header, muscle, type, rest, and exercises
         header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
+        header.button.accessibilityIdentifier = "exercise-name-button"
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
         header.bottomLabel.adjustsFontSizeToFitWidth = true
         

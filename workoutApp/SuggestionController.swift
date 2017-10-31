@@ -44,6 +44,8 @@ class SuggestionController: UIViewController {
     }
 }
 
+// MARK: Extensions
+
 fileprivate extension SuggestionController {
     
     // MARK: Private methods

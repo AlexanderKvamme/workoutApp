@@ -21,6 +21,6 @@ extension ExerciseLog {
     }
     
     func getName() -> String {
-        return getDesign().getName()
+        return getDesign().getName().uppercased()
     }
 }

@@ -25,20 +25,7 @@ class GoalsController: UIViewController, isStringReceiver {
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        if let goalsInCoreData = DatabaseFacade.fetchGoals() {
-            self.goals = goalsInCoreData
-        } else {
-            // Make initial goals
-            let exampleGoal1 = DatabaseFacade.makeGoal()
-            exampleGoal1.dateMade = Date() as NSDate
-            exampleGoal1.text = "Hold goals to delete a goal".uppercased()
-            
-            let exampleGoal2 = DatabaseFacade.makeGoal()
-            exampleGoal2.dateMade = Date() as NSDate
-            exampleGoal2.text = "Or hold header to create a new one".uppercased()
-            
-            self.goals = [exampleGoal1, exampleGoal2]
-        }
+        self.goals = DatabaseFacade.fetchGoals()
     }
     
     required init?(coder aDecoder: NSCoder) {

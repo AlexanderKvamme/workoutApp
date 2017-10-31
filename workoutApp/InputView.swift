@@ -53,6 +53,7 @@ class InputView: UIView {
         textField.widthAnchor.constraint(equalToConstant: Constant.UI.width).isActive = true
         textField.autocapitalizationType = .allCharacters
         textField.adjustsFontSizeToFitWidth = true
+        textField.accessibilityIdentifier = "textfield"
         
         addSubview(textField)
         

@@ -139,10 +139,7 @@ class BoxTableViewController: UITableViewController {
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         
-        let myStyle = SwipeExpansionStyle(target: .percentage(0.5),
-                                          additionalTriggers: [],
-                                          elasticOverscroll: true,
-                                          completionAnimation: .bounce)
+        let myStyle = SwipeExpansionStyle(target: .percentage(0.5), additionalTriggers: [], elasticOverscroll: true, completionAnimation: .bounce)
         
         var options = SwipeTableOptions()
         options.expansionStyle = myStyle
