@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// Footer with one button: Approve. Class is used in PreferenceController
 class ApproveButtonFooter: UIView {
     
     // MARK: - Properties

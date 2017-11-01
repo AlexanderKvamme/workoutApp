@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-/*  Abstract Factory pattern used to create some of the most used boxes in the app. Maybe not 100% appropriate but interesting to try to use some creational patterns. */
+///  Abstract Factory pattern used to create some of the most used boxes in the app. Maybe not 100% appropriate but interesting to try to use some creational patterns.
 
 public enum BoxType {
     case HistoryBox
@@ -68,166 +68,136 @@ public class BoxFactory {
 // MARK: - Factories
 
 // History box factory
-
 fileprivate class HistoryBoxFactory: BoxFactory {
     
     override func makeBoxHeader() -> BoxHeader {
         return StandardBoxHeader()
     }
-    
     override func makeBoxSubHeader() -> BoxSubHeader {
         return StandardBoxSubHeader()
     }
-
     override func makeBoxFrame() -> BoxFrame {
         return StandardBoxFrame()
     }
-    
     override func makeBoxContent() -> BoxContent? {
         return HistoryBoxContent()
     }
 }
 
 // Workout box factory
-
 fileprivate class WorkoutBoxFactory: BoxFactory {
     
     override func makeBoxHeader() -> BoxHeader {
         return StandardBoxHeader()
     }
-    
     override func makeBoxSubHeader() -> BoxSubHeader {
         return StandardBoxSubHeader()
     }
-    
     override func makeBoxFrame() -> BoxFrame {
         return StandardBoxFrame()
     }
-    
     override func makeBoxContent() -> BoxContent? {
         return WorkoutBoxContent()
     }
 }
 
 // Suggestion box factory
-
 fileprivate class SuggestionBoxFactory: BoxFactory {
     
     override func makeBoxHeader() -> BoxHeader? {
         return SuggestionBoxHeader()
     }
-    
     override func makeBoxSubHeader() -> BoxSubHeader? {
         return SuggestionBoxSubHeader()
     }
-    
     override func makeBoxFrame() -> BoxFrame {
         return StandardBoxFrame()
     }
-    
     override func makeBoxContent() -> BoxContent? {
         return nil
     }
 }
 
 // Selection Box Factory
-
 fileprivate class SelectionBoxFactory: BoxFactory {
+    
     public override func makeBoxHeader() -> BoxHeader? {
         return SelectionBoxHeader()
     }
-    
     public override func makeBoxSubHeader() -> BoxSubHeader? {
         return nil
     }
-    
     public override func makeBoxFrame() -> BoxFrame? {
         return SelectionBoxFrame()
     }
-    
     public override func makeBoxContent() -> BoxContent? {
         return SelectionBoxContent()
     }
 }
 
 // Exercise Progress Box Factory
-/// This box is the default one used in TableViewCells
 fileprivate class ExerciseCellBoxFactory: BoxFactory {
+    
     public override func makeBoxHeader() -> BoxHeader? {
         return ExerciseProgressBoxHeader()
     }
-    
     public override func makeBoxSubHeader() -> BoxSubHeader? {
         return nil
     }
-    
     public override func makeBoxFrame() -> BoxFrame? {
         return ExerciseProgressBoxFrame()
     }
-    
     public override func makeBoxContent() -> BoxContent? {
         return nil
     }
 }
 
-
-/// This is the boxed contained in the cells of the ExerciseTable, when the assosciated exercise is weighted and therefore needs additional height
+/// This is the Box contained in the weighted cells of the ExerciseTable, because they need extra height
 fileprivate class TallExerciseCellBoxFactory: BoxFactory {
+    
     public override func makeBoxHeader() -> BoxHeader? {
         return ExerciseProgressBoxHeader()
     }
-    
     public override func makeBoxSubHeader() -> BoxSubHeader? {
         return nil
     }
-    
     public override func makeBoxFrame() -> BoxFrame? {
         return TallExerciseProgressBoxFrame()
     }
-    
     public override func makeBoxContent() -> BoxContent? {
         return nil
     }
 }
 
-
-
 // Warning Box Factory
-
 fileprivate class WarningBoxFactory: BoxFactory {
+    
     public override func makeBoxHeader() -> BoxHeader? {
         return nil
     }
-    
     public override func makeBoxSubHeader() -> BoxSubHeader? {
         return nil
     }
-    
     public override func makeBoxFrame() -> BoxFrame? {
         return WarningBoxFrame()
     }
-    
     public override func makeBoxContent() -> BoxContent? {
         return WarningBoxContent()
     }
 }
 
 // Deletion Box Factory
-
 fileprivate class DeletionBoxFactory: BoxFactory {
     
     public override func makeBoxHeader() -> BoxHeader? {
         return nil
     }
-    
     public override func makeBoxSubHeader() -> BoxSubHeader? {
         return nil
     }
-    
     public override func makeBoxFrame() -> BoxFrame? {
         return DeletionBoxFrame()
     }
-    
     public override func makeBoxContent() -> BoxContent? {
         return DeletionBoxContent()
     }
@@ -235,14 +205,15 @@ fileprivate class DeletionBoxFactory: BoxFactory {
 
 // MARK: - Box parts
 
-// MARK: - Box Headers
+// MARK: Box Headers
 
+/// A large text above over the coloured box to the left.
 public class BoxHeader: UIView {
+    
     public var label = UILabel()
     
     init() {
         super.init(frame: CGRect.zero)
-        
         label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.textColor = .darkest
         label.text = "header goes here"
@@ -256,7 +227,6 @@ public class BoxHeader: UIView {
 fileprivate class WarningBoxHeader: BoxHeader {
     override init(){
         super.init()
-        
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.numberOfLines = 1
         label.text = "WARNING"
@@ -301,15 +271,11 @@ fileprivate class StandardBoxHeader: BoxHeader {
 
     override init() {
         super.init()
-
         label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.numberOfLines = 2
         label.sizeToFit()
         addSubview(label)
-        frame = CGRect(x: Constant.components.box.spacingFromSides,
-                       y: 0,
-                       width: Constant.components.box.Standard.width,
-                       height: label.frame.height)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.Standard.width, height: label.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -318,22 +284,16 @@ fileprivate class StandardBoxHeader: BoxHeader {
 }
 
 fileprivate class ExerciseProgressBoxHeader: BoxHeader {
+    
     override init() {
         super.init()
-        
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.numberOfLines = 2
-        label.sizeToFit() // Fixes height. Adjust length
+        label.sizeToFit()
         addSubview(label)
-        frame = CGRect(x: Constant.components.box.spacingFromSides,
-                       y: 0,
-                       width: Constant.components.box.ExerciseProgress.width,
-                       height: label.frame.height)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.ExerciseProgress.width, height: label.frame.height)
     
-        label.frame = CGRect(x: Constant.components.box.spacingFromSides,
-                             y: 0,
-                             width: Constant.components.box.ExerciseProgress.width - Constant.components.box.spacingFromSides,
-                             height: label.frame.height)        
+        label.frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.ExerciseProgress.width - Constant.components.box.spacingFromSides, height: label.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -344,7 +304,6 @@ fileprivate class ExerciseProgressBoxHeader: BoxHeader {
 fileprivate class SelectionBoxHeader: BoxHeader {
     override init() {
         super.init()
-
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.applyCustomAttributes(.medium)
         
@@ -355,10 +314,7 @@ fileprivate class SelectionBoxHeader: BoxHeader {
         label.textAlignment = .center
         
         let selectionBoxFrameWidth = Constant.components.box.Selection.width - 2*Constant.components.box.spacingFromSides
-        frame = CGRect(x: Constant.components.box.spacingFromSides,
-                       y: 0,
-                       width: selectionBoxFrameWidth,
-                       height: templabel.frame.height)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: selectionBoxFrameWidth, height: templabel.frame.height)
         label.frame.size = frame.size
         label.applyCustomAttributes(.more)
         addSubview(label)
@@ -372,6 +328,7 @@ fileprivate class SelectionBoxHeader: BoxHeader {
 // MARK: - Box Subheaders
 
 public class BoxSubHeader: UIView {
+    
     public var label = UILabel()
     
     init() {
@@ -540,21 +497,17 @@ fileprivate class SelectionBoxContent: BoxContent {
     init() {
         let contentWidth = Constant.components.box.Selection.width - 2*Constant.components.box.spacingFromSides
         
-        super.init(frame: CGRect(x: 0, y: 0,
-                                 width: contentWidth,
-                                 height: Constant.components.box.Selection.height))
+        super.init(frame: CGRect(x: 0, y: 0, width: contentWidth, height: Constant.components.box.Selection.height))
         label = UILabel()
         guard let label = label else {
-            print("error in selectionboxcontent with optional label creation")
-            return
+            preconditionFailure("error in selectionboxcontent with optional label creation")
         }
         
-        // label
+        // setup label
         label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.textColor = UIColor.lightest
         label.text = "content"
         label.frame = frame
-        
         label.textAlignment = .center
         label.applyCustomAttributes(.more)
         
@@ -568,14 +521,12 @@ fileprivate class SelectionBoxContent: BoxContent {
 
 fileprivate class SuggestionBoxContent: BoxContent {
     
-    // Initializers
-    
     init() {
         super.init(frame: CGRect.zero)
         
         usesAutoLayout = true
         
-        // Headerlabel
+        // Setup Headerlabel
         label = UILabel(frame: CGRect.zero)
         guard let label = label else { return }
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
@@ -588,7 +539,7 @@ fileprivate class SuggestionBoxContent: BoxContent {
         label.sizeToFit()
         addSubview(label)
         
-        // The message
+        // Setup message of the suggestion
         messageLabel = UILabel(frame: CGRect.zero)
         guard let messageLabel = messageLabel else { return }
         addSubview(messageLabel)
@@ -604,12 +555,10 @@ fileprivate class SuggestionBoxContent: BoxContent {
     }
     
     public func setHeader(_ str: String) {
-        print("would set to \(str)")
         label?.text = str
     }
     
     public func setMessage(_ str: String) {
-        print("would set to \(str)")
         messageLabel?.text = str
     }
 }
@@ -687,20 +636,12 @@ fileprivate class WarningBoxContent: BoxContent {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: Handlers
-    
-    func xButtonDidTap() {
-        print("did tap")
-    }
 }
 
 // MARK: DeletionBoxContent
 
 fileprivate class DeletionBoxContent: BoxContent {
-    
-    // Initializers
-    
+
     init() {
         super.init(frame: CGRect.zero)
         let horizontalInsets: CGFloat = 10
@@ -747,8 +688,8 @@ public class BoxFrame: UIView {
     init() {
         super.init(frame: CGRect.zero)
         background.backgroundColor = .primary
-        
-        // shimmer properties
+
+        // Setup shimmer properties
         shimmer.backgroundColor = .white
         shimmer.alpha = 0.1
     }
@@ -763,19 +704,13 @@ fileprivate class StandardBoxFrame: BoxFrame {
     override init(){
         super.init()
         
-        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides,
-                                     height: Constant.components.box.Standard.height)
-        // Colored view behind shimmer
-        background.frame = CGRect(x: 0,
-                                  y: 0,
-                                  width: standardBoxSize.width,
-                                  height: standardBoxSize.height)
-        // Shimmer
+        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides, height: Constant.components.box.Standard.height)
+        // Setup colored view behind shimmer
+        background.frame = CGRect(x: 0, y: 0, width: standardBoxSize.width, height: standardBoxSize.height)
+        
+        // Setup the actual shimmer
         let shimmerInset = Constant.components.box.shimmerInset
-        shimmer.frame = CGRect(x: shimmerInset,
-                               y: shimmerInset,
-                               width: background.frame.width - 2*shimmerInset,
-                               height: background.frame.height - 2*shimmerInset)
+        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
         
         frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
         
@@ -796,19 +731,15 @@ fileprivate class SelectionBoxFrame: BoxFrame {
         let boxHeight = Constant.components.box.Selection.height
         let spacingFromSides = 2*Constant.components.box.spacingFromSides
         
-        let boxSize = CGSize(width: boxWidth-2*spacingFromSides,
-                             height: boxHeight)
-        
-        frame.size = CGSize(width: Constant.UI.width/2 - 2*Constant.components.box.spacingFromSides,
-                            height: Constant.components.box.Selection.height)
+        let boxSize = CGSize(width: boxWidth-2*spacingFromSides, height: boxHeight)
+        frame.size = CGSize(width: Constant.UI.width/2 - 2*Constant.components.box.spacingFromSides, height: Constant.components.box.Selection.height)
         
         // Colored background
         background.frame.size = CGSize(width: boxSize.width, height: boxSize.height)
         
         // Shimmer
         let shimmerInset = Constant.components.box.shimmerInset * 2
-        shimmer.frame.size = CGSize(width: boxSize.width - shimmerInset,
-                                    height: boxSize.height - shimmerInset)
+        shimmer.frame.size = CGSize(width: boxSize.width - shimmerInset, height: boxSize.height - shimmerInset)
         
         // Positioning
         center.y = center.y + 3 // spacing between this boxFrame and its selectionBoxHeaders
@@ -882,19 +813,12 @@ fileprivate class ExerciseProgressBoxFrame: BoxFrame {
     override init(){
         super.init()
         
-        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides,
-                                     height: Constant.components.box.ExerciseProgress.height)
+        let standardBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides, height: Constant.components.box.ExerciseProgress.height)
         // Colored view behind shimmer
-        background.frame = CGRect(x: 0,
-                                  y: 0,
-                                  width: standardBoxSize.width,
-                                  height: standardBoxSize.height)
+        background.frame = CGRect(x: 0, y: 0, width: standardBoxSize.width, height: standardBoxSize.height)
         // Shimmer
         let shimmerInset = Constant.components.box.shimmerInset
-        shimmer.frame = CGRect(x: shimmerInset,
-                               y: shimmerInset,
-                               width: background.frame.width - 2*shimmerInset,
-                               height: background.frame.height - 2*shimmerInset)
+        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
         
         frame.size = CGSize(width: standardBoxSize.width, height: standardBoxSize.height)
         
@@ -914,16 +838,10 @@ fileprivate class TallExerciseProgressBoxFrame: BoxFrame {
         
         let tallBoxSize = CGSize(width: Constant.UI.width - 2*Constant.components.box.spacingFromSides, height: Constant.components.box.TallExerciseProgress.height)
         // Colored view behind shimmer
-        background.frame = CGRect(x: 0,
-                                  y: 0,
-                                  width: tallBoxSize.width,
-                                  height: tallBoxSize.height)
+        background.frame = CGRect(x: 0, y: 0, width: tallBoxSize.width, height: tallBoxSize.height)
         // Shimmer
         let shimmerInset = Constant.components.box.shimmerInset
-        shimmer.frame = CGRect(x: shimmerInset,
-                               y: shimmerInset,
-                               width: background.frame.width - 2*shimmerInset,
-                               height: background.frame.height - 2*shimmerInset)
+        shimmer.frame = CGRect(x: shimmerInset, y: shimmerInset, width: background.frame.width - 2*shimmerInset, height: background.frame.height - 2*shimmerInset)
         
         frame.size = CGSize(width: tallBoxSize.width, height:  tallBoxSize.height)
         
@@ -939,8 +857,6 @@ fileprivate class TallExerciseProgressBoxFrame: BoxFrame {
 fileprivate class WarningBoxFrame: BoxFrame {
     override init(){
         super.init()
-
-        // Try using Auto layout
         
         usesAutoLayout = true // Lets Box class get set up using auto layout only for the warningBoxFrame, and eventually for all of them
         

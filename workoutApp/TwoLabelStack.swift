@@ -76,8 +76,6 @@ class TwoLabelStack: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Life Cycle
-    
     // MARK: - Methods
     
     private func setup(){
@@ -112,7 +110,6 @@ class TwoLabelStack: UIView {
             ])
         
         // Button
-        
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             button.topAnchor.constraint(equalTo: topAnchor),
@@ -135,13 +132,6 @@ class TwoLabelStack: UIView {
     
     func getBottomText() -> String {
         return bottomLabel.text ?? "NO TEXT"
-    }
-    
-    func setDebugColors() {
-        topLabel.backgroundColor = .purple
-        bottomLabel.backgroundColor = .green
-        button.backgroundColor = .yellow
-        backgroundColor = .red
     }
 }
 

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 /// Stack of a topLabel and a bottomlabel, with a button
 class PickerLabelStack: TwoLabelStack {
     
@@ -22,12 +21,12 @@ class PickerLabelStack: TwoLabelStack {
         super.init(frame: .zero, topText: topText, topFont: darkHeaderFont, topColor: .dark, bottomText: bottomText, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
     }
     
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: Constant.UI.width/2, height: Constant.components.PickerLabelStack.height)
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: Constant.UI.width/2, height: Constant.components.PickerLabelStack.height)
     }
 }
 

@@ -3,6 +3,8 @@
 import Foundation
 import UIKit
 
+
+/// Red box that can be shown in the profile controller with messages such as errors or updates.
 class Warningbox: Box {
     
     // MARK: - Properties
@@ -36,17 +38,19 @@ class Warningbox: Box {
     // MARK: - Methods
     
     func getWarning() -> Warning? {
-        if warning != nil { return warning } else { return nil }
+        return warning
+//        if warning != nil { return warning } else { return nil }
     }
     
+    /// check if the frame supports autolayout ( only warning box does int he first place), and if so, set it up real nice.
     private func setupBoxFrameUsingAutolayout() {
-        // check if the frame supports autolayout ( only warning box does int he first place), and if so, set i up real nice.
-        let contentInsets: CGFloat = 10
         
         guard let content = content else { return }
+        let contentInsets: CGFloat = 10
         
         // setup boxFrame
-        if boxFrame.usesAutoLayout { // har nå kun WarningBoxFrame - Senere vil jeg sette alle opp med autolayout
+        if boxFrame.usesAutoLayout {
+            // TODO: So far onlly WarningBoxFrame does this. Will fix this for the rest later.
             boxFrame.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([

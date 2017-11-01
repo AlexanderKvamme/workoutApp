@@ -3,8 +3,7 @@
 import Foundation
 import UIKit
 
-// Class
-
+// The Box is used to receive parts from the box factory, and then puts the components together based on which parts it receives.s
 public class Box: UIView {
     
     // MARK: - Properties
@@ -26,7 +25,6 @@ public class Box: UIView {
         
         super.init(frame: CGRect.zero)
         setup()
-        // setDebugColors()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -57,15 +55,12 @@ public class Box: UIView {
         
         // Calculate the frame
         totalHeight += boxFrame.frame.height
-        frame = CGRect(x: 0, y: 0,
-                       width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides,
-                       height: totalHeight)
+        frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides, height: totalHeight)
         
         // Subheader
         if let subheader = subheader {
             addSubview(subheader)
-            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides,
-                                             y: header!.label.frame.maxY - subheader.frame.height)
+            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.label.frame.maxY - subheader.frame.height)
             bringSubview(toFront: subheader)
         }
         
@@ -84,14 +79,14 @@ public class Box: UIView {
         return CGSize(width: UIViewNoIntrinsicMetric, height: newHeight)
     }
     
-    // Box functions
+    // MARK: Box methods
     
     public func setTitle(_ newText: String) {
         var totalHeight: CGFloat = 0
         
         guard let header = header else { return }
         
-        // only adjust width if theres a subheader to avoid overlapping
+        // Adjust width if theres a subheader to avoid overlapping
         if let subheader = subheader {
             header.label.preferredMaxLayoutWidth = boxFrame.frame.width - subheader.label.frame.width
         } else {
@@ -102,10 +97,7 @@ public class Box: UIView {
         header.label.text = newText.uppercased()
         header.label.sizeToFit()
         
-        header.frame = CGRect(x: header.frame.minX,
-                              y: header.frame.minY,
-                              width: header.frame.width,
-                              height: header.label.frame.height)
+        header.frame = CGRect(x: header.frame.minX, y: header.frame.minY, width: header.frame.width, height: header.label.frame.height)
         
         totalHeight = header.label.frame.height + boxFrame.frame.height
         
@@ -115,11 +107,14 @@ public class Box: UIView {
         content?.frame.origin.y = header.frame.height
         button.frame = boxFrame.frame
         
-        // update Intrinsic content size to fit new height
+        // Update Intrinsic content size to fit new height
         invalidateIntrinsicContentSize()
         
-        // subheader
-        if let subheader = subheader { updateSubheaderPosition(subheader) }
+        // Subheader
+        if let subheader = subheader {
+            updateSubheaderPosition(subheader)
+            
+        }
         setNeedsLayout()
     }
     
@@ -138,11 +133,14 @@ public class Box: UIView {
     
     /// Sets new text and updates position
     public func setSubHeader(_ newText: String) {
-        if let subheader = subheader {
-            subheader.label.text = newText.uppercased()
-            subheader.label.sizeToFit()
-            subheader.label.frame = CGRect(x: subheader.frame.width - subheader.label.frame.width, y: 0, width: subheader.label.frame.width, height: subheader.label.frame.height)
+        
+        guard let subheader = subheader else {
+            return
         }
+        
+        subheader.label.text = newText.uppercased()
+        subheader.label.sizeToFit()
+        subheader.label.frame = CGRect(x: subheader.frame.width - subheader.label.frame.width, y: 0, width: subheader.label.frame.width, height: subheader.label.frame.height)
     }
 }
 
@@ -150,20 +148,18 @@ public class Box: UIView {
 
 extension Box {
     
+    /// Set colors and alpha for easier debugging
     public func setDebugColors() {
         button.backgroundColor = .blue
         button.alpha = 0.5
         backgroundColor = .red
         alpha = 0.8
         
-        if let header = header {
-            header.backgroundColor = .green
-            header.label.backgroundColor = .yellow
-        }
-        if let subheader = subheader {
-            subheader.backgroundColor = .brown
-            subheader.label.backgroundColor = .purple
-        }
+        header?.backgroundColor = .green
+        header?.label.backgroundColor = .yellow
+        subheader?.backgroundColor = .brown
+        subheader?.label.backgroundColor = .purple
+        
         boxFrame.backgroundColor = .green
         boxFrame.alpha = 0.5
     }

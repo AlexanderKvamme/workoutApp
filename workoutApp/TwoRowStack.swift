@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-
+/// Used in for example the BoxTableViewCells, where each of the Time, Exercises and PR stacks are examples of use
 public class TwoRowStack: UIStackView {
 
-    private  var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
+    private var stackFont: UIFont = UIFont.custom(style: .bold, ofSize: .medium)
     private var topRow = UILabel()
     private var bottomRow = UILabel()
     
@@ -22,7 +22,6 @@ public class TwoRowStack: UIStackView {
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         
         setTopLabel(topText)
-        
         bottomRow.text = bottomText.uppercased()
         bottomRow.font = stackFont
         bottomRow.textColor = .lightest
@@ -82,3 +81,4 @@ public class TwoRowStack: UIStackView {
         bottomRow.text = str
     }
 }
+

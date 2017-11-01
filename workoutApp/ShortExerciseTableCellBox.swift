@@ -9,49 +9,47 @@
 import Foundation
 import UIKit
 
+
 class ShortExerciseTableCellBox: ExerciseTableCellBox {
     
     override func setup() {
- 
-         var totalHeight: CGFloat = 0
-         
-         // BoxFrame
+        
+        var totalHeight: CGFloat = 0 // Calculated as elements are added
+        
+        // BoxFrame
         boxFrame.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header?.frame.height ?? 0)
-         addSubview(boxFrame)
-         
-         // Content
-         if let content = content {
+        addSubview(boxFrame)
+        
+        // Content
+        if let content = content {
             content.frame = boxFrame.frame
             addSubview(content)
-         }
-         
-         // Header
-         if let header = header {
-         addSubview(header)
-         bringSubview(toFront: header)
-         totalHeight += header.frame.height
-         }
-         
-         // Calculate the frame
-         totalHeight += boxFrame.frame.height
-         frame = CGRect(x: 0, y: 0,
-                        width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides,
-         height: totalHeight)
-         
-         // Subheader
-         if let subheader = subheader {
-         addSubview(subheader)
+        }
+        
+        // Header
+        if let header = header {
+            addSubview(header)
+            bringSubview(toFront: header)
+            totalHeight += header.frame.height
+        }
+        
+        // Calculate the frame
+        totalHeight += boxFrame.frame.height
+        frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides, height: totalHeight)
+        
+        // Subheader
+        if let subheader = subheader {
+            addSubview(subheader)
             subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides,
-         y: header!.label.frame.maxY - subheader.frame.height)
-         bringSubview(toFront: subheader)
-         }
-         
-         // Invisible button
-         button.frame = boxFrame.frame
-         addSubview(button)
-         
-         setNeedsLayout()
-
+                                             y: header!.label.frame.maxY - subheader.frame.height)
+            bringSubview(toFront: subheader)
+        }
+        
+        // Invisible button
+        button.frame = boxFrame.frame
+        addSubview(button)
+        
+        setNeedsLayout()
     }
 }
 

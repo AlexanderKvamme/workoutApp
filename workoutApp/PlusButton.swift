@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// Reusable button with an image of a "+"-sign
 final class PlusButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: CGRect(x: 0, y: 0, width: 30, height: 30))

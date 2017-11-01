@@ -10,11 +10,7 @@
 import Foundation
 import UIKit
 
-/*
- Header is the topLabel, describing time since last workout
- subHeader is the bottomLabel, explaining which muscle
- */
-
+/// Header is the topLabel, describing time since last workout.. subHeader is the bottomLabel, explaining which muscle you should work out next
 class SuggestionBox: Box {
 
     // MARK: - Initializers
@@ -28,8 +24,6 @@ class SuggestionBox: Box {
         
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         
-        backgroundColor = .blue
-        
         setupViews()
         makeTappable()
     }
@@ -39,8 +33,9 @@ class SuggestionBox: Box {
         self.init()
         
         var subHeaderText = ""
+        
+        // Set suggestion header based on when it was performed
         if let timeOfWorkout = muscle.lastPerformance() {
-            // Has been performed before
             let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
             let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
             subHeaderText = "\(shortTimeInterval) SINCE:"
@@ -98,7 +93,9 @@ class SuggestionBox: Box {
     }
     
     private func setupHeader() {
-        guard let header = header else { return }
+        guard let header = header else {
+            return
+        }
         
         header.translatesAutoresizingMaskIntoConstraints = false
         
@@ -124,15 +121,13 @@ class SuggestionBox: Box {
     }
     
     func setSuggestionHeader(_ str: String) {
-        if let header = header {
-            header.label.text = str
-        }
+        guard let header = header else { return }
+        header.label.text = str
     }
     
     func setSuggestionSubheader(_ str: String) {
-        if let subheader = subheader {
-            subheader.label.text = str
-        }
+        guard let subheader = subheader else { return }
+        subheader.label.text = str
     }
     
     private func makeTappable() {
@@ -149,5 +144,4 @@ class SuggestionBox: Box {
             ])
     }
 }
-
 

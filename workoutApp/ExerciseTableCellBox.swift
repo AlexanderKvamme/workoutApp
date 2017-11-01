@@ -8,7 +8,6 @@
 
 import Foundation
 
-class ExerciseTableCellBox: Box {
-    
-}
+
+class ExerciseTableCellBox: Box {}
 

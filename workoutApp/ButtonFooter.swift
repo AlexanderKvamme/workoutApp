@@ -49,19 +49,10 @@ public class ButtonFooter: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Life Cycle
-    
     // MARK: - Methods
     
     public override var intrinsicContentSize: CGSize {
         return CGSize(width: Constant.UI.width, height: Constant.components.footer.height)
-    }
-    
-    // Debugging methods
-    
-    public func setDebugColors() {
-        approveButton.backgroundColor = .purple
-        cancelButton.backgroundColor = .yellow
     }
 }
 

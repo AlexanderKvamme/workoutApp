@@ -9,17 +9,12 @@
 import Foundation
 import UIKit
 
+
 class ThreeColumnStack: UIStackView {
     
     var firstStack: TwoRowStack!
     var secondStack: TwoRowStack!
     var thirdStack: TwoRowStack!
-    
-    // Usage
-    
-//    func highlightBottomRow() {
-//        thirdStack.bottomRow.textColor = .secondary
-//    }
 }
 
 extension ThreeColumnStack {
@@ -35,3 +30,4 @@ extension ThreeColumnStack {
         addArrangedSubview(thirdStack)
     }
 }
+

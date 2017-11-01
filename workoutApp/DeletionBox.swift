@@ -11,14 +11,12 @@ import UIKit
 
 // MARK: Class
 
+/// Red little box to indicate deletion of exercises .etc
 class DeletionBox: Box {
-    
-    // MARK: - Properties
     
     // MARK: - Initializers
     
     init(withText text: String) {
-        
         let boxFactory = BoxFactory.makeFactory(type: .DeletionBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
@@ -42,12 +40,11 @@ class DeletionBox: Box {
         let contentInsets: CGFloat = 10
         
         guard let content = content else {
-            print("no content")
-            return
+            preconditionFailure("No content")
         }
         
         // setup boxFrame
-        if boxFrame.usesAutoLayout { // har nå kun WarningBoxFrame - Senere vil jeg sette alle opp med autolayout
+        if boxFrame.usesAutoLayout {
             boxFrame.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
@@ -81,8 +78,7 @@ class DeletionBox: Box {
             rightAnchor.constraint(equalTo: boxFrame.rightAnchor),
             ])
         
-        // setup button
-        
+        // Setup button
         button = UIButton()
         addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false

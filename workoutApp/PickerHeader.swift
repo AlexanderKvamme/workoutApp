@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-
+/// A convenience class for making TwoLabelStacks with bigger typography, such as in PreferenceController header or the picker classes (Musclepicker, exercisepicker .etc)
 class PickerHeader: TwoLabelStack {
     
     // MARK: - Initializer
@@ -18,14 +18,7 @@ class PickerHeader: TwoLabelStack {
         
         let defaultFrame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: 100)
         
-        super.init(frame: defaultFrame,
-                   topText: text,
-                   topFont: UIFont.custom(style: .bold, ofSize: .big),
-                   topColor: UIColor.secondary,
-                   bottomText: "",
-                   bottomFont: UIFont.custom(style: .bold, ofSize: .medium),
-                   bottomColor: UIColor.dark,
-                   fadedBottomLabel: false)
+        super.init(frame: defaultFrame, topText: text, topFont: UIFont.custom(style: .bold, ofSize: .big), topColor: UIColor.secondary, bottomText: "", bottomFont: UIFont.custom(style: .bold, ofSize: .medium), bottomColor: UIColor.dark, fadedBottomLabel: false)
     }
     
     required init?(coder aDecoder: NSCoder) {
