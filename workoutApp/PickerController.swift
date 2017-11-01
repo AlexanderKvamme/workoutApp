@@ -10,36 +10,22 @@ import Foundation
 import CoreData
 import UIKit
 
-/*
- This PickerView is used to pick workout styles/muscles. 
- It is actually a ViewController containing a tableView. Since these are fantastically customizable.
- */
-
+/// This PickerView is used to pick workout styles/muscles. It is actually a ViewController containing a tableView. Since these are fantastically customizable.
 class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate, UITableViewDataSource, isStringSender {
     
     // MARK: - Properties
-    
-    var table: UITableView!
     var header: TwoLabelStack = {
         let labelStack = TwoLabelStack(frame: .zero, topText: "SELECT", topFont: .custom(style: .bold, ofSize: .big), topColor: .secondary, bottomText: "", bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .black, fadedBottomLabel: false)
         return labelStack
     }()
+    var table: UITableView!
     var footer: ButtonFooter!
     var selectedIndexPath: IndexPath?
     var selectionChoices: [T]!
     var selectedPickable: T!
-    
     let tableVerticalInset: CGFloat = 102
-    
     var stringToSelect: String?
-    
     let cellIdentifier = "cellIdentifier"
-    
-//    let fontWhenSelected = UIFont.custom(style: .bold, ofSize: .big)
-//    let fontWhenDeselected = UIFont.custom(style: .bold, ofSize: .medium)
-//    let textColorWhenSelected = UIColor.darkest
-//    let textColorWhenDeselected = UIColor.faded
-    
     let screenWidth = UIScreen.main.bounds.width
     let inset: CGFloat = 20
     
@@ -47,21 +33,21 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     weak var stringReceiver: isStringReceiver?
     weak var pickableReceiver: PickableReceiver?
     
+    // Protocol conformance: isStringSender
     func sendStringBack(_ string: String) {
         stringReceiver?.receiveString(string)
     }
 
     // MARK: - Initializers
+
+    init(withPicksFrom array: [PickableEntity], withPreselection preselection: Pickable) {
+        super.init(nibName: nil, bundle: nil)
+        selectionChoices = array as! [T]
+        selectedPickable = preselection
+    }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
-    }
-    
-    init(withPicksFrom array: [PickableEntity], withPreselection preselection: Pickable) {
-        super.init(nibName: nil, bundle: nil)
-        
-        selectionChoices = array as! [T]
-        selectedPickable = preselection
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -76,7 +62,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         setupFooter()
         setupTable()
         
-        // preselection
+        // Preselection
         selectRow(withPickable: selectedPickable)
         
         table.reloadData()
@@ -107,6 +93,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     // MARK: TableView Delegate methods
+    // - Generic classes cannot have protocol conformance in extensions
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 30
@@ -117,13 +104,12 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        // Make look deselected or selected
         if selectedIndexPath == indexPath {
             selectedIndexPath = nil
         } else {
             // remove previous selection
             if let previousSelectedIndexPath = selectedIndexPath {
-            
                 if let previousSelectedCell = tableView.cellForRow(at: previousSelectedIndexPath) as? PickerCell {
                     configure(previousSelectedCell, forIndexPath: indexPath)
                 }
@@ -142,13 +128,13 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     
     // MARK: Helpers
     
-    func setupView() {
+    private func setupView() {
         setupHeader()
         hidesBottomBarWhenPushed = true
         view.backgroundColor = UIColor.light
     }
     
-    func setupFooter() {
+    private func setupFooter() {
         footer = ButtonFooter(withColor: .secondary)
         footer.frame.origin.y = Constant.UI.height - footer.frame.height
         footer.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
@@ -157,7 +143,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         view.addSubview(footer)
     }
     
-    func setupHeader() {
+    private func setupHeader() {
         header.frame = CGRect(x: 0, y: 50, width: Constant.UI.width, height: 100)
         view.addSubview(header)
     }
@@ -166,7 +152,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         header.topLabel.text = newTitle
     }
     
-    func setupTable() {
+    private func setupTable() {
         table = UITableView(frame: CGRect(x: inset, y: header.frame.maxY + 50, width: screenWidth - 2*inset, height: 200))
         table.reloadData()
         
@@ -217,41 +203,18 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         }
     }
     
-    // TODO: delete selectRow(:String)
-    
-    func selectRow(withString string: String) {
-        
-        guard let indexOfString = selectionChoices.index(where: { (pickableEntity) -> Bool in
-            guard let name = pickableEntity.name else { return false }
-            return name == string
-        }) else {
-            return
-        }
-        // find index of the one 
-        let ip = IndexPath(row: indexOfString, section: 0)
-        table.selectRow(at: ip, animated: false, scrollPosition: .none)
-        selectedIndexPath = ip
-    }
-    
     func selectRow(withPickable pickable: Pickable) {
         
         guard let indexOfPickable = selectionChoices.index(where: { (element) -> Bool in
             return element === selectedPickable
         }) else {
-            print("Error: Could not find index")
-            return
+            preconditionFailure("Error could not find index")
         }
         
         // find index of the one
         let ip = IndexPath(row: indexOfPickable, section: 0)
         table.selectRow(at: ip, animated: false, scrollPosition: .none)
         selectedIndexPath = ip
-    }
-    
-    func setDebugColors() {
-        table.backgroundColor = .green
-        header.backgroundColor = .yellow
-                footer.backgroundColor = .purple
     }
     
     private func drawDiagonalLineThroughTable() {
@@ -282,7 +245,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
 // MARK: PickableSender
 
 extension PickerController: PickableSender {
-    
     func sendBack(pickable: T) {
         pickableReceiver?.receive(pickable: pickable)
     }

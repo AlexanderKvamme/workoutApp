@@ -49,6 +49,8 @@ class PickerCell: UITableViewCell {
         setLabelConstraints()
     }
     
+    // MARK: API
+    
     private func setLabelConstraints() {
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -58,13 +60,6 @@ class PickerCell: UITableViewCell {
             label.topAnchor.constraint(equalTo: topAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor),
             ])
-    }
-    
-    // MARK: Debug methods
-    
-    func setDebugColors() {
-        label.backgroundColor = .yellow
-        backgroundColor = UIColor.secondary
     }
 }
 

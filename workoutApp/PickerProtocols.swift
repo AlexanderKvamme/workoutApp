@@ -8,12 +8,10 @@
 
 import Foundation
 
-/*
-    Protocol to allow selecting type/muscle in a separate VC pushed onto the nav stack. With isStringSender and isStringReceiver, you can send back a name of the selected value and update the selection in the presenting VC. This is done by storing a closure in the receiveHandler variable, and this is then called from the pickerView, along with a string argument.
- */
+/// Protocol to allow selecting type/muscle in a separate VC pushed onto the nav stack. With isStringSender and isStringReceiver, you can send back a name of the selected value and update the selection in the presenting VC. This is done by storing a closure in the receiveHandler variable, and this is then called from the pickerView, along with a string argument.
 
 //MARK: - String receiver protocols
-// Used to pass string values back from muscle/type/weight/time pickers
+// Used to pass string values back from weight/time pickers as well as to return exercise-/workoutnames
 
 protocol isStringSender {
     func sendStringBack(_ string: String)
@@ -30,7 +28,6 @@ extension isStringReceiver {
 }
 
 // MARK: - Exercise sender and receiver
-
 // used to pass exercises to and from exercisePickersViewControllers from for example NewWorkoutController
 
 protocol ExerciseReceiver: class {
@@ -46,13 +43,6 @@ extension ExerciseReceiver {
 // MARK: - Muscle sender and receiver
 
 protocol MuscleReceiver: class {
-//    var receiveMuscles: (([Muscle]) -> ()) { get set }
     func receive(muscles: [Muscle])
 }
-
-//extension MuscleReceiver {
-//    func receive(muscles: [Muscle]){
-//        receiveMuscles(muscles)
-//    }
-//}
 

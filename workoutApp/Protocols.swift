@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 // MARK: Pickable Sender
 
 protocol PickableSender: class {

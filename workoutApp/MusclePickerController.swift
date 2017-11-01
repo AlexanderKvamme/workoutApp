@@ -8,18 +8,15 @@
 
 import UIKit
 
-// MARK: Class
-
+/// Lets user select muscles for a workout/exercises
 class MusclePickerController: UIViewController {
     
     // MARK: - Properties
     
     fileprivate lazy var table: UITableView = {
-        
         let t = UITableView(frame: .zero)
         t.register(PickerCell.self, forCellReuseIdentifier: "cellIdentifier")
         t.backgroundColor = .clear
-        
         t.translatesAutoresizingMaskIntoConstraints = false
         t.clipsToBounds = true
         t.allowsMultipleSelection = false
@@ -46,30 +43,16 @@ class MusclePickerController: UIViewController {
         return headerLabel
     }()
     
-    private lazy var plusButton: UIButton = {
-        let image = UIImage(named: "plusButton")?.withRenderingMode(.alwaysTemplate)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        button.setImage(image, for: .normal)
-        button.alpha = Constant.alpha.faded
-        button.tintColor = UIColor.faded
-        button.translatesAutoresizingMaskIntoConstraints = false
-        //button.addTarget(self, action: #selector(presentNewExerciseController), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    // Properties
-    
     var selectionChoices = [Muscle]()
     var selectedMuscles: [Muscle]! // used to refresh the picker after returning from making new exercise
     
+    // Delegates
     weak var exerciseReceiver: ExerciseReceiver?
     weak var muscleReceiver: MuscleReceiver?
     
     // MARK: - Initializers
     
     init(withPreselectedMuscles preselectedMuscles: [Muscle]?) {
-        
         // Setup available choices
         self.selectedMuscles = preselectedMuscles
         self.selectionChoices = DatabaseFacade.fetchMuscles(with: .name, ascending: true)
@@ -114,27 +97,18 @@ class MusclePickerController: UIViewController {
     // MARK: Helper methods
     
     func addSubViewsAndConstraints() {
-        
+        // Add views
         view.addSubview(header)
         view.addSubview(footer)
         view.addSubview(table)
-//        view.addSubview(plusButton)
         
         NSLayoutConstraint.activate([
             // Footer
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
             // Header
             header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            // + button
-//            plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            plusButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10),
-//            plusButton.heightAnchor.constraint(equalToConstant: 25),
-//            plusButton.widthAnchor.constraint(equalToConstant: 25),
-            
             // Table
             table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),
             table.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: -100),
@@ -148,8 +122,6 @@ class MusclePickerController: UIViewController {
     @objc func dismissView() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
-    
-    // MARK: Delegate methods
     
     private func updateScrollingAndInsets() {
         
@@ -171,13 +143,13 @@ class MusclePickerController: UIViewController {
         }
     }
     
-    /// If contentView is smaller than the tableView. Add insets top and bottom to keep it centered.
+    /// Add insets top and bottom to keep it centered, if contentView is smaller than the tableView.
     private func setTableInsets() {
         let tableHeight = table.frame.height
         let contentHeight = table.contentSize.height
         
+        // set insets
         if tableHeight > contentHeight {
-            // make insets
             let difference = tableHeight-contentHeight
             table.contentInset = UIEdgeInsets(top: difference/2, left: 0, bottom: difference/2, right: 0)
         } else {
@@ -189,21 +161,19 @@ class MusclePickerController: UIViewController {
     
     /// Takes a indexpath, and makes it look selected or not depending on if its he of selected indexPaths
     fileprivate func configure(cellAt indexPath: IndexPath) {
-        
-        if let cell = table.cellForRow(at: indexPath) as? PickerCell {
+        guard let cell = table.cellForRow(at: indexPath) as? PickerCell else { return }
             
-            if selectedMuscles.contains(selectionChoices[indexPath.row]) {
-                cell.label.font = Constant.components.exerciseTableCells.fontWhenSelected
-                cell.label.textColor = Constant.components.exerciseTableCells.textColorWhenSelected
-            } else {
-                cell.label.font = Constant.components.exerciseTableCells.fontWhenDeselected
-                cell.label.textColor = Constant.components.exerciseTableCells.textColorWhenDeselected
-            }
+        if selectedMuscles.contains(selectionChoices[indexPath.row]) {
+            cell.label.font = Constant.components.exerciseTableCells.fontWhenSelected
+            cell.label.textColor = Constant.components.exerciseTableCells.textColorWhenSelected
+        } else {
+            cell.label.font = Constant.components.exerciseTableCells.fontWhenDeselected
+            cell.label.textColor = Constant.components.exerciseTableCells.textColorWhenDeselected
         }
     }
     
+    /// Make look selecter or deselected
     fileprivate func configure(cell: PickerCell, at indexPath: IndexPath) {
-        
         let muscle = selectionChoices[indexPath.row]
         
         if selectedMuscles.contains(muscle) {
@@ -216,11 +186,13 @@ class MusclePickerController: UIViewController {
     }
     
     fileprivate func selectMuscle( _ muscleToSelect: Muscle) {
-        if let indexOfExercise = selectionChoices.index(of: muscleToSelect) {
-            let indexPath = IndexPath(row: indexOfExercise, section: 0)
-            table.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-            configure(cellAt: indexPath)
+        guard let indexOfExercise = selectionChoices.index(of: muscleToSelect) else {
+            return
         }
+        
+        let indexPath = IndexPath(row: indexOfExercise, section: 0)
+        table.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        configure(cellAt: indexPath)
     }
     
     private func drawDiagonalLineThroughTable() {
@@ -296,20 +268,6 @@ class MusclePickerController: UIViewController {
 
 // MARK: - Extensions
 
-// MARK: NewExerciseReceiver
-
-extension MusclePickerController: NewExerciseReceiver {
-    
-    // FIXME: - Let user make new muscle?
-    
-    func receiveNewExercise(_ exercise: Exercise) {
-//        selectionChoices.append(exercise)
-//        selectedExercises.append(exercise)
-//        table.reloadData()
-//        selectExercise(exercise)
-    }
-}
-
 // MARK: TableView DataSource
 
 extension MusclePickerController: UITableViewDataSource {
@@ -335,7 +293,6 @@ extension MusclePickerController: UITableViewDelegate {
     
     // Add/remove to selected and make it look selected/deselected
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let tappedMuscle = selectionChoices[indexPath.row]
         
         // If already selected: remove og make look unselected
@@ -364,7 +321,6 @@ protocol MuscleEditorDataSource: class {
 extension MusclePickerController: MuscleEditorDataSource {
     
     func removeFromDataSource(muscle: Muscle) {
-
         // Deselect if selected
         if selectedMuscles.contains(muscle) {
             if let indexOfExercise = selectedMuscles.index(of: muscle) {
@@ -378,7 +334,6 @@ extension MusclePickerController: MuscleEditorDataSource {
             selectionChoices.remove(at: index)
             table.deleteRows(at: [indexPath], with: .fade)
         }
-        
         table.reloadData()
     }
 }
