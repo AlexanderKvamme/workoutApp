@@ -8,11 +8,13 @@
 
 import UIKit
 
-
-///* Used to enable swiping back thorugh the navigationstack*/
+/// Used to enable swiping back thorugh the navigationstack
 final class CustomNavigationViewController: UINavigationController {
 
-    // MARK: - Lifecycle
+    // MARK: - Properties
+    fileprivate var duringPushAnimation = false
+    
+    // MARK: - Initializers
     
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
@@ -24,15 +26,8 @@ final class CustomNavigationViewController: UINavigationController {
         delegate = self
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // This needs to be in here, not in init
-        interactivePopGestureRecognizer?.delegate = self
-    }
-    
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
@@ -40,28 +35,22 @@ final class CustomNavigationViewController: UINavigationController {
         interactivePopGestureRecognizer?.delegate = nil
     }
     
-    // MARK: - Overrides
+    // MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
+    
+    // MARK: Overrides
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         duringPushAnimation = true
-        
         super.pushViewController(viewController, animated: animated)
-    }
-    
-    // MARK: - Private Properties
-    
-    fileprivate var duringPushAnimation = false
-    
-    // MARK: - Unsupported Initializers
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Methods
-    
-    func buttonDidTap() {
-        print("tapped")
     }
 }
 
@@ -82,9 +71,8 @@ extension CustomNavigationViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == interactivePopGestureRecognizer else {
-            return true // default value
+            return true
         }
-        
         // Disable pop gesture if:
         // 1) the pop animation is in progress
         // 2) user swipes quickly a couple of times and animations don't have time to be performed

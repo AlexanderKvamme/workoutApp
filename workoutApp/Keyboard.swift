@@ -8,17 +8,23 @@
 
 import UIKit
 
+// MARK: - Protocols
+
 protocol KeyboardDelegate: class {
     func buttonDidTap(keyName: String)
 }
 
+/// Represents keyboard to display to user
 class Keyboard: UIView {
     
+    // MARK: - Properties
     weak var delegate: KeyboardDelegate?
 
     @IBOutlet weak var bottomLeftButton: UIButton! // Will change according to setting. Either ":" or "."
     @IBOutlet weak var topRightButton: UIButton! // + button
     @IBOutlet weak var middleRightButton: UIButton! // - button
+    
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,6 +34,8 @@ class Keyboard: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Methods
     
     func initializeSubviews() {
         let xibFileName = "Keyboard" // xib extention not included
@@ -64,7 +72,6 @@ class Keyboard: UIView {
         if let backArrowImage = UIImage(named: "arrow-back") {
             let tintableImage = backArrowImage.withRenderingMode(.alwaysTemplate)
             let rotatedImage = UIImage(cgImage: tintableImage.cgImage!, scale: 0, orientation: .down)
-            
             middleRightButton.setImage(rotatedImage, for: .normal)
             let inset: CGFloat = 22
             middleRightButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
@@ -77,6 +84,5 @@ class Keyboard: UIView {
     @objc func postNextKeyDidPressNotification() {
         NotificationCenter.default.post(name: .keyboardsNextButtonDidPress, object: nil)
     }
-    
 }
 
