@@ -149,6 +149,7 @@ class GoalsController: UIViewController, isStringReceiver {
         }
     }
     
+    /// Receives the text from a input view, and uses it to make a goal and append it.
     private func setupReceiveHandler() {
         stringReceivedHandler = { str in
             let goal = DatabaseFacade.makeGoal()

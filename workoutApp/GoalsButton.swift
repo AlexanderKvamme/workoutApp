@@ -15,19 +15,22 @@ class GoalButton: UIButton {
     
     // MARK: - Properties
     
-    var goal: Goal!
+    var goal: Goal
     
     // MARK: - Initializer
     
     init(withGoal goal: Goal) {
-        super.init(frame: .zero)
         self.goal = goal
+        super.init(frame: .zero)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Methods
+    
+    // Size of each GoalButton should be the size of the text it holds
     override var intrinsicContentSize: CGSize {
         return self.titleLabel!.intrinsicContentSize
     }

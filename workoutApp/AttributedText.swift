@@ -62,8 +62,7 @@ extension GoalsController {
         let bulletAttributesDictionary = [NSAttributedStringKey.font : font.withSize(bulletSize), NSAttributedStringKey.foregroundColor:bulletColor]
         let fullAttributedString = NSMutableAttributedString.init()
         
-        for string: String in strings
-        {
+        for string: String in strings {
             let bulletPoint: String = "\u{2022}"
             let formattedString: String = "\(bulletPoint) \(string)\n"
             let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: formattedString)
@@ -85,7 +84,6 @@ extension GoalsController {
         
         var paragraphStyle: NSMutableParagraphStyle
         paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-//        paragraphStyle.tabStops = [NSTextTab(textAlignment: .left, location: 15, options: NSDictionary() as! [String : AnyObject])]
         paragraphStyle.tabStops = [NSTextTab(textAlignment: .left, location: 15, options: NSDictionary() as! [NSTextTab.OptionKey : Any])]
         paragraphStyle.defaultTabInterval = 15
         paragraphStyle.firstLineHeadIndent = 0
@@ -94,3 +92,4 @@ extension GoalsController {
         return paragraphStyle
     }
 }
+

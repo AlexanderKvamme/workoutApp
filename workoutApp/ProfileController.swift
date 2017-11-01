@@ -15,11 +15,9 @@ final class ProfileController: UIViewController {
     
     // MARK: - Properties
     
-    private var settingsButton = UIButton()
     private var messageButton = UIButton()
     private var stackView = UIStackView()
     private var scrollView = UIScrollView()
-    private var header = UILabel()    
     
     // MARK: - Initializers
     
@@ -57,7 +55,6 @@ final class ProfileController: UIViewController {
     
     private func setup() {
         // TODO: Add preferences and show preferenceIcon
-        // setupHeader()
         setupScrollView()
         setupStackView()
 
@@ -65,7 +62,6 @@ final class ProfileController: UIViewController {
         addGoals(to: stackView)
         addSuggestions(to: stackView)
         
-        setupSettingsButton()
         setupMessageButton()
     }
     
@@ -110,23 +106,6 @@ final class ProfileController: UIViewController {
             ])
     }
     
-    private func setupHeader() {
-        header.text = "DASHBOARD"
-        header.font = UIFont.custom(style: .bold, ofSize: .medium)
-        header.textColor = .dark
-        header.textAlignment = .center
-        header.sizeToFit()
-        view.addSubview(header)
-        
-        // Layout
-        header.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            header.bottomAnchor.constraint(equalTo: settingsButton.bottomAnchor, constant: 0),
-            header.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-            header.rightAnchor.constraint(equalTo: settingsButton.rightAnchor, constant: 0),
-            ])
-    }
-    
     private func setupMessageButton() {
         messageButton = UIButton(frame: CGRect.zero)
         messageButton.setImage(UIImage.messageIcon, for: .normal)
@@ -143,26 +122,6 @@ final class ProfileController: UIViewController {
             messageButton.widthAnchor.constraint(equalToConstant: 25),
             messageButton.heightAnchor.constraint(equalToConstant: 25),
             ])
-    }
-    
-    private func setupSettingsButton() {
-        settingsButton = UIButton(frame: CGRect.zero)
-        settingsButton.setImage(UIImage(named: "wrench"), for: .normal)
-        settingsButton.addTarget(self, action: #selector(settingsButtonHandler), for: .touchUpInside)
-        view.addSubview(settingsButton)
-        
-        // Layout
-        let buttonDiameter: CGFloat = 25
-        
-        settingsButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            settingsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            settingsButton.widthAnchor.constraint(equalToConstant: buttonDiameter),
-            settingsButton.heightAnchor.constraint(equalToConstant: buttonDiameter),
-            ])
-        
-        settingsButton.isHidden = true
     }
     
     private func addGoals(to stackView: UIStackView) {
@@ -198,12 +157,7 @@ final class ProfileController: UIViewController {
         stackView.addArrangedSubview(suggestionController.view)
     }
     
-    func setDebugColors() {
-        scrollView.backgroundColor = .yellow
-    }
-    
     // MARK: Handlers
-
     
     @objc func xButtonHandler(_ box: UIButton) {
         if let box = box.superview?.superview as? Warningbox {
@@ -211,11 +165,6 @@ final class ProfileController: UIViewController {
             box.deleteWarning()
             box.removeFromSuperview()
         }
-    }
-    
-    @objc private func settingsButtonHandler() {
-        let preferencesController = PreferencesController()
-        navigationController?.pushViewController(preferencesController, animated: true)
     }
 }
 
@@ -252,7 +201,6 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
             let modal = CustomAlertView(type: .message, messageContent: "Great idea! Save it for later!")
             modal.show(animated: true)
         }
-        
         controller.dismiss(animated: true, completion: nil)
     }
 }

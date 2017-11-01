@@ -66,24 +66,19 @@ final class PreferencePicker: UIViewController {
     // MARK: Private methods
     
     private func addSubviewsAndConstraints() {
-        
+        // Add to view
         view.addSubview(header)
         view.addSubview(stack)
         
+        // Set constraints
         view.translatesAutoresizingMaskIntoConstraints = false
         header.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
-            // View
             view.heightAnchor.constraint(equalToConstant: 60),
             view.widthAnchor.constraint(equalToConstant: 300),
-            
-            // Header
             header.topAnchor.constraint(equalTo: view.topAnchor),
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            // Stack
             stack.centerXAnchor.constraint(equalTo: header.centerXAnchor),
             stack.topAnchor.constraint(equalTo: header.bottomAnchor),
             ])
@@ -94,11 +89,10 @@ final class PreferencePicker: UIViewController {
         stack.removeArrangedSubviews()
         
         guard let currentlySelectedChoice = UserDefaultsFacade.getActiveSelection(for: preference) else {
-            fatalError("No active selection in persistence")
+            fatalError("No active selection in user defaults")
         }
         
         for str in choices {
-            
             // Make label
             let btn = UIButton()
             btn.setTitle(str, for: .normal)
@@ -144,17 +138,12 @@ final class PreferencePicker: UIViewController {
         let point = gesture.location(in: stack)
         
         for btn in stack.subviews {
-            if btn.frame.contains(point) {
-                if let btn = btn as? UIButton {
-                    
-                    guard let str = btn.titleLabel?.text else {
-                        fatalError("Could not unwrap label's text")
-                    }
-                    
-                    UserDefaultsFacade.setSelection(forPreference: userPreference, to: str)
-                    setupPreferenceChoiceLabels(forPreference: userPreference)
-                }
+
+            guard btn.frame.contains(point), let btn = btn as? UIButton, let str = btn.titleLabel?.text else {
+                    fatalError("Could not unwrap label's text")
             }
+            UserDefaultsFacade.setSelection(forPreference: userPreference, to: str)
+            setupPreferenceChoiceLabels(forPreference: userPreference)
         }
     }
 }

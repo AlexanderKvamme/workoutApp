@@ -16,7 +16,6 @@
 		DD0E1DB91F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0E1DB81F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift */; };
 		DD0EB24B1F46FE9200CDA1CF /* ExerciseCellForHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB24A1F46FE9200CDA1CF /* ExerciseCellForHistory.swift */; };
 		DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */; };
-		DD0EB2751F48EB8600CDA1CF /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB2741F48EB8600CDA1CF /* test.swift */; };
 		DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D771F3C801A00228366 /* GoalsButton.swift */; };
 		DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D791F3CA36900228366 /* AttributedText.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
@@ -168,7 +167,6 @@
 		DD0E1DB81F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogHistoryTableDataSource.swift; sourceTree = "<group>"; };
 		DD0EB24A1F46FE9200CDA1CF /* ExerciseCellForHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCellForHistory.swift; sourceTree = "<group>"; };
 		DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCell.swift; sourceTree = "<group>"; };
-		DD0EB2741F48EB8600CDA1CF /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		DD109D771F3C801A00228366 /* GoalsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsButton.swift; sourceTree = "<group>"; };
 		DD109D791F3CA36900228366 /* AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
@@ -478,9 +476,8 @@
 		DD36F5111F33D41300FD31B3 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				DDD290A61EDCCD1500048BC9 /* TestViewController */,
-				DD0EB2731F48EAF700CDA1CF /* Preferences */,
 				DD36F5121F33D44300FD31B3 /* ProfileController.swift */,
+				DD0EB2731F48EAF700CDA1CF /* Preferences */,
 				DDF1170E1F3F4B6800E677CB /* SuggestionController */,
 				DDF1170D1F3F4B5400E677CB /* GoalController */,
 				DD109D7B1F3CA37A00228366 /* Helpers */,
@@ -742,14 +739,6 @@
 				DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */,
 			);
 			name = "ExerciseTable Boxes";
-			sourceTree = "<group>";
-		};
-		DDD290A61EDCCD1500048BC9 /* TestViewController */ = {
-			isa = PBXGroup;
-			children = (
-				DD0EB2741F48EB8600CDA1CF /* test.swift */,
-			);
-			name = TestViewController;
 			sourceTree = "<group>";
 		};
 		DDDE6E521ED4DF4900A03886 /* Box Tables */ = {
@@ -1071,7 +1060,6 @@
 				DDCF834F1F8B8B4000F87B3E /* UIResponder.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */,
-				DD0EB2751F48EB8600CDA1CF /* test.swift in Sources */,
 				DD4025D31F87AF4600A83D45 /* WeightedLiftCell.swift in Sources */,
 				DDEE8B591F8A222800176D0E /* ExerciseTableCellBox.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,

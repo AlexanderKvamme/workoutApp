@@ -13,12 +13,9 @@ import UIKit
 /// Makes and presents suggestionboxes. Updates every time the view appears.
 class SuggestionController: UIViewController {
     
-    typealias Suggestion = Muscle
-    
     // MARK: - Properties
     
     fileprivate var header = UILabel(frame: CGRect.zero)
-    private var receiveHandler: ((String) -> Void) = { _ in }
     fileprivate var stackOfSuggestions: UIStackView = UIStackView()
     fileprivate var suggestionBoxes: [SuggestionBox]!
     fileprivate var suggestedMuscles: [Muscle]!
@@ -101,7 +98,6 @@ fileprivate extension SuggestionController {
         
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-//            header.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30)
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
     }

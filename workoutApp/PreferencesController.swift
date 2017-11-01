@@ -63,18 +63,16 @@ class PreferencesController: UIViewController {
     // Private methods
     
     private func addSubViewsAndConstraints() {
-        
         // Add subviews
         view.addSubview(header)
         view.addSubview(footer)
         
         // Constraints
         NSLayoutConstraint.activate([
-            // Header
+
             header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            // Footer
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
@@ -105,7 +103,6 @@ class PreferencesController: UIViewController {
             topConstraint = preferencePicker.view.topAnchor.constraint(equalTo: preferencePickers[index-1].view.bottomAnchor)
         }
         
-        // Activate
         NSLayoutConstraint.activate([
             preferencePicker.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             topConstraint,
