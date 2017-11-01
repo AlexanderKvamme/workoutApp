@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 extension String {
     func isEmpty() -> Bool {
         return self == ""
@@ -17,3 +18,4 @@ extension String {
         return self != ""
     }
 }
+

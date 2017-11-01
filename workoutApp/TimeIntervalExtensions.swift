@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 extension TimeInterval {
     /// shortens to "10M", "10H", "10D", "10W" .etc
     func asMinimalString() -> String {

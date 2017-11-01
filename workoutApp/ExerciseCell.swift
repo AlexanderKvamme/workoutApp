@@ -255,7 +255,6 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         
         if let ip = getIndexPath() {
             owner?.totalLiftsToDisplay[ip.section].append(newLift)
-            owner?.totalLiftsToDisplay[ip.section].oneLinePrint()
             owner?.exerciseLogsAsArray[ip.section].addToLifts(newLift)
         }
         
@@ -340,7 +339,6 @@ extension ExerciseCellForWorkouts {
             
             let liftToRemove = owner?.totalLiftsToDisplay[section][ip.row]
             owner?.totalLiftsToDisplay[section].remove(at: ip.row)
-            owner?.totalLiftsToDisplay[section].oneLinePrint()
             
             DatabaseFacade.delete(liftToRemove!)
         }

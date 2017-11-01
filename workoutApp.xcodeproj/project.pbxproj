@@ -31,7 +31,6 @@
 		DD1EA1621EEC1CBC00EBB7B7 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */; };
 		DD1EA1641EEC1CC900EBB7B7 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */; };
 		DD2A9E741F0EED600074B46F /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2A9E731F0EED600074B46F /* Footer.swift */; };
-		DD2DDD771F3338EF00614788 /* Navbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2DDD761F3338EF00614788 /* Navbar.swift */; };
 		DD2EB3D11F39DB43007A556A /* GoalsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2EB3D01F39DB43007A556A /* GoalsController.swift */; };
 		DD36F5131F33D44300FD31B3 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD36F5121F33D44300FD31B3 /* ProfileController.swift */; };
 		DD372BB01F635F76007C35B8 /* WorkoutLogExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */; };
@@ -117,7 +116,6 @@
 		DDB5FF3D1F4CC99B00202705 /* ExerciseEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB5FF3C1F4CC99B00202705 /* ExerciseEditor.swift */; };
 		DDBEE8AD1F50695900A3BDA7 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */; };
 		DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBFCA611F2CA43000ABB241 /* PlusButton.swift */; };
-		DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */; };
 		DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC660B01EE6BE9900122543 /* DrawingMethods.swift */; };
 		DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */; };
 		DDCBF83D1F9622430044F545 /* LiftCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCBF83C1F9622430044F545 /* LiftCellDelegate.swift */; };
@@ -125,7 +123,6 @@
 		DDCF834D1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF834C1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift */; };
 		DDCF834F1F8B8B4000F87B3E /* UIResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF834E1F8B8B4000F87B3E /* UIResponder.swift */; };
 		DDD73FC51F700681006B905D /* TimeIntervalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD73FC41F700681006B905D /* TimeIntervalExtensions.swift */; };
-		DDD88F501F8CE4D300552153 /* UITextField Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD88F4F1F8CE4D300552153 /* UITextField Extensions.swift */; };
 		DDD88F521F8CE5BD00552153 /* String Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD88F511F8CE5BD00552153 /* String Extensions.swift */; };
 		DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */; };
 		DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */; };
@@ -135,7 +132,6 @@
 		DDE55B9B1F2FB55300ED1D15 /* WorkoutLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B9A1F2FB55300ED1D15 /* WorkoutLog.swift */; };
 		DDE55B9E1F30AD4D00ED1D15 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B9D1F30AD4D00ED1D15 /* UserDefaults.swift */; };
 		DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */; };
-		DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */; };
 		DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */; };
 		DDEE8B591F8A222800176D0E /* ExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEE8B581F8A222800176D0E /* ExerciseTableCellBox.swift */; };
 		DDEEA9F81EDCD99A003360CD /* WorkoutBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */; };
@@ -187,7 +183,6 @@
 		DD1EA1611EEC1CBC00EBB7B7 /* Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		DD1EA1631EEC1CC900EBB7B7 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		DD2A9E731F0EED600074B46F /* Footer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Footer.swift; sourceTree = "<group>"; };
-		DD2DDD761F3338EF00614788 /* Navbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navbar.swift; sourceTree = "<group>"; };
 		DD2EB3D01F39DB43007A556A /* GoalsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsController.swift; sourceTree = "<group>"; };
 		DD36F5121F33D44300FD31B3 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogExtensions.swift; sourceTree = "<group>"; };
@@ -277,7 +272,6 @@
 		DDB5FF3C1F4CC99B00202705 /* ExerciseEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseEditor.swift; sourceTree = "<group>"; };
 		DDBEE8AC1F50695900A3BDA7 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DDBFCA611F2CA43000ABB241 /* PlusButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
-		DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityHelperExtensions.swift; sourceTree = "<group>"; };
 		DDC660B01EE6BE9900122543 /* DrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingMethods.swift; sourceTree = "<group>"; };
 		DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDCBF83C1F9622430044F545 /* LiftCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiftCellDelegate.swift; sourceTree = "<group>"; };
@@ -285,7 +279,6 @@
 		DDCF834C1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortExerciseTableCellBox.swift; sourceTree = "<group>"; };
 		DDCF834E1F8B8B4000F87B3E /* UIResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIResponder.swift; sourceTree = "<group>"; };
 		DDD73FC41F700681006B905D /* TimeIntervalExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtensions.swift; sourceTree = "<group>"; };
-		DDD88F4F1F8CE4D300552153 /* UITextField Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField Extensions.swift"; sourceTree = "<group>"; };
 		DDD88F511F8CE5BD00552153 /* String Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String Extensions.swift"; sourceTree = "<group>"; };
 		DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableProtocols.swift; sourceTree = "<group>"; };
 		DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtensions.swift; sourceTree = "<group>"; };
@@ -295,7 +288,6 @@
 		DDE55B9A1F2FB55300ED1D15 /* WorkoutLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLog.swift; sourceTree = "<group>"; };
 		DDE55B9D1F30AD4D00ED1D15 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		DDEE859E1ED4922600A3F81C /* TwoRowStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowStack.swift; sourceTree = "<group>"; };
-		DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringExtensions.swift; sourceTree = "<group>"; };
 		DDEE85A21ED4AAA800A3F81C /* ThreeColumnStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnStack.swift; sourceTree = "<group>"; };
 		DDEE8B581F8A222800176D0E /* ExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTableCellBox.swift; sourceTree = "<group>"; };
 		DDEEA9F71EDCD99A003360CD /* WorkoutBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutBoxCell.swift; sourceTree = "<group>"; };
@@ -439,14 +431,10 @@
 			children = (
 				DDE55B9D1F30AD4D00ED1D15 /* UserDefaults.swift */,
 				DD151E011ED47C390014DBC1 /* UIStackViewExtensions.swift */,
-				DDC4C5BF1F28C8D300B511A3 /* EntityHelperExtensions.swift */,
-				DDEE85A01ED4A5D600A3F81C /* NSAttributedStringExtensions.swift */,
 				DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */,
-				DD2DDD761F3338EF00614788 /* Navbar.swift */,
 				DD4FF0141F6C3383005040A0 /* UIImage.swift */,
 				DDD73FC41F700681006B905D /* TimeIntervalExtensions.swift */,
 				DDCF834E1F8B8B4000F87B3E /* UIResponder.swift */,
-				DDD88F4F1F8CE4D300552153 /* UITextField Extensions.swift */,
 				DDD88F511F8CE5BD00552153 /* String Extensions.swift */,
 			);
 			name = "Native Extensions";
@@ -1017,7 +1005,6 @@
 				DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */,
 				DDB5FF3D1F4CC99B00202705 /* ExerciseEditor.swift in Sources */,
 				DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */,
-				DDD88F501F8CE4D300552153 /* UITextField Extensions.swift in Sources */,
 				DD71B5841F79694C00D8E104 /* Workout+CoreDataClass.swift in Sources */,
 				DDCF834D1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift in Sources */,
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
@@ -1030,7 +1017,6 @@
 				DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */,
 				DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */,
 				DD468F851F2E875000A945A9 /* WorkoutTableViewController.swift in Sources */,
-				DDEE85A11ED4A5D600A3F81C /* NSAttributedStringExtensions.swift in Sources */,
 				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
 				DD71B58A1F79694C00D8E104 /* ExerciseLog+CoreDataProperties.swift in Sources */,
 				DD71B58F1F79694C00D8E104 /* WorkoutLog+CoreDataProperties.swift in Sources */,
@@ -1090,14 +1076,12 @@
 				DDEE8B591F8A222800176D0E /* ExerciseTableCellBox.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */,
-				DDC4C5C01F28C8D300B511A3 /* EntityHelperExtensions.swift in Sources */,
 				DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */,
 				DD71B5801F79694C00D8E104 /* WorkoutLog+CoreDataClass.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,
 				DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */,
 				DD71B5851F79694C00D8E104 /* ExerciseLog+CoreDataClass.swift in Sources */,
 				DDCF834A1F8A3D8400F87B3E /* TallExerciseTableCellBox.swift in Sources */,
-				DD2DDD771F3338EF00614788 /* Navbar.swift in Sources */,
 				DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */,
 				DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */,
 				DDE55B981F2F745F00ED1D15 /* isBoxTableViewDataSource.swift in Sources */,
