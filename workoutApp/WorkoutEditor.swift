@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Looks like the NewWorkoutController, but edits an existing Workout
+/// Used to edit an existing Workout
 class WorkoutEditor: WorkoutController {
     
     // MARK: - Properties
@@ -18,7 +18,6 @@ class WorkoutEditor: WorkoutController {
     private var nameWasChanged = false
     
     private lazy var footer: ButtonFooter = {
-        // Footer
         let footer = ButtonFooter(withColor: .darkest)
         footer.frame.origin.y = self.view.frame.maxY - footer.frame.height
         footer.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
@@ -32,9 +31,7 @@ class WorkoutEditor: WorkoutController {
         super.init(nibName: nil, bundle: nil)
         
         hidesBottomBarWhenPushed = true
-        
         self.currentWorkout = workout
-//        self.currentMuscle = workout.musclesUsed
         self.currentMuscles = workout.getMuscles()
         self.currentWorkoutStyle = workout.workoutStyle
         self.initialName = workout.name
@@ -60,7 +57,6 @@ class WorkoutEditor: WorkoutController {
         view.addSubview(header)
         view.addSubview(workoutStyleSelecter)
         view.addSubview(muscleSelecter)
-//        view.addSubview(restSelectionBox)
         view.addSubview(exerciseSelecter)
         view.addSubview(footer)
     }
@@ -84,7 +80,6 @@ class WorkoutEditor: WorkoutController {
     }
     
     @objc private func editName() {
-        
         let inputController = InputViewController(inputStyle: .text)
         let nameBeforeChange: String = currentWorkout.name ?? "No Style"
         inputController.setHeader(nameBeforeChange)
@@ -97,16 +92,14 @@ class WorkoutEditor: WorkoutController {
                 self.nameWasChanged = true
             }
         }
-        
         navigationController?.pushViewController(inputController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func approveModifications() {
-        
         // Present error modal if workout contains no exercises
         guard hasExercises else {
             let errorMessage = "Add at least one exercise, please!"
-            let modal = CustomAlertView(type: .message, messageContent: errorMessage)
+            let modal = CustomAlertView(type: .error, messageContent: errorMessage)
             modal.show(animated: true)
             return
         }

@@ -65,8 +65,10 @@ final class ExerciseEditor: UIViewController {
         return footer
     }()
     
+    // Protocol conformance
+    var stringReceivedHandler: ((String) -> Void) = { _ in } // isStringReceiver conformance
+    
     // Delegates
-    var stringReceivedHandler: ((String) -> Void) = { _ in }
     weak var editorDataSource: ExerciseEditorDataSource?
     
     // MARK: - Initializers
@@ -178,6 +180,7 @@ final class ExerciseEditor: UIViewController {
     }
     
     @objc private func editName() {
+        // Show input Controller and prepare to receive text
         let inputController = InputViewController(inputStyle: .text)
         inputController.delegate = self
         
@@ -190,11 +193,8 @@ final class ExerciseEditor: UIViewController {
                 self.didChangeName = true
             }
         }
-        
         navigationController?.pushViewController(inputController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
-    
-    // MARK: Exit methods
     
     @objc private func dismissVC() {
         // dismiss without committing changes to core data
@@ -218,8 +218,8 @@ final class ExerciseEditor: UIViewController {
 // MARK: - Extensions
 
 extension ExerciseEditor: PickableReceiver {
+    // Functionality to update muscles, style etc in a picker, and receive them.
     func receive(pickable: PickableEntity) {
-        
         // update current exercise with the new object
         switch pickable {
         case is ExerciseStyle:
@@ -240,7 +240,6 @@ extension ExerciseEditor: MuscleReceiver {
     func receive(muscles: [Muscle]) {
         currentMuscles = muscles
         muscleSelecter.setBottomText(muscles.getName())
-        print("received muscles: ", muscles)
     }
 }
 
