@@ -270,7 +270,7 @@ final class DatabaseFacade {
         return newGoal
     }
     
-    static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
+    @discardableResult static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
         
         let newExercise = makeExercise()
         

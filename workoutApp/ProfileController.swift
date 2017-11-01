@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MessageUI
 
 
 final class ProfileController: UIViewController {
@@ -15,6 +16,7 @@ final class ProfileController: UIViewController {
     // MARK: - Properties
     
     private var settingsButton = UIButton()
+    private var messageButton = UIButton()
     private var stackView = UIStackView()
     private var scrollView = UIScrollView()
     private var header = UILabel()    
@@ -55,17 +57,16 @@ final class ProfileController: UIViewController {
     
     private func setup() {
         // TODO: Add preferences and show preferenceIcon
-        setupSettingsButton()
-        settingsButton.alpha = 0
-        
         // setupHeader()
         setupScrollView()
-        
         setupStackView()
 
         addWarnings(to: stackView)
         addGoals(to: stackView)
         addSuggestions(to: stackView)
+        
+        setupSettingsButton()
+        setupMessageButton()
     }
     
     private func setupScrollView(){
@@ -77,7 +78,6 @@ final class ProfileController: UIViewController {
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //scrollView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 5), //
             scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
             scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
@@ -127,6 +127,24 @@ final class ProfileController: UIViewController {
             ])
     }
     
+    private func setupMessageButton() {
+        messageButton = UIButton(frame: CGRect.zero)
+        messageButton.setImage(UIImage.messageIcon, for: .normal)
+        messageButton.imageView?.contentMode = .scaleAspectFit
+        messageButton.addTarget(self, action: #selector(mailDeveloper), for: .touchUpInside)
+        
+        view.addSubview(messageButton)
+        
+        // Layout
+        messageButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            messageButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
+            messageButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
+            messageButton.widthAnchor.constraint(equalToConstant: 25),
+            messageButton.heightAnchor.constraint(equalToConstant: 25),
+            ])
+    }
+    
     private func setupSettingsButton() {
         settingsButton = UIButton(frame: CGRect.zero)
         settingsButton.setImage(UIImage(named: "wrench"), for: .normal)
@@ -134,17 +152,17 @@ final class ProfileController: UIViewController {
         view.addSubview(settingsButton)
         
         // Layout
-        let rightInset: CGFloat = 10
-        let topInset: CGFloat = 30
         let buttonDiameter: CGFloat = 25
         
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            settingsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: topInset),
-            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -rightInset),
+            settingsButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
+            settingsButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
             settingsButton.widthAnchor.constraint(equalToConstant: buttonDiameter),
             settingsButton.heightAnchor.constraint(equalToConstant: buttonDiameter),
             ])
+        
+        settingsButton.isHidden = true
     }
     
     private func addGoals(to stackView: UIStackView) {
@@ -185,6 +203,7 @@ final class ProfileController: UIViewController {
     }
     
     // MARK: Handlers
+
     
     @objc func xButtonHandler(_ box: UIButton) {
         if let box = box.superview?.superview as? Warningbox {
@@ -197,6 +216,44 @@ final class ProfileController: UIViewController {
     @objc private func settingsButtonHandler() {
         let preferencesController = PreferencesController()
         navigationController?.pushViewController(preferencesController, animated: true)
+    }
+}
+
+extension ProfileController: MFMailComposeViewControllerDelegate {
+    
+    @objc func mailDeveloper() {
+        guard MFMailComposeViewController.canSendMail() else {
+            let modal = CustomAlertView(type: .error, messageContent: "Your device is not configured to send mail!")
+            modal.show(animated: true)
+            return
+        }
+        
+        let mail = MFMailComposeViewController()
+        mail.mailComposeDelegate = self
+        mail.setToRecipients(["alexanderkvamme@gmail.com"])
+        mail.setSubject("Hone(est) feedback")
+        mail.setMessageBody("<h3>So I got this great idea:</h3", isHTML: true)
+        present(mail, animated: true)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        // Present modal based on result
+        switch result {
+        case .cancelled:
+            let modal = CustomAlertView(type: .message, messageContent: "Another time, then! :)")
+            modal.show(animated: true)
+        case .sent:
+            let modal = CustomAlertView(type: .message, messageContent: "Great stuff! Thanks! :)")
+            modal.show(animated: true)
+        case .failed:
+            let modal = CustomAlertView(type: .error, messageContent: "Ohh my! Something wrong happened with your email and it could not be sent: \(error?.localizedDescription ?? "Try again later")")
+            modal.show(animated: true)
+        case .saved:
+            let modal = CustomAlertView(type: .message, messageContent: "Great idea! Save it for later!")
+            modal.show(animated: true)
+        }
+        
+        controller.dismiss(animated: true, completion: nil)
     }
 }
 

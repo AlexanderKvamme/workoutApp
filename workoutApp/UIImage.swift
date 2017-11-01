@@ -9,6 +9,17 @@
 import Foundation
 import UIKit
 
+
+// MARK: Images
+
+extension UIImage {
+    
+    static var messageIcon: UIImage {
+        return UIImage(named: "messageIconThick")!
+    }
+}
+
+// MARK: Method to resize
 extension UIImage {
     
     func resize(maxWidthHeight : Double)-> UIImage? {
@@ -22,7 +33,7 @@ extension UIImage {
             maxWidth = maxWidthHeight
             let per = (100.0 * maxWidthHeight / actualWidth)
             maxHeight = (actualHeight * per) / 100.0
-        }else{
+        } else {
             maxHeight = maxWidthHeight
             let per = (100.0 * maxWidthHeight / actualHeight)
             maxWidth = (actualWidth * per) / 100.0
@@ -38,3 +49,4 @@ extension UIImage {
         return scaledImage
     }
 }
+
