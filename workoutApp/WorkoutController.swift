@@ -8,8 +8,7 @@
 
 import UIKit
 
-// MARK: - Class
-
+///
 class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // MARK: - Properties
@@ -17,14 +16,12 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     // required properties
     var currentMuscles: [Muscle]!
     var currentWorkoutStyle: WorkoutStyle!
-    
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
-    var stringReceivedHandler: ((String) -> Void) = { _ in } // used to receiving of time and name from pickers
+    var stringReceivedHandler: ((String) -> Void) = { _ in } // Receiving of time and name from pickers
     
     // Computed properties
     
     lazy var muscleSelecter: TwoLabelStack = {
-        
         let darkHeaderFont = UIFont.custom(style: .bold, ofSize: .medium)
         let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
         let halfScreenWidth = Constant.UI.width/2
@@ -33,11 +30,11 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         let stack = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Muscle", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.muscle, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "muscle-picker-button"
         stack.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
+        
         return stack
     }()
     
     lazy var workoutStyleSelecter: TwoLabelStack = {
-        
         let darkHeaderFont = UIFont.custom(style: .bold, ofSize: .medium)
         let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
         let halfScreenWidth = Constant.UI.width/2
@@ -51,9 +48,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }()
     
     lazy var exerciseSelecter: TwoLabelStack = {
-        
         let newframe = CGRect(x: 0, y: self.workoutStyleSelecter.frame.maxY - 30, width: Constant.UI.width, height: 100)
-        
         let exerciseSelecter = TwoLabelStack(frame: newframe, topText: " Exercises Added", topFont: UIFont.custom(style: .medium, ofSize: .medium), topColor: UIColor.dark, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.dark, fadedBottomLabel: false)
         exerciseSelecter.button.accessibilityIdentifier = "exercise-picker-button"
         exerciseSelecter.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
@@ -90,15 +85,13 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     var currentExercises = [Exercise]() {
         didSet {
-            let count = currentExercises.count
-            self.exerciseSelecter.bottomLabel.text = String(count)
+            self.exerciseSelecter.bottomLabel.text = String(currentExercises.count)
         }
     }
     
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
-        
         // Hide tab bar's selection indicator
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.hideSelectionIndicator(shouldAnimate: false)
@@ -113,7 +106,6 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }
     
     // Tap handlers
-    
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
         let workoutStyles = DatabaseFacade.fetchWorkoutStyles()
@@ -128,9 +120,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         // Make and present a custom pickerView for selecting muscle
         let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
         musclePicker.muscleReceiver = self
-        
 
-        
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
@@ -139,16 +129,15 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         let restInputViewController  = InputViewController(inputStyle: .time)
         restInputViewController.delegate = self
         
-        stringReceivedHandler = { s in
-            if s != "" {
-                self.restSelectionBox.content?.label?.text = s
+        stringReceivedHandler = { str in
+            if str != "" {
+                self.restSelectionBox.content?.label?.text = str
             }
         }
         navigationController?.pushViewController(restInputViewController, animated: false)
     }
     
     @objc private func exercisesTapHandler() {
-        
         let exercisePicker = ExercisePickerController(forMuscle: currentMuscles, withPreselectedExercises: currentExercises)
         
         exercisePicker.pickableReceiver = self
@@ -173,7 +162,6 @@ extension WorkoutController: PickableReceiver {
         case is Muscle:
             currentMuscles = pickable as! [Muscle]
             setMuscleName(currentMuscles)
-            
             self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
         case is WorkoutStyle:
             currentWorkoutStyle = pickable as! WorkoutStyle
@@ -184,7 +172,6 @@ extension WorkoutController: PickableReceiver {
     }
     
     private func setMuscleName(_ muscles: [Muscle]) {
-        
         if muscles.count == 1 {
             muscleSelecter.bottomLabel.text = muscles.first!.name
         } else {
@@ -197,7 +184,7 @@ extension WorkoutController: PickableReceiver {
 
 extension WorkoutController {
     var hasExercises: Bool {
-        return self.currentExercises.count > 0
+        return currentExercises.count > 0
     }
 }
 
