@@ -9,9 +9,7 @@
 import Foundation
 import UIKit
 
-/*
-    The InputView class is a view, visible to the user, which shows a header and a textField where the user can input either time, weight, sets, .etc.
- */
+/// The InputView class is a view, visible to the user, which shows a header and a textField where the user can input either time, weight, sets, .etc.
 
 class InputView: UIView {
     
@@ -25,7 +23,16 @@ class InputView: UIView {
     
     init(inputStyle: CustomInputStyle) {
         super.init(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: 200))
-        
+        setupSubviewsAndConstraints(forInputStyle: inputStyle)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    private func setupSubviewsAndConstraints(forInputStyle inputStyle: CustomInputStyle) {
         // Set Default texts
         switch inputStyle{
         case .text:
@@ -54,7 +61,6 @@ class InputView: UIView {
         textField.autocapitalizationType = .allCharacters
         textField.adjustsFontSizeToFitWidth = true
         textField.accessibilityIdentifier = "textfield"
-        
         addSubview(textField)
         
         // Header
@@ -75,7 +81,7 @@ class InputView: UIView {
         stack.addArrangedSubview(textField)
         
         stack.autoresizesSubviews = false
-
+        
         addSubview(stack)
         setupStack()
         layoutIfNeeded()
@@ -92,29 +98,14 @@ class InputView: UIView {
             diagonalView.widthAnchor.constraint(equalToConstant: diagonalView.frame.width),
             diagonalView.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
             diagonalView.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
-                    ])
-        sendSubview(toBack: diagonalView)
+            ])
         
-        // default to showing keyboard
+        sendSubview(toBack: diagonalView)
         textField.becomeFirstResponder()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Methods
-    
-    // MARK: - Helpers
-    
     func setHeaderText(_ str: String) {
         header.text = str
-    }
-    
-    func setDebugColors() {
-        backgroundColor = .red
-        textField.backgroundColor = .green
-        header.backgroundColor = .brown
     }
     
     private func setupStack() {
@@ -140,6 +131,8 @@ class InputView: UIView {
         
         v.layer.addSublayer(shapeLayer)
         addSubview(v)
+        
         return v
     }
 }
+
