@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SwipeCellKit
 
+/// Lets a suggestionbox display a table of all workouts matching its suggested Muscle
 class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewCellDelegate {
     
     // MARK: - Properties
@@ -88,12 +89,11 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     // MARK: - TableView delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let wo = dataSource.getData() as? [Workout]
-        if let wo = wo {
-            let selectedWorkout = wo[indexPath.row]
-            let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
-            navigationController?.pushViewController(detailedVC, animated: true)
-        }
+        guard let workout = dataSource.getData() as? [Workout] else { return }
+        
+        let selectedWorkout = workout[indexPath.row]
+        let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
+        navigationController?.pushViewController(detailedVC, animated: true)
     }
     
     // Editing and deletion
@@ -101,20 +101,19 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         switch orientation {
-        case .right:
+        case .right: // User swiped right
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
                 self.deleteCell(at: indexPath)
             }
-            
-            // customize the action appearance
+            // Customize the action appearance
             deleteAction.image = ximage
             deleteAction.backgroundColor = .secondary
             
             return [deleteAction]
         case .left: // user swiped left
             let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
-                let wo = self.dataSource.getWorkout(at: indexPath)
-                let workoutEditor = WorkoutEditor(with: wo)
+                let workout = self.dataSource.getWorkout(at: indexPath)
+                let workoutEditor = WorkoutEditor(with: workout)
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
             }
             editAction.image = self.wrenchImage
@@ -146,17 +145,16 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     }
     
     @objc private func showEditor(_ gesture: UIGestureRecognizer) {
-        switch gesture.state {
-        case .began:
-            let location = gesture.location(in: self.view)
-            if let indexPathToEdit = tableView.indexPathForRow(at: location) {
-                indexPathBeingEdited = indexPathToEdit
-                let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
-                let editor = WorkoutEditor(with: workoutToEdit)
-                navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-            }
-        default:
-            return
+        
+        guard gesture.state == .began else { return }
+        
+        let location = gesture.location(in: self.view)
+        
+        if let indexPathToEdit = tableView.indexPathForRow(at: location) {
+            indexPathBeingEdited = indexPathToEdit
+            let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
+            let editor = WorkoutEditor(with: workoutToEdit)
+            navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
         }
     }
     

@@ -17,6 +17,10 @@ extension UIImage {
     static var messageIcon: UIImage {
         return UIImage(named: "messageIconThick")!
     }
+    
+    static var xmarkIcon: UIImage {
+        return UIImage(named: "xmark")!
+    }
 }
 
 // MARK: Method to resize

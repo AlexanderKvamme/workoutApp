@@ -9,8 +9,10 @@
 import UIKit
 import SwipeCellKit
 
-
+/// Represent one cell of the WorkoutTable
 class WorkoutBoxCell: SwipeTableViewCell {
+    
+    // MARK: - Properties
     
     let box: Box!
     
@@ -18,7 +20,6 @@ class WorkoutBoxCell: SwipeTableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         
-        // Box
         let boxFactory = BoxFactory.makeFactory(type: .WorkoutBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
@@ -26,7 +27,6 @@ class WorkoutBoxCell: SwipeTableViewCell {
         let boxContent = boxFactory.makeBoxContent()
         
         box = Box(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent!)
-        
         box.isUserInteractionEnabled = false
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -36,20 +36,20 @@ class WorkoutBoxCell: SwipeTableViewCell {
         addViewsAndConstraints()
     }
     
-        required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addViewsAndConstraints() {
-        
+    // MARK: - Methods
+    
+    private func addViewsAndConstraints() {
         contentView.addSubview(box)
-        let marginGuide = contentView.layoutMarginsGuide
         
         box.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            marginGuide.topAnchor.constraint(equalTo: box.topAnchor),
-            marginGuide.bottomAnchor.constraint(equalTo: box.bottomAnchor),
+            contentView.layoutMarginsGuide.topAnchor.constraint(equalTo: box.topAnchor),
+            contentView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: box.bottomAnchor),
             box.heightAnchor.constraint(greaterThanOrEqualToConstant: box.intrinsicContentSize.height),
             box.widthAnchor.constraint(equalToConstant: box.frame.width),
             ])
@@ -59,16 +59,13 @@ class WorkoutBoxCell: SwipeTableViewCell {
         contentView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 0), for: .vertical)
     }
     
-    func setupContent(withWorkout workout: Workout) {
+ func setupContent(withWorkout workout: Workout) {
         guard let name = workout.name else { return }
         guard let styleName = workout.workoutStyle?.name else { return }
         
         box.setTitle(name)
         box.setSubHeader(styleName)
-
-        if let content = box.content {
-            content.setup(usingWorkout: workout)
-        }
+        box.content?.setup(usingWorkout: workout)
     }
 }
 

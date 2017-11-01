@@ -9,11 +9,14 @@
 import UIKit
 import SwipeCellKit
 
+/// Used to a table of Workouts, latest first, to provide user with an overview of most recent performances
 class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
     
-    // MARK: - Initializers
+    // MARK: - Properties
     
     var dataSource: isBoxTableViewDataSource!
+    
+    // MARK: - Initializers
     
     init(workoutStyleName: String?) {
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell")
@@ -27,10 +30,8 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     
     // MARK: - Life cycle
     
-    // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .light
         setupDataSource()
         setupTableView()
@@ -55,7 +56,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
         dataSource.owner = self
     }
     
-    // Delete rows
+    // MARK: - Data source delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         showDetailedView(for: indexPath)
@@ -66,18 +67,17 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         
         switch orientation {
-        case .right:
+        case .right: // User swiped right
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
                 self.deleteCell(at: indexPath)
                 action.fulfill(with: .delete)
             }
-            
             // customize the action appearance
             deleteAction.image = ximage
             deleteAction.backgroundColor = .secondary
             
             return [deleteAction]
-        case .left: // user swiped left
+        case .left: // User swiped left
             return nil
         }
     }

@@ -13,20 +13,28 @@ class BoxTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var workoutStyleName: String?
-    var cellIdentifier: String
-    var customRefreshView: RefreshControlView!
-    
     lazy var wrenchImage: UIImage = {
         let wrench = UIImage(named: "wrench")!
         let test = wrench.resize(maxWidthHeight: 36)!
+        
         return test
     }()
     
-    lazy var ximage: UIImage = {
-        let img = UIImage(named: "xmark")!
-        return img
+    lazy var customRefreshView: RefreshControlView = {
+        let view = RefreshControlView()
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.frame = refreshControl!.bounds // <-- Why is this needed?
+        view.label.alpha = 0
+        
+        return view
     }()
+    
+    lazy var ximage: UIImage = {
+        return UIImage.xmarkIcon
+    }()
+    
+    var workoutStyleName: String?
+    var cellIdentifier: String
     
     // MARK: - Initializers
     
@@ -68,14 +76,7 @@ class BoxTableViewController: UITableViewController {
         refreshControl = UIRefreshControl()
         refreshControl?.backgroundColor = .clear
         refreshControl?.tintColor = .clear
-        
-        // Custom view
-        customRefreshView = RefreshControlView()
-        customRefreshView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        customRefreshView.frame = refreshControl!.bounds // <-- Why is this needed?
-        customRefreshView.label.alpha = 0
         refreshControl?.addSubview(customRefreshView)
-        
         refreshControl!.addTarget(self, action: #selector(BoxTableViewController.refreshControlHandler(sender:)), for: .valueChanged)
     }
     
@@ -118,21 +119,23 @@ class BoxTableViewController: UITableViewController {
         removeBackButton()
     }
     
-    func showNavigationBar() {
+    private func showNavigationBar() {
         navigationController?.setNavigationBarHidden(false, animated: true)
         refreshControl?.endRefreshing()
     }
     
     func removeBackButton(){
-        if let topItem = self.navigationController?.navigationBar.topItem {
-            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        guard let topItem = self.navigationController?.navigationBar.topItem else {
+            return
         }
+        topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     func showSelectionIndicator() {
-        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.showSelectionindicator()
+        guard let customTabBarController = self.tabBarController as? CustomTabBarController else {
+            return
         }
+        customTabBarController.showSelectionindicator()
     }
     
     // MARK: SwipeCellKit
@@ -140,11 +143,11 @@ class BoxTableViewController: UITableViewController {
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         
         let myStyle = SwipeExpansionStyle(target: .percentage(0.5), additionalTriggers: [], elasticOverscroll: true, completionAnimation: .bounce)
-        
         var options = SwipeTableOptions()
         options.expansionStyle = myStyle
         options.backgroundColor = .light
         options.transitionStyle = .border
+        
         return options
     }
 }

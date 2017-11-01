@@ -11,6 +11,7 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
+
 protocol isBoxTableViewDataSource: class, UITableViewDataSource {
     
     var cellIdentifier: String { get set }

@@ -9,24 +9,38 @@
 import Foundation
 import UIKit
 
+/// Refresh control used to let users make new workouts by pulling down on the workout table
 class RefreshControlView: UIView {
     
-    let label = UILabel()
+    // MARK: - Properties
+    
+    let label: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "+"
+        lbl.font = UIFont.custom(style: .bold, ofSize: .biggest)
+        lbl.textColor = UIColor.darkest
+        lbl.sizeToFit()
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        return lbl
+    }()
+    
+    // MARK: - Initializers
     
     init(){
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        
-        label.text = "+"
-        label.font = UIFont.custom(style: .bold, ofSize: .biggest)
-        label.textColor = UIColor.darkest
-        label.sizeToFit()
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(label)
         setupConstraints()
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
     private func setupConstraints() {
+        addSubview(label)
+        
         NSLayoutConstraint.activate([
             label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
@@ -35,8 +49,5 @@ class RefreshControlView: UIView {
             ])
         setNeedsLayout()
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
+

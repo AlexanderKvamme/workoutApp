@@ -11,31 +11,28 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
+/// Provides data for the Table that displays the history if performed workouts
 class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
 
-    weak var owner: SwipeTableViewCellDelegate?
-    
     // MARK: - Properties
     
     var cellIdentifier = "HistoryBoxCell"
     var workoutStyleName: String?
     var fetchedWorkoutLogs = [WorkoutLog]()
     
+    weak var owner: SwipeTableViewCellDelegate?
+    
     // MARK: - Initializers
     
     required init(workoutStyleName: String?) {
         super.init()
         self.workoutStyleName = workoutStyleName
-        
         refresh()
     }
     
-    // MARK: - Datasource Protocol requirements
-    
-    func getData() -> [NSManagedObject]? {
-        let workouts = DatabaseFacade.fetchAllWorkoutLogs()
-        return workouts
-    }
+    // MARK: - Methods
+
+    // Datasource Protocol requirements
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedWorkoutLogs.count
@@ -53,6 +50,12 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     // MARK: - API
     
+    
+    func getData() -> [NSManagedObject]? {
+        let workouts = DatabaseFacade.fetchAllWorkoutLogs()
+        return workouts
+    }
+    
     func getWorkoutLog(at indexPath: IndexPath) -> WorkoutLog {
         let workoutLog = fetchedWorkoutLogs[indexPath.row]
         return workoutLog
@@ -60,7 +63,6 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     func refresh() {
         let fetchRequest = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
-        
         // If a specific workoutStyle was injected using initialzation. Use this as a predicate to limit the search
         if let styleName = self.workoutStyleName {
             let workoutStyle = DatabaseFacade.getWorkoutStyle(named: styleName)
@@ -70,12 +72,12 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dateEnded", ascending: false)]
         
+        // Fetch from Core Data
         do {
-            // Fetch from Core Data
             let results = try DatabaseFacade.context.fetch(fetchRequest)
             fetchedWorkoutLogs = results
-        } catch let err as NSError {
-            print(err.debugDescription)
+        } catch let error as NSError {
+            print(error.debugDescription)
         }
     }
     

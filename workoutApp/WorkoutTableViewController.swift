@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
+/// The default workoutTableViewController used in both the history and workout tab
 class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
     
     // MARK: - Properties
@@ -23,7 +24,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     init(workoutStyleName: String?) {
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
-        
         setUpNavigationBar(withTitle: workoutStyleName)
     }
     
@@ -36,8 +36,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .light
-        
         setupDataSource()
         setupDelegate()
         setupTableView()
@@ -45,6 +43,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         resetRefreshControlAnimation()
         addLongPressRecognizer()
         
+        view.backgroundColor = .light
         tableView.reloadData()
     }
     
@@ -72,17 +71,14 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     @objc private func showEditor(_ gesture: UIGestureRecognizer) {
-        switch gesture.state {
-        case .began:
-            let location = gesture.location(in: self.view)
-            if let indexPathToEdit = tableView.indexPathForRow(at: location) {
-                indexPathBeingEdited = indexPathToEdit
-                let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
-                let editor = WorkoutEditor(with: workoutToEdit)
-                navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
-            }
-        default:
-            return
+        guard gesture.state == .began else { return }
+        
+        let location = gesture.location(in: self.view)
+        if let indexPathToEdit = tableView.indexPathForRow(at: location) {
+            indexPathBeingEdited = indexPathToEdit
+            let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
+            let editor = WorkoutEditor(with: workoutToEdit)
+            navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
         }
     }
     
@@ -102,19 +98,19 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     private func animateAnyChanges() {
-        if let indexPath = indexPathBeingEdited {
-            // Pre-animation
-            tableView.cellForRow(at: indexPath)?.alpha = 0
-            tableView.cellForRow(at: indexPath)?.layoutIfNeeded()
-            
-            // Animate with completion>
-            CATransaction.begin()
-            CATransaction.setCompletionBlock({
-                self.indexPathBeingEdited = nil
-            })
-            self.tableView.reloadRows(at: [indexPath], with: .left)
-            CATransaction.commit()
-        }
+        guard let indexPath = indexPathBeingEdited else { return }
+        
+        // Pre-animation
+        tableView.cellForRow(at: indexPath)?.alpha = 0
+        tableView.cellForRow(at: indexPath)?.layoutIfNeeded()
+        
+        // Animate with completion>
+        CATransaction.begin()
+        CATransaction.setCompletionBlock({
+            self.indexPathBeingEdited = nil
+        })
+        self.tableView.reloadRows(at: [indexPath], with: .left)
+        CATransaction.commit()
     }
     
     private func deleteCell(at indexPath: IndexPath) {
@@ -126,16 +122,12 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     // Update table only if new workouts are added
     private func updateTableIfNeeded() {
-
         guard let dataCountPreUpdate = dataSource?.getData()?.count else { return }
-        
         dataSource.refresh()
-        
         guard let dataCountPostUpdate = dataSource?.getData()?.count else { return }
-        if dataCountPreUpdate != dataCountPostUpdate || shouldUpdateUponAppearing {
 
-            shouldUpdateUponAppearing = false // resetp
-            
+        if dataCountPreUpdate != dataCountPostUpdate || shouldUpdateUponAppearing {
+            shouldUpdateUponAppearing = false // reset
             let indexSet = NSIndexSet(index: 0) as IndexSet
             tableView.reloadSections(indexSet, with: .automatic)
                 self.tableView.reloadData()
@@ -164,7 +156,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
                 action.fulfill(with: .delete)
                 self.deleteCell(at: indexPath)
             }
-            
             // customize the action appearance
             deleteAction.image = ximage
             deleteAction.backgroundColor = .secondary

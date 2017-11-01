@@ -11,6 +11,7 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
+/// Provides data to the workoutTable used in both the history and Workout tabs.
 class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
 
     // MARK: - Properties
@@ -29,6 +30,9 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
 
         refresh()
     }
+    
+    // MARK: - Methods
+    // MARK: dataSource methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedWorkouts.count

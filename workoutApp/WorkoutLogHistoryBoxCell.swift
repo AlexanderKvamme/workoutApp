@@ -9,15 +9,17 @@
 import UIKit
 import SwipeCellKit
 
+/// Represents a cell in the table displaying each workout presented in in order of latest performance
 class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
+    
+    // MARK: - Properties
     
     let box: Box!
     
-    // MARK: - Init
+    // MARK: - Initializers
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         
-        // Box
         let boxFactory = BoxFactory.makeFactory(type: .HistoryBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
@@ -38,8 +40,9 @@ class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Methods
+    
     func setupContent(with workoutLog: WorkoutLog) {
-        
         let name = workoutLog.getName()
         let styleName = workoutLog.getStyleName()
         let liftCount = workoutLog.getLiftCount()
@@ -57,13 +60,11 @@ class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
     func addViewsAndConstraints() {
         contentView.addSubview(box)
         
-        let marginGuide = contentView.layoutMarginsGuide
-        
         box.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            marginGuide.topAnchor.constraint(equalTo: box.topAnchor),
-            marginGuide.bottomAnchor.constraint(equalTo: box.bottomAnchor),
+            contentView.layoutMarginsGuide.topAnchor.constraint(equalTo: box.topAnchor),
+            contentView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: box.bottomAnchor),
             box.heightAnchor.constraint(greaterThanOrEqualToConstant: box.intrinsicContentSize.height),
             box.widthAnchor.constraint(equalToConstant: box.frame.width),
             ])

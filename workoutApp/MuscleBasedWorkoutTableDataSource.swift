@@ -11,6 +11,7 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
+/// Supplied data for the WorkoutTableView used by the Suggestionboxes
 class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     
     // MARK: - Properties
