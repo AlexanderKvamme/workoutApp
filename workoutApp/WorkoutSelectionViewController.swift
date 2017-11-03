@@ -28,7 +28,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     // MARK: - Lifecycle
     
-    // ViewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -42,7 +41,6 @@ class WorkoutSelectionViewController: SelectionViewController {
         view.layoutIfNeeded()
     }
     
-    // ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .light
@@ -56,13 +54,13 @@ class WorkoutSelectionViewController: SelectionViewController {
         view.addSubview(header)
         view.addSubview(stack)
         
-        // header
+        // Header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
         header.topAnchor.constraint(equalTo: view.topAnchor,
                                     constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
-        // stack
+        // Stack
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         
@@ -72,7 +70,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     }
     
     private func setupStack() {
-        stack = StackView(frame: CGRect.zero)
+        stack = UIStackView(frame: CGRect.zero)
         stack.axis = UILayoutConstraintAxis.vertical
         stack.distribution = UIStackViewDistribution.equalSpacing
         stack.alignment = UIStackViewAlignment.center
@@ -81,7 +79,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     // Stack methods
     
-    /** Sends new fetch and updates buttons */
+    /// Sends new fetch and updates buttons
     private func updateStackWithEntriesFromCoreData() {
         let workoutStyles = getUniqueWorkoutStyles() // getWorkoutStyles(withRequest: request)
         
@@ -103,10 +101,7 @@ class WorkoutSelectionViewController: SelectionViewController {
             
             let subheaderString: String = {
                 let count = DatabaseFacade.countWorkouts(ofStyle: styleName)
-                if count > 1 {
-                    return "\(count) WORKOUTS"
-                }
-                return "\(count) WORKOUT"
+                return count > 1 ? "\(count) WORKOUTS" : "\(count) WORKOUT"
             }()
             
             let newButton = SelectionViewButton(header: styleName, subheader: subheaderString)
@@ -119,7 +114,7 @@ class WorkoutSelectionViewController: SelectionViewController {
             
             // Replace any default target action (Default modal presentation)
             newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-            newButton.button.addTarget(self, action: #selector(buttonTapHandler), for: UIControlEvents.touchUpInside)
+            newButton.button.addTarget(self, action: #selector(ShowWorkoutTable), for: UIControlEvents.touchUpInside)
             
             workoutButtons.append(newButton)
         }
@@ -128,11 +123,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         // Update stack
         stack.removeArrangedSubviews()
-        
-        for button in buttons {
-            stack.addArrangedSubview(button)
-        }
-        
+        buttons.forEach(stack.addArrangedSubview(_:))
         addNewWorkoutButton()
         
         stack.layoutIfNeeded()
@@ -152,20 +143,20 @@ class WorkoutSelectionViewController: SelectionViewController {
                 plusButton.centerYAnchor.constraint(equalTo: header.bottomAnchor, constant: plusButtonTopSpacing),
                 ])
         } else {
-            // add to stackView as only button
+            // Add to stackView as only button
             stack.addArrangedSubview(plusButton)
         }
         
         // present newWorkoutController on tap
-        plusButton.addTarget(self, action: #selector(plusButtonTapHandler), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
     }
     
-    @objc private func plusButtonTapHandler() {
+    @objc private func pushNewWorkoutController() {
         let newWorkoutController = NewWorkoutController()
         navigationController?.pushViewController(newWorkoutController, animated: true)
     }
     
-    @objc func buttonTapHandler(button: UIButton) {
+    @objc func ShowWorkoutTable(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
         let boxTable = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)

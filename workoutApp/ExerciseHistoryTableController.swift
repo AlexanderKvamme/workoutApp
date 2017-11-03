@@ -63,7 +63,7 @@ class ExerciseHistoryTableViewController: UITableViewController {
             self.title = name.uppercased()
         }
         
-        let xIcon = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
+        let xIcon = UIImage.xmarkIcon.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)

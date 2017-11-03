@@ -29,10 +29,8 @@ public class SelectionViewButton: UIView {
         
         subheaderLabel = UILabel()
         subheaderLabel.text = subheader.uppercased()
-        //subheaderLabel.font = UIFont.custom(style: .medium, ofSize: .small)
         subheaderLabel.font = UIFont.custom(style: .bold, ofSize: .small)
         subheaderLabel.applyCustomAttributes(.medium)
-        
         subheaderLabel.textAlignment = .center
         subheaderLabel.textColor = UIColor.dark
         subheaderLabel.sizeToFit()
@@ -73,11 +71,12 @@ public class SelectionViewButton: UIView {
     
     // UI components
     @objc func handleButtonTap(_ sender: SelectionViewButton) {
+        // Override for actual use
         showNotYetImplementedModal()
     }
     
     func showNotYetImplementedModal() {
-        let alert = CustomAlertView(type: .error, messageContent: "this feature is not yet implemented!")
+        let alert = CustomAlertView(type: .error, messageContent: "This feature is not yet implemented!")
         alert.show(animated: true)
     }
 }

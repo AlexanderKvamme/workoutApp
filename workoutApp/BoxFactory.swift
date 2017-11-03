@@ -595,7 +595,7 @@ fileprivate class WarningBoxContent: BoxContent {
         label.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
         
         // xButton in the top right
-        let xImage = UIImage(named: "xmarkBeige")?.withRenderingMode(.alwaysTemplate)
+        let xImage = UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate)
         xButton = UIButton()
         guard let xButton = xButton else { return }
         xButton.setImage(xImage, for: .normal)

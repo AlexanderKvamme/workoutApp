@@ -30,7 +30,7 @@ public class ButtonFooter: UIView {
         // Approve button
         approveButton = UIButton(frame: CGRect(x: 0, y: 0, width: buttonWidth, height: footerHeight))
         
-        let checkmark = UIImage(named: "checkmarkBlue")?.withRenderingMode(.alwaysTemplate)
+        let checkmark = UIImage.checkmarkIcon.withRenderingMode(.alwaysTemplate)
         approveButton.accessibilityIdentifier = "approve-button"
         approveButton.setImage(checkmark, for: .normal)
         approveButton.tintColor = color
@@ -38,7 +38,7 @@ public class ButtonFooter: UIView {
         
         // Cancel button
         cancelButton = UIButton(frame: CGRect(x: approveButton.frame.maxX, y: 0, width: buttonWidth, height: footerHeight))
-        let xmark = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysTemplate)
+        let xmark = UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate)
         cancelButton.accessibilityIdentifier = "cancel-button"
         cancelButton.setImage(xmark, for: .normal)
         cancelButton.tintColor = color

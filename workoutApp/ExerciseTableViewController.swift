@@ -87,7 +87,7 @@ class ExerciseTableViewController: UITableViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Right navBar button
-        let xIcon = UIImage(named: "xmarkDarkBlue")?.withRenderingMode(.alwaysOriginal)
+        let xIcon = UIImage.xmarkIcon.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         

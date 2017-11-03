@@ -26,7 +26,7 @@ class ApproveButtonFooter: UIView {
         
         // Approve button
         approveButton = UIButton(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: footerHeight))
-        let checkmark = UIImage(named: "checkmarkBlue")?.withRenderingMode(.alwaysTemplate)
+        let checkmark = UIImage.checkmarkIcon.withRenderingMode(.alwaysTemplate)
         approveButton.setImage(checkmark, for: .normal)
         approveButton.tintColor = color
         addSubview(approveButton)

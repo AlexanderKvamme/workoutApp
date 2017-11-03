@@ -41,7 +41,8 @@ public class TwoRowStack: UIStackView {
 
         let attrString = NSMutableAttributedString(string: "\(sets)")
         let xmark = NSTextAttachment()
-        xmark.image = UIImage(named: "xmarkBeige")
+        xmark.image = UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate)
+        
         xmark.bounds = CGRect(x: 0, y: -3, width: 16, height: 16)
         let stringifiedXmark = NSAttributedString(attachment: xmark)
         attrString.append(stringifiedXmark)

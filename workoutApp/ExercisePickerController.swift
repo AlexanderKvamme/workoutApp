@@ -360,7 +360,7 @@ extension ExercisePickerController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+        return 40
     }
 }
 
@@ -373,18 +373,12 @@ protocol ExerciseEditorDataSource: class {
 extension ExercisePickerController: ExerciseEditorDataSource {
 
     func removeFromDataSource(exercise: Exercise) {
-        
-        for e in selectedExercises {
-            print(e.name!)
-        }
-        
         // Deselect if selected
         if selectedExercises.contains(exercise) {
             if let indexOfExercise = selectedExercises.index(of: exercise) {
                 selectedExercises.remove(at: indexOfExercise)
             }
         }
-        
         // Remove from table and datasource
         if let index = selectionChoices.index(of: exercise) {
             let indexPath = IndexPath(row: index, section: 0)

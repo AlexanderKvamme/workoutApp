@@ -30,7 +30,7 @@ class PickerCell: UITableViewCell {
     
     // MARK: - Methods
     
-    // MARK: Setup methods
+    // Setup methods
     
     private func setupCell() {
         label = UILabel()
@@ -49,8 +49,13 @@ class PickerCell: UITableViewCell {
         setLabelConstraints()
     }
     
-    // MARK: API
+    // Public methods
     
+    func getHeight() -> CGFloat {
+        return 50
+    }
+    
+    // Private methods
     private func setLabelConstraints() {
         label.translatesAutoresizingMaskIntoConstraints = false
         

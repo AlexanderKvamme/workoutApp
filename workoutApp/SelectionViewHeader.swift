@@ -9,10 +9,15 @@
 import Foundation
 import UIKit
 
+/// Header used in WorkoutSelectionView, HistorySelectionView
 class SelectionViewHeader: UIView {
+    
+    // MARK: - Properties
     
     var button = UIButton()
     var label = UILabel()
+    
+    // MARK: - Initializers
     
     init() {
         super.init(frame: CGRect.zero)

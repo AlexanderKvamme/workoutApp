@@ -141,7 +141,6 @@
 		DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */; };
 		DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF254061F35F75C0032ED75 /* Warningbox.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
-		DDF95B391ECA453A009E6925 /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B381ECA453A009E6925 /* StackView.swift */; };
 		DDFA50FF1F571E7E00AF28A4 /* UserDefaultsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */; };
 		DDFA51011F583AE900AF28A4 /* PreferencePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */; };
 /* End PBXBuildFile section */
@@ -296,7 +295,6 @@
 		DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDF254061F35F75C0032ED75 /* Warningbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Warningbox.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
-		DDF95B381ECA453A009E6925 /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsFacade.swift; sourceTree = "<group>"; };
 		DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencePicker.swift; sourceTree = "<group>"; };
 		DF8FB46A79315CA483AE7121 /* Pods_workoutApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_workoutApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -532,7 +530,6 @@
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,
-				DDE55B9C1F30AD3900ED1D15 /* Onboarding */,
 				DD9838711F12716900B876C7 /* Notifications */,
 				DD585D501EC4D53900962B19 /* Assets.xcassets */,
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
@@ -571,7 +568,6 @@
 				DD4B1C111EC8616800BD313B /* SelectionViewController.swift */,
 				DDB539AD1F2E074800824CFC /* WorkoutSelectionViewController.swift */,
 				DD468F821F2E1A8100A945A9 /* HistorySelectionViewController.swift */,
-				DDF95B381ECA453A009E6925 /* StackView.swift */,
 				DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */,
 				DD585D941EC6734100962B19 /* SelectionViewHeader.swift */,
 				DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */,
@@ -759,13 +755,6 @@
 				DDE55B9A1F2FB55300ED1D15 /* WorkoutLog.swift */,
 			);
 			name = "Managed Object Subclass Extensions";
-			sourceTree = "<group>";
-		};
-		DDE55B9C1F30AD3900ED1D15 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Onboarding;
 			sourceTree = "<group>";
 		};
 		DDEE859D1ED4921000A3F81C /* Helper Classes */ = {
@@ -1116,7 +1105,6 @@
 				DDB539AC1F2E017600824CFC /* WorkoutLogHistoryTableViewController.swift in Sources */,
 				DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */,
 				DD4FF0151F6C3383005040A0 /* UIImage.swift in Sources */,
-				DDF95B391ECA453A009E6925 /* StackView.swift in Sources */,
 				DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */,
 				DDCBF83D1F9622430044F545 /* LiftCellDelegate.swift in Sources */,
 			);

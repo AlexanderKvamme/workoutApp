@@ -14,10 +14,9 @@ class BoxTableViewController: UITableViewController {
     // MARK: - Properties
     
     lazy var wrenchImage: UIImage = {
-        let wrench = UIImage(named: "wrench")!
-        let test = wrench.resize(maxWidthHeight: 36)!
+        let resizedImage = UIImage.wrenchIcon.resize(maxWidthHeight: 36)!
         
-        return test
+        return resizedImage
     }()
     
     lazy var customRefreshView: RefreshControlView = {

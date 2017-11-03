@@ -9,7 +9,8 @@
 import UIKit
 import CoreData
 
-class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
+/// Tab bar displayed in the bottom of the main screen. Used to let users navigate between History, Workout, and Profile tabs.
+class CustomTabBarController: UITabBarController {
 
     // MARK: - Properties
     
@@ -33,27 +34,23 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         delegate = self
 
-        // MARK: History
-        
-        // Embed to enable user to navigate back through stack
+        // History
         let historySelectionViewController = HistorySelectionViewController()
         let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
         
-        // MARK: Workout Tab
+        // Workout Tab
         let workoutSelectionViewController = WorkoutSelectionViewController()
         let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
         
-        // MARK: Profile Tab
+        // Profile Tab
         let profileController = ProfileController()
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
-        // MARK: Set up navbar
+        // Set up navbar
         viewControllers = [historyNavigationController, workoutNavigationController, profileNavigationController]
-        
-        //progressController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "progress"), tag: 0)
-        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "history"), tag: 0)
-        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "workout"), tag: 1)
-        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "profile"), tag: 2)
+        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.historyIcon, tag: 0)
+        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.workoutIcon, tag: 1)
+        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage.profileIcon, tag: 2)
         
         // Accessibility
         workoutNavigationController.tabBarItem.accessibilityIdentifier = "workout-tab"
@@ -99,11 +96,13 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
             self.selectionIndicator.alpha = 1
         }, completion: nil)
     }
-    
-    // Delegate methods
-    
+}
+
+// MARK: - Extensions
+
+extension CustomTabBarController: UITabBarControllerDelegate {
+    // disable popping navigation stack on second tap, so that users dont accidentally cancels workout
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        // disable popping navigation stack on second tap
         return viewController != tabBarController.selectedViewController
     }
 }

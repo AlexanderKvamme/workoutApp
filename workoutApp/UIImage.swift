@@ -21,6 +21,33 @@ extension UIImage {
     static var xmarkIcon: UIImage {
         return UIImage(named: "xmark")!
     }
+    
+    static var checkmarkIcon: UIImage {
+        return UIImage(named: "checkmark")!
+    }
+    
+    static var plusIcon: UIImage {
+        return UIImage(named: "plusIcon")!
+    }
+    
+    static var wrenchIcon: UIImage {
+        return UIImage(named: "wrench")!
+    }
+    
+    static var backArrowIcon: UIImage {
+        return UIImage(named: "backArrow")!
+    }
+    
+    static var historyIcon: UIImage {
+        return UIImage(named: "history")!
+    }
+    static var workoutIcon: UIImage {
+        return UIImage(named: "workout")!
+    }
+    static var profileIcon: UIImage {
+        return UIImage(named: "profile")!
+    }
+    
 }
 
 // MARK: Method to resize

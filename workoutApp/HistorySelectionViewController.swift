@@ -24,7 +24,6 @@ class HistorySelectionViewController: SelectionViewController {
 
     // MARK: - Lifecycle
     
-    // ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .light
@@ -32,13 +31,12 @@ class HistorySelectionViewController: SelectionViewController {
         setupLayout()
     }
     
-    // ViewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         updateStackToDisplayStylesAndAll()
         drawDiagonalLine()
-        view.bringSubview(toFront: stack) // Bring it in front of diagonal line
+        view.bringSubview(toFront: stack) // Bring above diagonal line
         view.layoutIfNeeded()
     }
     
@@ -47,7 +45,7 @@ class HistorySelectionViewController: SelectionViewController {
     private func makeAllButton() -> SelectionViewButton {
         let allButton = SelectionViewButton(header: "All", subheader: "workouts")
         allButton.button.removeTarget(nil, action: nil, for: .allEvents)
-        allButton.button.addTarget(self, action: #selector(allHistoryButtonHandler), for: .touchUpInside)
+        allButton.button.addTarget(self, action: #selector(showTableOfAllWorkouts), for: .touchUpInside)
         return allButton
     }
     
@@ -71,7 +69,7 @@ class HistorySelectionViewController: SelectionViewController {
     }
     
     private func setupStack() {
-        stack = StackView(frame: CGRect.zero)
+        stack = UIStackView(frame: CGRect.zero)
         stack.axis = UILayoutConstraintAxis.vertical
         stack.distribution = UIStackViewDistribution.equalSpacing
         stack.alignment = UIStackViewAlignment.center
@@ -99,8 +97,7 @@ class HistorySelectionViewController: SelectionViewController {
         for type in uniqueWorkoutTypes {
             guard let styleName = type.name else { return }
             
-            let newButton = SelectionViewButton(header: styleName,
-                                                subheader: "\(DatabaseFacade.countWorkoutLogs(ofStyle: styleName)) WORKOUTS")
+            let newButton = SelectionViewButton(header: styleName, subheader: "\(DatabaseFacade.countWorkoutLogs(ofStyle: styleName)) WORKOUTS")
             
             // Set up button names etc
             newButton.button.tag = buttonIndex
@@ -109,7 +106,7 @@ class HistorySelectionViewController: SelectionViewController {
             
             // Replace any default target action (Default modal presentation)
             newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-            newButton.button.addTarget(self, action: #selector(buttonTapHandler), for: UIControlEvents.touchUpInside)
+            newButton.button.addTarget(self, action: #selector(showTableForWorkoutStyle), for: UIControlEvents.touchUpInside)
             
             workoutButtons.append(newButton)
         }
@@ -118,25 +115,21 @@ class HistorySelectionViewController: SelectionViewController {
         
         // Update stack
         stack.removeArrangedSubviews()
-        
-        for button in buttons {
-            stack.addArrangedSubview(button)
-        }
+        buttons.forEach(stack.addArrangedSubview(_:))
         stack.layoutIfNeeded()
     }
     
     // MARK: - TapHandlers 
     
-    @objc func allHistoryButtonHandler() {        
+    @objc func showTableOfAllWorkouts() {
         let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: nil)
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }
     
-    @objc func buttonTapHandler(button: UIButton) {
+    @objc func showTableForWorkoutStyle(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
         let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
-            //HistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
         
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }

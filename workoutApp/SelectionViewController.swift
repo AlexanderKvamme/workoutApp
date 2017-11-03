@@ -9,21 +9,16 @@
 import UIKit
 import CoreData
 
-/*
- SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts/workoutlogs (if displaying history) to show. 
- For example when displaying workouts, it displays the different styles. Normal, drop set, etc, while a historySelectionViewcontroller lets user see previously completed workouts in the form of a table listing out previous workoutLogs.
- 
- SelectionViewController is the superclass of WorkoutSelectionViewController and HistorySelectionViewController, which both leads to different tableViews.
- */
+/// SelectionVC is a list of buttons to provide users with the ability to pick further predicates for which workouts/workoutlogs (if displaying history) to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc, while a historySelectionViewcontroller lets user see previously completed workouts in the form of a table listing out previous workoutLogs. SelectionViewController is the superclass of WorkoutSelectionViewController and HistorySelectionViewController, which both leads to different tableViews.
 
 class SelectionViewController: UIViewController {
     
-    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Used to fetch choices and display them as buttons
+    var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Fetch choice options
     var header: SelectionViewHeader!
     var buttons = [SelectionViewButton]()
     var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
     var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
-    var stack: StackView!
+    var stack: UIStackView!
     var buttonNames = [String]()
     var buttonIndex = 0
     
@@ -31,14 +26,6 @@ class SelectionViewController: UIViewController {
     
     init(header: SelectionViewHeader) {
         self.header = header
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    // Initialize with manually created buttons
-    init(header: SelectionViewHeader, buttons: [SelectionViewButton]) {
-        // TODO: - remove this method when you dont need any dummy
-        self.header = header
-        self.buttons = buttons
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -74,7 +61,7 @@ class SelectionViewController: UIViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        title = "" // removes "Back" text on the back button in subsequent controllers
+        title = "" // Removes "Back" text in navbar
     }
     
     // MARK: - Setup Methods
@@ -83,13 +70,13 @@ class SelectionViewController: UIViewController {
         view.addSubview(header)
         view.addSubview(stack)
         
-        // header
+        // Header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
         header.topAnchor.constraint(equalTo: view.topAnchor,
                                     constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
-        // stack
+        // Stack
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         
@@ -99,14 +86,12 @@ class SelectionViewController: UIViewController {
     }
     
     private func setupStack() {
-        stack = StackView(frame: CGRect.zero)
+        stack = UIStackView(frame: CGRect.zero)
         stack.axis = UILayoutConstraintAxis.vertical
         stack.distribution = UIStackViewDistribution.equalSpacing
         stack.alignment = UIStackViewAlignment.center
         stack.spacing = Constant.components.SelectionVC.Stack.spacing
     }
-    
-    // methods to update stack
     
     private func updateStackWithInsertedButtons() {
         for button in self.buttons {
@@ -152,6 +137,7 @@ class SelectionViewController: UIViewController {
         alignmentRectangle.translatesAutoresizingMaskIntoConstraints = false
     }
     
+    /// Draws yellow line through the stack
     func drawDiagonalLine() {
         diagonalLineView = getDiagonalLineView(sizeOf: stack)
         view.addSubview(diagonalLineView)

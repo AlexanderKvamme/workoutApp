@@ -16,7 +16,11 @@ enum ModalType {
 }
 
 
+/// Modal to display errors and messages to user. For example the confirmation/congratulation message after each workout.
 class CustomAlertView: UIView, isModal {
+    
+    // MARK: - Properties
+    
     var backgroundView = UIView()
     var modalView = UIView()
     
@@ -25,6 +29,8 @@ class CustomAlertView: UIView, isModal {
     private let spaceOverHeader: CGFloat = 20
     private let spaceOverContent: CGFloat = 5
     private let spaceOverCheckmark: CGFloat = 30
+    
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,11 +41,8 @@ class CustomAlertView: UIView, isModal {
     convenience init(type: ModalType, messageContent:String) {
         self.init(frame: UIScreen.main.bounds)
         
-        // Message View
         let ModalWidth = UIScreen.main.bounds.width - spaceFromSides
-        
-        // "Error" and errorNumber - Switch på CustomModalStyle... case "Message" eller "Error". Følgende er case Message
-        
+
         // Message
         let typeStack = UIStackView() // message or error
         var typeStackHeight: CGFloat = 0
@@ -49,6 +52,7 @@ class CustomAlertView: UIView, isModal {
         typeStack.spacing = 0
         modalView.addSubview(typeStack)
         
+        // Set up the view based on type
         switch type {
         case .message:
             let messageLabel = UILabel()
@@ -95,8 +99,9 @@ class CustomAlertView: UIView, isModal {
         
         // top right x mark
         let xView = UIButton()
-        xView.setImage(UIImage(named: "xmarkDarkBlue"), for: .normal)
-        xView.addTarget(self, action: #selector(checkmarkButtonhandler), for: .touchUpInside)
+        xView.tintColor = .dark
+        xView.setImage(UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        xView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         xView.sizeToFit()
         
         modalView.addSubview(xView)
@@ -107,7 +112,6 @@ class CustomAlertView: UIView, isModal {
         xView.translatesAutoresizingMaskIntoConstraints = false
         
         // Header
-        // - Make label
         let headerLabel = UILabel()
         headerLabel.text = "PSST!"
         headerLabel.textAlignment = .center
@@ -131,17 +135,13 @@ class CustomAlertView: UIView, isModal {
         contentLabel.font = UIFont.custom(style: .medium, ofSize: .medium)
         modalView.addSubview(contentLabel)
         
-        // Add line spacing
-        if let text = contentLabel.text {
-            guard text.characters.count > 0 else { return }
-            
+        // Add line spacing if theres any text
+        if let text = contentLabel.text, text.characters.count > 0 {
             let attributedString = NSMutableAttributedString(string: contentLabel.text!)
-            attributedString.addAttribute(NSAttributedStringKey.kern,
-                                          value: CGFloat(0.7),
-                                          range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSAttributedStringKey.kern, value: CGFloat(0.7), range: NSRange(location: 0, length: attributedString.length))
             contentLabel.attributedText = attributedString
         }
-        
+    
         contentLabel.sizeToFit()
         contentLabel.centerXAnchor.constraint(equalTo: modalView.centerXAnchor).isActive = true
         contentLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: spaceOverContent).isActive = true
@@ -149,14 +149,15 @@ class CustomAlertView: UIView, isModal {
         contentLabel.widthAnchor.constraint(equalToConstant: contentLabel.frame.width).isActive = true
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // checkmark
+        // Checkmark
         let checkmarkView = UIButton()
-        checkmarkView.setImage(UIImage(named: "checkmarkBlue"), for: .normal)
+        checkmarkView.setImage(UIImage.checkmarkIcon, for: .normal)
         checkmarkView.sizeToFit()
         checkmarkView.accessibilityIdentifier = "approve-modal-button"
-        checkmarkView.addTarget(self, action: #selector(checkmarkButtonhandler), for: .touchUpInside)
+        checkmarkView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         
         modalView.addSubview(checkmarkView)
+        
         checkmarkView.heightAnchor.constraint(equalToConstant: checkmarkView.frame.height).isActive = true
         checkmarkView.widthAnchor.constraint(equalToConstant: checkmarkView.frame.width).isActive = true
         checkmarkView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: spaceOverCheckmark).isActive = true
@@ -169,30 +170,28 @@ class CustomAlertView: UIView, isModal {
         modalView.frame.size = CGSize(width: frame.width - spaceFromSides, height: dialogViewHeight)
         modalView.backgroundColor = UIColor.lightest
         modalView.layoutIfNeeded()
+        
         addSubview(modalView)
         
         // Dismissable by backgorund tap
-        backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedOnBackgroundView)))
+        backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissView)))
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func didTappedOnBackgroundView(){
+    // MARK: - Methods
+    
+    @objc func dismissView(){
         dismiss(animated: true)
     }
     
-    // MARK: - Helper
     private func setBackground() {
         backgroundView.frame = frame
         backgroundView.backgroundColor = UIColor.darkest
         backgroundView.alpha = 0
         addSubview(backgroundView)
-    }
-    
-    @objc private func checkmarkButtonhandler() {
-        dismiss(animated: true)
     }
 }
 

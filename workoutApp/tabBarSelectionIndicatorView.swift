@@ -9,9 +9,14 @@
 import Foundation
 import UIKit
 
-class tabBarSelectionIndicatorView: UIView {
+/// A view that is displayed over the tabBar do indicate which one is selected
+class tabBarSelectionIndicator: UIView {
+    
+    // MARK: - Properties
     
     let indicatorHorizontalSpacing: CGFloat = 30
+    
+    // MARK: - Methods
     
     func setup(selectableItemsCount itemCount: Int, atHeight tabBarHeight: CGFloat) {
         let indicatorHeight: CGFloat = 10
