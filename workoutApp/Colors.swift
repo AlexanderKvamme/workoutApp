@@ -17,7 +17,6 @@ extension UIColor {
     static let faded = UIColor(hexString: "88828C")
     static let light = UIColor(hexString: "E8DFD9")
     static let lightest = UIColor(hexString: "F5EDED")
-    
     static let primary = UIColor(hexString: "F6A623")
     static let secondary = UIColor(hexString: "BC4553")
 }
@@ -41,3 +40,4 @@ extension UIColor {
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
 }
+

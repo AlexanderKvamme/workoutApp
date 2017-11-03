@@ -16,45 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // Seed Core data if necessary
         let context = DatabaseFacade.persistentContainer.viewContext
         
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
-            
             let seeder = DataSeeder(context: context)
-            
-            // Seed snapshot goals
             DataSeeder.clearGoals()
-            
-            // Exercises and workouts
             seeder.seedCoreDataForFastlaneSnapshots()
         }
         
-        if UserDefaults.isFirstLaunch() {
-            
-            // Seed Core data
-            let dataSeeder = DataSeeder(context: context)
-            dataSeeder.seedCoreData()
-            
-            let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
-            modal.show(animated: true)
-            
-            // User Defaults
-            if !UserDefaultsFacade.hasInitialDefaults {
-                UserDefaultsFacade.seed()
-            }
-        } else {
-            let dataSeeder = DataSeeder(context: context)
-            dataSeeder.update()
-        }
-        
-        // Appearance()
         customizeUIAppearance()
+        seedIfFirstLaunch(context: context)
         
         // Instantiate master View Controller
-        let masterViewController = CustomTabBarController()
-        window?.rootViewController = masterViewController
+        window?.rootViewController = CustomTabBarController()
         
         return true
     }
@@ -88,8 +63,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Custom Methods
     
+    private func seedIfFirstLaunch(context: NSManagedObjectContext) {
+        // If first launch, seed with essentials
+        switch UserDefaults.isFirstLaunch() {
+        case true:
+            // Seed Core data
+            let dataSeeder = DataSeeder(context: context)
+            dataSeeder.seedCoreData()
+            
+            // Show Welcome message
+            let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
+            modal.show(animated: true)
+            
+            // Seed User Defaults
+            if !UserDefaultsFacade.hasInitialDefaults {
+                UserDefaultsFacade.seed()
+            }
+        case false:
+            // Update Core Data with any new default values
+            DataSeeder(context: context).update()
+        }
+    }
+    
+    /// Set custom appearance of textFields flashing indicator, and Navigation bar.
     private func customizeUIAppearance() {
-        
         // TextField Customization
         UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
         UITextField.appearance(whenContainedInInstancesOf: [LiftCell.self]).tintColor = .darkest

@@ -14,7 +14,7 @@ class CustomTabBarController: UITabBarController {
 
     // MARK: - Properties
     
-    let selectionIndicator = tabBarSelectionIndicatorView()
+    let selectionIndicator = TabBarSelectionIndicator()
     
     // MARK: - Initializer
     

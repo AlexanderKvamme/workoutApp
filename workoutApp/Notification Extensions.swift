@@ -14,9 +14,3 @@ extension Notification.Name {
     static let keyboardsNextButtonDidPress = Notification.Name("keyboardsNextButtonDidPress")
 }
 
-// Custom Notification Cneter
-
-//final class CustomNotificationCenter {
-//    
-//    static let mySpecialNotificationKey = CustomNotificationNames.KeyboardNextButtonDidPress
-//}

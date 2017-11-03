@@ -15,25 +15,21 @@ class workoutAppUITests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
-        // Set up snapshot
-        let app = XCUIApplication()
-        setupSnapshot(app)
-        app.launch()
-        
         continueAfterFailure = false
     }
+    
+    // MARK: Teardown
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    // MARK: Tests
+    // MARK: - Tests
     
     func testFastlaneSnapshots() {
         snapshotOfWorkoutInUse()
-        snapshotOfOtherThings()
+        snapShotTheRest()
     }
     
     // MARK: Methods
@@ -49,20 +45,20 @@ class workoutAppUITests: XCTestCase {
         app.buttons["NORMAL"].tap()
         app.cells["PULL DAY"].tap()
         
-        // Enter first Exercise
+        // Tap plus button and start entering workouts for the first exercise
         app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
         
         let okButton = app.buttons["OK"]
         let nextButton = app.children(matching: .window).element(boundBy: 3).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element(boundBy: 7)
         
-        // First lift
+        // Enter First lift
         app.buttons["8"].tap()
         nextButton.tap()
         app.buttons["1"].tap()
         app.buttons["0"].tap()
         nextButton.tap()
         
-        // Second lift
+        // Enter Second lift
         app.buttons["6"].tap()
         nextButton.tap()
         app.buttons["2"].tap()
@@ -76,13 +72,15 @@ class workoutAppUITests: XCTestCase {
         app.buttons["0"].tap()
         okButton.tap()
         
-        // Second Exercise
+        // Move on to Second Exercise
         app.cells["PULL UP"].buttons["cell-plus-button"].forceTap()
         
+        // Enter First lift
         app.buttons["1"].tap()
         app.buttons["2"].tap()
         nextButton.tap()
         
+        // Enter Second lift
         app.buttons["1"].tap()
         app.buttons["0"].tap()
         nextButton.tap()
@@ -90,21 +88,25 @@ class workoutAppUITests: XCTestCase {
         app.buttons["0"].tap()
         okButton.tap()
         
-        // Third Exercise
+        // Move on to Third Exercise
         app.cells["AUSTRALIAN PULL UP"].buttons["cell-plus-button"].forceTap()
+        
+        // Enter First Lift
         app.buttons["1"].tap()
         app.buttons["7"].tap()
         nextButton.tap()
         
+        // Enter Second Lift
         app.buttons["1"].tap()
         app.buttons["4"].tap()
         nextButton.tap()
         
+        // Enter Third Lift
         app.buttons["1"].tap()
         app.buttons["3"].tap()
         okButton.tap()
         
-        // Save button
+        // Save
         app.buttons["footer-save-button"].tap()
         snapshot("great job 9 exercises")
         app.buttons["approve-modal-button"].tap()
@@ -112,14 +114,16 @@ class workoutAppUITests: XCTestCase {
         // PART 2
         // Make new workout, and snapshot the comparison between current, and old ghost lifts
         
+        // Enter the Pull Day
         app.cells["PULL DAY"].tap()
         snapshot("Clean workout")
         
+        // Tap plus button to start entering lifts
         app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
         
+        // Enter First Lifts reps
         app.buttons["9"].tap()
         nextButton.tap()
-        
         app.buttons["1"].tap()
         app.buttons["5"].tap()
         snapshot("ghost lifts")
@@ -127,7 +131,8 @@ class workoutAppUITests: XCTestCase {
         okButton.tap()
     }
 
-    func snapshotOfOtherThings() {
+    /// Snapshot of profile tab, Style picker, boxtable of normal workouts, New workout, with muscle pickers, style pickers, name input view, and exercisePicker
+    func snapShotTheRest() {
 
         let app = XCUIApplication()
         setupSnapshot(app)
@@ -203,12 +208,15 @@ class workoutAppUITests: XCTestCase {
     }
 }
 
+// MARK: - Extensions
+
 extension XCUIElement {
+    
+    /// Lets you tap views that are not tappable
     func forceTap() {
         if self.isHittable {
             self.tap()
         } else {
-            // let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(0.0, 0.0))
             let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
             coordinate.tap()
         }

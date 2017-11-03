@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// A view that is displayed over the tabBar do indicate which one is selected
-class tabBarSelectionIndicator: UIView {
+class TabBarSelectionIndicator: UIView {
     
     // MARK: - Properties
     

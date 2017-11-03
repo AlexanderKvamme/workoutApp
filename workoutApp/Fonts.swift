@@ -15,6 +15,8 @@ extension UIFont {
     }
 }
 
+// MARK: - Fonts
+
 enum CustomFont: String {
     case bold = "Futura-Bold"
     case medium = "Futura-Medium"
@@ -23,6 +25,8 @@ enum CustomFont: String {
         return UIFont(name: self.rawValue, size: size)!
     }
 }
+
+// MARK: - Sizes
 
 enum FontSize: CGFloat {
     case small = 8

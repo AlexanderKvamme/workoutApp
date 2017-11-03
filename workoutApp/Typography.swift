@@ -13,36 +13,19 @@ import UIKit
 
 extension UILabel {
     
-    func setSubTextColor(pSubString : String, pColor : UIColor){
-        let attributedString: NSMutableAttributedString = self.attributedText != nil ? NSMutableAttributedString(attributedString: self.attributedText!) : NSMutableAttributedString(string: self.text!);
-        
-        let range = attributedString.mutableString.range(of: pSubString, options:NSString.CompareOptions.caseInsensitive)
-        if range.location != NSNotFound {
-            attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: pColor, range: range);
-        }
-        self.attributedText = attributedString
-    }
-    
+    /// Spaces out a labels text, if it contains any characters to space out.
     func applyCustomAttributes(_ spacing: Constant.Attributes.letterSpacing) {
-        guard self.hasCharacters else  {
+        guard self.hasCharacters else {
             print("applyCustomAttributes failed on \(self)")
             return
         }
 
-        var spacingValue: CGFloat = 0
-    
-        switch spacing {
-        case Constant.Attributes.letterSpacing.more:
-            spacingValue = 2
-        default:
-            spacingValue = 0.7
-        }
+        // Set spacing values
+        let spacingValue: CGFloat = spacing == Constant.Attributes.letterSpacing.more ? 2 : 0.7
         
+        // Apply spacing
         let attributedString = NSMutableAttributedString(string: self.text!)
-        
-        attributedString.addAttribute(NSAttributedStringKey.kern,
-                                      value: spacingValue,
-                                      range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedStringKey.kern, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
         self.attributedText = attributedString
     }
 }
