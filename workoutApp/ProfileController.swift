@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 import MessageUI
 
-
+/// The initial tab bar to be presented. Contains the users goals and suggested muscles to work out!
 final class ProfileController: UIViewController {
     
     // MARK: - Properties
     
     private var messageButton = UIButton()
-    private var stackView = UIStackView()
     private var scrollView = UIScrollView()
+    private var stackView = UIStackView() // Subiew of scrollView
     
     // MARK: - Initializers
     
@@ -47,22 +47,21 @@ final class ProfileController: UIViewController {
     
     override func viewDidLoad() {
         view.backgroundColor = .light
-        view.layoutIfNeeded()
         setup()
+        view.layoutIfNeeded()
     }
     
     // MARK: - Methods
     
     private func setup() {
         // TODO: Add preferences and show preferenceIcon
+        setupMessageButton()
         setupScrollView()
         setupStackView()
 
         addWarnings(to: stackView)
-        addGoals(to: stackView)
+        addGoalsController(to: stackView)
         addSuggestions(to: stackView)
-        
-        setupMessageButton()
     }
     
     private func setupScrollView(){
@@ -74,7 +73,7 @@ final class ProfileController: UIViewController {
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
+            scrollView.topAnchor.constraint(equalTo: messageButton.bottomAnchor, constant: 0),
             scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -82,22 +81,24 @@ final class ProfileController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        scrollView.contentSize = stackView.frame.size // enables/disable scrolling if needed
+        // Update stackView so its frame is correct
+        stackView.layoutIfNeeded()
+        // Update scrollview's contentSize, which will automatically enable/disable scrolling
+        scrollView.contentSize = stackView.frame.size
     }
     
     private func setupStackView() {
         stackView = UIStackView(frame: CGRect.zero)
-        stackView.backgroundColor = .dark
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
-        stackView.spacing = 24
-        
         stackView.clipsToBounds = true
+        stackView.spacing = 24
         
         scrollView.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
@@ -109,6 +110,7 @@ final class ProfileController: UIViewController {
     private func setupMessageButton() {
         messageButton = UIButton(frame: CGRect.zero)
         messageButton.setImage(UIImage.messageIcon, for: .normal)
+        messageButton.tintColor = UIColor.dark
         messageButton.imageView?.contentMode = .scaleAspectFit
         messageButton.addTarget(self, action: #selector(mailDeveloper), for: .touchUpInside)
         
@@ -124,13 +126,11 @@ final class ProfileController: UIViewController {
             ])
     }
     
-    private func addGoals(to stackView: UIStackView) {
+    private func addGoalsController(to stackView: UIStackView) {
         let goalsController = GoalsController()
         addChildViewController(goalsController)
         stackView.addArrangedSubview(goalsController.view)
     }
-    
-    // MARK: - Business Logic
     
     private func makeWarningBox(fromWarning warning: Warning) -> Warningbox? {
         var newBox: Warningbox? = nil
@@ -141,12 +141,11 @@ final class ProfileController: UIViewController {
     
     private func addWarnings(to stackView: UIStackView) {
         // Get sorted messages from Core data
-        let arrayOfWarnings = DatabaseFacade.fetchWarnings()
-        if let arrayOfWarnings = arrayOfWarnings {
-            for warning in arrayOfWarnings {
-                if let newWarningBox = makeWarningBox(fromWarning: warning) {
-                    stackView.addArrangedSubview(newWarningBox)
-                }
+        guard let arrayOfWarnings = DatabaseFacade.fetchWarnings() else { return }
+        
+        for warning in arrayOfWarnings {
+            if let newWarningBox = makeWarningBox(fromWarning: warning) {
+                stackView.addArrangedSubview(newWarningBox)
             }
         }
     }
@@ -167,6 +166,10 @@ final class ProfileController: UIViewController {
         }
     }
 }
+
+// MARK: - Extensions
+
+// MARK: Mail Delegate
 
 extension ProfileController: MFMailComposeViewControllerDelegate {
     
