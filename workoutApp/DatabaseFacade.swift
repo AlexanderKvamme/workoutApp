@@ -458,11 +458,8 @@ final class DatabaseFacade {
     }
     
     static private func makeExampleGoals() -> [Goal] {
-        
-        let exampleGoal1 = makeGoal("Hold goals to delete a goal")
-        let exampleGoal2 = makeGoal("Or hold header to create a new one")
-        
-        return [exampleGoal1, exampleGoal2]
+        return [makeGoal("Hold header to make a goal"),
+                makeGoal("Hold goal to delete")]
     }
     
     @discardableResult static func makeGoal(_ str: String) -> Goal {
@@ -470,6 +467,10 @@ final class DatabaseFacade {
         newGoal.dateMade = Date() as NSDate
         newGoal.text = str.uppercased()
         return newGoal
+    }
+    
+    static func hasGoals() -> Bool {
+        return getGoals().count == 0 ? false : true
     }
     
     // fetch Warnings

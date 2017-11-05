@@ -14,7 +14,7 @@ class GoalsController: UIViewController, isStringReceiver {
 
     // MARK: - Properties
     
-    private var header = UILabel(frame: CGRect.zero)
+    private var header = UIButton(frame: CGRect.zero)
     private var goals: [Goal]?
     private var stackOfGoalButtons: UIStackView = UIStackView()
     
@@ -24,7 +24,6 @@ class GoalsController: UIViewController, isStringReceiver {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        
         self.goals = DatabaseFacade.fetchGoals()
     }
     
@@ -35,14 +34,16 @@ class GoalsController: UIViewController, isStringReceiver {
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
-        if let goals = goals {
-            for goal in goals {
-                let newButton = makeGoalButton(withGoal: goal)
-                stackOfGoalButtons.addArrangedSubview(newButton)
-            }
-        }
+        addGoals()
         setupView()
         setupReceiveHandler()
+        
+        setupConstraints()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        addGoals()
+        setupConstraints()
     }
     
     // MARK: - Methods
@@ -52,11 +53,22 @@ class GoalsController: UIViewController, isStringReceiver {
         setupStack()
     }
     
+    private func addGoals() {
+        // Clear and refresh goals
+        stackOfGoalButtons.removeArrangedSubviews()
+        
+        for goal in DatabaseFacade.getGoals() {
+            let newButton = makeGoalButton(withGoal: goal)
+            stackOfGoalButtons.addArrangedSubview(newButton)
+        }
+    }
+    
     private func setupHeader() {
-        header.text = "GOALS"
-        header.textColor = .dark
-        header.font = UIFont.custom(style: .bold, ofSize: .big)
-        header.applyCustomAttributes(.medium)
+        header.setTitle("GOALS", for: .normal)
+        header.titleLabel?.textColor = .dark
+        header.setTitleColor(.dark, for: .normal)
+        header.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .big)
+        header.titleLabel?.sizeToFit()
         header.sizeToFit()
         view.addSubview(header)
         
@@ -65,12 +77,21 @@ class GoalsController: UIViewController, isStringReceiver {
         header.addGestureRecognizer(longPressRecognizer)
         header.isUserInteractionEnabled = true
         
-        //Layout
+        // Layout
         header.translatesAutoresizingMaskIntoConstraints = false
-        
+        self.view.clipsToBounds = true
+        view.setNeedsLayout()
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            view.topAnchor.constraint(equalTo: header.topAnchor),
+            view.leftAnchor.constraint(equalTo: header.leftAnchor),
+            view.rightAnchor.constraint(equalTo: header.rightAnchor),
+            stackOfGoalButtons.topAnchor.constraint(equalTo: header.bottomAnchor),
+            stackOfGoalButtons.leftAnchor.constraint(equalTo: view.leftAnchor),
+            stackOfGoalButtons.rightAnchor.constraint(equalTo: view.rightAnchor),
+            view.bottomAnchor.constraint(equalTo: stackOfGoalButtons.bottomAnchor),
             ])
     }
     
@@ -84,17 +105,11 @@ class GoalsController: UIViewController, isStringReceiver {
         stackOfGoalButtons.layoutMargins = UIEdgeInsets(top: 10, left: sideInsets, bottom: 0, right: sideInsets)
         stackOfGoalButtons.isLayoutMarginsRelativeArrangement = true
         stackOfGoalButtons.alpha = Constant.alpha.faded
+        stackOfGoalButtons.sizeToFit()
         view.addSubview(stackOfGoalButtons)
         
         // Layout
         stackOfGoalButtons.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            stackOfGoalButtons.topAnchor.constraint(equalTo: header.bottomAnchor),
-            stackOfGoalButtons.leftAnchor.constraint(equalTo: view.leftAnchor),
-            stackOfGoalButtons.rightAnchor.constraint(equalTo: view.rightAnchor),
-            stackOfGoalButtons.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            ])
     }
     
     private func makeGoalButton(withGoal goal: Goal) -> GoalButton {
@@ -127,12 +142,14 @@ class GoalsController: UIViewController, isStringReceiver {
     // MARK: - Handlers
     
     @objc private func headerLongPressHandler(_ gesture: UIGestureRecognizer) {
-        if gesture.state == .began {
-            let goalPicker = InputViewController(inputStyle: .text)
-            goalPicker.delegate = self
-  
-            navigationController?.pushViewController(goalPicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
+        guard gesture.state == .began else {
+            return
         }
+        
+        let goalPicker = InputViewController(inputStyle: .text)
+        goalPicker.delegate = self
+        
+        navigationController?.pushViewController(goalPicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func goalLongPressHandler(_ gesture: UIGestureRecognizer) {

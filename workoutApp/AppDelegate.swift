@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let context = DatabaseFacade.persistentContainer.viewContext
         
+//        DatabaseFacade.makeGoal("test")
+        
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
             let seeder = DataSeeder(context: context)

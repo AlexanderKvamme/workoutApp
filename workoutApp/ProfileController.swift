@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MessageUI
 
-
+/// The initial tab bar to be presented. Contains the users goals and suggested muscles to work out!
 final class ProfileController: UIViewController {
     
     // MARK: - Properties
@@ -47,8 +47,8 @@ final class ProfileController: UIViewController {
     
     override func viewDidLoad() {
         view.backgroundColor = .light
-        view.layoutIfNeeded()
         setup()
+        view.layoutIfNeeded()
     }
     
     // MARK: - Methods
@@ -59,7 +59,7 @@ final class ProfileController: UIViewController {
         setupStackView()
 
         addWarnings(to: stackView)
-        addGoals(to: stackView)
+        addGoalsController(to: stackView)
         addSuggestions(to: stackView)
         
         setupMessageButton()
@@ -124,13 +124,11 @@ final class ProfileController: UIViewController {
             ])
     }
     
-    private func addGoals(to stackView: UIStackView) {
+    private func addGoalsController(to stackView: UIStackView) {
         let goalsController = GoalsController()
         addChildViewController(goalsController)
         stackView.addArrangedSubview(goalsController.view)
     }
-    
-    // MARK: - Business Logic
     
     private func makeWarningBox(fromWarning warning: Warning) -> Warningbox? {
         var newBox: Warningbox? = nil
@@ -141,12 +139,11 @@ final class ProfileController: UIViewController {
     
     private func addWarnings(to stackView: UIStackView) {
         // Get sorted messages from Core data
-        let arrayOfWarnings = DatabaseFacade.fetchWarnings()
-        if let arrayOfWarnings = arrayOfWarnings {
-            for warning in arrayOfWarnings {
-                if let newWarningBox = makeWarningBox(fromWarning: warning) {
-                    stackView.addArrangedSubview(newWarningBox)
-                }
+        guard let arrayOfWarnings = DatabaseFacade.fetchWarnings() else { return }
+        
+        for warning in arrayOfWarnings {
+            if let newWarningBox = makeWarningBox(fromWarning: warning) {
+                stackView.addArrangedSubview(newWarningBox)
             }
         }
     }
@@ -167,6 +164,10 @@ final class ProfileController: UIViewController {
         }
     }
 }
+
+// MARK: - Extensions
+
+// MARK: Mail Delegate
 
 extension ProfileController: MFMailComposeViewControllerDelegate {
     

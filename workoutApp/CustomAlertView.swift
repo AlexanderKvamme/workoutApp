@@ -173,7 +173,7 @@ class CustomAlertView: UIView, isModal {
         
         addSubview(modalView)
         
-        // Dismissable by backgorund tap
+        // Make dismissable by backgorund tap
         backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissView)))
     }
     
