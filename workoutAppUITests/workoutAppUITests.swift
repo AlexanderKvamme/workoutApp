@@ -49,11 +49,12 @@ class workoutAppUITests: XCTestCase {
         app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
         
         let okButton = app.buttons["OK"]
-        let nextButton = app.children(matching: .window).element(boundBy: 3).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .button).element(boundBy: 7)
+        let nextButton = app.buttons["customNextButton"].firstMatch
         
         // Enter First lift
         app.buttons["8"].tap()
         nextButton.tap()
+        sleep(5)
         app.buttons["1"].tap()
         app.buttons["0"].tap()
         nextButton.tap()
@@ -133,7 +134,6 @@ class workoutAppUITests: XCTestCase {
 
     /// Snapshot of profile tab, Style picker, boxtable of normal workouts, New workout, with muscle pickers, style pickers, name input view, and exercisePicker
     func snapShotTheRest() {
-
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments.append("--fastlaneSnapshotu")
