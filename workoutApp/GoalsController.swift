@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-
+/// Manages Goals, and is added to the ProfileController, along with a WarningController, and a SuggestionController
 class GoalsController: UIViewController, isStringReceiver {
 
     // MARK: - Properties
@@ -37,13 +37,10 @@ class GoalsController: UIViewController, isStringReceiver {
         addGoals()
         setupView()
         setupReceiveHandler()
-        
-        setupConstraints()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         addGoals()
-        setupConstraints()
     }
     
     // MARK: - Methods
@@ -82,8 +79,23 @@ class GoalsController: UIViewController, isStringReceiver {
         self.view.clipsToBounds = true
         view.setNeedsLayout()
     }
-    
-    private func setupConstraints() {
+
+    private func setupStack() {
+        let sideInsets: CGFloat = 40
+
+        stackOfGoalButtons.spacing = 4
+        stackOfGoalButtons.alignment = .leading
+        stackOfGoalButtons.axis = .vertical
+        stackOfGoalButtons.distribution = .equalSpacing
+        stackOfGoalButtons.layoutMargins = UIEdgeInsets(top: 0, left: sideInsets, bottom: 0, right: sideInsets)
+        stackOfGoalButtons.isLayoutMarginsRelativeArrangement = true
+        stackOfGoalButtons.alpha = Constant.alpha.faded
+        stackOfGoalButtons.sizeToFit()
+        view.addSubview(stackOfGoalButtons)
+        
+        // Layout
+        stackOfGoalButtons.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: header.topAnchor),
             view.leftAnchor.constraint(equalTo: header.leftAnchor),
@@ -93,23 +105,6 @@ class GoalsController: UIViewController, isStringReceiver {
             stackOfGoalButtons.rightAnchor.constraint(equalTo: view.rightAnchor),
             view.bottomAnchor.constraint(equalTo: stackOfGoalButtons.bottomAnchor),
             ])
-    }
-    
-    private func setupStack() {
-        let sideInsets: CGFloat = 40
-
-        stackOfGoalButtons.spacing = 4
-        stackOfGoalButtons.alignment = .leading
-        stackOfGoalButtons.axis = .vertical
-        stackOfGoalButtons.distribution = .equalSpacing
-        stackOfGoalButtons.layoutMargins = UIEdgeInsets(top: 10, left: sideInsets, bottom: 0, right: sideInsets)
-        stackOfGoalButtons.isLayoutMarginsRelativeArrangement = true
-        stackOfGoalButtons.alpha = Constant.alpha.faded
-        stackOfGoalButtons.sizeToFit()
-        view.addSubview(stackOfGoalButtons)
-        
-        // Layout
-        stackOfGoalButtons.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func makeGoalButton(withGoal goal: Goal) -> GoalButton {
@@ -153,16 +148,14 @@ class GoalsController: UIViewController, isStringReceiver {
     }
     
     @objc private func goalLongPressHandler(_ gesture: UIGestureRecognizer) {
-        guard gesture.state == .began else {
+        guard gesture.state == .began, let sender = gesture.view else {
             return
         }
         
-        if let sender = gesture.view {
-            stackOfGoalButtons.removeArrangedSubview(sender)
-            sender.removeFromSuperview()
-            if let aButton = sender as? GoalButton {
-                aButton.deleteFromCoreData()
-            }
+        stackOfGoalButtons.removeArrangedSubview(sender)
+        sender.removeFromSuperview()
+        if let aButton = sender as? GoalButton {
+            aButton.deleteFromCoreData()
         }
     }
     
