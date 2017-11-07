@@ -18,6 +18,10 @@ fileprivate let standardBoxHeight: CGFloat = 80
 
 enum Constant {
     
+    enum triangleView {
+        static let shrinkBy: CGFloat = 50
+    }
+    
     enum defaultValues {
         static let muscle = "OTHER"
         static let exerciseType = "NORMAL"
@@ -67,7 +71,6 @@ enum Constant {
         }
         
         enum headers {
-            
             enum pickerHeader {
                 static var topSpacing: CGFloat = 100
             }

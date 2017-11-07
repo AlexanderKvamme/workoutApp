@@ -21,6 +21,7 @@
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackView Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackView Extensions.swift */; };
+		DD180FC71FB1295500B44F94 /* DiagonalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD180FC61FB1295500B44F94 /* DiagonalView.swift */; };
 		DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */; };
 		DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */; };
 		DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */; };
@@ -171,6 +172,7 @@
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackView Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView Extensions.swift"; sourceTree = "<group>"; };
+		DD180FC61FB1295500B44F94 /* DiagonalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagonalView.swift; sourceTree = "<group>"; };
 		DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerProtocols.swift; sourceTree = "<group>"; };
 		DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStyleExtensions.swift; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 			isa = PBXGroup;
 			children = (
 				DD585D5C1EC4D7CC00962B19 /* Colors.swift */,
+				DD180FC61FB1295500B44F94 /* DiagonalView.swift */,
 				DD585D5E1EC4DC3400962B19 /* Fonts.swift */,
 				DD59B0931EE1C1FA006443D4 /* Typography.swift */,
 				DDC660B01EE6BE9900122543 /* DrawingMethods.swift */,
@@ -1005,6 +1008,7 @@
 				DD77AD151F8F9CF1007A6759 /* CellIdentifiers.swift in Sources */,
 				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
 				DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */,
+				DD180FC71FB1295500B44F94 /* DiagonalView.swift in Sources */,
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */,
 				DD7C07001F89118100EAC008 /* WeightedHistoryCell.swift in Sources */,

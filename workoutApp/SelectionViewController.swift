@@ -139,14 +139,25 @@ class SelectionViewController: UIViewController {
     
     /// Draws yellow line through the stack
     func drawDiagonalLine() {
-        diagonalLineView = getDiagonalLineView(sizeOf: stack)
+        diagonalLineView = TriangleView(frame: alignmentRectangle.frame)
         view.addSubview(diagonalLineView)
         
         diagonalLineView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             diagonalLineView.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor),
             diagonalLineView.centerXAnchor.constraint(equalTo: alignmentRectangle.centerXAnchor)
             ])
+        
+        
+//        diagonalLineView = getDiagonalLineView(sizeOf: stack)
+//        view.addSubview(diagonalLineView)
+//
+//        diagonalLineView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            diagonalLineView.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor),
+//            diagonalLineView.centerXAnchor.constraint(equalTo: alignmentRectangle.centerXAnchor)
+//            ])
     }
 }
 

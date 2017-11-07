@@ -208,21 +208,27 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         guard let indexOfPickable = selectionChoices.index(where: { (element) -> Bool in
             return element === selectedPickable
         }) else {
-            preconditionFailure("Error could not find index")
+            preconditionFailure("Could not find index")
         }
         
-        // find index of the one
+        // Find index of the one
         let ip = IndexPath(row: indexOfPickable, section: 0)
         table.selectRow(at: ip, animated: false, scrollPosition: .none)
         selectedIndexPath = ip
     }
     
     private func drawDiagonalLineThroughTable() {
-        let v = UIView(frame: table.frame)
-        v.frame.size = CGSize(width: v.frame.height - 200, height:  v.frame.width - 200)
-        v.center.y = table.center.y + 75
-        v.center.x = table.center.x
-        drawDiagonalLineThrough(v, inView: view)
+
+        let v = TriangleView(frame: table.frame)
+        view.addSubview(v)
+        view.sendSubview(toBack: v)
+        
+        v.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            v.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+            v.centerYAnchor.constraint(equalTo: table.centerYAnchor),
+            ])
     }
     
     // MARK: Selectors

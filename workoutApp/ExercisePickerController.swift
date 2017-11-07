@@ -237,32 +237,8 @@ class ExercisePickerController: UIViewController {
     }
     
     private func drawDiagonalLineThroughTable() {
-        
-        let shrinkBy: CGFloat = 50
-    
-        // set up size. Draw later
-        let p1 = CGPoint(x: 0, y: table.frame.height - 2*shrinkBy)
-        let p2 = CGPoint(x: table.frame.width - 2*shrinkBy, y: 0)
-        
-        let path = UIBezierPath()
-        path.move(to: p1)
-        path.addLine(to: p2)
 
-        let lineWidth = path.bounds.width
-        let lineHeight = path.bounds.height
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.frame.size = CGSize(width: lineWidth, height: lineHeight)
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.primary.cgColor
-        shapeLayer.lineCap = "round"
-        shapeLayer.lineWidth = 3.0
-      
-        let lineView = UIView()
-        lineView.clipsToBounds = true // makes diagonalLine animate inm when deleting and such
-        lineView.frame.size = CGSize(width: lineWidth, height: lineHeight)
-        lineView.layer.addSublayer(shapeLayer)
-        
+        let lineView = TriangleView()
         view.addSubview(lineView)
         view.sendSubview(toBack: lineView)
         
@@ -271,11 +247,7 @@ class ExercisePickerController: UIViewController {
         NSLayoutConstraint.activate([
             lineView.centerXAnchor.constraint(equalTo: table.centerXAnchor),
             lineView.centerYAnchor.constraint(equalTo: table.centerYAnchor),
-            lineView.heightAnchor.constraint(equalToConstant: lineHeight),
-            lineView.widthAnchor.constraint(equalToConstant: lineWidth),
             ])
-        
-        lineView.frame.size = CGSize(width: lineWidth, height: lineHeight)
     }
     
     // MARK: Gesture recognizer methods
