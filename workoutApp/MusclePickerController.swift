@@ -63,6 +63,8 @@ class MusclePickerController: UIViewController {
         }
         
         super.init(nibName: nil, bundle: nil)
+        
+        table.backgroundColor = .green
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,6 +81,10 @@ class MusclePickerController: UIViewController {
         for muscle in selectedMuscles {
             selectMuscle(muscle)
         }
+        
+        // FIXME: - Fjern
+        table.backgroundColor = .green
+        table.alpha = 0.5
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,6 +142,10 @@ class MusclePickerController: UIViewController {
         if contentHeight > tableHeight {
             table.isScrollEnabled = true
             setTableInsets()
+            
+            // FIXME: - REmove after testing
+            drawDiagonalLineThroughTable()
+            
         } else {
             table.isScrollEnabled = false
             setTableInsets()
@@ -145,13 +155,14 @@ class MusclePickerController: UIViewController {
     
     /// Add insets top and bottom to keep it centered, if contentView is smaller than the tableView.
     private func setTableInsets() {
-        let tableHeight = table.frame.height
+        let tableHeight = table.bounds.size.height
         let contentHeight = table.contentSize.height
+        let calculatedContentHeight: CGFloat = CGFloat(table.numberOfRows(inSection: 0)) * Constant.pickers.rowHeight
         
-        // set insets
+
         if tableHeight > contentHeight {
-            let difference = tableHeight-contentHeight
-            table.contentInset = UIEdgeInsets(top: difference/2, left: 0, bottom: difference/2, right: 0)
+            let verticalInset = (tableHeight - calculatedContentHeight)/2
+            table.contentInset = UIEdgeInsets(top: verticalInset, left: 0, bottom: verticalInset, right: 0)
         } else {
             table.contentInset = UIEdgeInsets.zero
         }
@@ -170,6 +181,8 @@ class MusclePickerController: UIViewController {
             cell.label.font = Constant.components.exerciseTableCells.fontWhenDeselected
             cell.label.textColor = Constant.components.exerciseTableCells.textColorWhenDeselected
         }
+        
+        cell.backgroundColor = .red
     }
     
     /// Make look selecter or deselected
@@ -250,7 +263,11 @@ extension MusclePickerController: UITableViewDataSource {
         configure(cell: cell, at: indexPath)
         cell.label.text = selectionChoices[indexPath.row].name
         cell.label.applyCustomAttributes(.more)
-        cell.sizeToFit()
+//        cell.sizeToFit()
+        
+        // FIXME: - remove
+        cell.backgroundColor = .red
+        cell.alpha = 0.5
         return cell
     }
     
@@ -280,7 +297,7 @@ extension MusclePickerController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+        return Constant.pickers.rowHeight
     }
 }
 

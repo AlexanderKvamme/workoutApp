@@ -66,6 +66,9 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         selectRow(withPickable: selectedPickable)
         
         table.reloadData()
+        // FIXME: - Fjern
+        table.backgroundColor = .green
+        table.alpha = 0.5
         view.setNeedsLayout()
     }
     
@@ -79,6 +82,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         cell.label.text = selectionChoices[indexPath.row].name
         cell.label.applyCustomAttributes(.more)
         cell.sizeToFit()
+        cell.backgroundColor = .red
         return cell
     }
     
@@ -96,7 +100,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     // - Generic classes cannot have protocol conformance in extensions
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+        return Constant.pickers.rowHeight
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -195,7 +199,9 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         if tableHeight > contentHeight {
             let verticalOffset = (tableHeight - contentHeight)/2
             table.contentInset = UIEdgeInsets(top: verticalOffset, left: 0, bottom: verticalOffset, right: 0)
-        } else if contentHeight > tableHeight {
+        } 
+        
+        else if contentHeight > tableHeight {
             // If you have to scroll anyways, make insets to center content in the screen to make it look nicer
             tableBotConstraint.constant = -tableVerticalInset
             tableTopConstraint.constant = tableVerticalInset

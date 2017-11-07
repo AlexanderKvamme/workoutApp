@@ -43,6 +43,10 @@ enum Constant {
         }
     }
     
+    enum pickers {
+        static let rowHeight: CGFloat = 30
+    }
+    
     enum alpha {
         static let faded: CGFloat = 0.5
     }

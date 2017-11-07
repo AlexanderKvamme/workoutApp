@@ -102,6 +102,10 @@ class ExercisePickerController: UIViewController {
         for exercise in selectedExercises {
             selectExercise(exercise)
         }
+        
+        // FIXME: - Fjern
+        table.backgroundColor = .green
+        table.alpha = 0.5
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,12 +188,12 @@ class ExercisePickerController: UIViewController {
     
     /// If contentView is smaller than the tableView. Add insets top and bottom to keep it centered.
     private func setTableInsets() {
-        let tableHeight = table.frame.height
-        let contentHeight = table.contentSize.height
+        let tableHeight = table.frame.size.height
+        let contentHeight: CGFloat = Constant.pickers.rowHeight * CGFloat(table.numberOfRows(inSection: 0))
         
         if tableHeight > contentHeight {
-            let difference = tableHeight-contentHeight
-            table.contentInset = UIEdgeInsets(top: difference/2, left: 0, bottom: difference/2, right: 0)
+            let insets = (tableHeight-contentHeight)/2
+            table.contentInset = UIEdgeInsets(top: insets, left: 0, bottom: insets, right: 0)
         } else {
             table.contentInset = UIEdgeInsets.zero
         }
@@ -302,6 +306,7 @@ extension ExercisePickerController: UITableViewDataSource {
         configure(cell: cell, at: indexPath) // Makes previously selected, cells bold upon dequeuing
         cell.label.text = selectionChoices[indexPath.row].name
         cell.label.applyCustomAttributes(.more)
+        cell.backgroundColor = .red
         cell.sizeToFit()
         
         return cell
@@ -332,7 +337,7 @@ extension ExercisePickerController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return Constant.pickers.rowHeight
     }
 }
 
