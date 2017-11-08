@@ -66,9 +66,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         selectRow(withPickable: selectedPickable)
         
         table.reloadData()
-        // FIXME: - Fjern
-        table.backgroundColor = .green
-        table.alpha = 0.5
         view.setNeedsLayout()
     }
     
@@ -81,8 +78,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         configure(cell, forIndexPath: indexPath)
         cell.label.text = selectionChoices[indexPath.row].name
         cell.label.applyCustomAttributes(.more)
-        cell.sizeToFit()
-        cell.backgroundColor = .red
         return cell
     }
     

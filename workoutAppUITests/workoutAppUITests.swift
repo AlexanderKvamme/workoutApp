@@ -29,20 +29,41 @@ class workoutAppUITests: XCTestCase {
     
     func testFastlaneSnapshots() {
         snapshotOfWorkoutInUse()
-        snapShotTheRest()
+        snapshotExercisePicking()
+        snapshotOnlyExercisePicking()
     }
     
     // MARK: Methods
+    
+    func snapshotOnlyExercisePicking() {
+        
+        let app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments.append("--fastlaneSnapshot")
+        app.launch()
+        
+        app.tabBars.buttons["workout-tab"].tap()
+        
+        // Screenshot of New workout being made
+        app.buttons["plus-button"].tap()
+
+        // Snapshot of Muscle type picker
+        app.buttons["muscle-picker-button"].tap()
+        
+        app.cells["OTHER-muscle-button"].tap()
+        app.cells["BACK-muscle-button"].tap()
+        snapshot("Switching to back muscle")
+    }
     
     func snapshotOfWorkoutInUse() {
         
         let app = XCUIApplication()
         setupSnapshot(app)
-        app.launchArguments.append("--fastlaneSnapshotu")
+        app.launchArguments.append("--fastlaneSnapshot")
         app.launch()
         
         app.tabBars.buttons["workout-tab"].tap()
-        app.buttons["NORMAL"].tap()
+        app.buttons["NORMAL"].firstMatch.tap()
         app.cells["PULL DAY"].tap()
         
         // Tap plus button and start entering workouts for the first exercise
@@ -133,10 +154,10 @@ class workoutAppUITests: XCTestCase {
     }
 
     /// Snapshot of profile tab, Style picker, boxtable of normal workouts, New workout, with muscle pickers, style pickers, name input view, and exercisePicker
-    func snapShotTheRest() {
+    func snapshotExercisePicking() {
         let app = XCUIApplication()
         setupSnapshot(app)
-        app.launchArguments.append("--fastlaneSnapshotu")
+        app.launchArguments.append("--fastlaneSnapshot")
         app.launch()
 
         // Screenshot of profile tab
@@ -148,7 +169,7 @@ class workoutAppUITests: XCTestCase {
         snapshot("1-workout")
 
         // Screenshot of inside of Normal
-        app.buttons["NORMAL"].tap()
+        app.buttons["NORMAL"].firstMatch.tap()
         snapshot("2-normal-workouts")
         sleep(1)
 
@@ -175,11 +196,21 @@ class workoutAppUITests: XCTestCase {
 
         // Snapshot of Muscle type picker
         app.buttons["muscle-picker-button"].tap()
+        
+        // Select muscles
+        sleep(3)
+        
+        app.cells["OTHER-muscle-button"].firstMatch.tap()
+        app.cells["BACK-muscle-button"].firstMatch.tap()
+
         snapshot("6-muscle-picker")
+        
         app.buttons["approve-button"].tap()
 
         // Snapshot of adding an exercise
         app.buttons["exercise-picker-button"].tap()
+        // Snap ExercisePicker
+        snapshot("7-ExercisePicker")
 
         // Make new Exercise
         app.buttons["plus-button"].tap()

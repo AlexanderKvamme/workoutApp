@@ -274,7 +274,7 @@ final class DatabaseFacade {
         
         let newExercise = makeExercise()
         
-        newExercise.name = name
+        newExercise.name = name.uppercased()
         newExercise.setMuscles(muscles)
         newExercise.style = exerciseStyle
         newExercise.measurementStyle = measurementStyle

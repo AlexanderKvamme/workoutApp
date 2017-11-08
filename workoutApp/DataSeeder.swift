@@ -223,7 +223,6 @@ final class DataSeeder {
         DatabaseFacade.saveContext()
     }
     
-    // FIXME: - seed some cool workouts for snapshotting
     public func seedCoreDataForFastlaneSnapshots() {
         
         // Clear core data
@@ -236,14 +235,13 @@ final class DataSeeder {
         // Generate workouts
         DatabaseFacade.makeWorkout(withName: "BOOTYBUILDER", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.glutes], exercises: [Exercises.bicepFlex])
         DatabaseFacade.makeWorkout(withName: "HARD CORE", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.core], exercises: [Exercises.pullUp])
-        
         DatabaseFacade.makeWorkout(withName: "MUSCLE UP", workoutStyle: WorkoutStyles.technique, muscles: [Muscles.back], exercises: [Exercises.pullUp])
         
         // Generate weighted workout
         let exercisesForPullDay: [Exercise] = [
-        DatabaseFacade.makeExercise(withName: "Weighted Pull up", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.weightedSets),
-        DatabaseFacade.makeExercise(withName: "Pull up", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
-        DatabaseFacade.makeExercise(withName: "Australian Pull up", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
+        DatabaseFacade.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.weightedSets),
+        DatabaseFacade.makeExercise(withName: "PULL UP", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
+        DatabaseFacade.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
         ]
         
         DatabaseFacade.makeWorkout(withName: "PULL DAY", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.back], exercises: exercisesForPullDay)
@@ -260,9 +258,9 @@ final class DataSeeder {
       
         // Muscles
         for muscleName in defaultMuscles {
-            if DatabaseFacade.getMuscle(named: muscleName) == nil {
+            if DatabaseFacade.getMuscle(named: muscleName.uppercased()) == nil {
                 print("didnt exist so making muscle named \(muscleName)")
-                makeMuscle(withName: muscleName)
+                makeMuscle(withName: muscleName.uppercased())
             }
         }
         
@@ -295,7 +293,9 @@ final class DataSeeder {
     
     private func seedWithExampleMuscleGroups() {
         for muscle in defaultMuscles {
-            makeMuscle(withName: muscle.uppercased())
+            if DatabaseFacade.getMuscle(named: muscle) == nil {
+                makeMuscle(withName: muscle.uppercased())
+            }
         }
     }
     

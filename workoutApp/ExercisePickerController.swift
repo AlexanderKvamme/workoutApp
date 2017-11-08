@@ -102,10 +102,6 @@ class ExercisePickerController: UIViewController {
         for exercise in selectedExercises {
             selectExercise(exercise)
         }
-        
-        // FIXME: - Fjern
-        table.backgroundColor = .green
-        table.alpha = 0.5
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -306,8 +302,6 @@ extension ExercisePickerController: UITableViewDataSource {
         configure(cell: cell, at: indexPath) // Makes previously selected, cells bold upon dequeuing
         cell.label.text = selectionChoices[indexPath.row].name
         cell.label.applyCustomAttributes(.more)
-        cell.backgroundColor = .red
-        cell.sizeToFit()
         
         return cell
     }
