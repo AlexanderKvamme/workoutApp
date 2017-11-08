@@ -29,7 +29,7 @@ class TriangleView: UIView {
         
         let shape = CAShapeLayer()
         shape.path = path.cgPath
-        shape.lineWidth = 10
+        shape.lineWidth = 5
         shape.strokeColor = UIColor.primary.cgColor
         shape.lineCap = "round"
         

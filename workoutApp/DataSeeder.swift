@@ -239,11 +239,10 @@ final class DataSeeder {
         
         // Generate weighted workout
         let exercisesForPullDay: [Exercise] = [
-        DatabaseFacade.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.weightedSets),
-        DatabaseFacade.makeExercise(withName: "PULL UP", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
-        DatabaseFacade.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
+            DatabaseFacade.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.weightedSets),
+            DatabaseFacade.makeExercise(withName: "PULL UP", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
+            DatabaseFacade.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
         ]
-        
         DatabaseFacade.makeWorkout(withName: "PULL DAY", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.back], exercises: exercisesForPullDay)
         
         // Goals

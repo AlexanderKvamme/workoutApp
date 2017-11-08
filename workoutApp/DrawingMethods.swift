@@ -10,36 +10,6 @@
 import Foundation
 import UIKit
 
-/// Global method for draw
-//func getDiagonalLineView(sizeOf v: UIView) -> UIView {
-//
-//    /*
-//    // Properties
-//    let verticalStretch: CGFloat = 30
-//
-//    // Draw lije
-//    let path = UIBezierPath()
-//    path.move(to: CGPoint(x: v.frame.minX, y: v.frame.maxY + verticalStretch))
-//    path.addLine(to: CGPoint(x: v.frame.maxX, y: v.frame.minY - verticalStretch))
-//    
-//    // Make Shapelayer with line
-//    let shapeLayer = CAShapeLayer()
-//    shapeLayer.path = path.cgPath
-//    shapeLayer.strokeColor = UIColor.primary.cgColor
-//    shapeLayer.lineCap = "round"
-//    shapeLayer.lineWidth = 3.0
-//
-//    // Wrap shapelayer in a view
-//    let lineWrapperView = UIView(frame: v.frame)
-//    lineWrapperView.layer.addSublayer(shapeLayer)
-//
-//    return lineWrapperView
-//    */
-//
-//    let tri = TriangleView()
-//    return tri
-//}
-
 /// Takes a view to draw line through. Also takes that views container view as a parameter, to make sure it is drawn in the back of it.
 func drawDiagonalLineThrough(_ someView: UIView) -> UIView {
     // Properties

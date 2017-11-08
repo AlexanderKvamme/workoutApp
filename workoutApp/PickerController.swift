@@ -152,7 +152,9 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     private func setupTable() {
-        table = UITableView(frame: CGRect(x: inset, y: header.frame.maxY + 50, width: screenWidth - 2*inset, height: 200))
+//        table = UITableView(frame: CGRect(x: inset, y: header.frame.maxY + 50, width: screenWidth - 2*inset, height: 200))
+        table = UITableView()
+        
         table.reloadData()
         
         table.register(PickerCell.self, forCellReuseIdentifier: cellIdentifier)
@@ -162,8 +164,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         table.delegate = self
         
         view.addSubview(table)
-        
-        table.translatesAutoresizingMaskIntoConstraints = false
+    
         table.clipsToBounds = true
         table.allowsMultipleSelection = false
         
@@ -172,7 +173,10 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         let tableBotConstraint = table.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: 0)
         let tableTopConstraint = table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 0)
         
+        table.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
+            table.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableTopConstraint,
             tableBotConstraint,
             table.widthAnchor.constraint(equalToConstant: screenWidth),
@@ -184,6 +188,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         let tableHeight = table.frame.height
         let contentHeight = table.contentSize.height
         
+        // Draw diagonal line if table is not scrollable
         if contentHeight > tableHeight {
             table.isScrollEnabled = true
         } else {
@@ -191,12 +196,11 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
             drawDiagonalLineThroughTable()
         }
         
+        // Update insets
         if tableHeight > contentHeight {
             let verticalOffset = (tableHeight - contentHeight)/2
             table.contentInset = UIEdgeInsets(top: verticalOffset, left: 0, bottom: verticalOffset, right: 0)
-        } 
-        
-        else if contentHeight > tableHeight {
+        } else if contentHeight > tableHeight {
             // If you have to scroll anyways, make insets to center content in the screen to make it look nicer
             tableBotConstraint.constant = -tableVerticalInset
             tableTopConstraint.constant = tableVerticalInset
