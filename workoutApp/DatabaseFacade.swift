@@ -91,11 +91,14 @@ final class DatabaseFacade {
     static func delete(_ objectToDelete : NSManagedObject) {
         
         switch objectToDelete {
+        case let workout as Workout:
+            deleteWorkout(workout)
         case let workoutLog as WorkoutLog:
             deleteWorkoutLog(workoutLog)
         case let exercise as Exercise:
             retireExercise(exercise)
         default:
+            print("Missing specialized deletion method for \(type(of: objectToDelete)). Defaulting to context.delete")
             persistentContainer.viewContext.delete(objectToDelete)
         }
         
@@ -104,8 +107,6 @@ final class DatabaseFacade {
     
     private static func retireExercise(_ exercise: Exercise) {
         exercise.isRetired = true
-        
-        // For any workout contaning this exercise. Remove it
         exercise.removeFromAnyWorkouts()
     }
     
@@ -121,15 +122,15 @@ final class DatabaseFacade {
         }
     }
     
-    static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
-        // loop through its Exerciselogs, delete their lifts, then delete exerciselog and then delete workoutLog
-        
+    /// Removes workoutLog, its exerciseLogs
+    private static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
         // mark the predecessing workoutLog as latestPerformence
-        if let workoutDesign = workoutLogToDelete.design, let latestPerformence = workoutDesign.latestPerformence {
-            if latestPerformence === workoutLogToDelete {
-                setPreviousWorkoutLogAsLatestPerformence(forWorkout: workoutDesign)
-            }
+        if let latestPerformence = workoutLogToDelete.getDesign().latestPerformence, latestPerformence === workoutLogToDelete {
+            setPreviousWorkoutLogAsLatestPerformence(forWorkout: workoutLogToDelete.getDesign())
         }
+        
+        // Decrement count
+        workoutLogToDelete.getDesign().decrementLogCount()
         
         let orderedExerciseLogs: NSMutableOrderedSet = workoutLogToDelete.mutableOrderedSetValue(forKey: "loggedExercises")
         
@@ -156,18 +157,19 @@ final class DatabaseFacade {
         persistentContainer.viewContext.delete(workoutLogToDelete)
     }
     
-    static func deleteWorkout(_ workoutToDelete: Workout) {
+    private static func deleteWorkout(_ workoutToDelete: Workout) {
         guard let loggedWorkouts = workoutToDelete.loggedWorkouts as? Set<WorkoutLog> else {
             preconditionFailure("error unwrapping workoutslog in deleteWorkout")
         }
         
-        workoutToDelete.workoutStyle?.usedInWorkoutsCount -= 1
+        workoutToDelete.getWorkoutStyle().decrementWorkoutDesignCount()
+        workoutToDelete.getWorkoutStyle().removeFromUsedInWorkouts(workoutToDelete)
         
         for workoutLog in loggedWorkouts {
             // NOTE: - This leaves any exercises associated with these workoutLogs still in existance in the persistentStore
             delete(workoutLog)
         }
-        delete(workoutToDelete)
+        persistentContainer.viewContext.delete(workoutToDelete)
     }
     
     // MARK: - Make methods
@@ -285,21 +287,12 @@ final class DatabaseFacade {
     }
     
     static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) {
-        
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
-        
-        workoutRecord.name = workoutName
-        
-        // Workout style
-        workoutRecord.workoutStyle = workoutStyle
-        workoutStyle.usedInWorkoutsCount += 1
-        workoutStyle.addToUsedInWorkouts(workoutRecord)
+        workoutRecord.setName(workoutName)
+        workoutRecord.setInitialWorkoutStyle(workoutStyle)
         workoutRecord.musclesUsed = NSSet(array: muscles)
-        
-        // Add Exercises to the Workout
-        for exercise in exercises {
-            workoutRecord.addToExercises(exercise)
-        }
+        workoutStyle.addToUsedInWorkouts(workoutRecord)
+        workoutRecord.setExercises(exercises)
     }
     
     // MARK: - Fetch/get methods
@@ -548,6 +541,7 @@ final class DatabaseFacade {
     
     // get WorkoutStyle
     static func getWorkoutStyle(named name: String) -> WorkoutStyle? {
+
         var workoutStyle: WorkoutStyle? = nil
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutStyle.rawValue)
@@ -676,16 +670,17 @@ final class DatabaseFacade {
         return workoutLog
     }
     
-    static func fetchAllWorkoutLogs() -> [WorkoutLog]? {
+    static func fetchAllWorkoutLogs() -> [WorkoutLog] {
         
-        var result: [WorkoutLog]? = nil
+        var result: [WorkoutLog] = [WorkoutLog]()
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
+        let fetchRequest = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
         let dateSorter = NSSortDescriptor(key: "dateEnded", ascending: false)
         fetchRequest.sortDescriptors = [dateSorter]
         
         do {
-            result = try persistentContainer.viewContext.fetch(fetchRequest) as? [WorkoutLog]
+            let results = try context.fetch(fetchRequest)
+            result = results
         } catch let error as NSError {
             print("Error fetching all workoutlogs: \(error.localizedDescription)")
         }

@@ -710,10 +710,10 @@
 				DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */,
 				DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */,
 				DD4025D61F87DB3F00A83D45 /* ExerciseLogExtensions.swift */,
-				DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */,
 				DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */,
-				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
 				DD642F961F75308A003D1177 /* MuscleExtensions.swift */,
+				DD4FF01A1F6D6504005040A0 /* WorkoutExtensions.swift */,
+				DD372BAF1F635F76007C35B8 /* WorkoutLogExtensions.swift */,
 				DDBD94FD1FB3650A0047918F /* WorkoutStyleExtensions.swift */,
 				DD49BAB41F98C29A001AFAE3 /* LiftExtensions.swift */,
 			);

@@ -152,7 +152,7 @@ class ExerciseTableViewController: UITableViewController {
     // MARK: Handlers
     
     @objc private func saveButtonHandler() {
-        dataSource.saveWorkout()
+        dataSource.saveWorkoutLog()
         presentingBoxTable?.shouldUpdateUponAppearing = true
     }
     

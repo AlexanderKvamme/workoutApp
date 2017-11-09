@@ -56,15 +56,43 @@ extension Workout {
         return workoutStyle
     }
     
-    func setStyle(_ style: WorkoutStyle) {
-        // Decrement usedInCount of old
-        if let oldstyle = self.workoutStyle {
-            oldstyle.usedInWorkoutsCount -= 1
-            oldstyle.removeFromUsedInWorkouts(self)
+    func setInitialWorkoutStyle(_ newStyle: WorkoutStyle) {
+        self.workoutStyle = newStyle
+        newStyle.incrementWorkoutDesignCount()
+        newStyle.addToUsedInWorkouts(self)
+    }
+    
+    /// Changes style, and updates counts of use in both previous and new style.
+    func setStyle(_ newStyle: WorkoutStyle) {
+        
+        guard newStyle != self.getWorkoutStyle() else {
+            print("was same. not updating anything")
+            return
         }
-        // Increment usedInCount of new
-        style.usedInWorkoutsCount += 1
-        self.workoutStyle = style
+    
+        // Decrement Designcount of old
+        let oldStyle = self.getWorkoutStyle()
+        oldStyle.decrementWorkoutDesignCount()
+        oldStyle.removeFromUsedInWorkouts(self)
+        
+        // Increment DesignCount of new
+        newStyle.addToUsedInWorkouts(self)
+        newStyle.incrementWorkoutDesignCount()
+
+        // Update Log counts
+        
+        let performancesToSwap = Int(self.performanceCount)
+        
+        guard performancesToSwap > 0 else {
+            print("was performed 0 times, so nothing to swap")
+            return
+        }
+        
+        oldStyle.decrementLogCount(by: performancesToSwap)
+        newStyle.incrementLogCount(by: performancesToSwap)
+        
+        // Finally, change style
+        self.workoutStyle = newStyle
     }
     
     func setMuscles(_ muscles: [Muscle]) {
@@ -90,7 +118,7 @@ extension Workout {
     }
     
     func addPerformance(_ workoutLog: WorkoutLog) {
-        self.performanceCount += 1
+        incrementLogCount()
     
         if let end = workoutLog.dateEnded, let start = workoutLog.dateStarted {
         let elapsedTime = end.timeIntervalSince(start as Date)
@@ -100,7 +128,6 @@ extension Workout {
     
     func getAverageTime() -> String {
         let average = totalTimeSpent/Double(performanceCount)
-        
         return average.asMinimalString()
     }
 }

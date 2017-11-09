@@ -84,18 +84,17 @@ class HistorySelectionViewController: SelectionViewController {
         stack.removeArrangedSubviews()
         
         // make buttons from unique workout names
+        let allButton = makeAllButton()
         var workoutButtons = [SelectionViewButton]()
         let uniqueWorkoutTypes = Set(workoutStyles)
         buttonNames = [String]()
         buttons = [SelectionViewButton]()
-        
-        let allButton = makeAllButton()
         buttons.append(allButton)
         
         // Set up all the unique styles choices
-        for type in uniqueWorkoutTypes where type.getPerformanceCount() > 0 {
-            guard let styleName = type.name else { return }
-            let count = type.getPerformanceCount()
+        for workoutStyle in uniqueWorkoutTypes where workoutStyle.getPerformanceCount() > 0 {
+            let styleName = workoutStyle.getName()
+            let count = workoutStyle.getPerformanceCount()
             let pluralEnding = count == 1 ? "LOG" : "LOGS"
             let newButton = SelectionViewButton(header: styleName, subheader: "\(count) \(pluralEnding)")
             

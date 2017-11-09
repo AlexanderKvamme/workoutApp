@@ -21,19 +21,27 @@ class workoutAppUITests: XCTestCase {
     // MARK: Teardown
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
     // MARK: - Tests
     
+    /// Entry point. Decide which points to run
     func testFastlaneSnapshots() {
+//        fastlaneSeedTest()
         snapshotOfWorkoutInUse()
         snapshotExercisePicking()
         snapshotOnlyExercisePicking()
     }
     
     // MARK: Methods
+    
+    func fastlaneSeedTest() {
+        let app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments.append("--fastlaneSnapshot")
+        app.launch()
+    }
     
     func snapshotOnlyExercisePicking() {
         

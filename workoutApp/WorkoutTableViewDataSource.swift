@@ -62,7 +62,7 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     func deleteDataAt(_ indexPath: IndexPath) {
         let workoutToDelete = fetchedWorkouts[indexPath.row]
         fetchedWorkouts.remove(at: indexPath.row)
-        DatabaseFacade.deleteWorkout(workoutToDelete)
+        DatabaseFacade.delete(workoutToDelete)
         lastUpdatedAt = Date()
     }
     

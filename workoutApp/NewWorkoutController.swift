@@ -15,7 +15,7 @@ class NewWorkoutController: WorkoutController {
     lazy var footer: ButtonFooter = {
         let f = ButtonFooter(withColor: .darkest)
         f.frame.origin.y = self.view.frame.maxY - f.frame.height
-        f.approveButton.addTarget(self, action: #selector(approveAndDismissVC), for: .touchUpInside)
+        f.approveButton.addTarget(self, action: #selector(makeWorkoutAndDismissVC), for: .touchUpInside)
         f.approveButton.accessibilityIdentifier = "approve-button"
         f.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         f.cancelButton.accessibilityIdentifier = "cancel-button"
@@ -66,7 +66,7 @@ class NewWorkoutController: WorkoutController {
         navigationController?.pushViewController(workoutNamePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
-    @objc private func approveAndDismissVC() {
+    @objc private func makeWorkoutAndDismissVC() {
         // Present error modal if workout contains no exercises
         guard hasExercises else {
             let modal = CustomAlertView(type: .message, messageContent: "Add at least one exercise, please!")

@@ -13,187 +13,6 @@ import CoreData
  Used to make some example workouts, exercises, and exerciseLogs when the app is freshly installed
  */
 
-fileprivate final class MeasurementStyles {
-    
-    // Computed Properties
-    
-    static var sets: MeasurementStyle {
-        return getOrMakeMeasurementStyle(named: "SETS")
-    }
-    
-    // time
-    static var time: MeasurementStyle {
-        return getOrMakeMeasurementStyle(named: "TIME")
-    }
-    
-    // weighted sets
-    static var weightedSets: MeasurementStyle {
-        return getOrMakeMeasurementStyle(named: "WEIGHTED SETS")
-    }
-    
-    // Methods
-    private static func getOrMakeMeasurementStyle(named name: String) -> MeasurementStyle {
-        return DatabaseFacade.getMeasurementStyle(named: name) ?? DatabaseFacade.makeMeasurementStyle(named: name)
-    }
-}
-
-fileprivate final class Exercises {
-    
-    // Computed Properties
-    
-    static var pullUp: Exercise {
-        return getOrMakeExercise(named: "PULL UP")
-    }
-    
-    static var bicepFlex: Exercise {
-        return getOrMakeExercise(named: "BICEP FLEX")
-    }
-    
-    // Methods
-    
-    private static func getOrMakeExercise(named name: String) -> Exercise {
-        return DatabaseFacade.getExercise(named: name) ??  DatabaseFacade.makeExercise(withName: name, exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.chest], measurementStyle: MeasurementStyles.sets)
-    }
-}
-
-fileprivate final class ExerciseStyles {
- 
-    // Computed Properties
-    
-    static var assisted: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "ASSISTED")
-    }
-    
-    static var declined: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "DECLINED")
-    }
-    
-    static var explosive: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "EXPLOSIVE")
-    }
-    
-    static var inclined: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "INCLINED")
-    }
-    
-    static var inverted: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "INVERTED")
-    }
-    
-    static var normal: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "NORMAL")
-    }
-    
-    static var slow: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "SLOW")
-    }
-    
-    static var weighted: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "WEIGHTED")
-    }
-    
-    // Methods
-    
-    private static func getOrMakeExerciseStyle(named name: String) -> ExerciseStyle {
-        return DatabaseFacade.getExerciseStyle(named: name) ?? DatabaseFacade.makeExerciseStyle(named: name)
-    }
-}
-
-/// Used to easily make or get workoutstyles when seeding
-fileprivate final class WorkoutStyles {
-    
-    // Computed Properties
-    
-    static var cardio: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "CARDIO")
-    }
-    
-    static var dropSet: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "DROPSET")
-    }
-    
-    static var fun: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "FUN")
-    }
-    
-    static var normal: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "NORMAL")
-    }
-    
-    static var other: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "OTHER")
-    }
-    
-    static var superSet: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "SUPERSET")
-    }
-    
-    static var technique: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "TECHNIQUE")
-    }
-    
-    static var weighted: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "WEIGHTED")
-    }
-    
-    // Methods
-    
-    private static func getOrMakeWorkoutStyle(named name: String) -> WorkoutStyle {
-        return DatabaseFacade.getWorkoutStyle(named: name) ?? DatabaseFacade.makeWorkoutStyle(named: name)
-    }
-}
-
-/// Easily accessible muscles for quickly seeding before generating snapshots .etc
-fileprivate final class Muscles {
-    
-    // Computed Properties
-    
-    static var back: Muscle {
-        return getOrMakeMuscle(named: "BACK")
-    }
-    
-    static var legs: Muscle {
-        return getOrMakeMuscle(named: "LEGS")
-    }
-    
-    static var other: Muscle {
-        return getOrMakeMuscle(named: "OTHER")
-    }
-
-    static var glutes: Muscle {
-        return getOrMakeMuscle(named: "GLUTES")
-    }
-    
-    static var shoulders: Muscle {
-        return getOrMakeMuscle(named: "SHOULDERS")
-    }
-    
-    static var core: Muscle {
-        return getOrMakeMuscle(named: "CORE")
-    }
-    
-    static var chest: Muscle {
-        return getOrMakeMuscle(named: "CHEST")
-    }
-    
-    static var biceps: Muscle {
-        return getOrMakeMuscle(named: "BICEPS")
-    }
-    
-    static var triceps: Muscle {
-        return getOrMakeMuscle(named: "TRICEPS")
-    }
-    
-    static var cardio: Muscle {
-        return getOrMakeMuscle(named: "CARDIO")
-    }
-    
-    private static func getOrMakeMuscle(named name: String) -> Muscle {
-        return DatabaseFacade.getMuscle(named: name) ?? DatabaseFacade.makeMuscle(named: name)
-    }
-    
-}
-
 final class DataSeeder {
     
     // MARK: Properties
@@ -226,8 +45,12 @@ final class DataSeeder {
     public func seedCoreDataForFastlaneSnapshots() {
         
         // Clear core data
+        DataSeeder.clearWorkoutLogs()
         DataSeeder.clearExercises()
         DataSeeder.clearWorkouts()
+        DataSeeder.clearGoals()
+        
+        print("pastCleaning")
         
         // Generate exercises
         DatabaseFacade.makeExercise(withName: "SEED FLEXERS", exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.biceps], measurementStyle: MeasurementStyles.sets)
@@ -264,18 +87,18 @@ final class DataSeeder {
         }
         
         // Workout Styles
-        for styleName in defaultWorkoutStyles {
-            if DatabaseFacade.getWorkoutStyle(named: styleName) == nil {
-                print("didnt exist so making workoutstyle named \(styleName)")
-                makeWorkoutStyle(withName: styleName)
+        for workoutStyleName in defaultWorkoutStyles {
+            if DatabaseFacade.getWorkoutStyle(named: workoutStyleName) == nil {
+                print("didnt exist so making workoutstyle named \(workoutStyleName)")
+                makeWorkoutStyle(withName: workoutStyleName)
             }
         }
         
         // Exercise Styles
-        for styleName in defaultExerciseStyles {
-            if DatabaseFacade.getExerciseStyle(named: styleName) == nil {
-                print("didnt exist so making exercise named \(styleName)")
-                makeExerciseStyle(withName: styleName)
+        for exerciseStyleName in defaultExerciseStyles {
+            if DatabaseFacade.getExerciseStyle(named: exerciseStyleName) == nil {
+                print("didnt exist so making exercise named \(exerciseStyleName)")
+                makeExerciseStyle(withName: exerciseStyleName)
             }
         }
         
@@ -335,16 +158,25 @@ final class DataSeeder {
     }
     
     private func makeWorkoutStyle(withName name: String) {
+        guard DatabaseFacade.getWorkoutStyle(named: name.uppercased()) == nil else {
+            return
+        }
         let workoutStyleRecord = DatabaseFacade.makeWorkoutStyle()
         workoutStyleRecord.name = name.uppercased()
     }
     
     private func makeExerciseStyle(withName name: String) {
+        guard DatabaseFacade.getExerciseStyle(named: name.uppercased()) == nil else {
+            return
+        }
         let exerciseStyleRecord = DatabaseFacade.makeExerciseStyle()
         exerciseStyleRecord.name = name.uppercased()
     }
     
     private func makeMeasurementStyle(withName name: String) {
+        guard DatabaseFacade.getMeasurementStyle(named: name.uppercased()) == nil else {
+            return
+        }
         let measurementStyleRecord = DatabaseFacade.makeMeasurementStyle()
         measurementStyleRecord.name = name.uppercased()
     }
@@ -361,9 +193,20 @@ final class DataSeeder {
     }
     
     static func clearWorkouts() {
-        
         for workout in DatabaseFacade.fetchAllWorkouts() {
+            print("deleting workout: ", workout.getName())
+            let style = workout.getWorkoutStyle()
+            print("its style PRE DEL (\(style.getName()) had count: \(style.getWorkoutDesignCount())")
             DatabaseFacade.delete(workout)
+            print("its style POST DEL(\(style.getName()) had count: \(style.getWorkoutDesignCount())")
+        }
+        DatabaseFacade.saveContext()
+    }
+    
+    static func clearWorkoutLogs() {
+        for workoutLog in DatabaseFacade.fetchAllWorkoutLogs() {
+            workoutLog.getDesign().decrementLogCount()
+            DatabaseFacade.delete(workoutLog)
         }
         DatabaseFacade.saveContext()
     }
@@ -473,3 +316,182 @@ final class DataSeeder {
     }
 }
 
+fileprivate final class MeasurementStyles {
+    
+    // Computed Properties
+    
+    static var sets: MeasurementStyle {
+        return getOrMakeMeasurementStyle(named: "SETS")
+    }
+    
+    // time
+    static var time: MeasurementStyle {
+        return getOrMakeMeasurementStyle(named: "TIME")
+    }
+    
+    // weighted sets
+    static var weightedSets: MeasurementStyle {
+        return getOrMakeMeasurementStyle(named: "WEIGHTED SETS")
+    }
+    
+    // Methods
+    private static func getOrMakeMeasurementStyle(named name: String) -> MeasurementStyle {
+        return DatabaseFacade.getMeasurementStyle(named: name) ?? DatabaseFacade.makeMeasurementStyle(named: name)
+    }
+}
+
+fileprivate final class Exercises {
+    
+    // Computed Properties
+    
+    static var pullUp: Exercise {
+        return getOrMakeExercise(named: "PULL UP")
+    }
+    
+    static var bicepFlex: Exercise {
+        return getOrMakeExercise(named: "BICEP FLEX")
+    }
+    
+    // Methods
+    
+    private static func getOrMakeExercise(named name: String) -> Exercise {
+        return DatabaseFacade.getExercise(named: name) ??  DatabaseFacade.makeExercise(withName: name, exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.chest], measurementStyle: MeasurementStyles.sets)
+    }
+}
+
+fileprivate final class ExerciseStyles {
+    
+    // Computed Properties
+    
+    static var assisted: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "ASSISTED")
+    }
+    
+    static var declined: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "DECLINED")
+    }
+    
+    static var explosive: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "EXPLOSIVE")
+    }
+    
+    static var inclined: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "INCLINED")
+    }
+    
+    static var inverted: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "INVERTED")
+    }
+    
+    static var normal: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "NORMAL")
+    }
+    
+    static var slow: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "SLOW")
+    }
+    
+    static var weighted: ExerciseStyle {
+        return getOrMakeExerciseStyle(named: "WEIGHTED")
+    }
+    
+    // Methods
+    
+    private static func getOrMakeExerciseStyle(named name: String) -> ExerciseStyle {
+        return DatabaseFacade.getExerciseStyle(named: name) ?? DatabaseFacade.makeExerciseStyle(named: name)
+    }
+}
+
+/// Used to easily make or get workoutstyles when seeding
+fileprivate final class WorkoutStyles {
+    
+    // Computed Properties
+    
+    static var cardio: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "CARDIO")
+    }
+    
+    static var dropSet: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "DROPSET")
+    }
+    
+    static var fun: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "FUN")
+    }
+    
+    static var normal: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "NORMAL")
+    }
+    
+    static var other: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "OTHER")
+    }
+    
+    static var superSet: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "SUPERSET")
+    }
+    
+    static var technique: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "TECHNIQUE")
+    }
+    
+    static var weighted: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "WEIGHTED")
+    }
+    
+    // Methods
+    
+    private static func getOrMakeWorkoutStyle(named name: String) -> WorkoutStyle {
+        return DatabaseFacade.getWorkoutStyle(named: name) ?? DatabaseFacade.makeWorkoutStyle(named: name)
+    }
+}
+
+/// Easily accessible muscles for quickly seeding before generating snapshots .etc
+fileprivate final class Muscles {
+    
+    // Computed Properties
+    
+    static var back: Muscle {
+        return getOrMakeMuscle(named: "BACK")
+    }
+    
+    static var legs: Muscle {
+        return getOrMakeMuscle(named: "LEGS")
+    }
+    
+    static var other: Muscle {
+        return getOrMakeMuscle(named: "OTHER")
+    }
+    
+    static var glutes: Muscle {
+        return getOrMakeMuscle(named: "GLUTES")
+    }
+    
+    static var shoulders: Muscle {
+        return getOrMakeMuscle(named: "SHOULDERS")
+    }
+    
+    static var core: Muscle {
+        return getOrMakeMuscle(named: "CORE")
+    }
+    
+    static var chest: Muscle {
+        return getOrMakeMuscle(named: "CHEST")
+    }
+    
+    static var biceps: Muscle {
+        return getOrMakeMuscle(named: "BICEPS")
+    }
+    
+    static var triceps: Muscle {
+        return getOrMakeMuscle(named: "TRICEPS")
+    }
+    
+    static var cardio: Muscle {
+        return getOrMakeMuscle(named: "CARDIO")
+    }
+    
+    private static func getOrMakeMuscle(named name: String) -> Muscle {
+        return DatabaseFacade.getMuscle(named: name) ?? DatabaseFacade.makeMuscle(named: name)
+    }
+}

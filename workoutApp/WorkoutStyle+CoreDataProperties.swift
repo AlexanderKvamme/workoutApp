@@ -17,23 +17,48 @@ extension WorkoutStyle {
     }
 
     @NSManaged public var name: String?
-    @NSManaged private var performanceCount: Int16
-    @NSManaged public var usedInWorkoutsCount: Int16
+    @NSManaged private var workoutLogCount: Int16 // How many workoutLogs of type "WEIGHTED"?
+    @NSManaged private var workoutDesignCount: Int16 // How many Workouts (Designs) are "WEIGHTED" Workouts?
     @NSManaged public var usedInWorkouts: NSSet?
     
     // MARK: - Custom Methods
     
-    public func incrementPerformanceCount() {
-        performanceCount += 1
+    // WorkoutLog count:
+    
+    public func incrementLogCount() {
+        workoutLogCount += 1
     }
     
-    public func decrementPerformanceCount() {
-        precondition(performanceCount > 1, "Performance count should not be negative")
-        performanceCount -= 1
+    public func incrementLogCount(by amount: Int){
+        let int16Amount = Int16(amount)
+        workoutLogCount += int16Amount
+    }
+    
+    public func decrementLogCount() {
+        precondition(workoutLogCount > 1, "Performance count should not be negative")
+        workoutLogCount -= 1
+    }
+    
+    public func decrementLogCount(by amount: Int){
+        workoutLogCount -= Int16(amount)
     }
     
     public func getPerformanceCount() -> Int {
-        return Int(performanceCount)
+        return Int(workoutLogCount)
+    }
+    
+    // numberOfWorkoutDesigns
+    public func incrementWorkoutDesignCount() {
+        workoutDesignCount += 1
+    }
+    
+    public func decrementWorkoutDesignCount() {
+        workoutDesignCount -= 1
+    }
+    
+    /// Returns the amount of workout designs that has this style
+    public func getWorkoutDesignCount() -> Int{
+        return Int(workoutDesignCount)
     }
 }
 

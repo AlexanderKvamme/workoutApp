@@ -17,13 +17,34 @@ extension Workout {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var performanceCount: Int16
+    @NSManaged private(set) var performanceCount: Int16
     @NSManaged public var totalTimeSpent: Double
     @NSManaged public var exercises: NSOrderedSet?
     @NSManaged public var latestPerformence: WorkoutLog?
     @NSManaged public var loggedWorkouts: NSSet?
     @NSManaged public var musclesUsed: NSSet?
     @NSManaged public var workoutStyle: WorkoutStyle?
+    
+    
+    // MARK: Increments Log Count
+    
+    func incrementLogCount() {
+        self.performanceCount += 1
+    }
+    
+    func incrementLogCount(by amount: Int) {
+        self.performanceCount += Int16(amount)
+    }
+    
+    // MARK: Decrement Log Count
+    
+    func decrementLogCount(by amount: Int) {
+        self.performanceCount -= Int16(amount)
+    }
+    
+    func decrementLogCount() {
+        self.performanceCount -= 1
+    }
 
 }
 

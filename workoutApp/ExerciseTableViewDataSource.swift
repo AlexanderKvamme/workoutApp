@@ -39,7 +39,8 @@ class ExerciseTableDataSource: NSObject {
     
     // Save methods
     
-    func saveWorkout() {
+    /// Saves this inactive workout as
+    func saveWorkoutLog() {
         
         guard countPerformedExercises() > 0 else {
             // present error
@@ -54,11 +55,8 @@ class ExerciseTableDataSource: NSObject {
         updateLatestUseOfMuscle()
         deleteUnperformedLifts()
         
-        if let workoutDesign = dataSourceWorkoutLog.design {
-            workoutDesign.addPerformance(dataSourceWorkoutLog)
-        }
-        
-        dataSourceWorkoutLog.getStyle().incrementPerformanceCount()
+        dataSourceWorkoutLog.getDesign().incrementLogCount()
+        dataSourceWorkoutLog.getStyle().incrementLogCount()
         
         dataSourceWorkoutLog.markAsLatestperformence()
         owner.navigationController?.popViewController(animated: true)
@@ -67,8 +65,7 @@ class ExerciseTableDataSource: NSObject {
     }
     
     // Swap method used when moving cells
-    func swapElementsAtIndex(_ firstIndexPath: IndexPath, withObjectAtIndex secondIndexPath: IndexPath
-        ) {
+    func swapElementsAtIndex(_ firstIndexPath: IndexPath, withObjectAtIndex secondIndexPath: IndexPath) {
         
         let indexA: Int = firstIndexPath.section
         let indexB: Int = secondIndexPath.section
@@ -156,7 +153,12 @@ private extension ExerciseTableDataSource {
         // Make new WorkoutLog and make it identical to the previous one
         dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog()
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
-        dataSourceWorkoutLog.design = previousPerformance.design
+        
+        guard let previousWorkoutLogsDesign = previousPerformance.design else {
+            preconditionFailure("Must have design")
+        }
+        
+        dataSourceWorkoutLog.design = previousWorkoutLogsDesign
         
         addPerformedExercises(fromWorkoutLog: previousPerformance)
         addNotYetPerformedExercises(fromWorkoutLog: previousPerformance)

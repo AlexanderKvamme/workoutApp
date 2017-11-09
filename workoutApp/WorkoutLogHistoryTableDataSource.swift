@@ -84,7 +84,7 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     func deleteDataAt(_ indexPath: IndexPath) {
         let woToDelete = fetchedWorkoutLogs[indexPath.row]
         fetchedWorkoutLogs.remove(at: indexPath.row)
-        DatabaseFacade.deleteWorkoutLog(woToDelete)
+        DatabaseFacade.delete(woToDelete)
     }
 }
 
