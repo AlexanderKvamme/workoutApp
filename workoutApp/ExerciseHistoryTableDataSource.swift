@@ -65,19 +65,9 @@ class ExerciseHistoryTableDataSource: NSObject, UITableViewDataSource {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
-//        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseHistoryTableCell
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseCellForHistory
-//        cell = ExerciseHistoryTableCell(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
         cell = ExerciseCellForHistory(withExerciseLog: exerciseLog, andLifts: liftsToDisplay, andIdentifier: cellIdentifier)
         cell.box.setTitle(exerciseLog.getName())
-        
-        // FIXME: bam . owner
-//        cell.owner = self
-        
-        /*
-         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseTableCell
-         cell = ExerciseTableCell(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
-         */
 
         return cell
     }

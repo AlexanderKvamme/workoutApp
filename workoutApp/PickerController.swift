@@ -152,9 +152,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     private func setupTable() {
-//        table = UITableView(frame: CGRect(x: inset, y: header.frame.maxY + 50, width: screenWidth - 2*inset, height: 200))
         table = UITableView()
-        
         table.reloadData()
         
         table.register(PickerCell.self, forCellReuseIdentifier: cellIdentifier)

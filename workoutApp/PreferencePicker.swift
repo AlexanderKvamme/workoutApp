@@ -126,11 +126,6 @@ final class PreferencePicker: UIViewController {
         self.header.sizeToFit()
     }
     
-    private func setDebugColors() {
-        header.backgroundColor = .blue
-        view.backgroundColor = .red
-    }
-    
     // Gesture handlers
     
     @objc private func controllerWasTapped(_ gesture: UIGestureRecognizer) {

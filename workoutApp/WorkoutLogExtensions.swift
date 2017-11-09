@@ -50,16 +50,21 @@ extension WorkoutLog {
     // MARK: Getters
     
     func getName() -> String {
-        return design?.name ?? "No Name"
+        return getDesign().getName()
     }
     
-//    func getMuscleNames() -> String {
-//        guard let muscles = design?.muscleUsed? else { return "No names" }
-//
-//
-//
-//return design?.muscleUsed?.name ?? "No Name"
-//    }
+    func getStyle() -> WorkoutStyle {
+        return getDesign().getWorkoutStyle()
+    }
+    
+    func getDesign() -> Workout {
+        guard let design = design else {
+            preconditionFailure("All workouts must have a design")
+        }
+        
+        return design
+    }
+    
     func getMusclesUsed() -> [Muscle] {
         var musclesUsed = [Muscle]()
         

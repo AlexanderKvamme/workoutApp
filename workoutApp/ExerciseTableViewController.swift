@@ -149,12 +149,6 @@ class ExerciseTableViewController: UITableViewController {
         return snapshot
     }
     
-    func setDebugColors() {
-        view.backgroundColor = .green
-        tableView.tableFooterView?.backgroundColor = .yellow
-        tableView.backgroundColor = .red
-    }
-    
     // MARK: Handlers
     
     @objc private func saveButtonHandler() {

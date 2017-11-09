@@ -2,7 +2,7 @@
 //  WorkoutLog+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 25/09/2017.
+//  Created by Alexander Kvamme on 08/11/2017.
 //
 //
 

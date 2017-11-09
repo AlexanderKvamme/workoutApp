@@ -81,7 +81,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     /// Sends new fetch and updates buttons
     private func updateStackWithEntriesFromCoreData() {
-        let workoutStyles = getUniqueWorkoutStyles() // getWorkoutStyles(withRequest: request)
+        let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
         
         buttonIndex = 0
         
@@ -91,17 +91,15 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         // make buttons from unique workout names
         var workoutButtons = [SelectionViewButton]()
-        let uniqueWorkoutTypes = Set(workoutStyles)
         buttonNames = [String]()
         
-        for type in uniqueWorkoutTypes {
-            guard let styleName = type.name else {
-                return
-            }
+        for workoutStyle in workoutStyles where workoutStyle.usedInWorkoutsCount > 0 {
+            
+            let styleName = workoutStyle.getName()
             
             let subheaderString: String = {
-                let count = DatabaseFacade.countWorkouts(ofStyle: styleName)
-                return count > 1 ? "\(count) WORKOUTS" : "\(count) WORKOUT"
+                let workoutsOfThisStyle = workoutStyle.usedInWorkoutsCount
+                return workoutsOfThisStyle > 1 ? "\(workoutsOfThisStyle) WORKOUTS" : "\(workoutsOfThisStyle) WORKOUT"
             }()
             
             let newButton = SelectionViewButton(header: styleName, subheader: subheaderString)

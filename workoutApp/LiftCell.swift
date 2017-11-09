@@ -1,4 +1,4 @@
-  //
+//
 //  ExerciseCollectionViewCell.swift
 //  workoutApp
 //
@@ -23,7 +23,7 @@ class LiftCell: UICollectionViewCell {
         let valueFromDatasource = superTableCell.liftsToDisplay[indexPath.row].reps
         return String(valueFromDatasource)
     }
-
+    
     weak var superTableCell: ExerciseCellBaseClass!
     
     // MARK: - Methods
@@ -112,7 +112,7 @@ class LiftCell: UICollectionViewCell {
         makeRepTextBold()
         endEditing(true)
     }
-
+    
     // MARK: API
     
     func setReps(_ n: Int16) {
@@ -124,7 +124,7 @@ class LiftCell: UICollectionViewCell {
     func OKHandler() {
         preconditionFailure("override in subclasses")
     }
-
+    
     func makeRepTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
         repsField.textColor = .light
@@ -148,22 +148,13 @@ class LiftCell: UICollectionViewCell {
             lift.datePerformed = NSDate()
         }
     }
-    
-    func setDebugColors() {
-        // Overlaying Button
-        overlayingButton.backgroundColor = .red
-        overlayingButton.alpha = 0.1
-        
-        // Reps
-        repsField.backgroundColor = .purple
-        repsField.alpha = 0.5
-    }
 }
-  
-  
-  // MARK: - KeyboardDelegate conformance
-  
-  extension LiftCell: KeyboardDelegate {
+
+// MARK: - Extensions
+
+// MARK: KeyboardDelegate Conformance
+
+extension LiftCell: KeyboardDelegate {
     
     func buttonDidTap(keyName: String) {
         // Target active textField
@@ -180,4 +171,4 @@ class LiftCell: UICollectionViewCell {
             activeTextField.insertText(keyName.uppercased())
         }
     }
-  }
+}

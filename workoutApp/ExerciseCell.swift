@@ -112,7 +112,7 @@ extension ExerciseCellBaseClass: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// FIXME: - Make longpressable
+// MARK: Make Longpressable
 
 extension ExerciseCellBaseClass {
     
@@ -207,7 +207,6 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         // use getNextCell until it has no other nextCell, return this last cell
         
         guard let firstCell = getFirstCell() else {
-            print("could not cast to LiftCellForWorkouts - returning nil")
             return nil
         }
         

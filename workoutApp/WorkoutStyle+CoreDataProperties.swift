@@ -2,7 +2,7 @@
 //  WorkoutStyle+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 25/09/2017.
+//  Created by Alexander Kvamme on 08/11/2017.
 //
 //
 
@@ -17,8 +17,24 @@ extension WorkoutStyle {
     }
 
     @NSManaged public var name: String?
+    @NSManaged private var performanceCount: Int16
+    @NSManaged public var usedInWorkoutsCount: Int16
     @NSManaged public var usedInWorkouts: NSSet?
-
+    
+    // MARK: - Custom Methods
+    
+    public func incrementPerformanceCount() {
+        performanceCount += 1
+    }
+    
+    public func decrementPerformanceCount() {
+        precondition(performanceCount > 1, "Performance count should not be negative")
+        performanceCount -= 1
+    }
+    
+    public func getPerformanceCount() -> Int {
+        return Int(performanceCount)
+    }
 }
 
 // MARK: Generated accessors for usedInWorkouts

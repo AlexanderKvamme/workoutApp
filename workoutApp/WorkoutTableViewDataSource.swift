@@ -68,7 +68,7 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     
     func refresh() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
-        let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!) // FIXME: BANG
+        let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!)
         let predicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latestPerformence.dateEnded", ascending: false)]
         fetchRequest.predicate = predicate

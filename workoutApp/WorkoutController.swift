@@ -42,7 +42,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         
         let workoutStyleSelecter = TwoLabelStack(frame: CGRect(x: 0, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
         workoutStyleSelecter.button.accessibilityIdentifier = "workout-style-picker-button"
-        workoutStyleSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
+        workoutStyleSelecter.button.addTarget(self, action: #selector(showWorkoutStyleEditor), for: .touchUpInside)
         
         return workoutStyleSelecter
     }()
@@ -106,7 +106,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }
     
     // Tap handlers
-    @objc private func typeTapHandler() {
+    @objc private func showWorkoutStyleEditor() {
         // Make and present a custom pickerView for selecting type
         let workoutStyles = DatabaseFacade.fetchWorkoutStyles()
         let typePicker = PickerController<WorkoutStyle>(withPicksFrom: workoutStyles, withPreselection: currentWorkoutStyle)

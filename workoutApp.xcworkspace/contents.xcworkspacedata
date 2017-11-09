@@ -2,73 +2,70 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Lift+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Warning+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Workout+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Warning+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Workout+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Exercise+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/WorkoutStyle+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Exercise+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/WorkoutStyle+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/ExerciseLog+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Lift+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/ExerciseLog+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Lift+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Goal+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/MeasurementStyle+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Goal+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/MeasurementStyle+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/WorkoutStyle+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/ExerciseLog+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/WorkoutStyle+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/ExerciseLog+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Lift+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Warning+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Lift+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Warning+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/WorkoutLog+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Exercise+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/WorkoutLog+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Exercise+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Workout+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/ExerciseStyle+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Workout+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/ExerciseStyle+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/ExerciseStyle+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Muscle+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/ExerciseStyle+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Muscle+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Muscle+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Goal+CoreDataClass.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/Muscle+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/Goal+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/MeasurementStyle+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:workoutApp/WorkoutLog+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:workoutApp/WorkoutLog+CoreDataProperties.swift">
+      location = "group:/Users/alexanderkvamme/Documents/workspaces/swift/workoutApp/workoutApp/MeasurementStyle+CoreDataProperties.swift">
    </FileRef>
    <FileRef
       location = "group:workoutApp.xcodeproj">

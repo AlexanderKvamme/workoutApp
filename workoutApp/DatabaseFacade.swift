@@ -84,24 +84,6 @@ final class DatabaseFacade {
         }
     }
     
-    static func countWorkoutLogs(ofStyle styleName: String) -> Int {
-        
-        let style = DatabaseFacade.fetchWorkoutStyle(withName: styleName)
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.WorkoutLog.rawValue)
-        if let style = style {
-            let predicate = NSPredicate(format: "design.workoutStyle = %@", style)
-            fetchRequest.predicate = predicate
-        }
-        
-        do {
-            let count = try persistentContainer.viewContext.count(for: fetchRequest)
-            return count
-        } catch let error as NSError {
-            print("Error: \(error.localizedDescription)")
-            return 0
-        }
-    }
     
     // MARK: - Delete methods
     
@@ -168,6 +150,7 @@ final class DatabaseFacade {
             for lift in liftsTodelete {
                 delete(lift)
             }
+            
             delete(exerciseLog)
         }
         persistentContainer.viewContext.delete(workoutLogToDelete)
@@ -175,9 +158,10 @@ final class DatabaseFacade {
     
     static func deleteWorkout(_ workoutToDelete: Workout) {
         guard let loggedWorkouts = workoutToDelete.loggedWorkouts as? Set<WorkoutLog> else {
-            print("error unwrapping workoutslog in deleteWorkout")
-            return
+            preconditionFailure("error unwrapping workoutslog in deleteWorkout")
         }
+        
+        workoutToDelete.workoutStyle?.usedInWorkoutsCount -= 1
         
         for workoutLog in loggedWorkouts {
             // NOTE: - This leaves any exercises associated with these workoutLogs still in existance in the persistentStore
@@ -300,28 +284,16 @@ final class DatabaseFacade {
         return logItem
     }
     
-    static func makeWorkout(withName workoutName: String, workoutStyleName: String, muscleName: String, exercises: [Exercise]) {
-
-        let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
-        let muscle = DatabaseFacade.getMuscle(named: muscleName)
-        let workoutStyle = DatabaseFacade.getWorkoutStyle(named: workoutStyleName)
-
-        workoutRecord.name = workoutName
-        workoutRecord.addToMusclesUsed(muscle!)
-        workoutRecord.workoutStyle = workoutStyle
-
-        // Add Exercises to the Workout
-        for exercise in exercises {
-            workoutRecord.addToExercises(exercise)
-        }
-    }
-    
     static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) {
         
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         
         workoutRecord.name = workoutName
+        
+        // Workout style
         workoutRecord.workoutStyle = workoutStyle
+        workoutStyle.usedInWorkoutsCount += 1
+        workoutStyle.addToUsedInWorkouts(workoutRecord)
         workoutRecord.musclesUsed = NSSet(array: muscles)
         
         // Add Exercises to the Workout
@@ -415,6 +387,23 @@ final class DatabaseFacade {
         }
         
         return allWorkouts
+    }
+    
+    // Fetch WorkoutStyles
+    
+    static func fetchAllWorkoutStyles() -> [WorkoutStyle] {
+        
+        var allWorkoutStyles = [WorkoutStyle]()
+        
+        let fetchRequest = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            allWorkoutStyles = results
+        } catch let error as NSError {
+            print("Error in fetchAllWorkoutStyles: ", error.localizedDescription)
+        }
+        return allWorkoutStyles
     }
     
     // fetch MeasurementStyles

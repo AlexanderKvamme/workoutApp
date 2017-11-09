@@ -218,15 +218,11 @@ class WeightedLiftCell: LiftCell {
         weightField.textColor = .light
         weightField.alpha = 1
     }
-    
-    // MARK: Debug methods
-    
-    override func setDebugColors() {
-        super.setDebugColors()
-        weightField.backgroundColor = .green
-        weightField.alpha = 0.5
-    }
 }
+
+// MARK: - Extension
+
+// NextableLift Conformance
 
 extension WeightedLiftCell: NextableLift {
     func NextHandler() {

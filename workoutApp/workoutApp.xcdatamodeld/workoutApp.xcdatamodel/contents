@@ -66,6 +66,8 @@
     </entity>
     <entity name="WorkoutStyle" representedClassName="WorkoutStyle" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="performanceCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="usedInWorkoutsCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="workoutStyle" inverseEntity="Workout" syncable="YES"/>
     </entity>
     <elements>
@@ -79,6 +81,6 @@
         <element name="Warning" positionX="97" positionY="3705" width="128" height="75"/>
         <element name="Workout" positionX="-639" positionY="3573" width="128" height="165"/>
         <element name="WorkoutLog" positionX="-1044" positionY="3852" width="128" height="133"/>
-        <element name="WorkoutStyle" positionX="-531" positionY="3849" width="128" height="75"/>
+        <element name="WorkoutStyle" positionX="-531" positionY="3849" width="128" height="105"/>
     </elements>
 </model>

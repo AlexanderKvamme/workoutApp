@@ -73,8 +73,7 @@ class SelectionViewController: UIViewController {
         // Header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.topAnchor.constraint(equalTo: view.topAnchor,
-                                    constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
+        header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
         // Stack
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -98,29 +97,7 @@ class SelectionViewController: UIViewController {
             stack.addArrangedSubview(button)
         }
     }
-    
-    // MARK: - Other methods
-    
-    func getUniqueWorkoutStyles() -> [WorkoutStyle] {
-        let workoutRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Workout.rawValue)
-        workoutRequest.resultType = .managedObjectResultType
-        workoutRequest.propertiesToFetch = ["workoutStyle"]
-        
-        var workoutStyles = [WorkoutStyle]()
-        do {
-            let results = try DatabaseFacade.persistentContainer.viewContext.fetch(workoutRequest)
-            // Append all received types
-            for r in results as! [Workout] {
-                if let workoutStyle = r.workoutStyle {
-                    workoutStyles.append(workoutStyle)
-                }
-            }
-        } catch let error as NSError {
-            print("error in SelectionViewController : ", error.localizedDescription)
-        }
-        return workoutStyles
-    }
-    
+
     // MARK: - Helpers
     
     /// Used to position stack properly in the middle of header and tabbar
@@ -148,16 +125,6 @@ class SelectionViewController: UIViewController {
             diagonalLineView.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor),
             diagonalLineView.centerXAnchor.constraint(equalTo: alignmentRectangle.centerXAnchor)
             ])
-        
-        
-//        diagonalLineView = getDiagonalLineView(sizeOf: stack)
-//        view.addSubview(diagonalLineView)
-//
-//        diagonalLineView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            diagonalLineView.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor),
-//            diagonalLineView.centerXAnchor.constraint(equalTo: alignmentRectangle.centerXAnchor)
-//            ])
     }
 }
 

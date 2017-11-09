@@ -219,7 +219,7 @@ class MusclePickerController: UIViewController {
     @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
         switch sender.state {
         case .began:
-            print("FIXME: - Implement muscle editor")
+            print("TODO: - Implement muscle editor")
         default:
             break
         }

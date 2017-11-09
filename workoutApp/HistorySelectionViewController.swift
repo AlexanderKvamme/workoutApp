@@ -56,8 +56,7 @@ class HistorySelectionViewController: SelectionViewController {
         // header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.topAnchor.constraint(equalTo: view.topAnchor,
-                                    constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
+        header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
         // stack
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +77,7 @@ class HistorySelectionViewController: SelectionViewController {
     
     /// Sends new fetch and updates buttons
     private func updateStackToDisplayStylesAndAll() {
-        let workoutStyles = getUniqueWorkoutStyles()
+        let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
         
         buttonIndex = 0
 
@@ -94,10 +93,11 @@ class HistorySelectionViewController: SelectionViewController {
         buttons.append(allButton)
         
         // Set up all the unique styles choices
-        for type in uniqueWorkoutTypes {
+        for type in uniqueWorkoutTypes where type.getPerformanceCount() > 0 {
             guard let styleName = type.name else { return }
-            
-            let newButton = SelectionViewButton(header: styleName, subheader: "\(DatabaseFacade.countWorkoutLogs(ofStyle: styleName)) WORKOUTS")
+            let count = type.getPerformanceCount()
+            let pluralEnding = count == 1 ? "LOG" : "LOGS"
+            let newButton = SelectionViewButton(header: styleName, subheader: "\(count) \(pluralEnding)")
             
             // Set up button names etc
             newButton.button.tag = buttonIndex

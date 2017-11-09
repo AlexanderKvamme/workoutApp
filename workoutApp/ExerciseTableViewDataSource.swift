@@ -41,27 +41,29 @@ class ExerciseTableDataSource: NSObject {
     
     func saveWorkout() {
         
-        dataSourceWorkoutLog.dateEnded = Date() as NSDate
-        
-        // Delete or save
-        if countPerformedExercises() == 0 {
+        guard countPerformedExercises() > 0 else {
             // present error
             let modal = CustomAlertView(type: .error, messageContent: "You have to actually work out to be able to log an exercise!")
             modal.show(animated: true)
-        } else {
-            // Save and pop viewController
-            updateLatestUseOfMuscle()
-            deleteUnperformedLifts()
-            
-            if let workoutDesign = dataSourceWorkoutLog.design {
-                workoutDesign.addPerformance(dataSourceWorkoutLog)
-            }
-            
-            dataSourceWorkoutLog.markAsLatestperformence()
-            owner.navigationController?.popViewController(animated: true)
-            let modal = CustomAlertView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
-            modal.show(animated: true)
+            return
         }
+        
+        dataSourceWorkoutLog.dateEnded = Date() as NSDate
+        
+        // Save and pop viewController
+        updateLatestUseOfMuscle()
+        deleteUnperformedLifts()
+        
+        if let workoutDesign = dataSourceWorkoutLog.design {
+            workoutDesign.addPerformance(dataSourceWorkoutLog)
+        }
+        
+        dataSourceWorkoutLog.getStyle().incrementPerformanceCount()
+        
+        dataSourceWorkoutLog.markAsLatestperformence()
+        owner.navigationController?.popViewController(animated: true)
+        let modal = CustomAlertView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
+        modal.show(animated: true)
     }
     
     // Swap method used when moving cells

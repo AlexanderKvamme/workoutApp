@@ -16,6 +16,7 @@ class WorkoutEditor: WorkoutController {
     private var currentWorkout: Workout!
     private var initialName: String!
     private var nameWasChanged = false
+    private var styleWasChanged = false
     
     private lazy var footer: ButtonFooter = {
         let footer = ButtonFooter(withColor: .darkest)

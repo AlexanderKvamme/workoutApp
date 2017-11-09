@@ -13,7 +13,12 @@ extension Workout {
     // MARK: Getters
     
     func getName() -> String {
-        return name ?? "NO NAME"
+        // Get name. If it has no name. Set default name and return that
+        guard let name = name else {
+            self.name = "DEFAULT NAME"
+            return self.name!
+        }
+        return name
     }
     
     func getExercises(includeRetired: Bool) -> [Exercise] {
@@ -44,15 +49,25 @@ extension Workout {
         self.name = newName
     }
     
+    func getWorkoutStyle() -> WorkoutStyle {
+        guard let workoutStyle = workoutStyle else {
+            preconditionFailure("All workouts must have a workoutstyle")
+        }
+        return workoutStyle
+    }
+    
     func setStyle(_ style: WorkoutStyle) {
+        // Decrement usedInCount of old
+        if let oldstyle = self.workoutStyle {
+            oldstyle.usedInWorkoutsCount -= 1
+            oldstyle.removeFromUsedInWorkouts(self)
+        }
+        // Increment usedInCount of new
+        style.usedInWorkoutsCount += 1
         self.workoutStyle = style
     }
     
     func setMuscles(_ muscles: [Muscle]) {
-        
-        // FIXME: - not working frmo exerciseEditor
-        print("tryna set muscles")
-
         for muscle in muscles {
             self.addToMusclesUsed(muscle)
         }

@@ -54,11 +54,6 @@ class ExerciseCellForHistory: ExerciseCellBaseClass, LiftCellManager {
         return nil
     }
     
-    func setDebugColors() {
-        self.collectionView.backgroundColor = .green
-        self.collectionView.alpha = 0.5
-    }
-    
     private func setupConstraints() {
         translatesAutoresizingMaskIntoConstraints = false
         box.translatesAutoresizingMaskIntoConstraints = false

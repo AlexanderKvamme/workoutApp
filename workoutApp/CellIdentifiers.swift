@@ -11,8 +11,4 @@ import Foundation
 struct CellID {
     static let unweighted = "unweigtedLiftcell"
     static let weighted = "weightedLiftCell"
-//    static let unweightedForWorkouts = "unweightedForWorkouts"
-//    static let weightedForWorkouts = "weightedForWorkouts"
-//    static let unweightedForHistory = "unweightedForHistory"
-//    static let weightedForHistory = "weightedForHistory"
 }
