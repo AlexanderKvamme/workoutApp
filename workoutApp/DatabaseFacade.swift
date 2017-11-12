@@ -84,7 +84,6 @@ final class DatabaseFacade {
         }
     }
     
-    
     // MARK: - Delete methods
     
     /// Allow for custom deletion behaviour based on type, while DatabaseFacade exposes this simple abstraction
@@ -105,7 +104,26 @@ final class DatabaseFacade {
         saveContext()
     }
     
+    /// Cleans out databases workouts that were never saved if there is any and,
+    static func clearUnfininishedWorkoutLogs() {
+    
+        // Fetch and delete unssaved WorkoutLogs
+        let fr = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
+        let predicate = NSPredicate(format: "dateEnded != nil")
+        fr.predicate = predicate
+        
+        do {
+            let results = try context.fetch(fr)
+            for r in results {
+                delete(r)
+            }
+        } catch let error as NSError {
+            print("Error in clean(): ", error.localizedDescription)
+        }
+    }
+    
     private static func retireExercise(_ exercise: Exercise) {
+        
         exercise.isRetired = true
         exercise.removeFromAnyWorkouts()
     }
@@ -125,15 +143,13 @@ final class DatabaseFacade {
     /// Removes workoutLog, its exerciseLogs
     private static func deleteWorkoutLog(_ workoutLogToDelete: WorkoutLog) {
         // mark the predecessing workoutLog as latestPerformence
+        
         if let latestPerformence = workoutLogToDelete.getDesign().latestPerformence, latestPerformence === workoutLogToDelete {
             setPreviousWorkoutLogAsLatestPerformence(forWorkout: workoutLogToDelete.getDesign())
         }
         
-        // Decrement count
-        workoutLogToDelete.getDesign().decrementLogCount()
-        
+        // Delete exercises
         let orderedExerciseLogs: NSMutableOrderedSet = workoutLogToDelete.mutableOrderedSetValue(forKey: "loggedExercises")
-        
         let exerciseLogsToDelete = orderedExerciseLogs.array
         
         for exerciseLog in exerciseLogsToDelete {
@@ -161,9 +177,6 @@ final class DatabaseFacade {
         guard let loggedWorkouts = workoutToDelete.loggedWorkouts as? Set<WorkoutLog> else {
             preconditionFailure("error unwrapping workoutslog in deleteWorkout")
         }
-        
-        workoutToDelete.getWorkoutStyle().decrementWorkoutDesignCount()
-        workoutToDelete.getWorkoutStyle().removeFromUsedInWorkouts(workoutToDelete)
         
         for workoutLog in loggedWorkouts {
             // NOTE: - This leaves any exercises associated with these workoutLogs still in existance in the persistentStore
@@ -281,9 +294,22 @@ final class DatabaseFacade {
         return newLog
     }
     
-    static func makeWorkoutLog() -> WorkoutLog {
+    private static func makeWorkoutLog() -> WorkoutLog {
         let logItem = createManagedObjectForEntity(.WorkoutLog) as! WorkoutLog
         return logItem
+    }
+    
+    static func makeWorkoutLog(ofDesign design: Workout) -> WorkoutLog {
+        let log = self.makeWorkoutLog()
+
+        log.design = design
+        let style = design.getWorkoutStyle()
+        
+        design.incrementPerformanceCount()
+        style.incrementPerformanceCount()
+
+        log.dateStarted = Date() as NSDate
+        return log
     }
     
     static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) {
@@ -363,7 +389,6 @@ final class DatabaseFacade {
         
         return allExercises
     }
-    
     
     // Fetch Workouts
     static func fetchAllWorkouts() -> [Workout] {
@@ -689,15 +714,13 @@ final class DatabaseFacade {
     
     // MARK: - Save methods
     static func saveContext() {
-        
+
         if persistentContainer.viewContext.hasChanges {
             do {
                 try persistentContainer.viewContext.save()
             } catch {
                 print("error saving to persistentContainers viewContext")
             }
-        } else {
-            print("no changes to save")
         }
     }
 }

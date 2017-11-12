@@ -62,16 +62,18 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     func deleteDataAt(_ indexPath: IndexPath) {
         let workoutToDelete = fetchedWorkouts[indexPath.row]
         fetchedWorkouts.remove(at: indexPath.row)
-        DatabaseFacade.delete(workoutToDelete)
+        workoutToDelete.makeRetired(true)
         lastUpdatedAt = Date()
     }
     
     func refresh() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
         let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!)
-        let predicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latestPerformence.dateEnded", ascending: false)]
-        fetchRequest.predicate = predicate
+        let stylePredicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
+        let retiredPredicate = NSPredicate(format: "isRetired == false")
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [stylePredicate, retiredPredicate])
+        
         lastUpdatedAt = Date()
         
         // Fetch from Core Data

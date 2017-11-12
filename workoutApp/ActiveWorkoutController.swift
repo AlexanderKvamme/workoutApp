@@ -8,9 +8,8 @@
 
 import UIKit
 
-/// This TableView is the actual workout.
-
-class ExerciseTableViewController: UITableViewController {
+/// This TableView is the actual workout when the user is working out
+class ActiveWorkoutController: UITableViewController {
     
     // MARK: - Properties
     
@@ -55,7 +54,7 @@ class ExerciseTableViewController: UITableViewController {
         tableView.dataSource = dataSource
         dataSource.owner = self
         
-        // delegate setup
+        // Delegate setup
         tableView.delegate = self
         tableView.register(ExerciseCellForWorkouts.self, forCellReuseIdentifier: "exerciseCell")
         
@@ -102,7 +101,7 @@ class ExerciseTableViewController: UITableViewController {
             tableView.headerView(forSection: 0)?.backgroundColor = .red
         }
         
-        // tableview setup
+        // tableview setupf
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         automaticallyAdjustsScrollViewInsets = false

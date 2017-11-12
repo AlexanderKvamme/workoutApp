@@ -57,8 +57,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         // Header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.topAnchor.constraint(equalTo: view.topAnchor,
-                                    constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
+        header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
         // Stack
         stack.translatesAutoresizingMaskIntoConstraints = false

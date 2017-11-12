@@ -92,7 +92,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         guard let workout = dataSource.getData() as? [Workout] else { return }
         
         let selectedWorkout = workout[indexPath.row]
-        let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
+        let detailedVC = ActiveWorkoutController(withWorkout: selectedWorkout) 
         navigationController?.pushViewController(detailedVC, animated: true)
     }
     

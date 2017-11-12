@@ -88,8 +88,8 @@ extension Workout {
             return
         }
         
-        oldStyle.decrementLogCount(by: performancesToSwap)
-        newStyle.incrementLogCount(by: performancesToSwap)
+        oldStyle.decrementPerformanceCount(by: performancesToSwap)
+        newStyle.incrementPerformanceCount(by: performancesToSwap)
         
         // Finally, change style
         self.workoutStyle = newStyle
@@ -118,7 +118,6 @@ extension Workout {
     }
     
     func addPerformance(_ workoutLog: WorkoutLog) {
-        incrementLogCount()
     
         if let end = workoutLog.dateEnded, let start = workoutLog.dateStarted {
         let elapsedTime = end.timeIntervalSince(start as Date)

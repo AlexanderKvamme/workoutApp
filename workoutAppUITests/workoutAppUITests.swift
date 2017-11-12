@@ -24,26 +24,38 @@ class workoutAppUITests: XCTestCase {
         super.tearDown()
     }
     
-    // MARK: - Tests
+    // MARK: - Test Methods
     
-    /// Entry point. Decide which points to run
-    func testFastlaneSnapshots() {
-//        fastlaneSeedTest()
-        snapshotOfWorkoutInUse()
-        snapshotExercisePicking()
-        snapshotOnlyExercisePicking()
+    func testSeedAbortedActiveWorkout() {
+        let app = XCUIApplication()
+        setupSnapshot(app)
+        app.launchArguments.append("--fastlaneSnapshot")
+        app.launch()
+        
+        app.tabBars.buttons["workout-tab"].tap()
+        
+        app.buttons["NORMAL"].firstMatch.tap()
+        app.cells["PULL DAY"].tap()
+        
+        let nextButton = app.buttons["customNextButton"].firstMatch
+        
+        // Tap plus button and start entering workouts for the first exercise
+        app.cells["PULL UP"].buttons["cell-plus-button"].forceTap()
+        
+        // Enter Lifts
+        app.buttons["8"].tap()
+        nextButton.tap()
+        app.buttons["8"].tap()
     }
     
-    // MARK: Methods
-    
-    func fastlaneSeedTest() {
+    func testFastlaneSeeding() {
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments.append("--fastlaneSnapshot")
         app.launch()
     }
     
-    func snapshotOnlyExercisePicking() {
+    func testExercisepickingSnapshots() {
         
         let app = XCUIApplication()
         setupSnapshot(app)
@@ -54,7 +66,7 @@ class workoutAppUITests: XCTestCase {
         
         // Screenshot of New workout being made
         app.buttons["plus-button"].tap()
-
+        
         // Snapshot of Muscle type picker
         app.buttons["muscle-picker-button"].tap()
         
@@ -63,7 +75,7 @@ class workoutAppUITests: XCTestCase {
         snapshot("Switching to back muscle")
     }
     
-    func snapshotOfWorkoutInUse() {
+    func testSnapshotsOfWorkoutInUse() {
         
         let app = XCUIApplication()
         setupSnapshot(app)
@@ -162,7 +174,7 @@ class workoutAppUITests: XCTestCase {
     }
 
     /// Snapshot of profile tab, Style picker, boxtable of normal workouts, New workout, with muscle pickers, style pickers, name input view, and exercisePicker
-    func snapshotExercisePicking() {
+    func testSnapshotsOfExercisePicking() {
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments.append("--fastlaneSnapshot")

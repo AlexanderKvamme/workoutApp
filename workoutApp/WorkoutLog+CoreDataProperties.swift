@@ -1,4 +1,4 @@
-//
+	//
 //  WorkoutLog+CoreDataProperties.swift
 //  
 //
@@ -24,6 +24,17 @@ extension WorkoutLog {
     @NSManaged public var loggedExercises: NSOrderedSet?
 
 }
+
+// MARK: - Custom Extensions
+
+extension WorkoutLog {
+    override public func prepareForDeletion() {
+        getDesign().decrementPerformanceCount()
+        getStyle().decrementPerformanceCount()
+    }
+}
+
+// MARK: - Default Extension
 
 // MARK: Generated accessors for isMostRecentUseOf
 extension WorkoutLog {

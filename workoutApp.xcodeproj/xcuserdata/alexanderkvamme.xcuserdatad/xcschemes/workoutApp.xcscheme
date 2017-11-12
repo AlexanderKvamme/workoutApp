@@ -38,6 +38,11 @@
                BlueprintName = "workoutAppUITests"
                ReferencedContainer = "container:workoutApp.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "workoutAppUITests/testSnapshotsOfWorkoutInUse()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
