@@ -25,3 +25,9 @@ protocol isBoxTableViewDataSource: class, UITableViewDataSource {
 protocol isWorkoutTableViewDataSource: isBoxTableViewDataSource {
     func getWorkout(at indexPath: IndexPath) -> Workout
 }
+
+extension isWorkoutTableViewDataSource {
+    func getDataCount() -> Int {
+        return getData()?.count ?? 0
+    }
+}

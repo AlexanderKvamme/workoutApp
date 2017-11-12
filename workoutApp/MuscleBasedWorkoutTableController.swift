@@ -45,6 +45,11 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         setupRefreshControl()
         resetRefreshControlAnimation()
         addLongPressRecognizer()
+        
+        if dataSource.getDataCount() == 0 {
+            let alert = CustomAlertView(type: .message, messageContent: "Go make a workout that contains \(self.muscle.getName())!")
+            alert.show(animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
