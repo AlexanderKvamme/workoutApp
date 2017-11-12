@@ -66,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If first launch, seed with essentials
         switch UserDefaults.isFirstLaunch() {
         case true:
-            // Seed Core data
+            // Seed Core data 
             let dataSeeder = DataSeeder(context: context)
             dataSeeder.seedCoreData()
             

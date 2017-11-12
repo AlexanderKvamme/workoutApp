@@ -8,7 +8,7 @@
 
 import UIKit
 
-///
+/// ViewController to manage the creation of new workouts
 class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // MARK: - Properties

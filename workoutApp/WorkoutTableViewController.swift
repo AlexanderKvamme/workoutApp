@@ -137,10 +137,11 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     // MARK: TableView delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Start a workout
         let wo = dataSource.getData() as? [Workout]
         if let wo = wo {
             let selectedWorkout = wo[indexPath.row]
-            let detailedVC = ExerciseTableViewController(withWorkout: selectedWorkout)
+            let detailedVC = ActiveWorkoutController(withWorkout: selectedWorkout)
             detailedVC.presentingBoxTable = self
             navigationController?.pushViewController(detailedVC, animated: true)
         }
@@ -155,6 +156,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
             let deleteAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
                 action.fulfill(with: .delete)
                 self.deleteCell(at: indexPath)
+                tableView.reloadData()
             }
             // customize the action appearance
             deleteAction.image = ximage

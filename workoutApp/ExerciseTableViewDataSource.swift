@@ -19,7 +19,7 @@ class ExerciseTableDataSource: NSObject {
     var exerciseLogsAsArray: [ExerciseLog]! // each entry represents one tableViewCell. So [0] will be the topmost cell
     var totalLiftsToDisplay: [[Lift]]! // Each tableViewCell has a "liftsToDisplay" variable to display, this layered array of lifts should store each one of them, and when one of them is changed, it should bubble up the change to this one, which should contain one [Lift] for each tableViewCell. For example if cell 0 is Pull Ups, cell 1 is Hammer Curls, and cell 2 is Dips, then this Dips one should be able to be updated from TotalLiftsToDisplay[2] = liftsToDisplay
     fileprivate var dataSourceWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
-    weak var owner: ExerciseTableViewController!
+    weak var owner: ActiveWorkoutController!
     
     // MARK: - Initializers
     
@@ -54,9 +54,6 @@ class ExerciseTableDataSource: NSObject {
         // Save and pop viewController
         updateLatestUseOfMuscle()
         deleteUnperformedLifts()
-        
-        dataSourceWorkoutLog.getDesign().incrementLogCount()
-        dataSourceWorkoutLog.getStyle().incrementLogCount()
         
         dataSourceWorkoutLog.markAsLatestperformence()
         owner.navigationController?.popViewController(animated: true)
@@ -95,17 +92,6 @@ class ExerciseTableDataSource: NSObject {
     
     func deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs() {
         // Deletes all unperformed lifts, exerciseLogs, and then entire WorkoutLog
-        if let orderedExerciseLogs = dataSourceWorkoutLog.loggedExercises {
-            let exerciseLogs = orderedExerciseLogs.array as! [ExerciseLog]
-            for exerciseLog in exerciseLogs {
-                if let lifts = exerciseLog.lifts as? Set<Lift> {
-                    for lift in lifts {
-                        DatabaseFacade.delete(lift)
-                    }
-                }
-                DatabaseFacade.delete(exerciseLog)
-            }
-        }
         DatabaseFacade.delete(dataSourceWorkoutLog)
     }
 }
@@ -148,17 +134,14 @@ private extension ExerciseTableDataSource {
     
     // Convenience init to allow initialization from a WorkoutLog (latest WorkoutLog)
     func setupUsingWorkoutLog(previousPerformance: WorkoutLog) {
+
+        let previousWorkoutLogDesign = previousPerformance.getDesign()
+        
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog and make it identical to the previous one
-        dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog()
+        dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog(ofDesign: previousWorkoutLogDesign)
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
-        
-        guard let previousWorkoutLogsDesign = previousPerformance.design else {
-            preconditionFailure("Must have design")
-        }
-        
-        dataSourceWorkoutLog.design = previousWorkoutLogsDesign
         
         addPerformedExercises(fromWorkoutLog: previousPerformance)
         addNotYetPerformedExercises(fromWorkoutLog: previousPerformance)
@@ -168,18 +151,17 @@ private extension ExerciseTableDataSource {
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog to later to later be updated
-        dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog()
-        dataSourceWorkoutLog.dateStarted = Date() as NSDate
-        dataSourceWorkoutLog.design = workout
+        dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
         
-        if let orderedSetExercises = workout.exercises {
-            let exercisesFromWorkout = orderedSetExercises.array as! [Exercise]
+        let orderedSetExercises = workout.getExercises(includeRetired: false)
+        
+        if orderedSetExercises.count > 0 {
             // If the workout has any exercises, use them to fetch the last time its exercises were performed (ExerciseLog of each of them). Then make copies of the ExerciseLogItems. These objects are then set to be the dataSource for the tableView
-            totalLiftsToDisplay = Array(repeating: [Lift](), count: exercisesFromWorkout.count)
+            totalLiftsToDisplay = Array(repeating: [Lift](), count: orderedSetExercises.count)
             
             var i = 0
             // For each exercise, make a copy of its exerciseLog so that it can be manipulated by user and saved later
-            for exercise in exercisesFromWorkout {
+            for exercise in orderedSetExercises {
                 // Make new ExerciseLog
                 let newExerciseLog = DatabaseFacade.makeExerciseLog()
                 newExerciseLog.exerciseDesign = exercise
@@ -247,6 +229,8 @@ private extension ExerciseTableDataSource {
         for log in previousExerciseLogs {
             if let design = log.exerciseDesign, exercisesInDesign.contains(design) {
                 exerciseLogsContainedBothInPreviousAndStillInDesign.append(log)
+            } else {
+                print("did Contain retired exercise")
             }
         }
         // Make new ExerciseLogs for the resulting exerciseLogs
@@ -348,3 +332,4 @@ extension ExerciseTableDataSource: UITableViewDataSource {
         return cell
     }
 }
+

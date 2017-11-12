@@ -17,6 +17,7 @@ extension Workout {
     }
 
     @NSManaged public var name: String?
+    @NSManaged private(set) var isRetired: Bool
     @NSManaged private(set) var performanceCount: Int16
     @NSManaged public var totalTimeSpent: Double
     @NSManaged public var exercises: NSOrderedSet?
@@ -25,28 +26,67 @@ extension Workout {
     @NSManaged public var musclesUsed: NSSet?
     @NSManaged public var workoutStyle: WorkoutStyle?
     
+}
+
+// MARK: - isRetired methods
+
+extension Workout {
+    /// Public entrypoint to manage the isRetired property
+    func makeRetired(_ bool: Bool) {
+        // Delegate to appropriate method
+        switch bool {
+        case true:
+            self.retire()
+        case false:
+            self.unretire()
+        }
+    }
     
+    private func retire() {
+        self.isRetired = true
+        self.getWorkoutStyle().decrementWorkoutDesignCount()
+    }
+    
+    private func unretire() {
+        self.isRetired = false
+        self.getWorkoutStyle().incrementWorkoutDesignCount()
+    }
+}
+
+// MARK: - Deletion
+
+extension Workout {
+
+    override public func prepareForDeletion() {
+        getWorkoutStyle().removeFromUsedInWorkouts(self)
+        getWorkoutStyle().decrementWorkoutDesignCount()
+    }
+}
+
+// MARK: - Incrementers
+
+extension Workout {
     // MARK: Increments Log Count
     
-    func incrementLogCount() {
+    func incrementPerformanceCount() {
         self.performanceCount += 1
     }
     
-    func incrementLogCount(by amount: Int) {
+    func incrementPerformanceCount(by amount: Int) {
         self.performanceCount += Int16(amount)
     }
     
     // MARK: Decrement Log Count
     
-    func decrementLogCount(by amount: Int) {
+    func decrementPerformanceCount(by amount: Int) {
         self.performanceCount -= Int16(amount)
     }
     
-    func decrementLogCount() {
+    func decrementPerformanceCount() {
         self.performanceCount -= 1
     }
-
 }
+
 
 // MARK: Generated accessors for exercises
 extension Workout {

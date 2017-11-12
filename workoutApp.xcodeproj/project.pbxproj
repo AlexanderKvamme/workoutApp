@@ -136,7 +136,7 @@
 		DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF117111F3F562000E677CB /* SuggestionBox.swift */; };
 		DDF117141F3FD1B700E677CB /* SuggestionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF117131F3FD1B700E677CB /* SuggestionController.swift */; };
 		DDF1F1EC1F07AC27001A6F0C /* LiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EB1F07AC27001A6F0C /* LiftCell.swift */; };
-		DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */; };
+		DDF1F1F01F07ADE0001A6F0C /* ActiveWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ActiveWorkoutController.swift */; };
 		DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */; };
 		DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF254061F35F75C0032ED75 /* Warningbox.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
@@ -289,7 +289,7 @@
 		DDF117111F3F562000E677CB /* SuggestionBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionBox.swift; sourceTree = "<group>"; };
 		DDF117131F3FD1B700E677CB /* SuggestionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionController.swift; sourceTree = "<group>"; };
 		DDF1F1EB1F07AC27001A6F0C /* LiftCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiftCell.swift; sourceTree = "<group>"; };
-		DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewController.swift; sourceTree = "<group>"; };
+		DDF1F1EF1F07ADE0001A6F0C /* ActiveWorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutController.swift; sourceTree = "<group>"; };
 		DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDF254061F35F75C0032ED75 /* Warningbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Warningbox.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
@@ -780,22 +780,22 @@
 			isa = PBXGroup;
 			children = (
 				DD0EB24C1F4702F200CDA1CF /* Cells */,
-				DDF1F1F31F07E14F001A6F0C /* For workouts */,
+				DDF1F1F31F07E14F001A6F0C /* For workouts (Active workout) */,
 				DD34C5781F4657850050BDB0 /* History */,
 				DDF1F1F41F07E162001A6F0C /* CollectionView Cells / Lifts */,
 			);
 			name = "Exercise Tables";
 			sourceTree = "<group>";
 		};
-		DDF1F1F31F07E14F001A6F0C /* For workouts */ = {
+		DDF1F1F31F07E14F001A6F0C /* For workouts (Active workout) */ = {
 			isa = PBXGroup;
 			children = (
-				DDF1F1EF1F07ADE0001A6F0C /* ExerciseTableViewController.swift */,
+				DDF1F1EF1F07ADE0001A6F0C /* ActiveWorkoutController.swift */,
 				DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */,
 				DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */,
 				DD2A9E731F0EED600074B46F /* Footer.swift */,
 			);
-			name = "For workouts";
+			name = "For workouts (Active workout)";
 			sourceTree = "<group>";
 		};
 		DDF1F1F41F07E162001A6F0C /* CollectionView Cells / Lifts */ = {
@@ -985,7 +985,7 @@
 				DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */,
 				DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */,
 				DD468F851F2E875000A945A9 /* WorkoutTableViewController.swift in Sources */,
-				DDF1F1F01F07ADE0001A6F0C /* ExerciseTableViewController.swift in Sources */,
+				DDF1F1F01F07ADE0001A6F0C /* ActiveWorkoutController.swift in Sources */,
 				DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */,
 				DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */,
 				DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */,

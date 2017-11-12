@@ -42,15 +42,16 @@ final class DataSeeder {
         DatabaseFacade.saveContext()
     }
     
+    /// Clears out persistent store to make room for snapshottable exercises only
     public func seedCoreDataForFastlaneSnapshots() {
         
         // Clear core data
-        DataSeeder.clearWorkoutLogs()
-        DataSeeder.clearExercises()
-        DataSeeder.clearWorkouts()
-        DataSeeder.clearGoals()
+        DataSeeder.clear(entity: Entity.WorkoutLog)
+        DataSeeder.clear(entity: Entity.Exercise)
+        DataSeeder.clear(entity: Entity.Workout)
+        DataSeeder.clear(entity: Entity.Goal)
         
-        print("pastCleaning")
+        DataSeeder.resetCounts() //
         
         // Generate exercises
         DatabaseFacade.makeExercise(withName: "SEED FLEXERS", exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.biceps], measurementStyle: MeasurementStyles.sets)
@@ -183,39 +184,66 @@ final class DataSeeder {
     
     // MARK: - Clear methods
     
-    static func clearGoals() {
-        guard let currentGoals = DatabaseFacade.fetchGoals() else { return }
+//    static func clearWorkouts() {
+//        for workout in DatabaseFacade.fetchAllWorkouts() {
+//            let style = workout.getWorkoutStyle()
+//            DatabaseFacade.delete(workout)
+//        }
+//        DatabaseFacade.saveContext()
+//    }
+//
+//    static func clearWorkoutLogs() {
+//        for workoutLog in DatabaseFacade.fetchAllWorkoutLogs() {
+//            DatabaseFacade.delete(workoutLog)
+//        }
+//        DatabaseFacade.saveContext()
+//    }
+    
+//    /// Efficiently remove all traces of all exercises. Leaves
+//    static func clearExercises() {
+//
+//        // create the delete request for the specified entity
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Exercise.rawValue)
+//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+//
+//        // get reference to the persistent container
+//        let persistentContainer = DatabaseFacade.persistentContainer
+//
+//        // perform the delete
+//        do {
+//            try persistentContainer.viewContext.execute(deleteRequest)
+//        } catch let error as NSError {
+//            print(error)
+//        }
+//
+//        DatabaseFacade.saveContext()
+//    }
+    
+    /// Completely removes all instances of a type from The persistence store
+    static func clear(entity: Entity) {
         
-        for goal in currentGoals {
-            DatabaseFacade.delete(goal)
+        // Create the delete request for the specified entity
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        // Get reference to the persistent container
+        let persistentContainer = DatabaseFacade.persistentContainer
+        
+        // Perform the delete
+        do {
+            try persistentContainer.viewContext.execute(deleteRequest)
+        } catch let error as NSError {
+            print(error)
         }
+        
         DatabaseFacade.saveContext()
     }
     
-    static func clearWorkouts() {
-        for workout in DatabaseFacade.fetchAllWorkouts() {
-            print("deleting workout: ", workout.getName())
-            let style = workout.getWorkoutStyle()
-            print("its style PRE DEL (\(style.getName()) had count: \(style.getWorkoutDesignCount())")
-            DatabaseFacade.delete(workout)
-            print("its style POST DEL(\(style.getName()) had count: \(style.getWorkoutDesignCount())")
+    /// Method resets static counts of design and performances, and is needed batchDelete does not run NSManagedObject.prepareForDelete() on each individual object
+    static func resetCounts() {
+        for workoutStyle in DatabaseFacade.fetchWorkoutStyles() {
+            workoutStyle.resetCount()
         }
-        DatabaseFacade.saveContext()
-    }
-    
-    static func clearWorkoutLogs() {
-        for workoutLog in DatabaseFacade.fetchAllWorkoutLogs() {
-            workoutLog.getDesign().decrementLogCount()
-            DatabaseFacade.delete(workoutLog)
-        }
-        DatabaseFacade.saveContext()
-    }
-    
-    static func clearExercises() {
-        for exercise in DatabaseFacade.fetchAllExercises() {
-            DatabaseFacade.delete(exercise)
-        }
-        DatabaseFacade.saveContext()
     }
     
     // MARK: - Print methods
