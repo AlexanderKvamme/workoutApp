@@ -67,25 +67,12 @@ class ExerciseHistoryTableViewController: UITableViewController {
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.never
-        }
     }
     
     private func setupTable() {
-        // adjust to fit the navbar
-        if let navHeight = navigationController?.navigationBar.frame.height {
-            let statusHeight = UIApplication.shared.statusBarFrame.height
-            tableView.contentInset = UIEdgeInsets(top: navHeight + statusHeight, left: 0, bottom: 0, right: 0)
-            tableView.headerView(forSection: 0)?.backgroundColor = .red
-            tableView.tableHeaderView?.backgroundColor = .green
-        }
-        
-        // tableview setup
         tableView.estimatedRowHeight = 55
         tableView.rowHeight = UITableViewAutomaticDimension
-        automaticallyAdjustsScrollViewInsets = false
+        automaticallyAdjustsScrollViewInsets = true
         tableView.separatorStyle = .none
         tableView.backgroundColor = .light
         

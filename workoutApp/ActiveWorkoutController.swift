@@ -94,25 +94,12 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     private func setupTable() {
-        // adjust to fit the navbar
-        if let navHeight = navigationController?.navigationBar.frame.height {
-            let statusHeight = UIApplication.shared.statusBarFrame.height
-            tableView.contentInset = UIEdgeInsets(top: navHeight + statusHeight, left: 0, bottom: 0, right: 0)
-            tableView.headerView(forSection: 0)?.backgroundColor = .red
-        }
-        
-        // tableview setupf
+        // tableview setup
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
-        automaticallyAdjustsScrollViewInsets = false
+        automaticallyAdjustsScrollViewInsets = true
         tableView.separatorStyle = .none
         tableView.backgroundColor = .light
-        
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.never
-        } else {
-            // Fallback on earlier versions
-        }
         
         setupTableFooter()
         tableView.reloadData()
