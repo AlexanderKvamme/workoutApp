@@ -59,6 +59,8 @@ class ExerciseTableDataSource: NSObject {
         owner.navigationController?.popViewController(animated: true)
         let modal = CustomAlertView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
         modal.show(animated: true)
+        print(dataSourceWorkoutLog)
+        DatabaseFacade.saveContext()
     }
     
     // Swap method used when moving cells

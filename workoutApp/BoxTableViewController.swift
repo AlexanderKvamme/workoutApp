@@ -134,7 +134,7 @@ class BoxTableViewController: UITableViewController {
         guard let customTabBarController = self.tabBarController as? CustomTabBarController else {
             return
         }
-        customTabBarController.showSelectionindicator()
+        customTabBarController.showSelectionIndicator()
     }
     
     // MARK: SwipeCellKit

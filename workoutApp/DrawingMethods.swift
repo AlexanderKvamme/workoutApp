@@ -29,9 +29,6 @@ func drawDiagonalLineThrough(_ someView: UIView) -> UIView {
     shapeLayer.lineWidth = 3.0
     
     // wrap line in view
-    print("frame: ", shapeLayer.frame)
-    print("someView.frame: ", someView.frame)
-    
     let lineWrapper = UIView()
     lineWrapper.frame.size = someView.frame.size
     lineWrapper.backgroundColor = .red

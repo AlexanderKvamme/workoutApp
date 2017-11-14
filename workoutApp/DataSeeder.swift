@@ -184,41 +184,6 @@ final class DataSeeder {
     
     // MARK: - Clear methods
     
-//    static func clearWorkouts() {
-//        for workout in DatabaseFacade.fetchAllWorkouts() {
-//            let style = workout.getWorkoutStyle()
-//            DatabaseFacade.delete(workout)
-//        }
-//        DatabaseFacade.saveContext()
-//    }
-//
-//    static func clearWorkoutLogs() {
-//        for workoutLog in DatabaseFacade.fetchAllWorkoutLogs() {
-//            DatabaseFacade.delete(workoutLog)
-//        }
-//        DatabaseFacade.saveContext()
-//    }
-    
-//    /// Efficiently remove all traces of all exercises. Leaves
-//    static func clearExercises() {
-//
-//        // create the delete request for the specified entity
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Exercise.rawValue)
-//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-//
-//        // get reference to the persistent container
-//        let persistentContainer = DatabaseFacade.persistentContainer
-//
-//        // perform the delete
-//        do {
-//            try persistentContainer.viewContext.execute(deleteRequest)
-//        } catch let error as NSError {
-//            print(error)
-//        }
-//
-//        DatabaseFacade.saveContext()
-//    }
-    
     /// Completely removes all instances of a type from The persistence store
     static func clear(entity: Entity) {
         

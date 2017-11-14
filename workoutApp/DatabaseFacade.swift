@@ -104,12 +104,12 @@ final class DatabaseFacade {
         saveContext()
     }
     
-    /// Cleans out databases workouts that were never saved if there is any and,
+    /// Cleans out any unfinished(no endDate) workoutLogs.
     static func clearUnfininishedWorkoutLogs() {
     
         // Fetch and delete unssaved WorkoutLogs
         let fr = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
-        let predicate = NSPredicate(format: "dateEnded != nil")
+        let predicate = NSPredicate(format: "dateEnded == nil")
         fr.predicate = predicate
         
         do {
@@ -716,11 +716,14 @@ final class DatabaseFacade {
     static func saveContext() {
 
         if persistentContainer.viewContext.hasChanges {
+            print("had changes")
             do {
                 try persistentContainer.viewContext.save()
             } catch {
                 print("error saving to persistentContainers viewContext")
             }
+        } else {
+            print("had no changes to save")
         }
     }
 }
