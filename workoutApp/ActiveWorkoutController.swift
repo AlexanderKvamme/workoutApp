@@ -18,11 +18,11 @@ class ActiveWorkoutController: UITableViewController {
     private var dataSource: ExerciseTableDataSource!
     private var myWorkoutLog: WorkoutLog! // used in the end
     private var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
-    
     // cells reorder
     private var snapShot: UIView?
     private var location: CGPoint!
     private var sourceIndexPath: IndexPath!
+    
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
@@ -248,10 +248,7 @@ class ActiveWorkoutController: UITableViewController {
             // Adjust tableViews insets
             let keyboardHeight = keyboardRect.height
             let insetsFromNavbar = tableView.contentInset.top
-            let insetsForTableView = UIEdgeInsets(top: insetsFromNavbar,
-                                                  left: 0,
-                                                  bottom: keyboardHeight,
-                                                  right: 0)
+            let insetsForTableView = UIEdgeInsets(top: insetsFromNavbar,left: 0,bottom: keyboardHeight, right: 0)
             
             tableView.contentInset = insetsForTableView
             tableView.scrollIndicatorInsets = insetsForTableView
@@ -270,8 +267,7 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     @objc private func keyboardWillHideHandler(notification: NSNotification) {
-        let newInset = UIEdgeInsets(top: tableView.contentInset.top,
-                                    left: 0, bottom: 0, right: 0)
+        let newInset = UIEdgeInsets(top: tableView.contentInset.top, left: 0, bottom: 0, right: 0)
         tableView.contentInset = newInset
     }
 }

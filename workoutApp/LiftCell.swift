@@ -14,9 +14,7 @@ class LiftCell: UICollectionViewCell {
     
     var overlayingButton: UIButton!
     var repsField: UITextField!
-    var keyboard: Keyboard!
     var isPerformed = false
-    
     var initialRepValue: String {
         // Fetches last accepted Repvalue
         guard let indexPath = superTableCell.collectionView.indexPath(for: self) else { return "-2" }
@@ -61,14 +59,12 @@ class LiftCell: UICollectionViewCell {
     
     @objc func showKeyboardOnRepsField() {
         // Make keyboard
-        let screenWidth = Constant.UI.width
-        let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-        keyboard.setKeyboardType(style: .reps)
-        keyboard.delegate = self
+        globalKeyboard.setKeyboardType(style: .reps)
+        globalKeyboard.delegate = self
         
         // Present keyboard
         repsField.delegate = superTableCell as? ExerciseCellForWorkouts
-        repsField.inputView = keyboard
+        repsField.inputView = globalKeyboard
         repsField.becomeFirstResponder()
     }
     
@@ -172,3 +168,4 @@ extension LiftCell: KeyboardDelegate {
         }
     }
 }
+

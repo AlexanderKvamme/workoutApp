@@ -22,7 +22,6 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     
     // MARK: - Properties
     
-    var keyboard: Keyboard!
     var textField: UITextField!
     var customTextfieldContainer: InputView!
     private let screenWidth = UIScreen.main.bounds.width
@@ -55,15 +54,14 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
             textField.delegate = self
         default:
             // Custom keyboard for inputting time and weight
-            let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-            keyboard.setKeyboardType(style: inputStyle)
-            keyboard.delegate = self
+            globalKeyboard.setKeyboardType(style: inputStyle)
+            globalKeyboard.delegate = self
             
             customTextfieldContainer = InputView(inputStyle: inputStyle)
             customTextfieldContainer.frame = CGRect(x: 0, y: 0, width: screenWidth, height: Constant.UI.height - screenWidth) // set to match keyboard which is 1:1 with length screenWidth
             view.addSubview(customTextfieldContainer)
             textField = customTextfieldContainer.textField
-            textField.inputView = keyboard
+            textField.inputView = globalKeyboard
         }
     }
     

@@ -79,7 +79,6 @@ class WeightedLiftCell: LiftCell {
     }
     
     private func setupWeightField() {
-        
         weightField = UITextField(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.width))
         weightField.text = "-1"
         weightField.clearsOnBeginEditing = true
@@ -117,11 +116,9 @@ class WeightedLiftCell: LiftCell {
     
     @objc func showKeyboardOnWeightField() {
         // Make keyboard
-        let screenWidth = Constant.UI.width
-        let keyboard = Keyboard(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth))
-        keyboard.setKeyboardType(style: .weight)
-        keyboard.delegate = self
-        weightField.inputView = keyboard
+        globalKeyboard.setKeyboardType(style: .weight)
+        globalKeyboard.delegate = self
+        weightField.inputView = globalKeyboard
         weightField.becomeFirstResponder()
     }
     
@@ -205,6 +202,11 @@ class WeightedLiftCell: LiftCell {
             saveWeightToDataSource(newWeight)
             weightField.text = String(newWeight).replacingOccurrences(of: ".0", with: "")
             makeWeightTextBold()
+
+            globalKeyboard.setKeyboardType(style: .weight)
+            globalKeyboard.delegate = self
+            weightField.delegate = superTableCell as? ExerciseCellForWorkouts
+            weightField.inputView = globalKeyboard
         } else {
             weightField.text = initialWeightAsString
         }
@@ -247,3 +249,4 @@ extension WeightedLiftCell: NextableLift {
         (superTableCell as? ExerciseCellForWorkouts)?.nextOrNewLiftCell()
     }
 }
+

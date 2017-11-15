@@ -163,6 +163,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     }
     
     func handleTap(on ip: IndexPath) {
+        print("tapped on ", ip)
         
         guard let cell = self.collectionView(self.collectionView, cellForItemAt: ip) as? LiftCell else {
             fatalError()
@@ -172,9 +173,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         case true:
             cell.focus()
         case false:
-            print("was not tappable. Selecting another cell")
             if let firstUnperformedCell = getFirstFreeCell() {
-                print("got first free cell. now FORCE gonna focus it")
                 firstUnperformedCell.forceFocus()
             } else {
                 insertNewCell()
@@ -185,7 +184,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     // MARK: Delegate Methods
     
     func liftCellTapHandler(at indexPath: IndexPath) {
-        print("received tap in EC, from LC: ", indexPath)
+        print("received tap in ExerciseCell, from LiftCell: ", indexPath)
     }
     
     // MARK: Methods
@@ -241,7 +240,6 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     }
     
     private func insertNewCell() {
-        
         // make new lift value to be displayed
         let newLift = DatabaseFacade.makeLift()
         newLift.owner = self.currentCellExerciseLog
@@ -262,7 +260,6 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         let newIndexPath = IndexPath(item: itemCount, section: 0)
         collectionView.insertItems(at: [newIndexPath])
         collectionView.scrollToItem(at: newIndexPath, at: .right, animated: false)
-        //self.collectionView.selectItem(at: newIndexPath, animated: false, scrollPosition: .centeredHorizontally)
         
         if let cell = self.collectionView.cellForItem(at: newIndexPath) as? LiftCell {
             cell.focus()
@@ -351,6 +348,7 @@ extension ExerciseCellForWorkouts: UITextFieldDelegate {
     // MARK: - TextField Delegate
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        
         guard let activeLiftCell = activeLiftCell else {
             preconditionFailure("Field should be assosciated with a cell")
         }
@@ -403,7 +401,6 @@ extension ExerciseCellForWorkouts: UICollectionViewDataSource {
         
         if self.exercise.isWeighted() {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.weighted, for: indexPath) as! WeightedLiftCell
-            
         } else {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.unweighted, for: indexPath) as! UnweightedLiftCell
         }
@@ -422,12 +419,10 @@ extension ExerciseCellForWorkouts: UICollectionViewDataSource {
                 c.makeWeightTextBold()
             }
         }
-        
         // Make bold if it is performed
         if liftIsPerformed {
             cell.makeRepTextBold()
         }
-        
         return cell
     }
 }

@@ -716,14 +716,11 @@ final class DatabaseFacade {
     static func saveContext() {
 
         if persistentContainer.viewContext.hasChanges {
-            print("had changes")
             do {
                 try persistentContainer.viewContext.save()
             } catch {
                 print("error saving to persistentContainers viewContext")
             }
-        } else {
-            print("had no changes to save")
         }
     }
 }
