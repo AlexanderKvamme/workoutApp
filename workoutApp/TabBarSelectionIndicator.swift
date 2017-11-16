@@ -16,49 +16,26 @@ class TabBarSelectionIndicator: UIView {
     
     let tabBarCount: Int
     let indicatorHeight: CGFloat = 10
-    let indicatorHorizontalSpacing: CGFloat = 30
-    lazy var indicatorWidth: CGFloat = Constant.UI.width/CGFloat(self.tabBarCount) - indicatorHorizontalSpacing
+    let indicatorHorizontalShrinkage: CGFloat = 30
+    lazy var indicatorWidth: CGFloat = Constant.UI.width/CGFloat(self.tabBarCount) - indicatorHorizontalShrinkage
+    lazy var itemLength = Constant.UI.width/CGFloat(tabBarCount)
     
     // MARK: - Initializers
     
-    init(count: Int) {
-        self.tabBarCount = count
+    init(tabBarItemcount: Int) {
+        self.tabBarCount = tabBarItemcount
         super.init(frame: CGRect.zero)
-        
         self.backgroundColor = UIColor.darkest
-        setup(selectableItemsCount: 3)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods
+    // MARK: - Overrides
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: indicatorWidth, height: indicatorHeight)
-    }
-    
-    func setup(selectableItemsCount itemCount: Int) {
-        let indicatorHeight: CGFloat = 10
-        let indicatorWidth: CGFloat = Constant.UI.width/CGFloat(itemCount) - indicatorHorizontalSpacing
-        
-        self.frame.size = CGSize(width: indicatorWidth, height: indicatorHeight)
-  
-        self.backgroundColor = UIColor.darkest
-    }
-    
-    func moveToItem(_ i: Int, ofItemCount items: Int) {
-        
-        let itemLength = Constant.UI.width/CGFloat(items)
-        
-        UIView.animate(withDuration: 0.2) {
-            self.frame.origin.x = itemLength*CGFloat(i) + self.indicatorHorizontalSpacing/2
-        }
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            self.frame.origin.x = itemLength*CGFloat(i) + self.indicatorHorizontalSpacing/2
-        })
     }
 }
 

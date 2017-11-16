@@ -43,6 +43,7 @@ class ActiveWorkoutController: UITableViewController {
         addObservers()
         setupNavigationBar()
         enableSwipeBackGesture(false)
+        
         self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
     }
     

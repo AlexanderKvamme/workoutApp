@@ -15,6 +15,28 @@ class CustomTabBarController: UITabBarController {
     // MARK: - Properties
     
     var selectionIndicator: TabBarSelectionIndicator? // For iOS 11
+    lazy var tabBarHeight = tabBar.frame.height
+    lazy var tabBarItemLength = Constant.UI.width/CGFloat(3)
+    
+    lazy var xConstraint = { () -> NSLayoutConstraint in
+        guard let selectionIndicator = selectionIndicator else {
+            fatalError()
+        }
+        
+        return selectionIndicator.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0)
+    }()
+    
+    lazy var yConstraint = { () -> NSLayoutConstraint in
+        guard let selectionIndicator = selectionIndicator else {
+            fatalError()
+        }
+        
+        if #available(iOS 11, *) {
+            return selectionIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -tabBarHeight)
+        } else {
+            return selectionIndicator.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -tabBarHeight)
+        }
+    }()
     
     // MARK: - Initializer
     
@@ -73,37 +95,47 @@ class CustomTabBarController: UITabBarController {
         tabBar.isTranslucent = false
     }
     
-    // MARK: - Overrides
-    
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        selectionIndicator?.moveToItem(selectedIndex, ofItemCount: viewControllers!.count)
-    }
-    
     // MARK: - Methods
     
     private func setupSelectionIndicatorIfiOS11() {
-        if #available(iOS 11, *) {
-            selectionIndicator = TabBarSelectionIndicator(count: 3)
-            guard let selectionIndicator = selectionIndicator else { return }
-            view.addSubview(selectionIndicator)
-            
-            selectionIndicator.translatesAutoresizingMaskIntoConstraints = false
-            
-            // Constraint to the tabBar top
-            let tabBarHeight = tabBar.frame.height
-            NSLayoutConstraint.activate([
-                selectionIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -tabBarHeight)
-                ])
-        }
+        guard #available(iOS 11, *) else { return }
+        
+        selectionIndicator = TabBarSelectionIndicator(tabBarItemcount: 3)
+        guard let selectionIndicator = selectionIndicator else { return }
+        
+        view.addSubview(selectionIndicator)
+        
+        selectionIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Constraint to the tabBar top
+        NSLayoutConstraint.activate([
+            xConstraint,
+            yConstraint,
+            ])
     }
     
     // MARK: TabBar Delegate methods
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        selectionIndicator?.moveToItem(item.tag, ofItemCount: (tabBar.items?.count)!)
+        moveSelectionIndicator(toItem: item.tag)
     }
+    
+    // MARK: Private Methods
+    
+    private func moveSelectionIndicator(toItem i: Int) {
+        self.xConstraint.constant = getXPosition(ofItem: i)
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    private func getXPosition(ofItem i: Int) -> CGFloat {
+        guard let selectionIndicator = selectionIndicator else { fatalError() }
+        return tabBarItemLength*CGFloat(i) + selectionIndicator.indicatorHorizontalShrinkage/2
+    }
+    
+    // MARK: API
     
     public func hideSelectionIndicator(shouldAnimate: Bool) {
         if shouldAnimate {
@@ -118,7 +150,7 @@ class CustomTabBarController: UITabBarController {
     public func showSelectionIndicator() {
         UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
             self.selectionIndicator?.alpha = 1
-        }, completion: nil)
+        })
     }
 }
 
