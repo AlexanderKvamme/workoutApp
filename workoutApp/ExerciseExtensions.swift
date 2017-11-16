@@ -54,7 +54,7 @@ extension Sequence where Iterator.Element == Exercise {
     
     func sortedByName() -> [Exercise] {
         return self.sorted { (a, b) -> Bool in
-            guard let ac = a.name?.characters.first, let bc = b.name?.characters.first else { return false }
+            guard let ac = a.name?.first, let bc = b.name?.first else { return false }
             return ac < bc
         }
     }

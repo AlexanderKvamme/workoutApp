@@ -204,7 +204,6 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     
     func getFirstFreeCell() -> LiftCell? {
         // use getNextCell until it has no other nextCell, return this last cell
-        
         guard let firstCell = getFirstCell() else {
             return nil
         }

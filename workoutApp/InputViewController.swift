@@ -107,7 +107,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
         
-        if text.characters.count > 0 {
+        if text.count > 0 {
             sendStringBack(text)
         }
         

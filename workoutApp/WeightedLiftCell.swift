@@ -81,12 +81,11 @@ class WeightedLiftCell: LiftCell {
     private func setupWeightField() {
         weightField = UITextField(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.width))
         weightField.text = "-1"
-        weightField.clearsOnBeginEditing = true
         weightField.textAlignment = .center
         weightField.font = UIFont.custom(style: .medium, ofSize: .medium)
-        weightField.textColor = UIColor.light
-        weightField.backgroundColor = .clear
+        weightField.textColor = .light
         weightField.alpha = Constant.alpha.faded
+        weightField.clearsOnBeginEditing = true
         weightField.sizeToFit()
 
         addSubview(weightField)
@@ -125,13 +124,11 @@ class WeightedLiftCell: LiftCell {
     // MARK: Helper methods
     
     override func setPlaceholderVisuals(_ textField: UITextField) {
-        
         switch textField {
         case repsField:
             super.setPlaceholderVisuals(textField)
         case weightField:
             setPlaceholderVisualsOnWeightField()
-            makeWeightTextBold()
         default:
             return
         }
@@ -170,21 +167,20 @@ class WeightedLiftCell: LiftCell {
  
     private func validateRepsField() {
         // Has no text? - Return to initial value
-        guard let newText = repsField.text, newText != "" else {
-            weightField.isUserInteractionEnabled = true
+        guard let newText = repsField.text else {
             repsField.text = initialRepValue
-            isPerformed = true
-            saveRepsToDataSource(Int16(initialWeight))
-            makeRepTextBold()
-            makeWeightTextBold()
+            isPerformed = false
             endEditing(true)
             return
         }
         // Has invalid number? - Return to initial value
         guard let newRepValue = Int16(newText) else {
             repsField.text = initialRepValue
+            weightField.text = String(initialWeight)
             makeRepTextNormal()
-            makeWeightTextBold()
+            makeWeightTextNormal()
+            isPerformed = false
+            endEditing(true)
             return
         }
         // Has new text and is valid number: Save new Value
@@ -198,6 +194,11 @@ class WeightedLiftCell: LiftCell {
     
     private func validateWeightField() {
         // Save if convertible to Double
+        guard isPerformed else {
+            makeWeightTextNormal()
+            return
+        }
+        
         if let text = weightField.text, let newWeight = Double(text) {
             saveWeightToDataSource(newWeight)
             weightField.text = String(newWeight).replacingOccurrences(of: ".0", with: "")
@@ -217,6 +218,13 @@ class WeightedLiftCell: LiftCell {
         weightField.font = UIFont.custom(style: .bold, ofSize: .medium)
         weightField.textColor = .light
         weightField.alpha = 1
+    }
+    
+    private func makeWeightTextNormal() {
+        weightField.font = UIFont.custom(style: .medium, ofSize: .medium)
+        weightField.textColor = .light
+        weightField.alpha = 0.5
+        weightField.text = initialWeightAsString
     }
 }
 

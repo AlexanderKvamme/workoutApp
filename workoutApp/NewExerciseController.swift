@@ -160,7 +160,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     @objc private func approveTapHandler() {
         // Make exercise and save to core data
-        guard let name = header.bottomLabel.text, name.characters.count > 0 else {
+        guard let name = header.bottomLabel.text, name.count > 0 else {
             let modal = CustomAlertView(type: .message, messageContent: "Pick a longer name!")
             modal.show(animated: true)
             return

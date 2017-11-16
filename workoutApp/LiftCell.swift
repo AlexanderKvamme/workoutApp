@@ -88,10 +88,9 @@ class LiftCell: UICollectionViewCell {
     
     private func validateRepsField() {
         // Has no text? - Return to initial value
-        guard let newText = repsField.text, newText != "" else {
+        guard let newText = repsField.text else {
             repsField.text = initialRepValue
-            isPerformed = true
-            makeRepTextBold()
+            isPerformed = false
             endEditing(true)
             return
         }
@@ -99,6 +98,7 @@ class LiftCell: UICollectionViewCell {
         guard let newRepValue = Int16(newText) else {
             repsField.text = initialRepValue
             makeRepTextNormal()
+            isPerformed = false
             endEditing(true)
             return
         }

@@ -136,7 +136,7 @@ class CustomAlertView: UIView, isModal {
         modalView.addSubview(contentLabel)
         
         // Add line spacing if theres any text
-        if let text = contentLabel.text, text.characters.count > 0 {
+        if let text = contentLabel.text, text.count > 0 {
             let attributedString = NSMutableAttributedString(string: contentLabel.text!)
             attributedString.addAttribute(NSAttributedStringKey.kern, value: CGFloat(0.7), range: NSRange(location: 0, length: attributedString.length))
             contentLabel.attributedText = attributedString
