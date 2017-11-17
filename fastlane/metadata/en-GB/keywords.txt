@@ -1,0 +1,1 @@
+Workout,Workouts,Exercise,Exercises,Logger,Log,Tracker,Track,Lift,Lifts,Fast,Quick,Calisthenics,Free

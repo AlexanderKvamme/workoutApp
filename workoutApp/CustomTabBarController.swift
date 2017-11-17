@@ -98,6 +98,7 @@ class CustomTabBarController: UITabBarController {
     // MARK: - Methods
     
     private func setupSelectionIndicatorIfiOS11() {
+        // Indicator only avaiable to ios 11
         guard #available(iOS 11, *) else { return }
         
         selectionIndicator = TabBarSelectionIndicator(tabBarItemcount: 3)

@@ -72,7 +72,7 @@ class workoutAppUITests: XCTestCase {
         
         app.cells["OTHER-muscle-button"].tap()
         app.cells["BACK-muscle-button"].tap()
-        snapshot("Switching to back muscle")
+        // snapshot("9-Switching to back muscle")
     }
     
     func testSnapshotsOfWorkoutInUse() {
@@ -200,13 +200,13 @@ class workoutAppUITests: XCTestCase {
 
         // Screenshot of New workout being made
         app.buttons["plus-button"].tap()
-        snapshot("3-new-workout")
+        // snapshot("3-new-workout")
 
         // Snapshot of inputting new Name
         app.buttons["workout-name-button"].tap()
         let textField = app.textFields["textfield"]
         textField.typeText("MUSCLE FLEXERS")
-        snapshot("4-name-of-new-workout")
+        // snapshot("4-name-of-new-workout")
         textField.typeText("\r")
 
         // Snapshot of Exercise type picker
@@ -223,18 +223,18 @@ class workoutAppUITests: XCTestCase {
         app.cells["OTHER-muscle-button"].firstMatch.tap()
         app.cells["BACK-muscle-button"].firstMatch.tap()
 
-        snapshot("6-muscle-picker")
+        //snapshot("6-muscle-picker")
         
         app.buttons["approve-button"].tap()
 
         // Snapshot of adding an exercise
         app.buttons["exercise-picker-button"].tap()
         // Snap ExercisePicker
-        snapshot("7-ExercisePicker")
+        // snapshot("6-ExercisePicker")
 
         // Make new Exercise
         app.buttons["plus-button"].tap()
-        snapshot("6-new-exercise")
+        snapshot("7-new-exercise")
         app.buttons["approve-button"].tap()
 
         // Make second exercise

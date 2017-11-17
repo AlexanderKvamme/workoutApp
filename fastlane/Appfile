@@ -1,4 +1,4 @@
-app_identifier "doktoren@gmail.com" # The bundle identifier of your app
+app_identifier "HomeOfficesInternational1.workoutApp1" # The bundle identifier of your app
 apple_id "doktoren@gmail.com" # Your Apple email address
 
 team_id "52VSB9N5CT" # Developer Portal Team ID
