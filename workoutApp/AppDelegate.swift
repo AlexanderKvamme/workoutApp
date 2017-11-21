@@ -16,19 +16,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        let context = DatabaseFacade.persistentContainer.viewContext
+        // Set up a coreDataManager based on if the commandline has arguemnts for test/fastlane's snapshot
+        var coreDataManager: CoreDataManager!
         
-        // Seed for Fastlane Snapshot data
+        switch CommandLine.hasArguments() {
+        case true:
+            let inMemoryContext = setUpInMemoryManagedObjectContext()
+            coreDataManager = CoreDataManager(providedContext: inMemoryContext)
+        case false:
+            coreDataManager = CoreDataManager()
+        }
+        
+        // Seed based on CommandLine arguments
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
-            let seeder = DataSeeder(context: context)
-            seeder.seedCoreDataForFastlaneSnapshots()
+            let coreDataSeeder = DataSeeder(coreDataManager: coreDataManager)
+            coreDataSeeder.seedCoreDataForFastlaneSnapshots()
+        } else if CommandLine.arguments.contains("ACTIVE_WORKOUT_UITESTS") {
+            let coreDataSeeder = DataSeeder(coreDataManager: coreDataManager)
+            coreDataSeeder.makeLongWorkout(coreDataManager: coreDataManager)
         }
         
         customizeUIAppearance()
-        seedIfFirstLaunch(context: context)
+        seedIfFirstLaunch(coreDataManager: coreDataManager)
         
         // Instantiate master View Controller
-        window?.rootViewController = CustomTabBarController()
+        window?.rootViewController = CustomTabBarController(nibName: nil, bundle: nil, coreDataManager: coreDataManager)
         
         return true
     }
@@ -42,7 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         UserDefaults.standard.synchronize()
-        DatabaseFacade.saveContext()
+        let coreDataManager = CoreDataManager()
+        coreDataManager.saveContext()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -57,17 +70,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         UserDefaults.standard.synchronize()
-        DatabaseFacade.saveContext()
+        let coreDataManager = CoreDataManager()
+        coreDataManager.saveContext()
     }
     
     // MARK: - Custom Methods
     
-    private func seedIfFirstLaunch(context: NSManagedObjectContext) {
+    private func seedIfFirstLaunch(coreDataManager: CoreDataManager) {
         // If first launch, seed with essentials
         switch UserDefaults.isFirstLaunch() {
         case true:
-            // Seed Core data 
-            let dataSeeder = DataSeeder(context: context)
+            // Seed Core data with requirements like Muscles, Styles, .etc
+            let dataSeeder = DataSeeder(coreDataManager: coreDataManager)
             dataSeeder.seedCoreData()
             
             // Show Welcome message
@@ -80,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         case false:
             // Update Core Data with any new default values
-            DataSeeder(context: context).update()
+            DataSeeder(coreDataManager: coreDataManager).update()
         }
     }
     
@@ -104,3 +118,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+ extension CommandLine {
+ 
+    static func hasArguments() -> Bool {
+        return self.arguments.count > 0
+    }
+ }
+
+ 

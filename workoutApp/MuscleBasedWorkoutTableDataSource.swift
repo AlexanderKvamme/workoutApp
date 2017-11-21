@@ -21,11 +21,13 @@ class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSou
     var muscle: Muscle!
     var lastUpdatedAt: Date!
     var fetchedWorkouts = [Workout]()
+    var coreDataManager: CoreDataManager
     weak var owner: SwipeTableViewCellDelegate?
     
     // MARK: - Initializers
     
-    required init(muscle: Muscle) {
+    required init(muscle: Muscle, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init()
         self.muscle = muscle
         
@@ -61,7 +63,7 @@ class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSou
     func deleteDataAt(_ indexPath: IndexPath) {
         let workoutToDelete = fetchedWorkouts[indexPath.row]
         fetchedWorkouts.remove(at: indexPath.row)
-        DatabaseFacade.delete(workoutToDelete)
+        coreDataManager.delete(workoutToDelete)
         lastUpdatedAt = Date()
     }
     
@@ -74,7 +76,7 @@ class MuscleBasedWorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSou
         
         // Fetch from Core Data
         do {
-            let results = try DatabaseFacade.context.fetch(fetchRequest)
+            let results = try coreDataManager.context.fetch(fetchRequest)
             fetchedWorkouts = results
         } catch let err as NSError {
             print(err.debugDescription)

@@ -21,6 +21,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     let darkHeaderFont = UIFont.custom(style: .bold, ofSize: .medium)
     let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
+    var coreDataManager: CoreDataManager
     
     var header: TwoLabelStack = {
         let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
@@ -43,7 +44,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     }()
     
     lazy var measurementSelecter: TwoLabelStack = {
-        let measurementSelecter = TwoLabelStack(frame: CGRect(x: 0, y: muscleSelecter.frame.maxY - 40, width: screenWidth, height: selecterHeight), topText: "Measurement", topFont: darkHeaderFont, topColor: .dark, bottomText: DatabaseFacade.defaultMeasurementStyle.name!, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
+        let measurementSelecter = TwoLabelStack(frame: CGRect(x: 0, y: muscleSelecter.frame.maxY - 40, width: screenWidth, height: selecterHeight), topText: "Measurement", topFont: darkHeaderFont, topColor: .dark, bottomText: coreDataManager.defaultMeasurementStyle.name!, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
         measurementSelecter.button.addTarget(self, action: #selector(measurementTapHandler), for: .touchUpInside)
        
         return measurementSelecter
@@ -65,11 +66,12 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     // MARK: - Initializers
     
-    init(withPreselectedMuscle muscles: [Muscle]?) {
+    init(withPreselectedMuscle muscles: [Muscle]?, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
-        currentMuscles = muscles ?? [DatabaseFacade.defaultMuscle]
-        currentMeasurementStyle = DatabaseFacade.defaultMeasurementStyle
-        currentExerciseStyle = DatabaseFacade.defaultExerciseStyle
+        currentMuscles = muscles ?? [coreDataManager.defaultMuscle]
+        currentMeasurementStyle = coreDataManager.defaultMeasurementStyle
+        currentExerciseStyle = coreDataManager.defaultExerciseStyle
         
         hidesBottomBarWhenPushed = true
     }
@@ -120,7 +122,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     @objc private func typeTapHandler() {
         // Make and present a custom pickerView for selecting type
-        let exerciseStyles = DatabaseFacade.getExerciseStyles()
+        let exerciseStyles = coreDataManager.getExerciseStyles()
         let typePicker = PickerController<ExerciseStyle>(withPicksFrom: exerciseStyles, withPreselection: currentExerciseStyle)
         typePicker.pickableReceiver = self
         
@@ -133,7 +135,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
+        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles, coreDateManager: coreDataManager)
         musclePicker.muscleReceiver = self
         // When receiving a selection of workout musclegroup
         stringReceivedHandler = {
@@ -145,7 +147,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     }
     
     @objc private func measurementTapHandler() {
-        let allMeasurements = DatabaseFacade.fetchMeasurementStyles()
+        let allMeasurements = coreDataManager.fetchMeasurementStyles()
         let measurementStylePicker = PickerController<MeasurementStyle>(withPicksFrom: allMeasurements, withPreselection: currentMeasurementStyle)
         
         measurementStylePicker.pickableReceiver = self
@@ -166,9 +168,9 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
             return
         }
         
-        let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, measurementStyle: currentMeasurementStyle)
+        let newExercise = coreDataManager.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, measurementStyle: currentMeasurementStyle)
         exercisePickerDelegate?.receiveNewExercise(newExercise)
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
         
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }

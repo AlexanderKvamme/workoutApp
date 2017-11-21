@@ -32,6 +32,12 @@ class ExerciseCellBaseClass: UITableViewCell {
         backgroundColor = .light
     }
     
+//    init(style: UITableViewCellStyle, reuseIdentifier: String?, coreDataManager: CoreDataManager) {
+////        self.coreDataManager = coreDataManager
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        backgroundColor = .light
+//    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -143,7 +149,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
-    init(withExerciseLog exerciseLog: ExerciseLog, lifts: [Lift], reuseIdentifier: String) {
+    init(withExerciseLog exerciseLog: ExerciseLog, lifts: [Lift], reuseIdentifier: String, coreDataManager: CoreDataManager) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         self.exercise = exerciseLog.getDesign()
         
@@ -153,7 +159,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         setupConstraints()
         selectionStyle = .none
         
-        currentCellExerciseLog = DatabaseFacade.makeExerciseLog()
+        currentCellExerciseLog = coreDataManager.makeExerciseLog()
         liftsToDisplay = lifts
         addLongpressRecognizer()
     }
@@ -240,7 +246,9 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     
     private func insertNewCell() {
         // make new lift value to be displayed
-        let newLift = DatabaseFacade.makeLift()
+        guard let coreDataManager = owner?.coreDataManager else { preconditionFailure("could not return") }
+        
+        let newLift = coreDataManager.makeLift()
         newLift.owner = self.currentCellExerciseLog
         newLift.datePerformed = Date() as NSDate
         newLift.weight = 0
@@ -331,11 +339,9 @@ extension ExerciseCellForWorkouts {
         collectionView.deleteItems(at: [ip])
         
         if let section = owner?.owner.tableView.indexPath(for: self)?.section {
-            
             let liftToRemove = owner?.totalLiftsToDisplay[section][ip.row]
             owner?.totalLiftsToDisplay[section].remove(at: ip.row)
-            
-            DatabaseFacade.delete(liftToRemove!)
+            owner?.coreDataManager.delete(liftToRemove!)
         }
     }
 }

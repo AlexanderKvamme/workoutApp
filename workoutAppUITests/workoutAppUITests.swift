@@ -77,6 +77,7 @@ class workoutAppUITests: XCTestCase {
     
     func testSnapshotsOfWorkoutInUse() {
         
+        // Launch
         let app = XCUIApplication()
         setupSnapshot(app)
         app.launchArguments.append("--fastlaneSnapshot")

@@ -11,7 +11,8 @@ import Foundation
 extension Exercise {
     
     func removeFromAnyWorkouts() {
-        DatabaseFacade.removeExerciseFromAnyWorkouts(exercise: self)
+//        let coreDataManager = CoreDataManager(modelName: "workoutApp")
+        CoreDataManager().removeExerciseFromAnyWorkouts(exercise: self)
     }
     
     func setMuscles(_ muscles: [Muscle]) {

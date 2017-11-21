@@ -16,6 +16,7 @@ class GoalButton: UIButton {
     // MARK: - Properties
     
     var goal: Goal
+    weak var owner: ProfileController?
     
     // MARK: - Initializer
     
@@ -42,7 +43,7 @@ class GoalButton: UIButton {
     }
     
     public func deleteFromCoreData() {
-        DatabaseFacade.delete(goal)
+        owner?.coreDataManager.delete(goal)
     }
 }
 

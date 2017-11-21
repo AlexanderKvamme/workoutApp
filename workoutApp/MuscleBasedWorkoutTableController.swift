@@ -21,9 +21,9 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     
     // MARK: - Initializers
     
-    init(muscle: Muscle) {
+    init(muscle: Muscle, coreDataManager: CoreDataManager) {
         self.muscle = muscle
-        super.init(workoutStyleName: nil, cellIdentifier: "WorkoutBoxCell")
+        super.init(workoutStyleName: nil, cellIdentifier: "WorkoutBoxCell", coreDataManager: coreDataManager)
         
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         
@@ -85,9 +85,8 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     }
 
     private func setupDataSource(with muscle: Muscle) {
-        dataSource = MuscleBasedWorkoutTableViewDataSource(muscle: muscle)
+        dataSource = MuscleBasedWorkoutTableViewDataSource(muscle: muscle, coreDataManager: coreDataManager)
         dataSource.owner = self
-        
         tableView.dataSource = dataSource
     }
     
@@ -97,7 +96,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         guard let workout = dataSource.getData() as? [Workout] else { return }
         
         let selectedWorkout = workout[indexPath.row]
-        let detailedVC = ActiveWorkoutController(withWorkout: selectedWorkout) 
+        let detailedVC = ActiveWorkoutController(withWorkout: selectedWorkout, coreDataManager: coreDataManager) 
         navigationController?.pushViewController(detailedVC, animated: true)
     }
     
@@ -116,9 +115,9 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
             
             return [deleteAction]
         case .left: // user swiped left
-            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+            let editAction = SwipeAction(style: .default, title: nil) { [unowned self] (action, indexPath) in
                 let workout = self.dataSource.getWorkout(at: indexPath)
-                let workoutEditor = WorkoutEditor(with: workout)
+                let workoutEditor = WorkoutEditor(with: workout, coreDataManager: self.coreDataManager)
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
             }
             editAction.image = self.wrenchImage
@@ -158,7 +157,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         if let indexPathToEdit = tableView.indexPathForRow(at: location) {
             indexPathBeingEdited = indexPathToEdit
             let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
-            let editor = WorkoutEditor(with: workoutToEdit)
+            let editor = WorkoutEditor(with: workoutToEdit, coreDataManager: coreDataManager)
             navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
         }
     }

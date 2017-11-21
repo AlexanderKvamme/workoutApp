@@ -11,12 +11,12 @@ import CoreData
 
 /// Helps user navigate through the different workoutStyles and list out the history of performed workouts (as WorkoutLog items)
 class HistorySelectionViewController: SelectionViewController {
-
+    
     // MARK: - Initializers
     
-    init() {
-        super.init(header: SelectionViewHeader(header: "Workout", subheader: "History"))
-        DatabaseFacade.clearUnfininishedWorkoutLogs() // Removes unfinished workouts
+    init(coreDataManager: CoreDataManager) {
+        super.init(header: SelectionViewHeader(header: "Workout", subheader: "History"), coreDataManager: coreDataManager)
+        coreDataManager.clearUnfininishedWorkoutLogs() // Removes unfinished workouts
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -78,7 +78,7 @@ class HistorySelectionViewController: SelectionViewController {
     
     /// Sends new fetch and updates buttons
     private func updateStackToDisplayStylesAndAll() {
-        let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
+        let workoutStyles = coreDataManager.fetchAllWorkoutStyles()
         
         buttonIndex = 0
 
@@ -122,14 +122,14 @@ class HistorySelectionViewController: SelectionViewController {
     // MARK: - TapHandlers 
     
     @objc func showTableOfAllWorkouts() {
-        let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: nil)
+        let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: nil, coreDataManager: coreDataManager)
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }
     
     @objc func showTableForWorkoutStyle(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
-        let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        let historyTableViewController = WorkoutLogHistoryTableViewController(workoutStyleName: tappedWorkoutStyleName, coreDataManager: coreDataManager)
         
         navigationController?.pushViewController(historyTableViewController, animated: true)
     }

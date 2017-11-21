@@ -13,6 +13,8 @@ class MusclePickerController: UIViewController {
     
     // MARK: - Properties
     
+    var coreDataManager: CoreDataManager
+    
     fileprivate lazy var table: UITableView = {
         let t = UITableView(frame: .zero)
         t.register(PickerCell.self, forCellReuseIdentifier: "cellIdentifier")
@@ -52,10 +54,11 @@ class MusclePickerController: UIViewController {
     
     // MARK: - Initializers
     
-    init(withPreselectedMuscles preselectedMuscles: [Muscle]?) {
+    init(withPreselectedMuscles preselectedMuscles: [Muscle]?, coreDateManager: CoreDataManager) {
         // Setup available choices
+        self.coreDataManager = coreDateManager
         self.selectedMuscles = preselectedMuscles
-        self.selectionChoices = DatabaseFacade.fetchMuscles(with: .name, ascending: true)
+        self.selectionChoices = coreDataManager.fetchMuscles(with: .name, ascending: true)
 
         // Preselect
         if let preselections = preselectedMuscles {

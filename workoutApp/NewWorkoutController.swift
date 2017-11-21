@@ -22,13 +22,13 @@ class NewWorkoutController: WorkoutController {
         return f
     }()
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
+    override init(coreDataManager: CoreDataManager) {
+        super.init(coreDataManager: coreDataManager)
         hidesBottomBarWhenPushed = true
         view.backgroundColor = .light
         
-        currentMuscles = [DatabaseFacade.defaultMuscle]
-        currentWorkoutStyle = DatabaseFacade.defaultWorkoutStyle
+        currentMuscles = [coreDataManager.defaultMuscle]
+        currentWorkoutStyle = coreDataManager.defaultWorkoutStyle
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
     }
     
@@ -74,8 +74,8 @@ class NewWorkoutController: WorkoutController {
             return
         }
         let workoutName = header.getBottomText()
-        DatabaseFacade.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, exercises: currentExercises)
-        DatabaseFacade.saveContext()
+        coreDataManager.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, exercises: currentExercises)
+        coreDataManager.saveContext()
         
         navigationController?.popViewController(animated: true)
     }

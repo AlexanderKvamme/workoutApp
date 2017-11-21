@@ -15,6 +15,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // required properties
     var currentMuscles: [Muscle]!
+    var coreDataManager: CoreDataManager
     var currentWorkoutStyle: WorkoutStyle!
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // Receiving of time and name from pickers
@@ -89,6 +90,17 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         }
     }
     
+    // MARK: - Initializers
+    
+    init(coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
@@ -108,7 +120,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     // Tap handlers
     @objc private func showWorkoutStyleEditor() {
         // Make and present a custom pickerView for selecting type
-        let workoutStyles = DatabaseFacade.fetchWorkoutStyles()
+        let workoutStyles = coreDataManager.fetchWorkoutStyles()
         let typePicker = PickerController<WorkoutStyle>(withPicksFrom: workoutStyles, withPreselection: currentWorkoutStyle)
         
         typePicker.pickableReceiver = self
@@ -118,7 +130,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
+        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles, coreDateManager: coreDataManager)
         musclePicker.muscleReceiver = self
 
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
@@ -138,7 +150,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }
     
     @objc private func exercisesTapHandler() {
-        let exercisePicker = ExercisePickerController(forMuscle: currentMuscles, withPreselectedExercises: currentExercises)
+        let exercisePicker = ExercisePickerController(forMuscle: currentMuscles, withPreselectedExercises: currentExercises, coreDataManager: coreDataManager)
         
         exercisePicker.pickableReceiver = self
         exercisePicker.exerciseReceiver = self
@@ -194,4 +206,5 @@ extension WorkoutController: MuscleReceiver {
         self.muscleSelecter.setBottomText(muscles.getName())
     }
 }
+
 

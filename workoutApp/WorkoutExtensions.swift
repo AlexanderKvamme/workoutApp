@@ -56,6 +56,7 @@ extension Workout {
         return workoutStyle
     }
     
+    ///
     func setInitialWorkoutStyle(_ newStyle: WorkoutStyle) {
         self.workoutStyle = newStyle
         newStyle.incrementWorkoutDesignCount()

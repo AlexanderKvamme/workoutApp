@@ -18,13 +18,16 @@ class GoalsController: UIViewController, isStringReceiver {
     private var goals: [Goal]?
     private var stackOfGoalButtons: UIStackView = UIStackView()
     
+    weak var owner: ProfileController?
+    
     var stringReceivedHandler: ((String) -> Void) = { _ in }
     
     // MARK: - Initializers
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        self.goals = DatabaseFacade.fetchGoals()
+        let coreDataManager = CoreDataManager()
+        self.goals = coreDataManager.fetchGoals()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -53,8 +56,9 @@ class GoalsController: UIViewController, isStringReceiver {
     private func addGoals() {
         // Clear and refresh goals
         stackOfGoalButtons.removeArrangedSubviews()
+        guard let coreDataManager = owner?.coreDataManager else { return }
         
-        for goal in DatabaseFacade.getGoals() {
+        for goal in coreDataManager.getGoals() {
             let newButton = makeGoalButton(withGoal: goal)
             stackOfGoalButtons.addArrangedSubview(newButton)
         }
@@ -161,12 +165,16 @@ class GoalsController: UIViewController, isStringReceiver {
     
     /// Receives the text from a input view, and uses it to make a goal and append it.
     private func setupReceiveHandler() {
-        stringReceivedHandler = { str in
-            let goal = DatabaseFacade.makeGoal()
+        stringReceivedHandler = { [unowned self] str in
+            guard let coreDataManager = self.owner?.coreDataManager else {
+                return
+            }
+            let goal = coreDataManager.makeGoal()
             goal.dateMade = Date() as NSDate
             goal.text = str
             
             let buttonFromGoal = self.makeGoalButton(withGoal: goal)
+            buttonFromGoal.owner = self.owner
             self.goals?.append(goal)
             self.stackOfGoalButtons.addArrangedSubview(buttonFromGoal)
         }

@@ -22,13 +22,14 @@ class ActiveWorkoutController: UITableViewController {
     private var snapShot: UIView?
     private var location: CGPoint!
     private var sourceIndexPath: IndexPath!
-    
+    private var coreDataManager: CoreDataManager
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
     // MARK: - Initializers
     
-    init(withWorkout workout: Workout) {
+    init(withWorkout workout: Workout, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
         self.currentWorkout = workout
     }
@@ -51,7 +52,7 @@ class ActiveWorkoutController: UITableViewController {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
 
-        dataSource = ExerciseTableDataSource(workout: currentWorkout) // Make datasource out of the provided Workout
+        dataSource = ExerciseTableDataSource(workout: currentWorkout, coreDataManager: coreDataManager) // Make datasource out of the provided Workout
         tableView.dataSource = dataSource
         dataSource.owner = self
         

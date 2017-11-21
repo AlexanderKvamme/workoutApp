@@ -22,7 +22,6 @@ class ExerciseCellForHistory: ExerciseCellBaseClass, LiftCellManager {
     
     init(withExerciseLog exerciseLog: ExerciseLog, andLifts lifts: [Lift], andIdentifier cellIdentifier: String) {
         super.init(style: .default, reuseIdentifier: cellIdentifier)
-
         exercise = exerciseLog.getDesign()
         liftsToDisplay = lifts
         exerciseLogToDisplay = exerciseLog
@@ -34,6 +33,10 @@ class ExerciseCellForHistory: ExerciseCellBaseClass, LiftCellManager {
         
         selectionStyle = .none
     }
+//
+//    override init(style: UITableViewCellStyle, reuseIdentifier: String?, coreDataManager: CoreDataManager) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier, coreDataManager: coreDataManager)
+//    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

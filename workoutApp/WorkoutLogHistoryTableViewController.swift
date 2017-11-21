@@ -18,8 +18,8 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     
     // MARK: - Initializers
     
-    init(workoutStyleName: String?) {
-        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell")
+    init(workoutStyleName: String?, coreDataManager: CoreDataManager) {
+        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell", coreDataManager: coreDataManager)
         tableView.register(WorkoutLogHistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         setUpNavigationBar(withTitle: self.workoutStyleName)
     }
@@ -51,7 +51,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     // MARK: - Methods
     
     private func setupDataSource() {
-        dataSource = WorkoutLogHistoryTableViewDataSource(workoutStyleName: workoutStyleName)
+        dataSource = WorkoutLogHistoryTableViewDataSource(workoutStyleName: workoutStyleName, coreDataManager: coreDataManager)
         tableView.dataSource = dataSource
         dataSource.owner = self
     }
@@ -92,7 +92,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     private func showDetailedView(for indexPath: IndexPath) {
         let newDataSource = dataSource as! WorkoutLogHistoryTableViewDataSource
         let tappedWorkoutLog = newDataSource.getWorkoutLog(at: indexPath)
-        let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog)
+        let workoutLogTable = ExerciseHistoryTableViewController(withWorkoutLog: tappedWorkoutLog, coreDataManager: coreDataManager)
         
         navigationController?.pushViewController(workoutLogTable, animated: true)
     }

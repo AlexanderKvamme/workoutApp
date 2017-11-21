@@ -18,8 +18,8 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     // MARK: - Initializers
     
-    init() {
-        super.init(header: SelectionViewHeader(header: "Select", subheader: "Workout Style"))
+    init(coreDataManager: CoreDataManager) {
+        super.init(header: SelectionViewHeader(header: "Select", subheader: "Workout Style"), coreDataManager: coreDataManager)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,6 +42,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     }
     
     override func viewDidLoad() {
+        print("\n\nWORKOUT SELECTION VIEW CONTROLLER")
         super.viewDidLoad()
         view.backgroundColor = .light
         setupStack()
@@ -80,7 +81,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     /// Sends new fetch and updates buttons
     private func updateStackWithEntriesFromCoreData() {
-        let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
+        let workoutStyles = coreDataManager.fetchAllWorkoutStyles()
     
         buttonIndex = 0
         
@@ -94,7 +95,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         for workoutStyle in workoutStyles where workoutStyle.getWorkoutDesignCount() > 0 { //where workoutStyle.usedInWorkoutsCount > 0 {
             let styleName = workoutStyle.getName()
-            
+ 
             let subheaderString: String = {
                 let workoutsOfThisStyle = workoutStyle.getWorkoutDesignCount()
                 return workoutsOfThisStyle > 1 ? "\(workoutsOfThisStyle) WORKOUTS" : "\(workoutsOfThisStyle) WORKOUT"
@@ -148,14 +149,14 @@ class WorkoutSelectionViewController: SelectionViewController {
     }
     
     @objc private func pushNewWorkoutController() {
-        let newWorkoutController = NewWorkoutController()
+        let newWorkoutController = NewWorkoutController(coreDataManager: coreDataManager)
         navigationController?.pushViewController(newWorkoutController, animated: true)
     }
     
     @objc func ShowWorkoutTable(button: UIButton) {
         // Identifies which choice was selected and creates a BoxTableView to display
         let tappedWorkoutStyleName = buttonNames[button.tag]
-        let boxTable = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
+        let boxTable = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName, coreDataManager: coreDataManager)
         
         navigationController?.pushViewController(boxTable, animated: true)
     }

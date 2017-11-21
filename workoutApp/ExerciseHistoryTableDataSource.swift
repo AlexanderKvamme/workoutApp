@@ -21,10 +21,11 @@ class ExerciseHistoryTableDataSource: NSObject, UITableViewDataSource {
     private var exerciseLogsAsArray: [ExerciseLog]! // each entry represents one tableViewCell. So [0] will be the top cell
     private var currentlyDisplayedWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
     var totalLiftsToDisplay: [[Lift]]! // Each tableViewCell has a "liftsToDisplay" variable to display, this layered array of lifts should store each one of them, and when one of them is changed, it should bubble up the change to this one, which should contain one [Lift] for each tableViewCell. For example if cell 0 is Pull Ups, cell 1 is Hammer Curls, and cell 2 is Dips, then this Dips one should be able to be updated from TotalLiftsToDisplay[2] = liftsToDisplay
-    
+    var coreDataManager: CoreDataManager
     // MARK: - Initializers
     
-    init(workoutLog: WorkoutLog) {
+    init(workoutLog: WorkoutLog, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init()
         setupUsingWorkoutLog(workoutLog)
     }

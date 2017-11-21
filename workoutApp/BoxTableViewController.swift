@@ -34,12 +34,14 @@ class BoxTableViewController: UITableViewController {
     
     var workoutStyleName: String?
     var cellIdentifier: String
+    var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init(workoutStyleName: String?, cellIdentifier: String) {
+    init(workoutStyleName: String?, cellIdentifier: String, coreDataManager: CoreDataManager) {
         self.cellIdentifier = cellIdentifier
         self.workoutStyleName = workoutStyleName
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
         
         setUpNavigationBar(withTitle: self.workoutStyleName)
@@ -83,7 +85,7 @@ class BoxTableViewController: UITableViewController {
         // Make fontsize "pop" bigger
         customRefreshView.label.font = UIFont.custom(style: .bold, ofSize: .extreme)
         
-        let newWorkoutVC = NewWorkoutController()
+        let newWorkoutVC = NewWorkoutController(coreDataManager: coreDataManager)
         navigationController?.pushViewController(newWorkoutVC, animated: true)
     }
     

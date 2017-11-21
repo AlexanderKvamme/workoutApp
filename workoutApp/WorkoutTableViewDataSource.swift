@@ -20,11 +20,13 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     var workoutStyleName: String?
     var lastUpdatedAt: Date!
     var fetchedWorkouts = [Workout]()
+    var coreDataManager: CoreDataManager
     weak var owner: SwipeTableViewCellDelegate?
     
     // MARK: - Initializers
     
-    required init(workoutStyleName: String?) {
+    required init(workoutStyleName: String?, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init()
         self.workoutStyleName = workoutStyleName
 
@@ -68,7 +70,7 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
     
     func refresh() {
         let fetchRequest = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
-        let workoutStyle = DatabaseFacade.fetchWorkoutStyle(withName: self.workoutStyleName!)
+        let workoutStyle = coreDataManager.fetchWorkoutStyle(withName: self.workoutStyleName!)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latestPerformence.dateEnded", ascending: false)]
         let stylePredicate = NSPredicate(format: "workoutStyle == %@", workoutStyle!)
         let retiredPredicate = NSPredicate(format: "isRetired == false")
@@ -78,7 +80,7 @@ class WorkoutTableViewDataSource: NSObject, isWorkoutTableViewDataSource {
         
         // Fetch from Core Data
         do {
-            let results = try DatabaseFacade.context.fetch(fetchRequest)
+            let results = try coreDataManager.context.fetch(fetchRequest)
             fetchedWorkouts = results
         } catch let err as NSError {
             print(err.debugDescription)

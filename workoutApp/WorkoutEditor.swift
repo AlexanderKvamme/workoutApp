@@ -28,8 +28,9 @@ class WorkoutEditor: WorkoutController {
     
     // MARK: - Initializaer
     
-    init(with workout: Workout) {
-        super.init(nibName: nil, bundle: nil)
+    init(with workout: Workout, coreDataManager: CoreDataManager) {
+        //super.init(nibName: nil, bundle: nil)
+        super.init(coreDataManager: coreDataManager)
         
         hidesBottomBarWhenPushed = true
         self.currentWorkout = workout
@@ -114,7 +115,7 @@ class WorkoutEditor: WorkoutController {
         currentWorkout.setStyle(currentWorkoutStyle)
         currentWorkout.setMuscles(currentMuscles)
         currentWorkout.setExercises(currentExercises)
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
         
         navigationController?.popViewController(animated: true)
     }

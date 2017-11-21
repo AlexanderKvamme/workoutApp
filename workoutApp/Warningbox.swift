@@ -10,17 +10,18 @@ class Warningbox: Box {
     // MARK: - Properties
     
     var warning: Warning? = nil
+    var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init(withWarning newWarning: Warning) {
+    init(withWarning newWarning: Warning, coreDataManager: CoreDataManager) {
         
         let boxFactory = BoxFactory.makeFactory(type: .WarningBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
-        
+        self.coreDataManager = coreDataManager
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         setupBoxFrameUsingAutolayout()
         
@@ -91,7 +92,7 @@ class Warningbox: Box {
     
     func deleteWarning() {
         if let warning = warning {
-            DatabaseFacade.delete(warning)
+            coreDataManager.delete(warning)
         }
     }
 }

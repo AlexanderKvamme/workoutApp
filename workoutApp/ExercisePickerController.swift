@@ -11,6 +11,7 @@ import UIKit
 /// Used to pick and return selection of any number of exercises
 class ExercisePickerController: UIViewController {
     
+    var coreDataManager: CoreDataManager
     // MARK: - Properties
     
     fileprivate lazy var table: UITableView = {
@@ -64,13 +65,14 @@ class ExercisePickerController: UIViewController {
     
     // MARK: - Initializers
     
-    init(forMuscle muscles: [Muscle], withPreselectedExercises preselectedExercises: [Exercise]?) {
+    init(forMuscle muscles: [Muscle], withPreselectedExercises preselectedExercises: [Exercise]?, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         self.selectedMuscles = muscles
         var exercises = [Exercise]()
 
         // Add muscles
         for muscle in muscles {
-            let musclesExercises = DatabaseFacade.fetchExercises(containing: muscle)!
+            let musclesExercises = coreDataManager.fetchExercises(containing: muscle)!
             exercises.append(contentsOf: musclesExercises)
         }
         
@@ -121,7 +123,7 @@ class ExercisePickerController: UIViewController {
 
     @objc private func presentNewExerciseController() {
         
-        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscles)
+        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscles, coreDataManager: coreDataManager)
         newExerciseController.exercisePickerDelegate = self
         navigationController?.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
@@ -265,7 +267,7 @@ class ExercisePickerController: UIViewController {
         let location = sender.location(in: table)
         if let indexPath = table.indexPathForRow(at: location) {
             let exerciseToEdit = selectionChoices[indexPath.row]
-            let editor = ExerciseEditor(for: exerciseToEdit)
+            let editor = ExerciseEditor(for: exerciseToEdit, coreDataManager: coreDataManager)
             editor.editorDataSource = self
             navigationController?.pushViewController(editor, animated: true)
         }

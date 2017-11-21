@@ -18,10 +18,12 @@ final class ProfileController: UIViewController {
     private var messageButton = UIButton()
     private var scrollView = UIScrollView()
     private var stackView = UIStackView() // Subiew of scrollView
+    var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init() {
+    init(coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
         title = ""
     }
@@ -128,20 +130,21 @@ final class ProfileController: UIViewController {
     
     private func addGoalsController(to stackView: UIStackView) {
         let goalsController = GoalsController()
+        goalsController.owner = self
         addChildViewController(goalsController)
         stackView.addArrangedSubview(goalsController.view)
     }
     
     private func makeWarningBox(fromWarning warning: Warning) -> Warningbox? {
         var newBox: Warningbox? = nil
-        newBox = Warningbox(withWarning: warning)
+        newBox = Warningbox(withWarning: warning, coreDataManager: coreDataManager)
         newBox!.content?.xButton?.addTarget(self, action: #selector(xButtonHandler(_:)), for: .touchUpInside)
         return newBox
     }
     
     private func addWarnings(to stackView: UIStackView) {
         // Get sorted messages from Core data
-        guard let arrayOfWarnings = DatabaseFacade.fetchWarnings() else { return }
+        guard let arrayOfWarnings = coreDataManager.fetchWarnings() else { return }
         
         for warning in arrayOfWarnings {
             if let newWarningBox = makeWarningBox(fromWarning: warning) {
@@ -151,7 +154,7 @@ final class ProfileController: UIViewController {
     }
     
     private func addSuggestions(to stackView: UIStackView) {    
-        let suggestionController = SuggestionController()
+        let suggestionController = SuggestionController(coreDataManager: coreDataManager)
         addChildViewController(suggestionController)
         stackView.addArrangedSubview(suggestionController.view)
     }

@@ -16,8 +16,14 @@ import CoreData
 final class DataSeeder {
     
     // MARK: Properties
+    private let coreDataManager: CoreDataManager
     
-    private let context: NSManagedObjectContext
+    // Quick access for seeding
+    lazy var muscles = Muscles(coreDataManager: self.coreDataManager)
+    lazy var exerciseStyle = ExerciseStyles(coreDataManager: self.coreDataManager)
+    lazy var measurementStyles = MeasurementStyles(coreDataManager: self.coreDataManager)
+    lazy var exercises = Exercises(coreDataManager: self.coreDataManager)
+    lazy var workoutStyles = WorkoutStyles(coreDataManager: self.coreDataManager)
     
     // Properties for seeding to Core Data
     private let defaultMuscles = ["OTHER", "BACK", "LEGS", "GLUTES", "SHOULDERS", "CORE", "CHEST", "BICEPS", "TRICEPS", "CARDIO"]
@@ -27,8 +33,8 @@ final class DataSeeder {
     
     // MARK: - Initializer
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
+    init(coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
     }
     
     // MARK: - Methods
@@ -39,49 +45,57 @@ final class DataSeeder {
         seedWithExampleExerciseStyles()
         seedWithExampleMeasurementStyles()
         seedWithExampleWarning()
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
     }
     
     /// Clears out persistent store to make room for snapshottable exercises only
     public func seedCoreDataForFastlaneSnapshots() {
         
         // Clear core data
-        DataSeeder.clear(entity: Entity.WorkoutLog)
-        DataSeeder.clear(entity: Entity.Exercise)
-        DataSeeder.clear(entity: Entity.Workout)
-        DataSeeder.clear(entity: Entity.Goal)
+        let dataSeeder = DataSeeder(coreDataManager: coreDataManager)
+        dataSeeder.clear(entity: Entity.WorkoutLog)
+        dataSeeder.clear(entity: Entity.Exercise)
+        dataSeeder.clear(entity: Entity.Workout)
+        dataSeeder.clear(entity: Entity.Goal)
         
-        DataSeeder.resetCounts() //
+        dataSeeder.resetCounts() //
+        
+        // Quick access to static variables
+        let muscles = Muscles(coreDataManager: coreDataManager)
+        let exercises = Exercises(coreDataManager: coreDataManager)
+        let exerciseStyles = ExerciseStyles(coreDataManager: coreDataManager)
+        let measurementStyles = MeasurementStyles(coreDataManager: coreDataManager)
+        let workoutStyles = WorkoutStyles(coreDataManager: coreDataManager)
         
         // Generate exercises
-        DatabaseFacade.makeExercise(withName: "SEED FLEXERS", exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.biceps], measurementStyle: MeasurementStyles.sets)
+        coreDataManager.makeExercise(withName: "SEED FLEXERS", exerciseStyle: exerciseStyles.normal, muscles: [muscles.biceps], measurementStyle: measurementStyles.sets)
         
         // Generate workouts
-        DatabaseFacade.makeWorkout(withName: "BOOTYBUILDER", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.glutes], exercises: [Exercises.bicepFlex])
-        DatabaseFacade.makeWorkout(withName: "HARD CORE", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.core], exercises: [Exercises.pullUp])
-        DatabaseFacade.makeWorkout(withName: "MUSCLE UP", workoutStyle: WorkoutStyles.technique, muscles: [Muscles.back], exercises: [Exercises.pullUp])
+        coreDataManager.makeWorkout(withName: "BOOTYBUILDER", workoutStyle: workoutStyles.normal, muscles: [muscles.glutes], exercises: [exercises.bicepFlex])
+        coreDataManager.makeWorkout(withName: "HARD CORE", workoutStyle: workoutStyles.normal, muscles: [muscles.core], exercises: [exercises.pullUp])
+        coreDataManager.makeWorkout(withName: "MUSCLE UP", workoutStyle: workoutStyles.technique, muscles: [muscles.back], exercises: [exercises.pullUp])
         
         // Generate weighted workout
         let exercisesForPullDay: [Exercise] = [
-            DatabaseFacade.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.weightedSets),
-            DatabaseFacade.makeExercise(withName: "PULL UP", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
-            DatabaseFacade.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
-        ]
-        DatabaseFacade.makeWorkout(withName: "PULL DAY", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.back], exercises: exercisesForPullDay)
+            coreDataManager.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: exerciseStyles.weighted, muscles: [muscles.back], measurementStyle: measurementStyles.weightedSets),
+            coreDataManager.makeExercise(withName: "PULL UP", exerciseStyle: exerciseStyles.explosive, muscles: [muscles.back], measurementStyle: measurementStyles.sets),
+            coreDataManager.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: exerciseStyles.weighted, muscles: [muscles.back], measurementStyle: measurementStyles.sets),
+            ]
+        coreDataManager.makeWorkout(withName: "PULL DAY", workoutStyle: workoutStyles.normal, muscles: [muscles.back], exercises: exercisesForPullDay)
         
         // Goals
-        DatabaseFacade.makeGoal("Live your dream")
-        DatabaseFacade.makeGoal("Become extreme")
+        coreDataManager.makeGoal("Set your goals")
+        coreDataManager.makeGoal("CRUSH your goals")
         
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
     }
     
     /// If any new Muscles/Styles are added in code, for example in an update -> seed to core data
     public func update() {
-      
+        
         // Muscles
         for muscleName in defaultMuscles {
-            if DatabaseFacade.getMuscle(named: muscleName.uppercased()) == nil {
+            if coreDataManager.getMuscle(named: muscleName.uppercased()) == nil {
                 print("didnt exist so making muscle named \(muscleName)")
                 makeMuscle(withName: muscleName.uppercased())
             }
@@ -89,7 +103,7 @@ final class DataSeeder {
         
         // Workout Styles
         for workoutStyleName in defaultWorkoutStyles {
-            if DatabaseFacade.getWorkoutStyle(named: workoutStyleName) == nil {
+            if coreDataManager.getWorkoutStyle(named: workoutStyleName) == nil {
                 print("didnt exist so making workoutstyle named \(workoutStyleName)")
                 makeWorkoutStyle(withName: workoutStyleName)
             }
@@ -97,7 +111,7 @@ final class DataSeeder {
         
         // Exercise Styles
         for exerciseStyleName in defaultExerciseStyles {
-            if DatabaseFacade.getExerciseStyle(named: exerciseStyleName) == nil {
+            if coreDataManager.getExerciseStyle(named: exerciseStyleName) == nil {
                 print("didnt exist so making exercise named \(exerciseStyleName)")
                 makeExerciseStyle(withName: exerciseStyleName)
             }
@@ -105,7 +119,7 @@ final class DataSeeder {
         
         // Measurement Styles
         for measurementStyle in defaultMeasurementStyles {
-            if DatabaseFacade.getMeasurementStyle(named: measurementStyle) == nil {
+            if coreDataManager.getMeasurementStyle(named: measurementStyle) == nil {
                 print("didnt exist so making measurementStyle named \(measurementStyle)")
                 makeMeasurementStyle(withName: measurementStyle)
             }
@@ -116,7 +130,7 @@ final class DataSeeder {
     
     private func seedWithExampleMuscleGroups() {
         for muscle in defaultMuscles {
-            if DatabaseFacade.getMuscle(named: muscle) == nil {
+            if coreDataManager.getMuscle(named: muscle) == nil {
                 makeMuscle(withName: muscle.uppercased())
             }
         }
@@ -138,75 +152,85 @@ final class DataSeeder {
             makeExerciseStyle(withName: exerciseStyleName)
         }
     }
-
+    
     private func seedWithExampleMeasurementStyles() {
         for measurementStyleName in defaultMeasurementStyles {
             makeMeasurementStyle(withName: measurementStyleName)
         }
     }
     
+    // MARK: - Public seeder methods
+    
+    // MARK: - Helper methods
+    @discardableResult public func makeLongWorkout(coreDataManager: CoreDataManager) -> Workout {
+        
+        let exerciseHolder = Exercises(coreDataManager: coreDataManager)
+        let exercises = [exerciseHolder.weightedPullUp, exerciseHolder.pullUp, exerciseHolder.WMSPullUp, exerciseHolder.chestToBar, exerciseHolder.assistedChestToBar, exerciseHolder.negativeMuscleUp, exerciseHolder.bicepFlex, exerciseHolder.tricepsFlex]
+        
+        let newLongWorkout = coreDataManager.makeWorkout(withName: "LONG WORKOUT", workoutStyle: WorkoutStyles(coreDataManager: coreDataManager).normal, muscles: [Muscles(coreDataManager: coreDataManager).back], exercises: exercises)
+        coreDataManager.saveContext()
+        
+        return newLongWorkout
+    }
+    
     //  MARK: - Maker methods
-
+    
     private func makeMuscle(withName name: String) {
-        let muscleRecord = DatabaseFacade.makeMuscle()
+        let muscleRecord = coreDataManager.makeMuscle()
         muscleRecord.name = name.uppercased()
     }
     
     private func makeWarning(withMessage message: String) {
-        let warningRecord = DatabaseFacade.makeWarning()
+        let warningRecord = coreDataManager.makeWarning()
         warningRecord.dateMade = Date() as NSDate
         warningRecord.message = message
     }
     
     private func makeWorkoutStyle(withName name: String) {
-        guard DatabaseFacade.getWorkoutStyle(named: name.uppercased()) == nil else {
+        guard coreDataManager.getWorkoutStyle(named: name.uppercased()) == nil else {
             return
         }
-        let workoutStyleRecord = DatabaseFacade.makeWorkoutStyle()
+        let workoutStyleRecord = coreDataManager.makeWorkoutStyle()
         workoutStyleRecord.name = name.uppercased()
     }
     
     private func makeExerciseStyle(withName name: String) {
-        guard DatabaseFacade.getExerciseStyle(named: name.uppercased()) == nil else {
+        guard coreDataManager.getExerciseStyle(named: name.uppercased()) == nil else {
             return
         }
-        let exerciseStyleRecord = DatabaseFacade.makeExerciseStyle()
+        let exerciseStyleRecord = coreDataManager.makeExerciseStyle()
         exerciseStyleRecord.name = name.uppercased()
     }
     
     private func makeMeasurementStyle(withName name: String) {
-        guard DatabaseFacade.getMeasurementStyle(named: name.uppercased()) == nil else {
+        guard coreDataManager.getMeasurementStyle(named: name.uppercased()) == nil else {
             return
         }
-        let measurementStyleRecord = DatabaseFacade.makeMeasurementStyle()
+        let measurementStyleRecord = coreDataManager.makeMeasurementStyle()
         measurementStyleRecord.name = name.uppercased()
     }
     
     // MARK: - Clear methods
     
     /// Completely removes all instances of a type from The persistence store
-    static func clear(entity: Entity) {
-        
+    func clear(entity: Entity) {
+        print("clearing: ", entity.rawValue)
         // Create the delete request for the specified entity
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity.rawValue)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
-        // Get reference to the persistent container
-        let persistentContainer = DatabaseFacade.persistentContainer
-        
         // Perform the delete
         do {
-            try persistentContainer.viewContext.execute(deleteRequest)
+            try coreDataManager.context.execute(deleteRequest)
         } catch let error as NSError {
             print(error)
         }
-        
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
     }
     
     /// Method resets static counts of design and performances, and is needed batchDelete does not run NSManagedObject.prepareForDelete() on each individual object
-    static func resetCounts() {
-        for workoutStyle in DatabaseFacade.fetchWorkoutStyles() {
+    func resetCounts() {
+        for workoutStyle in coreDataManager.fetchWorkoutStyles() {
             workoutStyle.resetCount()
         }
     }
@@ -214,10 +238,10 @@ final class DataSeeder {
     // MARK: - Print methods
     
     private func printWorkouts() {
-
+        
         do {
             let request = NSFetchRequest<Workout>(entityName: Entity.Workout.rawValue)
-            let allWorkouts = try context.fetch(request)
+            let allWorkouts = try coreDataManager.context.fetch(request)
             
             print("workout count: ", allWorkouts.count)
             
@@ -232,14 +256,14 @@ final class DataSeeder {
                 }
             }
         } catch {
-                print("error in printing workouts")
+            print("error in printing workouts")
         }
     }
     
     private func printMuscles() {
         do {
             let request = NSFetchRequest<Muscle>(entityName: Entity.Muscle.rawValue)
-            let allMuscles = try context.fetch(request)
+            let allMuscles = try coreDataManager.context.fetch(request)
             
             print("Muscle count: ", allMuscles.count)
             print()
@@ -256,8 +280,8 @@ final class DataSeeder {
     private func printWorkoutStyles() {
         do {
             let request = NSFetchRequest<WorkoutStyle>(entityName: Entity.WorkoutStyle.rawValue)
-            let allWorkoutStyles = try context.fetch(request)
-
+            let allWorkoutStyles = try coreDataManager.context.fetch(request)
+            
             print("WorkoutStyle count: ", allWorkoutStyles.count)
             for style in allWorkoutStyles {
                 print("Name: ", style.name ?? "")
@@ -270,14 +294,13 @@ final class DataSeeder {
     private func printExercises() {
         do {
             let request = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
-            let allExercises = try context.fetch(request)
+            let allExercises = try coreDataManager.context.fetch(request)
             
             print("workout count: ", allExercises.count)
             for exercise in allExercises {
                 print()
                 print("Name: ", exercise.name ?? "")
-                print("Muscle: ", exercise.getMuscles().map({ return $0.name
-                }))
+                print("Muscle: ", exercise.getMuscles().map({ return $0.name }))
                 print("Type: ", exercise.style?.name ?? "")
             }
         } catch {
@@ -309,182 +332,3 @@ final class DataSeeder {
     }
 }
 
-fileprivate final class MeasurementStyles {
-    
-    // Computed Properties
-    
-    static var sets: MeasurementStyle {
-        return getOrMakeMeasurementStyle(named: "SETS")
-    }
-    
-    // time
-    static var time: MeasurementStyle {
-        return getOrMakeMeasurementStyle(named: "TIME")
-    }
-    
-    // weighted sets
-    static var weightedSets: MeasurementStyle {
-        return getOrMakeMeasurementStyle(named: "WEIGHTED SETS")
-    }
-    
-    // Methods
-    private static func getOrMakeMeasurementStyle(named name: String) -> MeasurementStyle {
-        return DatabaseFacade.getMeasurementStyle(named: name) ?? DatabaseFacade.makeMeasurementStyle(named: name)
-    }
-}
-
-fileprivate final class Exercises {
-    
-    // Computed Properties
-    
-    static var pullUp: Exercise {
-        return getOrMakeExercise(named: "PULL UP")
-    }
-    
-    static var bicepFlex: Exercise {
-        return getOrMakeExercise(named: "BICEP FLEX")
-    }
-    
-    // Methods
-    
-    private static func getOrMakeExercise(named name: String) -> Exercise {
-        return DatabaseFacade.getExercise(named: name) ??  DatabaseFacade.makeExercise(withName: name, exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.chest], measurementStyle: MeasurementStyles.sets)
-    }
-}
-
-fileprivate final class ExerciseStyles {
-    
-    // Computed Properties
-    
-    static var assisted: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "ASSISTED")
-    }
-    
-    static var declined: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "DECLINED")
-    }
-    
-    static var explosive: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "EXPLOSIVE")
-    }
-    
-    static var inclined: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "INCLINED")
-    }
-    
-    static var inverted: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "INVERTED")
-    }
-    
-    static var normal: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "NORMAL")
-    }
-    
-    static var slow: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "SLOW")
-    }
-    
-    static var weighted: ExerciseStyle {
-        return getOrMakeExerciseStyle(named: "WEIGHTED")
-    }
-    
-    // Methods
-    
-    private static func getOrMakeExerciseStyle(named name: String) -> ExerciseStyle {
-        return DatabaseFacade.getExerciseStyle(named: name) ?? DatabaseFacade.makeExerciseStyle(named: name)
-    }
-}
-
-/// Used to easily make or get workoutstyles when seeding
-fileprivate final class WorkoutStyles {
-    
-    // Computed Properties
-    
-    static var cardio: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "CARDIO")
-    }
-    
-    static var dropSet: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "DROPSET")
-    }
-    
-    static var fun: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "FUN")
-    }
-    
-    static var normal: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "NORMAL")
-    }
-    
-    static var other: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "OTHER")
-    }
-    
-    static var superSet: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "SUPERSET")
-    }
-    
-    static var technique: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "TECHNIQUE")
-    }
-    
-    static var weighted: WorkoutStyle {
-        return getOrMakeWorkoutStyle(named: "WEIGHTED")
-    }
-    
-    // Methods
-    
-    private static func getOrMakeWorkoutStyle(named name: String) -> WorkoutStyle {
-        return DatabaseFacade.getWorkoutStyle(named: name) ?? DatabaseFacade.makeWorkoutStyle(named: name)
-    }
-}
-
-/// Easily accessible muscles for quickly seeding before generating snapshots .etc
-fileprivate final class Muscles {
-    
-    // Computed Properties
-    
-    static var back: Muscle {
-        return getOrMakeMuscle(named: "BACK")
-    }
-    
-    static var legs: Muscle {
-        return getOrMakeMuscle(named: "LEGS")
-    }
-    
-    static var other: Muscle {
-        return getOrMakeMuscle(named: "OTHER")
-    }
-    
-    static var glutes: Muscle {
-        return getOrMakeMuscle(named: "GLUTES")
-    }
-    
-    static var shoulders: Muscle {
-        return getOrMakeMuscle(named: "SHOULDERS")
-    }
-    
-    static var core: Muscle {
-        return getOrMakeMuscle(named: "CORE")
-    }
-    
-    static var chest: Muscle {
-        return getOrMakeMuscle(named: "CHEST")
-    }
-    
-    static var biceps: Muscle {
-        return getOrMakeMuscle(named: "BICEPS")
-    }
-    
-    static var triceps: Muscle {
-        return getOrMakeMuscle(named: "TRICEPS")
-    }
-    
-    static var cardio: Muscle {
-        return getOrMakeMuscle(named: "CARDIO")
-    }
-    
-    private static func getOrMakeMuscle(named name: String) -> Muscle {
-        return DatabaseFacade.getMuscle(named: name) ?? DatabaseFacade.makeMuscle(named: name)
-    }
-}

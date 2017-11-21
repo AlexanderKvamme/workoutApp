@@ -17,6 +17,7 @@ class CustomTabBarController: UITabBarController {
     var selectionIndicator: TabBarSelectionIndicator? // For iOS 11
     lazy var tabBarHeight = tabBar.frame.height
     lazy var tabBarItemLength = Constant.UI.width/CGFloat(3)
+    var coreDataManager: CoreDataManager
     
     lazy var xConstraint = { () -> NSLayoutConstraint in
         guard let selectionIndicator = selectionIndicator else {
@@ -40,7 +41,8 @@ class CustomTabBarController: UITabBarController {
     
     // MARK: - Initializer
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
+    init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?, coreDataManager: CoreDataManager){
+        self.coreDataManager = coreDataManager
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         selectedIndex = 2 // Initial selection: The Profile Tab
         
@@ -61,15 +63,15 @@ class CustomTabBarController: UITabBarController {
         delegate = self
 
         // History
-        let historySelectionViewController = HistorySelectionViewController()
+        let historySelectionViewController = HistorySelectionViewController(coreDataManager: coreDataManager)
         let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
         
         // Workout Tab
-        let workoutSelectionViewController = WorkoutSelectionViewController()
+        let workoutSelectionViewController = WorkoutSelectionViewController(coreDataManager: coreDataManager)
         let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
         
         // Profile Tab
-        let profileController = ProfileController()
+        let profileController = ProfileController(coreDataManager: coreDataManager)
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
         
         // Set up navbar

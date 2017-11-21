@@ -21,17 +21,19 @@ class SelectionViewController: UIViewController {
     var stack: UIStackView!
     var buttonNames = [String]()
     var buttonIndex = 0
+    var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init(header: SelectionViewHeader) {
+    init(header: SelectionViewHeader, coreDataManager: CoreDataManager) {
         self.header = header
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
     }
     
     // Initialize with fetchRequest
-    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
-        self.init(header: header)
+    convenience init(header: SelectionViewHeader, coreDataManager: CoreDataManager, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
+        self.init(header: header, coreDataManager: coreDataManager)
         self.fetchRequestToDisplaySelectionsFrom = fetchRequest
     }
     

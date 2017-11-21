@@ -19,10 +19,12 @@ class SuggestionController: UIViewController {
     fileprivate var stackOfSuggestions: UIStackView = UIStackView()
     fileprivate var suggestionBoxes: [SuggestionBox]!
     fileprivate var suggestedMuscles: [Muscle]!
+    fileprivate var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init() {
+    init(coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,7 +61,7 @@ fileprivate extension SuggestionController {
 
     func makeSuggestionBoxes() -> [SuggestionBox] {
         var boxes = [SuggestionBox]()
-        let sortedMuscles = DatabaseFacade.fetchMuscles(with: .mostRecentUse, ascending: true)
+        let sortedMuscles = coreDataManager.fetchMuscles(with: .mostRecentUse, ascending: true)
         
         let musclesToDisplay = Array(sortedMuscles[0...2])
         suggestedMuscles = musclesToDisplay
@@ -75,7 +77,7 @@ fileprivate extension SuggestionController {
     
     @objc func presentWorkoutPicker(sender:UIButton) {
         let muscle = suggestedMuscles[sender.tag]
-        let muscleBasedWorkoutPicker = MuscleBasedWorkoutTableController(muscle: muscle)
+        let muscleBasedWorkoutPicker = MuscleBasedWorkoutTableController(muscle: muscle, coreDataManager: coreDataManager)
         navigationController?.pushViewController(muscleBasedWorkoutPicker, animated: true)
     }
     

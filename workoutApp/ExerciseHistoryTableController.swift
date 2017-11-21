@@ -24,10 +24,12 @@ class ExerciseHistoryTableViewController: UITableViewController {
     private var snapShot: UIView?
     private var location: CGPoint!
     private var sourceIndexPath: IndexPath!
+    private var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init(withWorkoutLog workoutLog: WorkoutLog) {
+    init(withWorkoutLog workoutLog: WorkoutLog, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init(nibName: nil, bundle: nil)
         self.currentWorkoutLog = workoutLog
     }
@@ -45,7 +47,7 @@ class ExerciseHistoryTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource = ExerciseHistoryTableDataSource(workoutLog: currentWorkoutLog)
+        dataSource = ExerciseHistoryTableDataSource(workoutLog: currentWorkoutLog, coreDataManager: coreDataManager)
         tableView.dataSource = dataSource
         dataSource.owner = self
         tableView.delegate = self

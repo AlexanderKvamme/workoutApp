@@ -21,8 +21,8 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     // MARK: - Initializers
     
-    init(workoutStyleName: String?) {
-        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell")
+    init(workoutStyleName: String?, coreDataManager: CoreDataManager) {
+        super.init(workoutStyleName: workoutStyleName, cellIdentifier: "WorkoutBoxCell", coreDataManager: coreDataManager)
         tableView.register(WorkoutBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         setUpNavigationBar(withTitle: workoutStyleName)
     }
@@ -77,13 +77,13 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         if let indexPathToEdit = tableView.indexPathForRow(at: location) {
             indexPathBeingEdited = indexPathToEdit
             let workoutToEdit = dataSource.getWorkout(at: indexPathToEdit)
-            let editor = WorkoutEditor(with: workoutToEdit)
+            let editor = WorkoutEditor(with: workoutToEdit, coreDataManager: coreDataManager)
             navigationController?.pushViewController(editor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
         }
     }
     
     private func setupDataSource() {
-        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName)
+        dataSource = WorkoutTableViewDataSource(workoutStyleName: workoutStyleName, coreDataManager: coreDataManager)
         dataSource.owner = self
 
         tableView.dataSource = dataSource
@@ -141,7 +141,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         let wo = dataSource.getData() as? [Workout]
         if let wo = wo {
             let selectedWorkout = wo[indexPath.row]
-            let detailedVC = ActiveWorkoutController(withWorkout: selectedWorkout)
+            let detailedVC = ActiveWorkoutController(withWorkout: selectedWorkout, coreDataManager: coreDataManager)
             detailedVC.presentingBoxTable = self
             navigationController?.pushViewController(detailedVC, animated: true)
         }
@@ -164,9 +164,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
             
             return [deleteAction]
         case .left: // user swiped left
-            let editAction = SwipeAction(style: .default, title: nil) { (action, indexPath) in
+            let editAction = SwipeAction(style: .default, title: nil) { [unowned self] (action, indexPath) in
                 let wo = self.dataSource.getWorkout(at: indexPath)
-                let workoutEditor = WorkoutEditor(with: wo)
+                let workoutEditor = WorkoutEditor(with: wo, coreDataManager: self.coreDataManager)
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
             }
             editAction.image = self.wrenchImage

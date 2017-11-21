@@ -19,12 +19,14 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     var cellIdentifier = "HistoryBoxCell"
     var workoutStyleName: String?
     var fetchedWorkoutLogs = [WorkoutLog]()
+    var coreDataManager: CoreDataManager
     
     weak var owner: SwipeTableViewCellDelegate?
     
     // MARK: - Initializers
     
-    required init(workoutStyleName: String?) {
+    required init(workoutStyleName: String?, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init()
         self.workoutStyleName = workoutStyleName
         refresh()
@@ -52,7 +54,7 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     
     
     func getData() -> [NSManagedObject]? {
-        let workouts = DatabaseFacade.fetchAllWorkoutLogs()
+        let workouts = coreDataManager.fetchAllWorkoutLogs()
         return workouts
     }
     
@@ -65,7 +67,7 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         let fetchRequest = NSFetchRequest<WorkoutLog>(entityName: Entity.WorkoutLog.rawValue)
         // If a specific workoutStyle was injected using initialzation. Use this as a predicate to limit the search
         if let styleName = self.workoutStyleName {
-            let workoutStyle = DatabaseFacade.getWorkoutStyle(named: styleName)
+            let workoutStyle = coreDataManager.getWorkoutStyle(named: styleName)
             let predicate = NSPredicate(format: "design.workoutStyle == %@", workoutStyle!)
             fetchRequest.predicate = predicate
         }
@@ -74,7 +76,7 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
         
         // Fetch from Core Data
         do {
-            let results = try DatabaseFacade.context.fetch(fetchRequest)
+            let results = try coreDataManager.context.fetch(fetchRequest)
             fetchedWorkoutLogs = results
         } catch let error as NSError {
             print(error.debugDescription)
@@ -84,7 +86,7 @@ class WorkoutLogHistoryTableViewDataSource: NSObject, isBoxTableViewDataSource {
     func deleteDataAt(_ indexPath: IndexPath) {
         let woToDelete = fetchedWorkoutLogs[indexPath.row]
         fetchedWorkoutLogs.remove(at: indexPath.row)
-        DatabaseFacade.delete(woToDelete)
+        coreDataManager.delete(woToDelete)
     }
 }
 

@@ -20,13 +20,15 @@ class ExerciseTableDataSource: NSObject {
     var totalLiftsToDisplay: [[Lift]]! // Each tableViewCell has a "liftsToDisplay" variable to display, this layered array of lifts should store each one of them, and when one of them is changed, it should bubble up the change to this one, which should contain one [Lift] for each tableViewCell. For example if cell 0 is Pull Ups, cell 1 is Hammer Curls, and cell 2 is Dips, then this Dips one should be able to be updated from TotalLiftsToDisplay[2] = liftsToDisplay
     fileprivate var dataSourceWorkoutLog: WorkoutLog! // The workoutLog created to track the currently selected workout. Will be added to core data on save, or deleted on dismiss
     weak var owner: ActiveWorkoutController!
+    var coreDataManager: CoreDataManager
     
     // MARK: - Initializers
     
-    init(workout: Workout) {
+    init(workout: Workout, coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
         super.init()
         // setup data source to use the most recent performance, or the workoutlog if it has not been performed.
-        if let lastPerformance = DatabaseFacade.fetchLatestWorkoutLog(ofWorkout: workout) {
+        if let lastPerformance = coreDataManager.fetchLatestWorkoutLog(ofWorkout: workout) {
             setupUsingWorkoutLog(previousPerformance: lastPerformance)
         } else {
             setupUsingWorkout(withDesign: workout)
@@ -59,7 +61,7 @@ class ExerciseTableDataSource: NSObject {
         owner.navigationController?.popViewController(animated: true)
         let modal = CustomAlertView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
         modal.show(animated: true)
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
     }
     
     // Swap method used when moving cells
@@ -93,7 +95,7 @@ class ExerciseTableDataSource: NSObject {
     
     func deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs() {
         // Deletes all unperformed lifts, exerciseLogs, and then entire WorkoutLog
-        DatabaseFacade.delete(dataSourceWorkoutLog)
+        coreDataManager.delete(dataSourceWorkoutLog)
     }
 }
 
@@ -108,7 +110,7 @@ private extension ExerciseTableDataSource {
             muscle.performanceCount += 1
             muscle.mostRecentUse = dataSourceWorkoutLog
         }
-        DatabaseFacade.saveContext()
+        coreDataManager.saveContext()
     }
     
     // Deletion methods
@@ -124,7 +126,7 @@ private extension ExerciseTableDataSource {
             if let lifts = exerciseLog.lifts as? Set<Lift> {
                 for lift in lifts {
                     if !lift.hasBeenPerformed {
-                        DatabaseFacade.delete(lift)
+                        coreDataManager.delete(lift)
                     }
                 }
             }
@@ -141,7 +143,7 @@ private extension ExerciseTableDataSource {
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog and make it identical to the previous one
-        dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog(ofDesign: previousWorkoutLogDesign)
+        dataSourceWorkoutLog = coreDataManager.makeWorkoutLog(ofDesign: previousWorkoutLogDesign)
         dataSourceWorkoutLog.dateStarted = Date() as NSDate
         
         addPerformedExercises(fromWorkoutLog: previousPerformance)
@@ -152,7 +154,7 @@ private extension ExerciseTableDataSource {
         exerciseLogsAsArray = [ExerciseLog]()
         
         // Make new WorkoutLog to later to later be updated
-        dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
+        dataSourceWorkoutLog = coreDataManager.makeWorkoutLog(ofDesign: workout)
         
         let orderedSetExercises = workout.getExercises(includeRetired: false)
         
@@ -164,7 +166,7 @@ private extension ExerciseTableDataSource {
             // For each exercise, make a copy of its exerciseLog so that it can be manipulated by user and saved later
             for exercise in orderedSetExercises {
                 // Make new ExerciseLog
-                let newExerciseLog = DatabaseFacade.makeExerciseLog()
+                let newExerciseLog = coreDataManager.makeExerciseLog()
                 newExerciseLog.exerciseDesign = exercise
                 newExerciseLog.usedIn = dataSourceWorkoutLog
                 newExerciseLog.datePerformed = Date() as NSDate
@@ -172,7 +174,7 @@ private extension ExerciseTableDataSource {
                 var liftCopies = [Lift]()
                 
                 // Copy values from the most recently performed ExerciseLog to the newly created one
-                if let mostRecentExerciseLog = DatabaseFacade.fetchLatestExerciseLog(ofExercise: exercise) {
+                if let mostRecentExerciseLog = coreDataManager.fetchLatestExerciseLog(ofExercise: exercise) {
                     if let mostRecentLifts = mostRecentExerciseLog.lifts {
                         // SortDescriptor
                         let dateSortDescriptor = NSSortDescriptor(key: "datePerformed", ascending: false)
@@ -180,7 +182,7 @@ private extension ExerciseTableDataSource {
                         
                         // copy each Lift and add them to the newExerciseLog
                         for lift in sortedRecentLifts {
-                            let newLift = DatabaseFacade.makeLift()
+                            let newLift = coreDataManager.makeLift()
                             newLift.reps = lift.reps
                             newLift.datePerformed = Date() as NSDate
                             newLift.time = lift.time
@@ -243,7 +245,7 @@ private extension ExerciseTableDataSource {
         
         for exerciseLog in exerciseLogsContainedBothInPreviousAndStillInDesign {
             // make new ExerciseLog
-            let newExerciseLog = DatabaseFacade.makeExerciseLog()
+            let newExerciseLog = coreDataManager.makeExerciseLog()
             newExerciseLog.exerciseDesign = exerciseLog.exerciseDesign
             newExerciseLog.usedIn = dataSourceWorkoutLog
             newExerciseLog.datePerformed = Date() as NSDate
@@ -268,7 +270,7 @@ private extension ExerciseTableDataSource {
         var liftCopies = [Lift]()
         
         for lift in lifts {
-            let newLift = DatabaseFacade.makeLift()
+            let newLift = coreDataManager.makeLift()
             newLift.reps = lift.reps
             newLift.datePerformed = lift.datePerformed
             newLift.time = lift.time
@@ -298,7 +300,7 @@ private extension ExerciseTableDataSource {
         let exercisesToAdd = allUnretiredExercises.subtracting(performedExercises)
         
         for exercise in exercisesToAdd {
-            let newLog = DatabaseFacade.makeExerciseLog(forExercise: exercise)
+            let newLog = coreDataManager.makeExerciseLog(forExercise: exercise)
             newLog.usedIn = dataSourceWorkoutLog
             
             exerciseLogsAsArray.append(newLog)
@@ -325,7 +327,7 @@ extension ExerciseTableDataSource: UITableViewDataSource {
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseCellForWorkouts
-        cell = ExerciseCellForWorkouts(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier)
+        cell = ExerciseCellForWorkouts(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier, coreDataManager: coreDataManager)
         cell.accessibilityIdentifier = exerciseLog.getName()
         cell.box.setTitle(exerciseLog.getName())
         cell.owner = self
