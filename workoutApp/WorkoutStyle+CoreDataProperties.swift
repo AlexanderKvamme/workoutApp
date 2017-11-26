@@ -39,7 +39,6 @@ extension WorkoutStyle {
     // Decrementers
     
     public func decrementPerformanceCount() {
-        print("styleperformance was: ", stylePerformanceCount)
         precondition(stylePerformanceCount > 0, "Performance count should not be negative")
         stylePerformanceCount -= 1
     }

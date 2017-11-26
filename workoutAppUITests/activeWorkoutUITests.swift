@@ -52,16 +52,14 @@ class activeWorkoutUITests: XCTestCase {
         app.buttons["1"].tap()
         okButton.tap()
         
-        // FIXME: Try to get value from collectionViewcell and print out the lift its representing
-//        let textView = app.cells["WEIGHTED PULL UP"].textFields.firstMatch
-        let textView = app.cells["WEIGHTED PULL UP"].collectionViews.firstMatch
+        let text =  app.cells["WEIGHTED PULL UP"].collectionViews.firstMatch.textFields.firstMatch.value as! String
         
-//        XCUIApplication().tables/*@START_MENU_TOKEN@*/.collectionViews/*[[".cells[\"WEIGHTED PULL UP\"].collectionViews",".collectionViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.cells.children(matching: .button).element.tap()
-//        XCUIApplication().tables/*@START_MENU_TOKEN@*/.cells["WEIGHTED PULL UP"].collectionViews.textFields["1"]/*[[".cells[\"WEIGHTED PULL UP\"].collectionViews",".cells.textFields[\"1\"]",".textFields[\"1\"]",".collectionViews"],[[[-1,3,1],[-1,0,1]],[[-1,2],[-1,1]]],[1,0]]@END_MENU_TOKEN@*/.tap()
-//
-        let text =  XCUIApplication().tables.cells["WEIGHTED PULL UP"].collectionViews.firstMatch.textFields.firstMatch.value as! String
-        
+        print(text)
         assert(text == "1")
+        
+        let text2 =  app.cells["WEIGHTED PULL UP"].collectionViews.firstMatch.textFields.element(boundBy: 1).value as! String
+        print(text2)
+        assert(text2 == "11")
     }
     
     func testExerciseCellsAreReorderable() {
@@ -89,32 +87,31 @@ class activeWorkoutUITests: XCTestCase {
         app.buttons["1"].tap()
         okButton.tap()
         
-        //        app.cells["PULL UP"].buttons["cell-plus-button"].forceTap()
-        //        app.buttons["2"].tap()
-        //        okButton.tap()
-        //
-        //        app.cells["WMS AUS PULL"].buttons["cell-plus-button"].forceTap()
-        //        app.buttons["3"].tap()
-        //        okButton.tap()
-        //
-        //        app.cells["CHEST TO BAR"].buttons["cell-plus-button"].forceTap()
-        //        app.buttons["4"].tap()
-        //        okButton.tap()
-        //
-        //        app.cells["ASSISTED CHEST TO BAR"].buttons["cell-plus-button"].forceTap()
-        //        app.buttons["5"].tap()
-        //        okButton.tap()
-        //
-        //        app.cells["NEGATIVE MUSCLE UP"].buttons["cell-plus-button"].forceTap()
-        //        app.buttons["6"].tap()
-        //        okButton.tap()
-        //
-        //        app.cells["BICEP FLEX"].buttons["cell-plus-button"].forceTap()
-        //        app.buttons["7"].tap()
-        //        okButton.tap()
+        app.cells["PULL UP"].buttons["cell-plus-button"].forceTap()
+        app.buttons["2"].tap()
+        okButton.tap()
         
+        app.cells["WMS AUS PULL"].buttons["cell-plus-button"].forceTap()
+        app.buttons["3"].tap()
+        okButton.tap()
+        
+        app.cells["CHEST TO BAR"].buttons["cell-plus-button"].forceTap()
+        app.buttons["4"].tap()
+        okButton.tap()
+        
+        app.cells["ASSISTED CHEST TO BAR"].buttons["cell-plus-button"].forceTap()
+        app.buttons["5"].tap()
+        okButton.tap()
+        
+        app.cells["NEGATIVE MUSCLE UP"].buttons["cell-plus-button"].forceTap()
+        app.buttons["6"].tap()
+        okButton.tap()
+        
+        app.cells["BICEP FLEX"].buttons["cell-plus-button"].forceTap()
+        app.buttons["7"].tap()
+        okButton.tap()
 
-        // FIXME: TEMP SCROLL TO T
+        // TEMP SCROLL TO T
         app.cells["TRICEPS FLEX"].tap()
         app.cells["TRICEPS FLEX"].buttons["cell-plus-button"].forceTap()
         app.buttons["8"].tap()
@@ -145,7 +142,7 @@ class activeWorkoutUITests: XCTestCase {
         
         // MARK: Sencod pass of sets
         
-        // second set of triceps flexers
+        // Second set of triceps flexers
         app.cells["TRICEPS FLEX"].tap()
         tricepsCell.buttons["cell-plus-button"].forceTap()
         app.buttons["8"].tap()
@@ -155,7 +152,7 @@ class activeWorkoutUITests: XCTestCase {
         // Scroll down to weighted cell in the bot and enter second set of 12/12
 
         let tablesQuery = XCUIApplication().tables
-        tablesQuery.cells["NEGATIVE MUSCLE UP"].children(matching: .collectionView).element.swipeUp()
+        tablesQuery.cells["NEGATIVE MUSCLE UP"].swipeUp()
         tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["BICEP FLEX"]/*[[".cells[\"BICEP FLEX\"].staticTexts[\"BICEP FLEX\"]",".staticTexts[\"BICEP FLEX\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeUp()
         tablesQuery.cells["WEIGHTED PULL UP"].buttons["+"].forceTap()
         
@@ -166,21 +163,9 @@ class activeWorkoutUITests: XCTestCase {
         app.buttons["2"].tap()
         okButton.tap()
 
-        // Scroll up and assert correct value
-        
-        // FIXME: Bra hittil
+        // Scroll up and make sure top cells are correct
         app.cells["TRICEPS FLEX"].tap()
-        
-        let tricepsFlexCell = app.tables.cells["TRICEPS FLEX"]
 
-        print("tests should be done")
-        
-        /*
-         - weighred pulls should be 1/11, 12/12
-         - triceps 8, 82
-        
-         - cell[0] er 1, 82, mens den burde vært 82 82... jeg tror dette er fordi datasourcen ikke blir byttet. Fordi datarourcen har tydeligvis 1/11, 82
-        */
-        
+        // TODO: Find out how to test the cells
     }
 }

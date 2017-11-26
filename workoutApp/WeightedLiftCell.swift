@@ -75,6 +75,7 @@ class WeightedLiftCell: LiftCell {
         repsField.textColor = UIColor.light
         repsField.alpha = Constant.alpha.faded
         repsField.clearsOnBeginEditing = true
+        repsField.accessibilityIdentifier = "repsField"
         addSubview(repsField)
     }
     
@@ -86,6 +87,7 @@ class WeightedLiftCell: LiftCell {
         weightField.textColor = .light
         weightField.alpha = Constant.alpha.faded
         weightField.clearsOnBeginEditing = true
+        weightField.accessibilityIdentifier = "weightField"
         weightField.sizeToFit()
 
         addSubview(weightField)

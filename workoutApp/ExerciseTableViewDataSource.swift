@@ -80,17 +80,21 @@ class ExerciseTableDataSource: NSObject {
             
             var exerciseLogsAsArray = orderedExerciseLogs.array as! [ExerciseLog]
             
-            // swap
+            // Swap
             let temp = exerciseLogsAsArray[indexA]
             exerciseLogsAsArray[indexA] = exerciseLogsAsArray[indexB]
             exerciseLogsAsArray[indexB] = temp
             
-            // put back
+            // Put back
             let exerciseLogsAsOrderedeSet = NSOrderedSet(array: exerciseLogsAsArray)
             dataSourceWorkoutLog.loggedExercises = exerciseLogsAsOrderedeSet
         } else {
             print("Error: Could not unwrap orderedExerciseLogs")
         }
+        
+        let tmp = totalLiftsToDisplay[indexA]
+        totalLiftsToDisplay[indexA] = totalLiftsToDisplay[indexB]
+        totalLiftsToDisplay[indexB] = tmp
     }
     
     func deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs() {
@@ -325,8 +329,8 @@ extension ExerciseTableDataSource: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let exerciseLog = exerciseLogsAsArray[indexPath.section]
         let liftsToDisplay = totalLiftsToDisplay[indexPath.section]
-        
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ExerciseCellForWorkouts
+        
         cell = ExerciseCellForWorkouts(withExerciseLog: exerciseLog, lifts: liftsToDisplay, reuseIdentifier: cellIdentifier, coreDataManager: coreDataManager)
         cell.accessibilityIdentifier = exerciseLog.getName()
         cell.box.setTitle(exerciseLog.getName())

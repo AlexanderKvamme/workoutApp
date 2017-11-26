@@ -44,7 +44,6 @@ final class DataSeeder {
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
         seedWithExampleMeasurementStyles()
-        seedWithExampleWarning()
         coreDataManager.saveContext()
     }
     
@@ -96,7 +95,7 @@ final class DataSeeder {
         // Muscles
         for muscleName in defaultMuscles {
             if coreDataManager.getMuscle(named: muscleName.uppercased()) == nil {
-                print("didnt exist so making muscle named \(muscleName)")
+                print("didnt exist in context so making muscle named \(muscleName)")
                 makeMuscle(withName: muscleName.uppercased())
             }
         }
@@ -104,7 +103,7 @@ final class DataSeeder {
         // Workout Styles
         for workoutStyleName in defaultWorkoutStyles {
             if coreDataManager.getWorkoutStyle(named: workoutStyleName) == nil {
-                print("didnt exist so making workoutstyle named \(workoutStyleName)")
+                print("didnt exist in context so making workoutstyle named \(workoutStyleName)")
                 makeWorkoutStyle(withName: workoutStyleName)
             }
         }
@@ -112,7 +111,7 @@ final class DataSeeder {
         // Exercise Styles
         for exerciseStyleName in defaultExerciseStyles {
             if coreDataManager.getExerciseStyle(named: exerciseStyleName) == nil {
-                print("didnt exist so making exercise named \(exerciseStyleName)")
+                print("didnt exist in context so making exercise named \(exerciseStyleName)")
                 makeExerciseStyle(withName: exerciseStyleName)
             }
         }
@@ -120,7 +119,7 @@ final class DataSeeder {
         // Measurement Styles
         for measurementStyle in defaultMeasurementStyles {
             if coreDataManager.getMeasurementStyle(named: measurementStyle) == nil {
-                print("didnt exist so making measurementStyle named \(measurementStyle)")
+                print("didnt exist in context so making measurementStyle named \(measurementStyle)")
                 makeMeasurementStyle(withName: measurementStyle)
             }
         }
@@ -137,7 +136,7 @@ final class DataSeeder {
     }
     
     private func seedWithExampleWarning() {
-        makeWarning(withMessage: "Welcome to the workout app")
+        makeWarning(withMessage: "Welcome to the Hone")
     }
     
     private func seedWithExampleWorkoutStyles() {

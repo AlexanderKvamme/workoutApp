@@ -41,6 +41,7 @@ class UnweightedLiftCell: LiftCell {
         repsField.textColor = UIColor.light
         repsField.alpha = Constant.alpha.faded
         repsField.clearsOnBeginEditing = true
+        repsField.accessibilityIdentifier = "repsField"
         addSubview(repsField)
     }
     

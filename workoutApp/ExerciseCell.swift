@@ -32,12 +32,6 @@ class ExerciseCellBaseClass: UITableViewCell {
         backgroundColor = .light
     }
     
-//    init(style: UITableViewCellStyle, reuseIdentifier: String?, coreDataManager: CoreDataManager) {
-////        self.coreDataManager = coreDataManager
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        backgroundColor = .light
-//    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -403,11 +397,13 @@ extension ExerciseCellForWorkouts: UICollectionViewDataSource {
         let liftToDisplay = liftsToDisplay[indexPath.row]
         
         var cell: LiftCell!
-        
+
         if self.exercise.isWeighted() {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.weighted, for: indexPath) as! WeightedLiftCell
+            cell.accessibilityIdentifier = "collectionCell-\(indexPath.row)"
         } else {
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellID.unweighted, for: indexPath) as! UnweightedLiftCell
+            cell.accessibilityIdentifier = "collectionCell-\(indexPath.row)"
         }
         
         cell.superTableCell = self

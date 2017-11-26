@@ -42,7 +42,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     }
     
     override func viewDidLoad() {
-        print("\n\nWORKOUT SELECTION VIEW CONTROLLER")
         super.viewDidLoad()
         view.backgroundColor = .light
         setupStack()

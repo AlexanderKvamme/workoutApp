@@ -13,34 +13,32 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var coreDataManager: CoreDataManager?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
-        // Set up a coreDataManager based on if the commandline has arguemnts for test/fastlane's snapshot
-        var coreDataManager: CoreDataManager!
-        
-        switch CommandLine.hasArguments() {
-        case true:
+
+        // Seed if contaning commandLine arguments
+        if CommandLine.arguments.contains("--fastlaneSnapshot") {
             let inMemoryContext = setUpInMemoryManagedObjectContext()
             coreDataManager = CoreDataManager(providedContext: inMemoryContext)
-        case false:
-            coreDataManager = CoreDataManager()
-        }
-        
-        // Seed based on CommandLine arguments
-        if CommandLine.arguments.contains("--fastlaneSnapshot") {
-            let coreDataSeeder = DataSeeder(coreDataManager: coreDataManager)
+            let coreDataSeeder = DataSeeder(coreDataManager: coreDataManager!)
             coreDataSeeder.seedCoreDataForFastlaneSnapshots()
         } else if CommandLine.arguments.contains("ACTIVE_WORKOUT_UITESTS") {
-            let coreDataSeeder = DataSeeder(coreDataManager: coreDataManager)
-            coreDataSeeder.makeLongWorkout(coreDataManager: coreDataManager)
+            let inMemoryContext = setUpInMemoryManagedObjectContext()
+            coreDataManager = CoreDataManager(providedContext: inMemoryContext)
+            let coreDataSeeder = DataSeeder(coreDataManager: coreDataManager!)
+            coreDataSeeder.makeLongWorkout(coreDataManager: coreDataManager!)
+        } else {
+            // No arguments, so use context from devices persistent store
+            coreDataManager = CoreDataManager()
         }
+        // Seed with initial muscles .etc
+        seedIfFirstLaunch(coreDataManager: coreDataManager!)
         
         customizeUIAppearance()
-        seedIfFirstLaunch(coreDataManager: coreDataManager)
         
         // Instantiate master View Controller
-        window?.rootViewController = CustomTabBarController(nibName: nil, bundle: nil, coreDataManager: coreDataManager)
+        window?.rootViewController = CustomTabBarController(nibName: nil, bundle: nil, coreDataManager: coreDataManager!)
         
         return true
     }
@@ -54,8 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         UserDefaults.standard.synchronize()
-        let coreDataManager = CoreDataManager()
-        coreDataManager.saveContext()
+        coreDataManager!.saveContext()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -70,8 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         UserDefaults.standard.synchronize()
-        let coreDataManager = CoreDataManager()
-        coreDataManager.saveContext()
+        coreDataManager!.saveContext()
     }
     
     // MARK: - Custom Methods
@@ -117,12 +113,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
     }
 }
-
- extension CommandLine {
- 
-    static func hasArguments() -> Bool {
-        return self.arguments.count > 0
-    }
- }
-
  

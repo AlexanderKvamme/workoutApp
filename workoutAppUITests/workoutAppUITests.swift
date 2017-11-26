@@ -76,7 +76,6 @@ class workoutAppUITests: XCTestCase {
     }
     
     func testSnapshotsOfWorkoutInUse() {
-        
         // Launch
         let app = XCUIApplication()
         setupSnapshot(app)

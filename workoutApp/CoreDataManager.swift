@@ -19,8 +19,6 @@ final class CoreDataManager {
     }
     
     // MARK: - Properties
-    
-//    var persistentContainer: NSPersistentContainer
     var context: NSManagedObjectContext
     
     init() {
@@ -33,9 +31,9 @@ final class CoreDataManager {
         self.context = persistentContainer.viewContext
     }
     
+    // Set up with a provided MOC, useful for testing with an in-memory context
     init(providedContext: NSManagedObjectContext) {
-        //let managedObjectModel = NSManagedObjectModel.mergedModel(from: nil)
-        
+    
         guard let storeCoordinator = providedContext.persistentStoreCoordinator else {
             fatalError("had no previous persistentStoreCoordinator")
         }
