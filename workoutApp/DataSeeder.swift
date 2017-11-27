@@ -50,14 +50,16 @@ final class DataSeeder {
     /// Clears out persistent store to make room for snapshottable exercises only
     public func seedCoreDataForFastlaneSnapshots() {
         
-        // Clear core data
-        let dataSeeder = DataSeeder(coreDataManager: coreDataManager)
-        dataSeeder.clear(entity: Entity.WorkoutLog)
-        dataSeeder.clear(entity: Entity.Exercise)
-        dataSeeder.clear(entity: Entity.Workout)
-        dataSeeder.clear(entity: Entity.Goal)
         
-        dataSeeder.resetCounts() //
+        // FIXME: - Maybe not needed as i use in memory store for testing now
+        // Clear core data
+        
+//        let dataSeeder = DataSeeder(coreDataManager: coreDataManager)
+//        dataSeeder.clear(entity: Entity.WorkoutLog)
+//        dataSeeder.clear(entity: Entity.Exercise)
+//        dataSeeder.clear(entity: Entity.Workout)
+//        dataSeeder.clear(entity: Entity.Goal)
+//        dataSeeder.resetCounts()
         
         // Quick access to static variables
         let muscles = Muscles(coreDataManager: coreDataManager)

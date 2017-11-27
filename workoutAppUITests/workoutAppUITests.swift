@@ -26,34 +26,12 @@ class workoutAppUITests: XCTestCase {
     
     // MARK: - Test Methods
     
-    func testSeedAbortedActiveWorkout() {
-        let app = XCUIApplication()
-        setupSnapshot(app)
-        app.launchArguments.append("--fastlaneSnapshot")
-        app.launch()
-        
-        app.tabBars.buttons["workout-tab"].tap()
-        
-        app.buttons["NORMAL"].firstMatch.tap()
-        app.cells["PULL DAY"].tap()
-        
-        let nextButton = app.buttons["customNextButton"].firstMatch
-        
-        // Tap plus button and start entering workouts for the first exercise
-        app.cells["PULL UP"].buttons["cell-plus-button"].forceTap()
-        
-        // Enter Lifts
-        app.buttons["8"].tap()
-        nextButton.tap()
-        app.buttons["8"].tap()
-    }
-    
-    func testFastlaneSeeding() {
-        let app = XCUIApplication()
-        setupSnapshot(app)
-        app.launchArguments.append("--fastlaneSnapshot")
-        app.launch()
-    }
+//    func testFastlaneSeeding() {
+//        let app = XCUIApplication()
+//        setupSnapshot(app)
+//        app.launchArguments.append("--fastlaneSnapshot")
+//        app.launch()
+//    }
     
     func testExercisepickingSnapshots() {
         
@@ -72,7 +50,7 @@ class workoutAppUITests: XCTestCase {
         
         app.cells["OTHER-muscle-button"].tap()
         app.cells["BACK-muscle-button"].tap()
-        // snapshot("9-Switching to back muscle")
+        snapshot("9-Switching to back muscle")
     }
     
     func testSnapshotsOfWorkoutInUse() {
@@ -150,7 +128,7 @@ class workoutAppUITests: XCTestCase {
         
         // Save
         app.buttons["footer-save-button"].tap()
-        snapshot("great job 9 exercises")
+//        snapshot("great job 9 exercises")
         app.buttons["approve-modal-button"].tap()
         
         // PART 2
@@ -158,7 +136,7 @@ class workoutAppUITests: XCTestCase {
         
         // Enter the Pull Day
         app.cells["PULL DAY"].tap()
-        snapshot("Clean workout")
+        //snapshot("1-Active-workout")
         
         // Tap plus button to start entering lifts
         app.cells["WEIGHTED PULL UP"].buttons["cell-plus-button"].forceTap()
@@ -168,7 +146,7 @@ class workoutAppUITests: XCTestCase {
         nextButton.tap()
         app.buttons["1"].tap()
         app.buttons["5"].tap()
-        snapshot("ghost lifts")
+        snapshot("2-Active-Workout-Inputting")
 
         okButton.tap()
     }
@@ -186,11 +164,11 @@ class workoutAppUITests: XCTestCase {
 
         // Screenshot of WO style picker
         app.tabBars.buttons["workout-tab"].tap()
-        snapshot("1-workout")
+        //snapshot("1-workout-selecter")
 
         // Screenshot of inside of Normal
         app.buttons["NORMAL"].firstMatch.tap()
-        snapshot("2-normal-workouts")
+        snapshot("1-normal-workouts")
         sleep(1)
 
         // navigate back to menu
