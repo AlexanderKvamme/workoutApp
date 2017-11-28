@@ -8,4 +8,3 @@
 
 app_identifier "HomeOfficesInternational1.workoutApp1" # The bundle identifier of your app
 username "doktoren@gmail.com" # your Apple ID user
-screenshots_path "./fastlane/screenshots"
