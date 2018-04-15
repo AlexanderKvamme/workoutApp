@@ -8,7 +8,52 @@
 
 import Foundation
 
+
 extension Workout {
+    
+    // MARK: Increments Log Count
+    
+    func incrementPerformanceCount() {
+        self.performanceCount += 1
+    }
+    
+    func incrementPerformanceCount(by amount: Int) {
+        self.performanceCount += Int16(amount)
+    }
+    
+    // MARK: Decrement Log Count
+    
+    func decrementPerformanceCount(by amount: Int) {
+        self.performanceCount -= Int16(amount)
+    }
+    
+    func decrementPerformanceCount() {
+        self.performanceCount -= 1
+    }
+}
+
+extension Workout {
+    
+    /// Public entrypoint to manage the isRetired property
+    func makeRetired(_ bool: Bool) {
+        // Delegate to appropriate method
+        switch bool {
+        case true:
+            self.retire()
+        case false:
+            self.unretire()
+        }
+    }
+    
+    private func retire() {
+        self.isRetired = true
+        self.getWorkoutStyle().decrementWorkoutDesignCount()
+    }
+    
+    private func unretire() {
+        self.isRetired = false
+        self.getWorkoutStyle().incrementWorkoutDesignCount()
+    }
     
     // MARK: Getters
     
