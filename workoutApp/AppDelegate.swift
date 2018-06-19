@@ -96,10 +96,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     /// Set custom appearance of textFields flashing indicator, and Navigation bar.
     private func customizeUIAppearance() {
-        // TextField Customization
-        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
-        UITextField.appearance(whenContainedInInstancesOf: [LiftCell.self]).tintColor = .darkest
-        
+        customizeTextField()
+        customizeNavbar()
+    }
+    
+    private func customizeNavbar() {
         // Navigaiton bar customization
         UINavigationBar.appearance().barTintColor = UIColor.light
         let renderedImage = UIImage.backArrowIcon.withRenderingMode(.alwaysOriginal)
@@ -111,6 +112,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedStringKey.foregroundColor: UIColor.faded,
             NSAttributedStringKey.kern: 0.7,
         ]
+        
+        // remove shadow
+        UINavigationBar.appearance().shadowImage = UIImage()
+    }
+    
+    private func customizeTextField() {
+        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
+        UITextField.appearance(whenContainedInInstancesOf: [LiftCell.self]).tintColor = .darkest
     }
 }
  

@@ -81,9 +81,7 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     private func setupNavigationBar() {
-        if let name = currentWorkout.name {
-            self.title = name.uppercased()
-        }
+        if let name = currentWorkout.name { self.title = name.uppercased() }
         
         navigationController?.setNavigationBarHidden(false, animated: true)
         
@@ -93,6 +91,8 @@ class ActiveWorkoutController: UITableViewController {
         self.navigationItem.rightBarButtonItem = rightButton
         
         self.navigationItem.hidesBackButton = true
+        self.navigationController?.navigationBar.barTintColor = UIColor.light
+        view.clipsToBounds = true
     }
     
     private func setupTable() {
