@@ -42,7 +42,7 @@ extension WorkoutLog {
     }
     
     func getPerformedExercises(includeRetired: Bool) -> [Exercise] {
-        let exercises = getExerciseLogs().map { return $0.exerciseDesign }.flatMap { return $0 }.filter({ $0.isRetired == false })
+        let exercises = getExerciseLogs().map { return $0.exerciseDesign }.compactMap { return $0 }.filter({ $0.isRetired == false })
         
         return exercises
     }

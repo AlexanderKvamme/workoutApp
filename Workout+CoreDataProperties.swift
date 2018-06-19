@@ -1,8 +1,9 @@
 //
 //  Workout+CoreDataProperties.swift
-//  
+//  workoutApp
 //
-//  Created by Alexander Kvamme on 08/11/2017.
+//  Created by Alexander K on 19/06/2018.
+//  Copyright © 2018 Alexander Kvamme. All rights reserved.
 //
 //
 
@@ -16,77 +17,17 @@ extension Workout {
         return NSFetchRequest<Workout>(entityName: "Workout")
     }
 
+    @NSManaged public var isRetired: Bool
     @NSManaged public var name: String?
-    @NSManaged private(set) var isRetired: Bool
-    @NSManaged private(set) var performanceCount: Int16
+    @NSManaged public var performanceCount: Int16
     @NSManaged public var totalTimeSpent: Double
     @NSManaged public var exercises: NSOrderedSet?
     @NSManaged public var latestPerformence: WorkoutLog?
     @NSManaged public var loggedWorkouts: NSSet?
     @NSManaged public var musclesUsed: NSSet?
     @NSManaged public var workoutStyle: WorkoutStyle?
-    
+
 }
-
-// MARK: - isRetired methods
-
-extension Workout {
-    /// Public entrypoint to manage the isRetired property
-    func makeRetired(_ bool: Bool) {
-        // Delegate to appropriate method
-        switch bool {
-        case true:
-            self.retire()
-        case false:
-            self.unretire()
-        }
-    }
-    
-    private func retire() {
-        self.isRetired = true
-        self.getWorkoutStyle().decrementWorkoutDesignCount()
-    }
-    
-    private func unretire() {
-        self.isRetired = false
-        self.getWorkoutStyle().incrementWorkoutDesignCount()
-    }
-}
-
-// MARK: - Deletion
-
-extension Workout {
-
-    override public func prepareForDeletion() {
-        getWorkoutStyle().removeFromUsedInWorkouts(self)
-        getWorkoutStyle().decrementWorkoutDesignCount()
-    }
-}
-
-// MARK: - Incrementers
-
-extension Workout {
-    // MARK: Increments Log Count
-    
-    func incrementPerformanceCount() {
-        self.performanceCount += 1
-    }
-    
-    func incrementPerformanceCount(by amount: Int) {
-        self.performanceCount += Int16(amount)
-    }
-    
-    // MARK: Decrement Log Count
-    
-    func decrementPerformanceCount(by amount: Int) {
-        self.performanceCount -= Int16(amount)
-    }
-    
-    func decrementPerformanceCount() {
-        self.performanceCount -= 1
-    }
-}
-
 
 // MARK: Generated accessors for exercises
 extension Workout {

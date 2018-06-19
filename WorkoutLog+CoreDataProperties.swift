@@ -1,8 +1,9 @@
-	//
-//  WorkoutLog+CoreDataProperties.swift
-//  
 //
-//  Created by Alexander Kvamme on 08/11/2017.
+//  WorkoutLog+CoreDataProperties.swift
+//  workoutApp
+//
+//  Created by Alexander K on 19/06/2018.
+//  Copyright © 2018 Alexander Kvamme. All rights reserved.
 //
 //
 
@@ -24,17 +25,6 @@ extension WorkoutLog {
     @NSManaged public var loggedExercises: NSOrderedSet?
 
 }
-
-// MARK: - Custom Extensions
-
-extension WorkoutLog {
-    override public func prepareForDeletion() {
-        getDesign().decrementPerformanceCount()
-        getStyle().decrementPerformanceCount()
-    }
-}
-
-// MARK: - Default Extension
 
 // MARK: Generated accessors for isMostRecentUseOf
 extension WorkoutLog {
