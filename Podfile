@@ -6,7 +6,7 @@ target 'workoutApp' do
   use_frameworks!
 
   # Latest Swift 4 release in CocoaPods
-  pod 'SwipeCellKit', :git => 'https://github.com/SwipeCellKit/SwipeCellKit.git', :branch => 'swift4'
+  pod 'SwipeCellKit'#, :git => 'https://github.com/SwipeCellKit/SwipeCellKit.git', :branch => 'swift4'
 
   # Pods for workoutApp
 
