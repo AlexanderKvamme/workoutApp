@@ -14,7 +14,7 @@ protocol PickableSender: class {
     associatedtype Pickable
     
     func sendBack(pickable: Pickable) -> Void
-    weak var pickableReceiver: PickableReceiver? { get set }
+    var pickableReceiver: PickableReceiver? { get set }
 }
 
 // MARK: Pickable Receiver
