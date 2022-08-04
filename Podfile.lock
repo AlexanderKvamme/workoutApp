@@ -1,10 +1,14 @@
 PODS:
+  - AKKIT (0.1.1)
   - SwipeCellKit (1.9.1)
 
 DEPENDENCIES:
+  - AKKIT (from `~/Documents/workspaces/code/swift/AKKIT`)
   - SwipeCellKit (from `https://github.com/SwipeCellKit/SwipeCellKit.git`, branch `swift4`)
 
 EXTERNAL SOURCES:
+  AKKIT:
+    :path: "~/Documents/workspaces/code/swift/AKKIT"
   SwipeCellKit:
     :branch: swift4
     :git: https://github.com/SwipeCellKit/SwipeCellKit.git
@@ -15,8 +19,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwipeCellKit/SwipeCellKit.git
 
 SPEC CHECKSUMS:
+  AKKIT: 06de2a25e17ddd11ad63f8f15e5e0b280d05c682
   SwipeCellKit: 9fa65dd73e52e8fd139fec4d8f7d7cb44fa00559
 
-PODFILE CHECKSUM: b589ce6aa46c51617000b0622090c7f9c18a0c82
+PODFILE CHECKSUM: 9c4be8497ddfe77a9fbc490da25ac29dfb8a4990
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.11.3

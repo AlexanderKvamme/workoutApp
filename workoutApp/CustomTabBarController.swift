@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AKKIT
 
 /// Tab bar displayed in the bottom of the main screen. Used to let users navigate between History, Workout, and Profile tabs.
 class CustomTabBarController: UITabBarController {
@@ -56,7 +57,10 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
+        let res = TestClassr.test()
+        print("shazam: ", res)
+        
+        view.backgroundColor = Fuck.fuck()
         
         delegate = self
 

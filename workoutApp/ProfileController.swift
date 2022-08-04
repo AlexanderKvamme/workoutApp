@@ -15,7 +15,6 @@ final class ProfileController: UIViewController {
     
     // MARK: - Properties
     
-    private var messageButton = UIButton()
     private var scrollView = UIScrollView()
     private var stackView = UIStackView() // Subiew of scrollView
     
@@ -55,7 +54,6 @@ final class ProfileController: UIViewController {
     
     private func setup() {
         // TODO: Add preferences and show preferenceIcon
-        setupMessageButton()
         setupScrollView()
         setupStackView()
 
@@ -73,7 +71,7 @@ final class ProfileController: UIViewController {
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: messageButton.bottomAnchor, constant: 0),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
             scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
@@ -104,25 +102,6 @@ final class ProfileController: UIViewController {
             stackView.leftAnchor.constraint(equalTo: scrollView.leftAnchor),
             stackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            ])
-    }
-    
-    private func setupMessageButton() {
-        messageButton = UIButton(frame: CGRect.zero)
-        messageButton.setImage(UIImage.messageIcon, for: .normal)
-        messageButton.tintColor = UIColor.dark
-        messageButton.imageView?.contentMode = .scaleAspectFit
-        messageButton.addTarget(self, action: #selector(mailDeveloper), for: .touchUpInside)
-        
-        view.addSubview(messageButton)
-        
-        // Layout
-        messageButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            messageButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            messageButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
-            messageButton.widthAnchor.constraint(equalToConstant: 25),
-            messageButton.heightAnchor.constraint(equalToConstant: 25),
             ])
     }
     
