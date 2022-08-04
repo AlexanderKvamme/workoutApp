@@ -1,10 +1,16 @@
 PODS:
   - AKKIT (0.1.1)
+  - SnapKit (5.6.0)
   - SwipeCellKit (1.9.1)
 
 DEPENDENCIES:
   - AKKIT (from `~/Documents/workspaces/code/swift/AKKIT`)
+  - SnapKit
   - SwipeCellKit (from `https://github.com/SwipeCellKit/SwipeCellKit.git`, branch `swift4`)
+
+SPEC REPOS:
+  trunk:
+    - SnapKit
 
 EXTERNAL SOURCES:
   AKKIT:
@@ -20,8 +26,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AKKIT: 06de2a25e17ddd11ad63f8f15e5e0b280d05c682
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwipeCellKit: 9fa65dd73e52e8fd139fec4d8f7d7cb44fa00559
 
-PODFILE CHECKSUM: 9c4be8497ddfe77a9fbc490da25ac29dfb8a4990
+PODFILE CHECKSUM: 0282d763f1de284822fe01d19ab66d2c25f4fefb
 
 COCOAPODS: 1.11.3
