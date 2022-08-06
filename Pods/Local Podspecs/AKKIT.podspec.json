@@ -16,7 +16,8 @@
     "tag": "0.1.1"
   },
   "platforms": {
-    "ios": "10.0"
+    "ios": "15.0"
   },
-  "source_files": "AKKIT/Classes/**/*"
+  "source_files": "AKKIT/MyResources/**/*",
+  "resources": "AKKIT/MyResources/Resources/**/*.{storyboard,xib,xcassets,json,png}"
 }

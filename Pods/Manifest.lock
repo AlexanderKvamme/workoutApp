@@ -25,7 +25,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwipeCellKit/SwipeCellKit.git
 
 SPEC CHECKSUMS:
-  AKKIT: 06de2a25e17ddd11ad63f8f15e5e0b280d05c682
+  AKKIT: da7fd8465db11ce893f67f45b3876b3302ecf3d2
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwipeCellKit: 9fa65dd73e52e8fd139fec4d8f7d7cb44fa00559
 

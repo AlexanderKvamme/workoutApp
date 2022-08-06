@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AKKIT
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,8 +29,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
         
-        // Instantiate master View Controller
-        window?.rootViewController = CustomTabBarController()
+        // FIXME: Fix this
+        
+        
+//        window?.rootViewController = CustomTabBarController()
+        
+        //
+        
+        let test = AKKIT.TestClassNew.test()
+        print("jazz: ", test)
+        
+        //
+        // Set initial viewController
+        
+//        // History
+//        let historySelectionViewController = HistorySelectionViewController()
+//        let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
+//
+//        // Workout Tab
+//        let workoutSelectionViewController = WorkoutSelectionViewController()
+//        let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
+//
+//        // Profile Tab
+//        let profileController = ProfileController()
+//        let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
+//
+//        // Set up navbar
+//        viewControllers = [historyNavigationController, workoutNavigationController, profileNavigationController]
+//        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.historyIcon, tag: 0)
+//        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.workoutIcon, tag: 1)
+//        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage.profileIcon, tag: 2)
+        
+        
+        let screens = [HistorySelectionViewController(), WorkoutSelectionViewController(), ProfileController()]
+        let centerIcon = UIImage(named: "icon-search")!
+        window?.rootViewController = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 1)
         
         return true
     }

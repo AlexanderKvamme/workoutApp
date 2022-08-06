@@ -67,16 +67,16 @@ extension CustomNavigationViewController: UINavigationControllerDelegate {
 
 // MARK: - UIGestureRecognizerDelegate
 
-extension CustomNavigationViewController: UIGestureRecognizerDelegate {
-    
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard gestureRecognizer == interactivePopGestureRecognizer else {
-            return true
-        }
-        // Disable pop gesture if:
-        // 1) the pop animation is in progress
-        // 2) user swipes quickly a couple of times and animations don't have time to be performed
-        return viewControllers.count > 1 && duringPushAnimation == false
-    }
-}
-
+//extension CustomNavigationViewController: UIGestureRecognizerDelegate {
+//    
+//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        guard gestureRecognizer == interactivePopGestureRecognizer else {
+//            return true
+//        }
+//        // Disable pop gesture if:
+//        // 1) the pop animation is in progress
+//        // 2) user swipes quickly a couple of times and animations don't have time to be performed
+//        return viewControllers.count > 1 && duringPushAnimation == false
+//    }
+//}
+//
