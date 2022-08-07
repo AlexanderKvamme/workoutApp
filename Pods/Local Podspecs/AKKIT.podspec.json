@@ -18,6 +18,5 @@
   "platforms": {
     "ios": "15.0"
   },
-  "source_files": "AKKIT/MyResources/**/*",
-  "resources": "AKKIT/MyResources/Resources/**/*.{storyboard,xib,xcassets,json,png}"
+  "source_files": "AKKIT/Classes/**/*"
 }

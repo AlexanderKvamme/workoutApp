@@ -30,13 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         seedIfFirstLaunch(context: context)
         
         // FIXME: Fix this
-        
-        
 //        window?.rootViewController = CustomTabBarController()
         
-        //
-        
-        let test = AKKIT.TestClassNew.test()
+//        let test = AKKIT.TestClassNew.test()
+        let test = AKKIT.TestClassr.test()
         print("jazz: ", test)
         
         //
