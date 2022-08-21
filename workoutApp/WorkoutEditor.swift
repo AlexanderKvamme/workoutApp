@@ -19,7 +19,7 @@ class WorkoutEditor: WorkoutController {
     private var styleWasChanged = false
     
     private lazy var footer: ButtonFooter = {
-        let footer = ButtonFooter(withColor: .darkest)
+        let footer = ButtonFooter(withColor: .akDark)
         footer.frame.origin.y = self.view.frame.maxY - footer.frame.height
         footer.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         footer.approveButton.addTarget(self, action: #selector(approveModifications), for: .touchUpInside)

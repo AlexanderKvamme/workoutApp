@@ -23,7 +23,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
     
     var header: TwoLabelStack = {
-        let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
+        let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         header.button.accessibilityIdentifier = "exercise-name-button"
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
         header.bottomLabel.adjustsFontSizeToFitWidth = true
@@ -93,7 +93,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
         view.backgroundColor = .light
         
         // Footer
-        let buttonFooter = ButtonFooter(withColor: .darkest)
+        let buttonFooter = ButtonFooter(withColor: .akDark)
         buttonFooter.frame.origin.y = view.frame.maxY - buttonFooter.frame.height
         buttonFooter.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         buttonFooter.approveButton.addTarget(self, action: #selector(approveTapHandler), for: .touchUpInside)

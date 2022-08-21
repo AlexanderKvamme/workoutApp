@@ -18,7 +18,7 @@ class RefreshControlView: UIView {
         let lbl = UILabel()
         lbl.text = "+"
         lbl.font = UIFont.custom(style: .bold, ofSize: .biggest)
-        lbl.textColor = UIColor.darkest
+        lbl.textColor = UIColor.akDark
         lbl.sizeToFit()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         

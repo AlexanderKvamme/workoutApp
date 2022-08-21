@@ -18,7 +18,7 @@ class TwoRowHeader: TwoLabelStack {
         
         let defaultFrame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: 100)
         
-        super.init(frame: defaultFrame, topText: topText, topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: bottomText, bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
+        super.init(frame: defaultFrame, topText: topText, topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: bottomText, bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -39,7 +39,7 @@ class TallExerciseTableCellBox: ExerciseTableCellBox {
         // Subheader
         if let subheader = subheader {
             addSubview(subheader)
-            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.label.frame.maxY - subheader.frame.height)
+            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.boxHeaderLabel.frame.maxY - subheader.frame.height)
             bringSubview(toFront: subheader)
         }
         

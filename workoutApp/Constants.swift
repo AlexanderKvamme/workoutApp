@@ -92,7 +92,7 @@ enum Constant {
         
         enum box {
             
-            static let spacingFromSides: CGFloat = 10
+            static let spacingFromSides: CGFloat = 24
             static let shimmerInset: CGFloat = 7
             
             enum suggestion {
@@ -147,7 +147,7 @@ enum Constant {
         enum exerciseTableCells {
             static let fontWhenSelected = UIFont.custom(style: .bold, ofSize: .big)
             static let fontWhenDeselected = UIFont.custom(style: .bold, ofSize: .medium)
-            static let textColorWhenSelected = UIColor.darkest
+            static let textColorWhenSelected = UIColor.akDark
             static let textColorWhenDeselected = UIColor.faded
         }
     }

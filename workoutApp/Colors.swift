@@ -11,14 +11,13 @@ import UIKit
 
 extension UIColor {
     // Primary Text colors
-    static let darkest = UIColor(hexString: "312E46")
     static let dark = UIColor(hexString: "43405E")
     static let medium = UIColor(hexString: "BEA098")
     static let faded = UIColor(hexString: "88828C")
     static let light = UIColor(hexString: "E8DFD9")
     static let lightest = UIColor(hexString: "F5EDED")
     static let primary = UIColor(hexString: "F6A623")
-    static let secondary = UIColor(hexString: "BC4553")
+    static let secondary = UIColor.akPrimary
 }
 
 extension UIColor {

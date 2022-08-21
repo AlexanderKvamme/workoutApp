@@ -56,7 +56,7 @@ class CustomTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.darkest
+        view.backgroundColor = UIColor.akDark
         
         delegate = self
 
@@ -91,7 +91,7 @@ class CustomTabBarController: UITabBarController {
         
         tabBar.tintColor = UIColor.lightest
         tabBar.unselectedItemTintColor = UIColor.light
-        tabBar.barTintColor = UIColor.darkest
+        tabBar.barTintColor = UIColor.akDark
         tabBar.isTranslucent = false
     }
     

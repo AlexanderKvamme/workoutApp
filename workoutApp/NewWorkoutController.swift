@@ -13,7 +13,7 @@ class NewWorkoutController: WorkoutController {
     // MARK: - Initializer
     
     lazy var footer: ButtonFooter = {
-        let f = ButtonFooter(withColor: .darkest)
+        let f = ButtonFooter(withColor: .akDark)
         f.frame.origin.y = self.view.frame.maxY - f.frame.height
         f.approveButton.addTarget(self, action: #selector(makeWorkoutAndDismissVC), for: .touchUpInside)
         f.approveButton.accessibilityIdentifier = "approve-button"

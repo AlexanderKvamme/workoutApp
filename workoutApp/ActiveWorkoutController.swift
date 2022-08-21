@@ -100,7 +100,7 @@ class ActiveWorkoutController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         automaticallyAdjustsScrollViewInsets = true
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .light
+        tableView.backgroundColor = .akLight
         
         setupTableFooter()
         tableView.reloadData()
@@ -112,7 +112,7 @@ class ActiveWorkoutController: UITableViewController {
         footer.saveButton.accessibilityIdentifier = "footer-save-button"
         footer.saveButton.addTarget(self, action: #selector(saveButtonHandler), for: .touchUpInside)
         
-        view.backgroundColor = .dark
+        view.backgroundColor = .akLight
         tableView.tableFooterView = footer
     }
     

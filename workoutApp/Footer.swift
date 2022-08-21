@@ -16,10 +16,9 @@ final class ExerciseTableFooter: UIView {
     override init(frame: CGRect) {
         saveButton = UIButton(frame: frame)
         saveButton.setTitle("SAVE", for: .normal)
-        saveButton.titleLabel?.font = UIFont.custom(style: .medium, ofSize: .bigger)
+        saveButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
         saveButton.titleLabel?.applyCustomAttributes(Constant.Attributes.letterSpacing.medium)
-        saveButton.setTitleColor(.light, for: .normal)
-        saveButton.titleLabel?.textColor = .purple
+        saveButton.setTitleColor(.akDark, for: .normal)
         
         super.init(frame: frame)
         

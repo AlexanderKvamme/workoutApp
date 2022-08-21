@@ -29,7 +29,7 @@ class ExerciseCellBaseClass: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .light
+        backgroundColor = .akLight
     }
     
     required init?(coder aDecoder: NSCoder) {

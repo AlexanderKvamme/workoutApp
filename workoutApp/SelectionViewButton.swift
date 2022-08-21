@@ -15,15 +15,16 @@ public class SelectionViewButton: UIView {
     var button: UIButton!
     var headerLabel: UILabel!
     var subheaderLabel: UILabel!
+    var stack = UIStackView()
     
     init(header: String, subheader: String) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 400, height: 50))
+        super.init(frame: .zero)
         
         headerLabel = UILabel()
         headerLabel.text = header.uppercased()
         headerLabel.font = UIFont.custom(style: .bold, ofSize: .big)
         headerLabel.textAlignment = .center
-        headerLabel.textColor = UIColor.dark
+        headerLabel.textColor = UIColor.akDark
         headerLabel.sizeToFit()
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.isUserInteractionEnabled = false
@@ -33,7 +34,7 @@ public class SelectionViewButton: UIView {
         subheaderLabel.font = UIFont.custom(style: .bold, ofSize: .small)
         subheaderLabel.applyCustomAttributes(.medium)
         subheaderLabel.textAlignment = .center
-        subheaderLabel.textColor = UIColor.dark
+        subheaderLabel.textColor = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
         subheaderLabel.sizeToFit()
         subheaderLabel.translatesAutoresizingMaskIntoConstraints = false
         subheaderLabel.isUserInteractionEnabled = false
@@ -41,7 +42,6 @@ public class SelectionViewButton: UIView {
         button = UIButton(frame: frame)
         button.addTarget(self, action: #selector(handleButtonTap(_:)), for: .touchUpInside)
         
-        button.backgroundColor = .green
         setupConstraints()
     }
     
@@ -51,25 +51,29 @@ public class SelectionViewButton: UIView {
     
     private func setupConstraints() {
         addSubview(button)
-        addSubview(headerLabel)
-        addSubview(subheaderLabel)
-        headerLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
+        addSubview(stack)
+        stack.addArrangedSubview(headerLabel)
+        stack.addArrangedSubview(subheaderLabel)
+        
+        stack.isUserInteractionEnabled = false
+        stack.axis = .vertical
+        stack.distribution = .equalSpacing
+        stack.alignment = .center
+        stack.spacing = 4
+        backgroundColor = .white
+        layer.cornerRadius = 16
+        
+        stack.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.center.equalToSuperview()
         }
         
-        subheaderLabel.snp.makeConstraints { make in
-            make.top.equalTo(headerLabel.snp.bottom)
-            make.centerX.equalToSuperview()
-        }
-        
-        // self
-        let combinedLabelHeight = subheaderLabel.frame.height + headerLabel.frame.height
         snp.makeConstraints { make in
-            make.height.equalTo(combinedLabelHeight)
-            make.width.equalTo(200)
-            make.top.equalTo(headerLabel)
-            make.bottom.equalTo(subheaderLabel)
+            make.height.equalTo(80)
+            make.width.equalTo(UIScreen.main.bounds.width-48)
+        }
+        button.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     

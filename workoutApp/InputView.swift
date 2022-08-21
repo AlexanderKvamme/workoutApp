@@ -54,7 +54,7 @@ class InputView: UIView {
         textField.textAlignment = .center
         textField.clearsOnBeginEditing = true
         textField.font = UIFont.custom(style: .bold, ofSize: .biggest)
-        textField.textColor = .darkest
+        textField.textColor = .akDark
         textField.clipsToBounds = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.widthAnchor.constraint(equalToConstant: Constant.UI.width).isActive = true

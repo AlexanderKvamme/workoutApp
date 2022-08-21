@@ -60,7 +60,7 @@ public class Box: UIView {
         // Subheader
         if let subheader = subheader {
             addSubview(subheader)
-            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.label.frame.maxY - subheader.frame.height)
+            subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.boxHeaderLabel.frame.maxY - subheader.frame.height)
             bringSubview(toFront: subheader)
         }
         
@@ -88,18 +88,18 @@ public class Box: UIView {
         
         // Adjust width if theres a subheader to avoid overlapping
         if let subheader = subheader {
-            header.label.preferredMaxLayoutWidth = boxFrame.frame.width - subheader.label.frame.width
+            header.boxHeaderLabel.preferredMaxLayoutWidth = boxFrame.frame.width - subheader.label.frame.width
         } else {
-            header.label.text = newText.uppercased()
+            header.boxHeaderLabel.text = newText.uppercased()
             return
         }
         
-        header.label.text = newText.uppercased()
-        header.label.sizeToFit()
+        header.boxHeaderLabel.text = newText.uppercased()
+        header.boxHeaderLabel.sizeToFit()
         
-        header.frame = CGRect(x: header.frame.minX, y: header.frame.minY, width: header.frame.width, height: header.label.frame.height)
+        header.frame = CGRect(x: header.frame.minX + 4, y: header.frame.minY, width: header.frame.width, height: header.boxHeaderLabel.frame.height+8)
         
-        totalHeight = header.label.frame.height + boxFrame.frame.height
+        totalHeight = header.boxHeaderLabel.frame.height + boxFrame.frame.height
         
         frame = CGRect(x: 0, y: 0, width: boxFrame.frame.width + 2*Constant.components.box.spacingFromSides, height: totalHeight)
         
@@ -113,7 +113,6 @@ public class Box: UIView {
         // Subheader
         if let subheader = subheader {
             updateSubheaderPosition(subheader)
-            
         }
         setNeedsLayout()
     }
@@ -156,7 +155,7 @@ extension Box {
         alpha = 0.8
         
         header?.backgroundColor = .green
-        header?.label.backgroundColor = .yellow
+        header?.boxHeaderLabel.backgroundColor = .yellow
         subheader?.backgroundColor = .brown
         subheader?.label.backgroundColor = .purple
         

@@ -49,6 +49,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = tabBar
         globalTabBar = tabBar
         
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .akLight
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
+        
         return true
     }
 
@@ -106,8 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Set custom appearance of textFields flashing indicator, and Navigation bar.
     private func customizeUIAppearance() {
         // TextField Customization
-        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .darkest
-        UITextField.appearance(whenContainedInInstancesOf: [LiftCell.self]).tintColor = .darkest
+        UITextField.appearance(whenContainedInInstancesOf: [InputViewController.self]).tintColor = .akDark
+        UITextField.appearance(whenContainedInInstancesOf: [LiftCell.self]).tintColor = .akDark
         
         // Navigaiton bar customization
         UINavigationBar.appearance().barTintColor = UIColor.light

@@ -43,7 +43,12 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         resetRefreshControlAnimation()
         addLongPressRecognizer()
         
-        view.backgroundColor = .light
+        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17, style: .plain, target: self, action: #selector(pop))
+        navigationItem.leftBarButtonItem = btnRefresh
+        navigationItem.leftBarButtonItem?.tintColor = .akDark
+        navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        
+        view.backgroundColor = .akLight
         tableView.reloadData()
         globalTabBar.hideIt()
     }
@@ -179,3 +184,9 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
 }
 
+
+extension UIViewController {
+    @objc func pop(){
+        navigationController?.popViewController(animated: true)
+    }
+}

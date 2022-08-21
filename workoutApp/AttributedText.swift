@@ -18,8 +18,8 @@ extension GoalsController {
         
         // Properties
         let font = UIFont.custom(style: .medium, ofSize: .medium)
-        let bulletColor = UIColor.darkest
-        let textColor = UIColor.darkest
+        let bulletColor = UIColor.akDark
+        let textColor = UIColor.akDark
         let bulletSize: CGFloat = font.pointSize
         
         // Setup
@@ -52,8 +52,8 @@ extension GoalsController {
         // Properties
         
         let font = UIFont.custom(style: .medium, ofSize: .medium)
-        let bulletColor = UIColor.darkest
-        let textColor = UIColor.darkest
+        let bulletColor = UIColor.akDark
+        let textColor = UIColor.akDark
         let bulletSize: CGFloat = font.pointSize
         
         // Setup

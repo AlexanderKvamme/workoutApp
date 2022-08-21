@@ -210,13 +210,13 @@ fileprivate class DeletionBoxFactory: BoxFactory {
 /// A large text above over the coloured box to the left.
 public class BoxHeader: UIView {
     
-    public var label = UILabel()
+    public var boxHeaderLabel = UILabel()
     
     init() {
         super.init(frame: CGRect.zero)
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.textColor = .darkest
-        label.text = "header goes here"
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .big)
+        boxHeaderLabel.textColor = .akDark
+        boxHeaderLabel.text = "header goes here"
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -227,12 +227,12 @@ public class BoxHeader: UIView {
 fileprivate class WarningBoxHeader: BoxHeader {
     override init(){
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .medium)
-        label.numberOfLines = 1
-        label.text = "WARNING"
-        label.sizeToFit()
-        addSubview(label)
-        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.Standard.width, height: label.frame.height)
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
+        boxHeaderLabel.numberOfLines = 1
+        boxHeaderLabel.text = "WARNING"
+        boxHeaderLabel.sizeToFit()
+        addSubview(boxHeaderLabel)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.Standard.width, height: boxHeaderLabel.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -244,21 +244,21 @@ fileprivate class SuggestionBoxHeader: BoxHeader {
     override init() {
         super.init()
         
-        label.font = UIFont.custom(style: .bold, ofSize: .medium)
-        label.textColor = UIColor.light
-        label.textAlignment = .center
-        label.alpha = Constant.alpha.faded
-        label.numberOfLines = 1
-        addSubview(label)
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
+        boxHeaderLabel.textColor = UIColor.light
+        boxHeaderLabel.textAlignment = .center
+        boxHeaderLabel.alpha = Constant.alpha.faded
+        boxHeaderLabel.numberOfLines = 1
+        addSubview(boxHeaderLabel)
         
         translatesAutoresizingMaskIntoConstraints = false
-        label.translatesAutoresizingMaskIntoConstraints = false
+        boxHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor),
-            label.leftAnchor.constraint(equalTo: leftAnchor),
-            label.rightAnchor.constraint(equalTo: rightAnchor),
+            boxHeaderLabel.topAnchor.constraint(equalTo: topAnchor),
+            boxHeaderLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            boxHeaderLabel.leftAnchor.constraint(equalTo: leftAnchor),
+            boxHeaderLabel.rightAnchor.constraint(equalTo: rightAnchor),
             ])
     }
     
@@ -271,11 +271,11 @@ fileprivate class StandardBoxHeader: BoxHeader {
 
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.numberOfLines = 2
-        label.sizeToFit()
-        addSubview(label)
-        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.Standard.width, height: label.frame.height)
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .big)
+        boxHeaderLabel.numberOfLines = 2
+        boxHeaderLabel.sizeToFit()
+        addSubview(boxHeaderLabel)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.Standard.width, height: boxHeaderLabel.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -287,13 +287,13 @@ fileprivate class ExerciseProgressBoxHeader: BoxHeader {
     
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .medium)
-        label.numberOfLines = 2
-        label.sizeToFit()
-        addSubview(label)
-        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.ExerciseProgress.width, height: label.frame.height)
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
+        boxHeaderLabel.numberOfLines = 2
+        boxHeaderLabel.sizeToFit()
+        addSubview(boxHeaderLabel)
+        frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.ExerciseProgress.width, height: boxHeaderLabel.frame.height + 8)
     
-        label.frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.ExerciseProgress.width - Constant.components.box.spacingFromSides, height: label.frame.height)
+        boxHeaderLabel.frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: Constant.components.box.ExerciseProgress.width - Constant.components.box.spacingFromSides, height: boxHeaderLabel.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -304,20 +304,20 @@ fileprivate class ExerciseProgressBoxHeader: BoxHeader {
 fileprivate class SelectionBoxHeader: BoxHeader {
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .medium)
-        label.applyCustomAttributes(.medium)
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
+        boxHeaderLabel.applyCustomAttributes(.medium)
         
         // temp label to set up boxheader height
-        let templabel = label
+        let templabel = boxHeaderLabel
         templabel.sizeToFit()
         
-        label.textAlignment = .center
+        boxHeaderLabel.textAlignment = .center
         
         let selectionBoxFrameWidth = Constant.components.box.Selection.width - 2*Constant.components.box.spacingFromSides
         frame = CGRect(x: Constant.components.box.spacingFromSides, y: 0, width: selectionBoxFrameWidth, height: templabel.frame.height)
-        label.frame.size = frame.size
-        label.applyCustomAttributes(.more)
-        addSubview(label)
+        boxHeaderLabel.frame.size = frame.size
+        boxHeaderLabel.applyCustomAttributes(.more)
+        addSubview(boxHeaderLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -400,7 +400,7 @@ public class BoxContent: UIView {
     func setup(usingWorkout workout: Workout) {
         if let cont = self as? WorkoutBoxContent {
             if let firstStack = cont.contentStack?.firstStack {
-                firstStack.setTopText("LAST")
+                firstStack.setTopText("Last")
                 firstStack.setBottomText(workout.timeSinceLastPerformence())
             }
             if let secondStack = cont.contentStack?.secondStack {
@@ -408,7 +408,7 @@ public class BoxContent: UIView {
                 secondStack.setBottomText(workout.getAverageTime())
             }
             if let thirdStack = cont.contentStack?.thirdStack {
-                thirdStack.setTopText("COUNT")
+                thirdStack.setTopText("Count")
                 thirdStack.setBottomText(String(workout.performanceCount))
             }
         }
@@ -687,10 +687,12 @@ public class BoxFrame: UIView {
     
     init() {
         super.init(frame: CGRect.zero)
-        background.backgroundColor = .primary
+        background.backgroundColor = .white
+        background.layer.cornerCurve = .continuous
+        background.layer.cornerRadius = 24
 
         // Setup shimmer properties
-        shimmer.backgroundColor = .white
+        shimmer.backgroundColor = .clear
         shimmer.alpha = 0.1
     }
     

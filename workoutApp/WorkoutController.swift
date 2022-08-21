@@ -57,7 +57,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }()
     
     lazy var header: TwoLabelStack = {
-        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.darkest, fadedBottomLabel: false)
+        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "workout-name-button"
         stack.bottomLabel.adjustsFontSizeToFitWidth = true
         

@@ -30,7 +30,7 @@ class SelectionViewHeader: UIView {
         headerLabel.text = header.uppercased()
         headerLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
         headerLabel.textAlignment = .center
-        headerLabel.textColor = UIColor.secondary
+        headerLabel.textColor = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
         headerLabel.sizeToFit()
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.applyCustomAttributes(.medium)
@@ -38,7 +38,7 @@ class SelectionViewHeader: UIView {
         subheaderLabel.text = subheader.uppercased()
         subheaderLabel.font = UIFont.custom(style: .bold, ofSize: .big)
         subheaderLabel.textAlignment = .center
-        subheaderLabel.textColor = UIColor.dark
+        subheaderLabel.textColor = UIColor.akDark
         subheaderLabel.sizeToFit()
         subheaderLabel.translatesAutoresizingMaskIntoConstraints = false
         

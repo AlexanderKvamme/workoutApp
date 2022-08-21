@@ -33,10 +33,6 @@ class WorkoutSelectionViewController: SelectionViewController {
 
         updateStackWithEntriesFromCoreData()
         
-        if buttonNames.count > 0 {
-            drawDiagonalLine()
-        }
-        
         view.bringSubview(toFront: stack) // Bring it in front of diagonal line
         view.layoutIfNeeded()
         
@@ -45,7 +41,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         setupStack()
         setupLayout()
     }

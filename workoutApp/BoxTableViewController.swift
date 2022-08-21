@@ -67,6 +67,7 @@ class BoxTableViewController: UITableViewController {
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorInset.left = 0
+        tableView.separatorStyle = .none
     }
 
     // MARK: Refresh Control
@@ -95,7 +96,6 @@ class BoxTableViewController: UITableViewController {
     // MARK: Navigationbar
     
     func setUpNavigationBar(withTitle title: String?) {
-        
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
@@ -104,16 +104,19 @@ class BoxTableViewController: UITableViewController {
             var suffix = ""
             switch type(of: self) {
             case is WorkoutLogHistoryTableViewController.Type:
-                suffix = "HISTORY"
+                suffix = "history"
             case is WorkoutTableViewController.Type:
-                suffix = "WORKOUTS"
+                suffix = "workout"
             default:
                 break
             }
-            self.title = "\(name.uppercased()) \(suffix)"
+            self.title = "\(name.capitalized) \(suffix)"
         } else {
             self.title = "ALL HISTORY"
         }
+        
+        // TEMP
+        self.title = ""
         refreshControl?.endRefreshing()
         removeBackButton()
     }

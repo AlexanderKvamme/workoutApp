@@ -24,7 +24,7 @@ public class TwoRowStack: UIStackView {
         setTopLabel(topText)
         bottomRow.text = bottomText.uppercased()
         bottomRow.font = stackFont
-        bottomRow.textColor = .lightest
+        bottomRow.textColor = .akDark
         topRow.textAlignment = .center
         bottomRow.sizeToFit()
     
@@ -60,7 +60,7 @@ public class TwoRowStack: UIStackView {
     private func setTopLabel(_ str: String) {
         topRow.text = str.uppercased()
         topRow.font = stackFont
-        topRow.textColor = .light
+        topRow.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
         topRow.textAlignment = .center
         topRow.sizeToFit()
     }

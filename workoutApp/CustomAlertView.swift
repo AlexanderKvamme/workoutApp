@@ -189,7 +189,7 @@ class CustomAlertView: UIView, isModal {
     
     private func setBackground() {
         backgroundView.frame = frame
-        backgroundView.backgroundColor = UIColor.darkest
+        backgroundView.backgroundColor = UIColor.akDark
         backgroundView.alpha = 0
         addSubview(backgroundView)
     }

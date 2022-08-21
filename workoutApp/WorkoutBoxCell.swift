@@ -60,12 +60,13 @@ class WorkoutBoxCell: SwipeTableViewCell {
     }
     
  func setupContent(withWorkout workout: Workout) {
-        guard let name = workout.name else { return }
-        guard let styleName = workout.workoutStyle?.name else { return }
-        
-        box.setTitle(name)
-        box.setSubHeader(styleName)
-        box.content?.setup(usingWorkout: workout)
+     guard let name = workout.name else { return }
+     guard let styleName = workout.workoutStyle?.name else { return }
+     
+     box.setTitle(name)
+     box.setSubHeader(styleName)
+     box.subheader?.alpha = 0
+     box.content?.setup(usingWorkout: workout)
     }
 }
 

@@ -122,7 +122,7 @@ class SuggestionBox: Box {
     
     func setSuggestionHeader(_ str: String) {
         guard let header = header else { return }
-        header.label.text = str
+        header.boxHeaderLabel.text = str
     }
     
     func setSuggestionSubheader(_ str: String) {
