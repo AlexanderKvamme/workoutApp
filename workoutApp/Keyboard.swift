@@ -75,7 +75,7 @@ class Keyboard: UIView {
         middleRightButton.setImage(rotatedImage, for: .normal)
         let inset: CGFloat = 22
         middleRightButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
-        middleRightButton.tintColor = .light
+        middleRightButton.tintColor = .akLight
         middleRightButton.accessibilityIdentifier = "customNextButton"
         middleRightButton.addTarget(self, action: #selector(postNextKeyDidPressNotification), for: .touchUpInside)
     }
