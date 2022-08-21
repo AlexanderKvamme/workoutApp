@@ -12,6 +12,7 @@ import UIKit
 final class CustomNavigationViewController: UINavigationController {
 
     // MARK: - Properties
+    
     fileprivate var duringPushAnimation = false
     
     // MARK: - Initializers

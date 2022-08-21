@@ -47,6 +47,9 @@ extension UIImage {
     static var profileIcon: UIImage {
         return UIImage(named: "profile")!
     }
+    static var progressIcon: UIImage {
+        return UIImage(named: "progress")!
+    }
 }
 
 // MARK: Method to resize

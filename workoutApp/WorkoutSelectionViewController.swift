@@ -39,6 +39,8 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         view.bringSubview(toFront: stack) // Bring it in front of diagonal line
         view.layoutIfNeeded()
+        
+        globalTabBar.showIt()
     }
     
     override func viewDidLoad() {

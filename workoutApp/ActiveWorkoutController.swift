@@ -84,7 +84,7 @@ class ActiveWorkoutController: UITableViewController {
             self.title = name.uppercased()
         }
         
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        globalTabBar?.hideIt()
         
         // Right navBar button
         let xIcon = UIImage.xmarkIcon.withRenderingMode(.alwaysOriginal)
@@ -107,12 +107,11 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     private func setupTableFooter() {
-        let footerFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let footerFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
         let footer = ExerciseTableFooter(frame: footerFrame)
         footer.saveButton.accessibilityIdentifier = "footer-save-button"
         footer.saveButton.addTarget(self, action: #selector(saveButtonHandler), for: .touchUpInside)
         
-        footer.backgroundColor = .dark
         view.backgroundColor = .dark
         tableView.tableFooterView = footer
     }
@@ -139,6 +138,7 @@ class ActiveWorkoutController: UITableViewController {
     // MARK: Handlers
     
     @objc private func saveButtonHandler() {
+        print("tapped SAVE")
         dataSource.saveWorkoutLog()
         presentingBoxTable?.shouldUpdateUponAppearing = true
     }

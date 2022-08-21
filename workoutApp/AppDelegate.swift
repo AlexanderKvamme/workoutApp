@@ -11,13 +11,14 @@ import CoreData
 import AKKIT
 
 
+var globalTabBar: WellRoundedTabBarController!
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         let context = DatabaseFacade.persistentContainer.viewContext
         
         // Seed for Fastlane Snapshot data
@@ -29,38 +30,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
         
-        // FIXME: Fix this
-//        window?.rootViewController = CustomTabBarController()
-        
-//        let test = AKKIT.TestClassNew.test()
-        let test = AKKIT.TestClassr.test()
-        print("jazz: ", test)
-        
-        //
         // Set initial viewController
+        let wrappedProgress = CustomNavigationViewController(rootViewController: UIViewController())
+        let wrappedHistory = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
+        let wrappedWorkout = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
+        let wrappedProfile = CustomNavigationViewController(rootViewController: ProfileController())
         
-//        // History
-//        let historySelectionViewController = HistorySelectionViewController()
-//        let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
-//
-//        // Workout Tab
-//        let workoutSelectionViewController = WorkoutSelectionViewController()
-//        let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
-//
-//        // Profile Tab
-//        let profileController = ProfileController()
-//        let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
-//
-//        // Set up navbar
-//        viewControllers = [historyNavigationController, workoutNavigationController, profileNavigationController]
-//        historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.historyIcon, tag: 0)
-//        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.workoutIcon, tag: 1)
-//        profileController.tabBarItem = UITabBarItem(title: "", image: UIImage.profileIcon, tag: 2)
+        // FIXME: Make the tabbar controller actually use the images supplied here
+        let tabButtonTint = UIColor.black
+        wrappedProgress.tabBarItem = UITabBarItem(title: "0", image: UIImage.progressIcon.withTintColor(tabButtonTint), tag: 0)
+        wrappedHistory.tabBarItem = UITabBarItem(title: "1", image: UIImage.historyIcon.withTintColor(tabButtonTint), tag: 1)
+        wrappedWorkout.tabBarItem = UITabBarItem(title: "2", image: UIImage.workoutIcon.withTintColor(tabButtonTint), tag: 2)
+        wrappedProfile.tabBarItem = UITabBarItem(title: "3", image: UIImage.profileIcon.withTintColor(tabButtonTint), tag: 3)
+        let screens = [wrappedProgress, wrappedHistory, wrappedWorkout, wrappedProfile, UIViewController()]
         
-        
-        let screens = [HistorySelectionViewController(), WorkoutSelectionViewController(), ProfileController()]
-        let centerIcon = UIImage(named: "icon-search")!
-        window?.rootViewController = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 1)
+        let centerIcon = Test.testIcon
+        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [0,4])
+        window?.rootViewController = tabBar
+        globalTabBar = tabBar
         
         return true
     }

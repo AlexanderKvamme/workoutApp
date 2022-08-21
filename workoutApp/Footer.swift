@@ -14,14 +14,14 @@ final class ExerciseTableFooter: UIView {
     let saveButton: UIButton!
     
     override init(frame: CGRect) {
-        
         saveButton = UIButton(frame: frame)
         saveButton.setTitle("SAVE", for: .normal)
         saveButton.titleLabel?.font = UIFont.custom(style: .medium, ofSize: .bigger)
         saveButton.titleLabel?.applyCustomAttributes(Constant.Attributes.letterSpacing.medium)
         saveButton.setTitleColor(.light, for: .normal)
+        saveButton.titleLabel?.textColor = .purple
         
-        super.init(frame: CGRect(x: 0, y: 0, width: Constant.UI.width, height: 50))
+        super.init(frame: frame)
         
         addSubview(saveButton)
     }

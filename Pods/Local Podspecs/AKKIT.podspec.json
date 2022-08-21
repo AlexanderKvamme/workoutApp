@@ -18,5 +18,8 @@
   "platforms": {
     "ios": "15.0"
   },
-  "source_files": "AKKIT/Classes/**/*"
+  "source_files": "AKKIT/code/**/*",
+  "resource_bundles": {
+    "AKKIT": "AKKIT/Assets/Media.xcassets"
+  }
 }
