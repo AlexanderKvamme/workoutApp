@@ -41,20 +41,6 @@ final class CustomNavigationViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
-        
-        
-        
-        
-        
-        navigationBar.barStyle       = UIBarStyle.black // I then set the color using:
-
-        navigationBar.barTintColor   = UIColor(red: 204/255, green: 47/255, blue: 40/255, alpha: 1.0) // a lovely red
-
-        navigationBar.tintColor = UIColor.orange // for titles, buttons, etc.
-
-        let navigationTitleFont = UIFont(name: "Avenir", size: 20)!
-
-        navigationBar.titleTextAttributes = [NSAttributedStringKey.font: navigationTitleFont]
     }
     
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {

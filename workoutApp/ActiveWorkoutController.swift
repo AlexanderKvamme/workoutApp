@@ -8,6 +8,28 @@
 
 import UIKit
 
+
+extension UIBarButtonItem {
+
+    static func menuButton(_ target: Any?, action: Selector, image: UIImage, size: CGFloat, tint: UIColor) -> UIBarButtonItem {
+        let button = UIButton(type: .system)
+        button.setImage(image, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        button.tintColor = tint
+        button.transform = CGAffineTransform(translationX: -16, y: 0)
+
+        let menuBarItem = UIBarButtonItem(customView: button)
+        menuBarItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        menuBarItem.customView?.heightAnchor.constraint(equalToConstant: size).isActive = true
+        menuBarItem.customView?.widthAnchor.constraint(equalToConstant: size).isActive = true
+        return menuBarItem
+    }
+}
+
+
+
+
+
 /// This TableView is the actual workout when the user is working out
 class ActiveWorkoutController: UITableViewController {
     
@@ -80,17 +102,20 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     private func setupNavigationBar() {
+        // FIXME: Update the header
         if let name = currentWorkout.name {
             self.title = name.uppercased()
+            self.title = ""
         }
         
         globalTabBar?.hideIt()
         
         // Right navBar button
-        let xIcon = UIImage.xmarkIcon.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
+        let xIcon = UIImage.close24.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 16))
+        let rightButton = UIBarButtonItem.menuButton(self, action: #selector(xButtonHandler), image: xIcon, size: 16, tint: .akDark)
+        rightButton.imageInsets = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: 16)
         self.navigationItem.rightBarButtonItem = rightButton
-        
+
         self.navigationItem.hidesBackButton = true
     }
     
