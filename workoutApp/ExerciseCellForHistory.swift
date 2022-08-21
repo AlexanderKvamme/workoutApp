@@ -125,7 +125,7 @@ extension ExerciseCellForHistory: UICollectionViewDataSource {
         
         // Make bold if it is performed
         if liftIsPerformed {
-            cell.makeRepTextBold()
+            cell.setInputtedStyle()
         }
         
         return cell

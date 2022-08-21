@@ -59,7 +59,7 @@ class CustomAlertView: UIView, isModal {
             messageLabel.text = "Important Message".uppercased()
             messageLabel.textAlignment = .left
             messageLabel.font = .custom(style: .bold, ofSize: .medium)
-            messageLabel.textColor = .medium
+            messageLabel.textColor = .akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
             messageLabel.sizeToFit()
             typeStackHeight += messageLabel.frame.height
             modalView.addSubview(messageLabel)
@@ -70,7 +70,7 @@ class CustomAlertView: UIView, isModal {
             errorNameLabel.text = "Error".uppercased()
             errorNameLabel.textAlignment = .left
             errorNameLabel.font = .custom(style: .bold, ofSize: .medium)
-            errorNameLabel.textColor = .medium
+            errorNameLabel.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
             errorNameLabel.sizeToFit()
             modalView.addSubview(errorNameLabel)
             
@@ -99,7 +99,7 @@ class CustomAlertView: UIView, isModal {
         
         // top right x mark
         let xView = UIButton()
-        xView.tintColor = .dark
+        xView.tintColor = .akDark
         xView.setImage(UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate), for: .normal)
         xView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         xView.sizeToFit()
@@ -113,10 +113,10 @@ class CustomAlertView: UIView, isModal {
         
         // Header
         let headerLabel = UILabel()
-        headerLabel.text = "PSST!"
+        headerLabel.text = "Nice"
         headerLabel.textAlignment = .center
         headerLabel.numberOfLines = 1
-        headerLabel.textColor = .dark
+        headerLabel.textColor = .akDark
         headerLabel.font = UIFont.custom(style: .bold, ofSize: .bigger)
         headerLabel.sizeToFit()
         modalView.addSubview(headerLabel)
@@ -131,8 +131,8 @@ class CustomAlertView: UIView, isModal {
         contentLabel.text = messageContent.uppercased()
         contentLabel.textAlignment = .center
         contentLabel.numberOfLines = 0
-        contentLabel.textColor = .dark
-        contentLabel.font = UIFont.custom(style: .medium, ofSize: .medium)
+        contentLabel.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
+        contentLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
         modalView.addSubview(contentLabel)
         
         // Add line spacing if theres any text
@@ -151,7 +151,7 @@ class CustomAlertView: UIView, isModal {
         
         // Checkmark
         let checkmarkView = UIButton()
-        checkmarkView.setImage(UIImage.checkmarkIcon, for: .normal)
+        checkmarkView.setImage(UIImage.checkmarkIcon.withTintColor(.akDark), for: .normal)
         checkmarkView.sizeToFit()
         checkmarkView.accessibilityIdentifier = "approve-modal-button"
         checkmarkView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
@@ -168,7 +168,7 @@ class CustomAlertView: UIView, isModal {
         let dialogViewHeight = contentLabel.frame.height + 180
         modalView.frame.origin = CGPoint(x: 32, y: frame.height)
         modalView.frame.size = CGSize(width: frame.width - spaceFromSides, height: dialogViewHeight)
-        modalView.backgroundColor = UIColor.lightest
+        modalView.backgroundColor = UIColor.akLight
         modalView.layoutIfNeeded()
         
         addSubview(modalView)

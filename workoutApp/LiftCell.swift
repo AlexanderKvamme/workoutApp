@@ -75,11 +75,11 @@ class LiftCell: UICollectionViewCell {
     
     func setPlaceholderVisuals(_ textField: UITextField) {
         // Make a placeholder in a nice color
-        let color = UIColor.light
+        let color = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
         let font = UIFont.custom(style: .medium, ofSize: .big)
         textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
         
-        makeRepTextBold()
+        setInputtedStyle()
     }
     
     func validateFields() {
@@ -105,7 +105,7 @@ class LiftCell: UICollectionViewCell {
         // Has new text and is valid number -> Save new Value
         saveRepsToDataSource(newRepValue)
         isPerformed = true
-        makeRepTextBold()
+        setInputtedStyle()
         endEditing(true)
     }
     
@@ -123,13 +123,13 @@ class LiftCell: UICollectionViewCell {
     
     func makeRepTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = .light
+        repsField.textColor = .red
         repsField.alpha = Constant.alpha.faded
     }
     
-    func makeRepTextBold() {
+    func setInputtedStyle() {
         repsField.font = UIFont.custom(style: .bold, ofSize: .big)
-        repsField.textColor = .light
+        repsField.textColor = .akDark
         repsField.alpha = 1
     }
     

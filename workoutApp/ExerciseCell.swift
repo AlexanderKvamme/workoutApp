@@ -274,7 +274,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         guard let plusButton = plusButton else { return }
         
         plusButton.setTitle("+", for: .normal)
-        plusButton.setTitleColor(.light, for: .normal)
+        plusButton.setTitleColor(.akDark, for: .normal)
         plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
         plusButton.accessibilityIdentifier = "cell-plus-button"
         plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)
@@ -420,7 +420,7 @@ extension ExerciseCellForWorkouts: UICollectionViewDataSource {
         }
         // Make bold if it is performed
         if liftIsPerformed {
-            cell.makeRepTextBold()
+            cell.setInputtedStyle()
         }
         return cell
     }

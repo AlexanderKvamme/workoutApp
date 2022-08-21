@@ -72,8 +72,8 @@ class WeightedLiftCell: LiftCell {
         repsField.text = "-1"
         repsField.textAlignment = .center
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = UIColor.light
-        repsField.alpha = Constant.alpha.faded
+        repsField.textColor = UIColor.blue
+//        repsField.alpha = Constant.alpha.faded
         repsField.clearsOnBeginEditing = true
         addSubview(repsField)
     }
@@ -83,7 +83,7 @@ class WeightedLiftCell: LiftCell {
         weightField.text = "-1"
         weightField.textAlignment = .center
         weightField.font = UIFont.custom(style: .medium, ofSize: .medium)
-        weightField.textColor = .light
+        weightField.textColor = .red
         weightField.alpha = Constant.alpha.faded
         weightField.clearsOnBeginEditing = true
         weightField.sizeToFit()
@@ -135,7 +135,7 @@ class WeightedLiftCell: LiftCell {
     }
     
     private func setPlaceholderVisualsOnWeightField(){
-        let color = UIColor.light
+        let color = UIColor.green
         let font = UIFont.custom(style: .medium, ofSize: .medium)
         weightField.attributedPlaceholder = NSAttributedString(string: initialWeightAsString, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
     }
@@ -187,8 +187,8 @@ class WeightedLiftCell: LiftCell {
         weightField.isUserInteractionEnabled = true
         saveRepsToDataSource(newRepValue)
         isPerformed = true
-        makeRepTextBold()
-        makeWeightTextBold()
+//        makeRepTextBold()
+//        makeWeightTextBold()
         endEditing(true)
     }
     
@@ -216,13 +216,13 @@ class WeightedLiftCell: LiftCell {
     
     func makeWeightTextBold() {
         weightField.font = UIFont.custom(style: .bold, ofSize: .medium)
-        weightField.textColor = .light
+        weightField.textColor = .purple
         weightField.alpha = 1
     }
     
     private func makeWeightTextNormal() {
         weightField.font = UIFont.custom(style: .medium, ofSize: .medium)
-        weightField.textColor = .light
+        weightField.textColor = .red
         weightField.alpha = 0.5
         weightField.text = initialWeightAsString
     }
