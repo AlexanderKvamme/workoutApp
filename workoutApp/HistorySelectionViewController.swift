@@ -27,7 +27,7 @@ class HistorySelectionViewController: SelectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         setupStack()
         setupLayout()
     }
@@ -36,7 +36,7 @@ class HistorySelectionViewController: SelectionViewController {
         super.viewWillAppear(animated)
         
         updateStackToDisplayStylesAndAll()
-        drawDiagonalLine()
+//        drawDiagonalLine()
         view.bringSubview(toFront: stack) // Bring above diagonal line
         view.layoutIfNeeded()
     }

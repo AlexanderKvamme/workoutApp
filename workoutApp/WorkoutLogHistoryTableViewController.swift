@@ -32,7 +32,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         setupDataSource()
         setupTableView()
     }

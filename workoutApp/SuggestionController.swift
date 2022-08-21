@@ -87,8 +87,8 @@ fileprivate extension SuggestionController {
     }
     
     func setupHeader() {
-        header.text = "SUGGESTIONS"
-        header.textColor = .dark
+        header.text = "Suggestions"
+        header.textColor = .akDark
         header.font = UIFont.custom(style: .bold, ofSize: .big)
         header.applyCustomAttributes(.medium)
         header.sizeToFit()

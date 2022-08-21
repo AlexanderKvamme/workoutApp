@@ -22,6 +22,14 @@ class SuggestionBox: Box {
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         
+        boxFrame?.background.backgroundColor = .orange
+        boxContent?.backgroundColor = .green
+        
+        boxHeader?.boxHeaderLabel.textColor = .akDark
+        boxSubHeader?.label.textColor = .akDark
+        
+        boxFrame?.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         
         setupViews()

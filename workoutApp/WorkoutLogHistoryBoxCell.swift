@@ -23,6 +23,7 @@ class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
         let boxFactory = BoxFactory.makeFactory(type: .HistoryBox)
         let boxHeader = boxFactory.makeBoxHeader()
         let boxSubHeader = boxFactory.makeBoxSubHeader()
+        boxSubHeader?.alpha = 0
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         
