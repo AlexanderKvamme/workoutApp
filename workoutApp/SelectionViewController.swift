@@ -91,12 +91,6 @@ class SelectionViewController: UIViewController {
         stack.alignment = UIStackViewAlignment.center
         stack.spacing = Constant.components.SelectionVC.Stack.spacing
     }
-    
-    private func updateStackWithInsertedButtons() {
-        for button in self.buttons {
-            stack.addArrangedSubview(button)
-        }
-    }
 
     // MARK: - Helpers
     

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 public class SelectionViewButton: UIView {
     
@@ -40,10 +41,7 @@ public class SelectionViewButton: UIView {
         button = UIButton(frame: frame)
         button.addTarget(self, action: #selector(handleButtonTap(_:)), for: .touchUpInside)
         
-        addSubview(button)
-        addSubview(headerLabel)
-        addSubview(subheaderLabel)
-        
+        button.backgroundColor = .green
         setupConstraints()
     }
     
@@ -52,21 +50,27 @@ public class SelectionViewButton: UIView {
     }
     
     private func setupConstraints() {
+        addSubview(button)
+        addSubview(headerLabel)
+        addSubview(subheaderLabel)
+        headerLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
         
-        // Labels
-        headerLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        headerLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        subheaderLabel.snp.makeConstraints { make in
+            make.top.equalTo(headerLabel.snp.bottom)
+            make.centerX.equalToSuperview()
+        }
         
-        subheaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor).isActive = true
-        subheaderLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-    
-        // View
+        // self
         let combinedLabelHeight = subheaderLabel.frame.height + headerLabel.frame.height
-        heightAnchor.constraint(equalToConstant: combinedLabelHeight).isActive = true
-        widthAnchor.constraint(equalToConstant: 200).isActive = true
-        topAnchor.constraint(equalTo: headerLabel.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: subheaderLabel.bottomAnchor).isActive = true
-        self.translatesAutoresizingMaskIntoConstraints = false
+        snp.makeConstraints { make in
+            make.height.equalTo(combinedLabelHeight)
+            make.width.equalTo(200)
+            make.top.equalTo(headerLabel)
+            make.bottom.equalTo(subheaderLabel)
+        }
     }
     
     // UI components
