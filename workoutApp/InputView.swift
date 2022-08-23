@@ -65,7 +65,7 @@ class InputView: UIView {
         
         // Header
         header.font = UIFont.custom(style: .bold, ofSize: .medium)
-        header.textColor = .dark
+        header.textColor = .akDark
         header.sizeToFit()
         
         // Stack: Contains header and textField

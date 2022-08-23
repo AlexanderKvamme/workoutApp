@@ -100,9 +100,9 @@ class CustomAlertView: UIView, isModal {
         // top right x mark
         let xView = UIButton()
         xView.tintColor = .akDark
-        xView.setImage(UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate), for: .normal)
+        xView.setImage(UIImage.close.withRenderingMode(.alwaysTemplate), for: .normal)
         xView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
-        xView.sizeToFit()
+        xView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         
         modalView.addSubview(xView)
         xView.heightAnchor.constraint(equalToConstant: xView.frame.height).isActive = true
@@ -113,7 +113,7 @@ class CustomAlertView: UIView, isModal {
         
         // Header
         let headerLabel = UILabel()
-        headerLabel.text = "Nice"
+        headerLabel.text = "Hello"
         headerLabel.textAlignment = .center
         headerLabel.numberOfLines = 1
         headerLabel.textColor = .akDark
@@ -165,7 +165,7 @@ class CustomAlertView: UIView, isModal {
         checkmarkView.translatesAutoresizingMaskIntoConstraints = false
         
         // Modal
-        let dialogViewHeight = contentLabel.frame.height + 180
+        let dialogViewHeight = contentLabel.frame.height + 210
         modalView.frame.origin = CGPoint(x: 32, y: frame.height)
         modalView.frame.size = CGSize(width: frame.width - spaceFromSides, height: dialogViewHeight)
         modalView.backgroundColor = UIColor.akLight
