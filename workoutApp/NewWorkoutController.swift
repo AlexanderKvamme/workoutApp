@@ -6,7 +6,7 @@
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class NewWorkoutController: WorkoutController {
     
@@ -14,6 +14,7 @@ class NewWorkoutController: WorkoutController {
     
     lazy var footer: ButtonFooter = {
         let f = ButtonFooter(withColor: .akDark)
+        f.frame = CGRect(x: 0, y: f.frame.origin.y, width: f.frame.width, height: f.frame.height*2.5)
         f.frame.origin.y = self.view.frame.maxY - f.frame.height
         f.approveButton.addTarget(self, action: #selector(makeWorkoutAndDismissVC), for: .touchUpInside)
         f.approveButton.accessibilityIdentifier = "approve-button"

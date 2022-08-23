@@ -34,7 +34,7 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
     init(inputStyle: CustomInputStyle) {
         super.init(nibName: nil, bundle: nil)
         prepareForInput(with: inputStyle)
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
     }
     
     required init?(coder aDecoder: NSCoder) {
