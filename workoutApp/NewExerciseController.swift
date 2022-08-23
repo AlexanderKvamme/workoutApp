@@ -23,7 +23,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
     
     var header: TwoLabelStack = {
-        let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
+        let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue), bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: .akDark, fadedBottomLabel: false)
         header.button.accessibilityIdentifier = "exercise-name-button"
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
         header.bottomLabel.adjustsFontSizeToFitWidth = true
@@ -70,8 +70,6 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
         currentMuscles = muscles ?? [DatabaseFacade.defaultMuscle]
         currentMeasurementStyle = DatabaseFacade.defaultMeasurementStyle
         currentExerciseStyle = DatabaseFacade.defaultExerciseStyle
-        
-        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,7 +88,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         
         // Footer
         let buttonFooter = ButtonFooter(withColor: .akDark)

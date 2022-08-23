@@ -73,7 +73,7 @@ class MusclePickerController: UIViewController {
     
     override func viewDidLoad() {
         addSubViewsAndConstraints()
-        view.backgroundColor = UIColor.light
+        view.backgroundColor = .akLight
         
         // Preselect
         for muscle in selectedMuscles {
@@ -82,7 +82,7 @@ class MusclePickerController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        hidesBottomBarWhenPushed = true
+        globalTabBar.hideIt()
         addLongPressGestureRecognizer()
         table.reloadData()
         view.setNeedsLayout()
@@ -139,7 +139,6 @@ class MusclePickerController: UIViewController {
         } else {
             table.isScrollEnabled = false
             setTableInsets()
-            drawDiagonalLineThroughTable()
         }
     }
     

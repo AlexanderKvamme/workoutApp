@@ -14,7 +14,6 @@ class NewWorkoutController: WorkoutController {
     
     lazy var footer: ButtonFooter = {
         let f = ButtonFooter(withColor: .akDark)
-        f.frame = CGRect(x: 0, y: f.frame.origin.y, width: f.frame.width, height: f.frame.height*2.5)
         f.frame.origin.y = self.view.frame.maxY - f.frame.height
         f.approveButton.addTarget(self, action: #selector(makeWorkoutAndDismissVC), for: .touchUpInside)
         f.approveButton.accessibilityIdentifier = "approve-button"
@@ -25,7 +24,6 @@ class NewWorkoutController: WorkoutController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        hidesBottomBarWhenPushed = true
         view.backgroundColor = .akLight
         
         currentMuscles = [DatabaseFacade.defaultMuscle]
@@ -39,6 +37,10 @@ class NewWorkoutController: WorkoutController {
     
     override func viewDidLoad() {
         addSubviewsAndConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        globalTabBar.hideIt()
     }
     
     // MARK: Methods

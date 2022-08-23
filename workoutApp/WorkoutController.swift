@@ -1,10 +1,3 @@
-//
-//  newWorkoutController.swift
-//  workoutApp
-//
-//  Created by Alexander Kvamme on 31/05/2017.
-//  Copyright © 2017 Alexander Kvamme. All rights reserved.
-//
 
 import UIKit
 import AKKIT
@@ -58,7 +51,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }()
     
     lazy var header: TwoLabelStack = {
-        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "Your workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
+        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "My workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "workout-name-button"
         stack.bottomLabel.adjustsFontSizeToFitWidth = true
         
@@ -93,11 +86,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
-        // Hide tab bar's selection indicator
-        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.hideSelectionIndicator(shouldAnimate: false)
-            navigationController?.setNavigationBarHidden(true, animated: true)
-        }
+        globalTabBar.showIt()
     }
     
     // MARK: - Methods

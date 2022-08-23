@@ -124,11 +124,10 @@ class InputView: UIView {
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.primary.cgColor
+        shapeLayer.strokeColor = UIColor.clear.cgColor
         shapeLayer.lineCap = "round"
         shapeLayer.lineWidth = 3.0
         shapeLayer.backgroundColor = UIColor.red.cgColor
-        
         v.layer.addSublayer(shapeLayer)
         addSubview(v)
         

@@ -36,7 +36,6 @@ class HistorySelectionViewController: SelectionViewController {
         super.viewWillAppear(animated)
         
         updateStackToDisplayStylesAndAll()
-//        drawDiagonalLine()
         view.bringSubview(toFront: stack) // Bring above diagonal line
         view.layoutIfNeeded()
     }

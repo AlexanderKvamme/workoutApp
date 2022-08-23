@@ -31,7 +31,6 @@ class WorkoutEditor: WorkoutController {
     init(with workout: Workout) {
         super.init(nibName: nil, bundle: nil)
         
-        hidesBottomBarWhenPushed = true
         self.currentWorkout = workout
         self.currentMuscles = workout.getMuscles()
         self.currentWorkoutStyle = workout.workoutStyle

@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Navigaiton bar customization
         UINavigationBar.appearance().barTintColor = UIColor.light
-        let renderedImage = UIImage.backArrowIcon.withRenderingMode(.alwaysOriginal)
+        let renderedImage = UIImage.backArrowIcon.withRenderingMode(.alwaysTemplate)
         UINavigationBar.appearance().backIndicatorImage = renderedImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
         

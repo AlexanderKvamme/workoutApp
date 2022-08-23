@@ -15,7 +15,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     
     // MARK: - Properties
     var header: TwoLabelStack = {
-        let labelStack = TwoLabelStack(frame: .zero, topText: "SELECT", topFont: .custom(style: .bold, ofSize: .big), topColor: .secondary, bottomText: "", bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .black, fadedBottomLabel: false)
+        let labelStack = TwoLabelStack(frame: .zero, topText: "SELECT", topFont: .custom(style: .bold, ofSize: .big), topColor: .akDark, bottomText: "", bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .akDark, fadedBottomLabel: false)
         return labelStack
     }()
     var table: UITableView!
@@ -129,8 +129,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     
     private func setupView() {
         setupHeader()
-        hidesBottomBarWhenPushed = true
-        view.backgroundColor = UIColor.light
+        view.backgroundColor = .akLight
     }
     
     private func setupFooter() {
@@ -191,7 +190,6 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
             table.isScrollEnabled = true
         } else {
             table.isScrollEnabled = false
-            drawDiagonalLineThroughTable()
         }
         
         // Update insets

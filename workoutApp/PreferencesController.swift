@@ -15,7 +15,7 @@ class PreferencesController: UIViewController {
     
     private lazy var header: PickerHeader = {
         let label = PickerHeader(text: "PREFERENCES")
-        label.setTopColor(.dark)
+        label.setTopColor(.akDark)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -41,7 +41,6 @@ class PreferencesController: UIViewController {
         
         self.preferencePickers = preferencePickers
         super.init(nibName: nil, bundle: nil)
-        hidesBottomBarWhenPushed = true
     }
     
     required init?(coder aDecoder: NSCoder) {

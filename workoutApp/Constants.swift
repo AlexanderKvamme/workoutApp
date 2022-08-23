@@ -48,7 +48,7 @@ enum Constant {
     }
     
     enum alpha {
-        static let faded: CGFloat = 0.5
+        static let faded: CGFloat = 0.4
     }
     
     enum Attributes {
@@ -81,7 +81,7 @@ enum Constant {
         }
         
         enum footer {
-            static var height: CGFloat = 65
+            static var height: CGFloat = 65*1.5
         }
         
         enum collectionViewCells {

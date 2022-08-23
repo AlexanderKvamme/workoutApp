@@ -18,7 +18,7 @@ class PickerHeader: TwoLabelStack {
         
         let defaultFrame = CGRect(x: 0, y: 0, width: Constant.UI.width, height: 100)
         
-        super.init(frame: defaultFrame, topText: text, topFont: UIFont.custom(style: .bold, ofSize: .big), topColor: UIColor.secondary, bottomText: "", bottomFont: UIFont.custom(style: .bold, ofSize: .medium), bottomColor: UIColor.dark, fadedBottomLabel: false)
+        super.init(frame: defaultFrame, topText: text, topFont: UIFont.custom(style: .bold, ofSize: .big), topColor: .akDark, bottomText: "", bottomFont: UIFont.custom(style: .bold, ofSize: .medium), bottomColor: .akDark, fadedBottomLabel: true)
     }
     
     required init?(coder aDecoder: NSCoder) {

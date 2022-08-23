@@ -23,16 +23,15 @@ class ExercisePickerController: UIViewController {
         t.separatorStyle = .none
         t.dataSource = self
         t.delegate = self
-        
         return t
     }()
     
     private lazy var footer: ButtonFooter = {
         let view = ButtonFooter(withColor: .secondary)
+        view.frame = CGRect(x: 0, y: view.frame.origin.y, width: view.frame.width, height: view.frame.height*1.5)
         view.cancelButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         view.approveButton.addTarget(self, action: #selector(confirmAndDismiss), for: .touchUpInside)
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         return view
     }()
     
@@ -40,7 +39,7 @@ class ExercisePickerController: UIViewController {
         let headerLabel = PickerHeader(text: "SELECT EXERCISES")
         var subheaderText = ""
         var muscleName = self.selectedMuscles.getName()
-        subheaderText = muscleName == "MULTIPLE" ? "FOR SELECTED EXERCISES" : "FOR \(muscleName)"
+        subheaderText = muscleName == "MULTIPLE" ? "FOR SELECTED EXERCISES" : "\(muscleName)"
         headerLabel.setBottomText(subheaderText)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -96,7 +95,7 @@ class ExercisePickerController: UIViewController {
     
     override func viewDidLoad() {
         addSubViewsAndConstraints()
-        view.backgroundColor = UIColor.light
+        view.backgroundColor = .akLight
         
         // Preselect
         for exercise in selectedExercises {
@@ -105,7 +104,7 @@ class ExercisePickerController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        hidesBottomBarWhenPushed = true
+        globalTabBar.hideIt()
         addLongPressGestureRecognizer()
         table.reloadData()
         view.setNeedsLayout()
@@ -178,7 +177,6 @@ class ExercisePickerController: UIViewController {
         } else {
             table.isScrollEnabled = false
             setTableInsets()
-            drawDiagonalLineThroughTable()
         }
     }
     

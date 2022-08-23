@@ -50,11 +50,11 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         
         view.backgroundColor = .akLight
         tableView.reloadData()
-        globalTabBar.hideIt()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        globalTabBar.hideIt()
         animateAnyChanges()
     }
     
