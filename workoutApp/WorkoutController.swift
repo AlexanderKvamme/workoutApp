@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AKKIT
 
 /// ViewController to manage the creation of new workouts
 class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
@@ -27,7 +28,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         let halfScreenWidth = Constant.UI.width/2
         let selecterHeight: CGFloat = 150
         
-        let stack = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Muscle", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.muscle, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
+        let stack = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Muscle", topFont: darkHeaderFont, topColor: .akDark, bottomText: Constant.defaultValues.muscle, bottomFont: darkSubHeaderFont, bottomColor: UIColor.akDark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "muscle-picker-button"
         stack.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         
@@ -40,7 +41,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
         let halfScreenWidth = Constant.UI.width/2
         let selecterHeight: CGFloat = 150
         
-        let workoutStyleSelecter = TwoLabelStack(frame: CGRect(x: 0, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
+        let workoutStyleSelecter = TwoLabelStack(frame: CGRect(x: 0, y: self.header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .akDark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.akDark, fadedBottomLabel: false)
         workoutStyleSelecter.button.accessibilityIdentifier = "workout-style-picker-button"
         workoutStyleSelecter.button.addTarget(self, action: #selector(showWorkoutStyleEditor), for: .touchUpInside)
         
@@ -49,7 +50,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     lazy var exerciseSelecter: TwoLabelStack = {
         let newframe = CGRect(x: 0, y: self.workoutStyleSelecter.frame.maxY - 30, width: Constant.UI.width, height: 100)
-        let exerciseSelecter = TwoLabelStack(frame: newframe, topText: " Exercises Added", topFont: UIFont.custom(style: .medium, ofSize: .medium), topColor: UIColor.dark, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.dark, fadedBottomLabel: false)
+        let exerciseSelecter = TwoLabelStack(frame: newframe, topText: " Exercises Added", topFont: UIFont.custom(style: .medium, ofSize: .medium), topColor: UIColor.akDark, bottomText: "0", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         exerciseSelecter.button.accessibilityIdentifier = "exercise-picker-button"
         exerciseSelecter.button.addTarget(self, action: #selector(exercisesTapHandler), for: .touchUpInside)
 
@@ -57,7 +58,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     }()
     
     lazy var header: TwoLabelStack = {
-        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.medium, bottomText: "Your workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
+        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "Your workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "workout-name-button"
         stack.bottomLabel.adjustsFontSizeToFitWidth = true
         

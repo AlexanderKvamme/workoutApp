@@ -26,7 +26,7 @@ class NewWorkoutController: WorkoutController {
     init() {
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         
         currentMuscles = [DatabaseFacade.defaultMuscle]
         currentWorkoutStyle = DatabaseFacade.defaultWorkoutStyle
