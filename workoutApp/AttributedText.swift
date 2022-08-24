@@ -29,8 +29,10 @@ extension GoalsController {
                                           NSAttributedStringKey.foregroundColor:bulletColor]
         let fullAttributedString = NSMutableAttributedString.init()
         
-        let bulletPoint: String = "\u{2022}"
-        let formattedString: String = "\(bulletPoint) \(string)"
+//        let bulletPoint: String = "\u{2022}"
+        let bulletPoint: String = ""
+//        let formattedString: String = "\(bulletPoint) \(string)"
+        let formattedString: String = "\(bulletPoint)\(string)"
         let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: formattedString)
         let paragraphStyle = createParagraphAttribute()
         

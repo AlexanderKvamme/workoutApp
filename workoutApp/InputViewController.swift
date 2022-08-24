@@ -35,6 +35,11 @@ class InputViewController: UIViewController, KeyboardDelegate, UITextFieldDelega
         super.init(nibName: nil, bundle: nil)
         prepareForInput(with: inputStyle)
         view.backgroundColor = .akLight
+        
+        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17, style: .plain, target: self, action: #selector(pop))
+        navigationItem.leftBarButtonItem = btnRefresh
+        navigationItem.leftBarButtonItem?.tintColor = .akDark
+        navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {

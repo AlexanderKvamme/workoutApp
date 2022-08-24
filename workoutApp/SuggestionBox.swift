@@ -21,14 +21,9 @@ class SuggestionBox: Box {
         let boxSubHeader = boxFactory.makeBoxSubHeader()
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
-        
-        boxFrame?.background.backgroundColor = .orange
-        boxContent?.backgroundColor = .green
-        
+        boxFrame?.background.backgroundColor = .white
         boxHeader?.boxHeaderLabel.textColor = .akDark
         boxSubHeader?.label.textColor = .akDark
-        
-        boxFrame?.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
         
@@ -46,9 +41,9 @@ class SuggestionBox: Box {
         if let timeOfWorkout = muscle.lastPerformance() {
             let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
             let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
-            subHeaderText = "\(shortTimeInterval) SINCE:"
+            subHeaderText = "\(shortTimeInterval) since:"
         } else {
-            subHeaderText =  "NEVER PERFORMED"
+            subHeaderText =  "Never performed"
         }
         
         setSuggestionHeader(subHeaderText)
@@ -60,7 +55,7 @@ class SuggestionBox: Box {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: Constant.components.box.suggestion.width, height: 80)
+        return CGSize(width: UIScreen.main.bounds.width-48, height: 80)
     }
     
     // MARK: - Methods
@@ -124,7 +119,7 @@ class SuggestionBox: Box {
         NSLayoutConstraint.activate([
             subheader.leftAnchor.constraint(equalTo: boxFrame.leftAnchor),
             subheader.rightAnchor.constraint(equalTo: boxFrame.rightAnchor),
-            subheader.topAnchor.constraint(equalTo: header.bottomAnchor, constant: -5),
+            subheader.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 0),
             ])
     }
     

@@ -118,14 +118,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITextField.appearance(whenContainedInInstancesOf: [LiftCell.self]).tintColor = .akDark
         
         // Navigaiton bar customization
-        UINavigationBar.appearance().barTintColor = UIColor.light
+        UINavigationBar.appearance().barTintColor = .akDark
         let renderedImage = UIImage.backArrowIcon.withRenderingMode(.alwaysTemplate)
         UINavigationBar.appearance().backIndicatorImage = renderedImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
         
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
-            NSAttributedStringKey.foregroundColor: UIColor.faded,
+            NSAttributedStringKey.foregroundColor: UIColor.green.cgColor,
             NSAttributedStringKey.kern: 0.7,
         ]
     }

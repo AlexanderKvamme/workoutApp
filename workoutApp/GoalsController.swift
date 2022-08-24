@@ -61,7 +61,7 @@ class GoalsController: UIViewController, isStringReceiver {
     }
     
     private func setupHeader() {
-        header.setTitle("GOALS", for: .normal)
+        header.setTitle("Goals", for: .normal)
         header.titleLabel?.textColor = .akDark
         header.setTitleColor(.akDark, for: .normal)
         header.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .big)

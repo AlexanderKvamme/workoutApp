@@ -362,7 +362,7 @@ fileprivate class StandardBoxSubHeader: BoxSubHeader {
 fileprivate class SuggestionBoxSubHeader: BoxSubHeader {
     override init() {
         super.init()
-        label.font = UIFont.custom(style: .bold, ofSize: .bigger)
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
         label.textColor = UIColor.lightest
         label.text = "SUBHEADER"
         label.sizeToFit()

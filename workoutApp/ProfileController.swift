@@ -92,7 +92,6 @@ final class ProfileController: UIViewController {
         stackView.distribution = .equalSpacing
         stackView.clipsToBounds = true
         stackView.spacing = 24
-        stackView.backgroundColor = .cyan
         
         scrollView.addSubview(stackView)
         
