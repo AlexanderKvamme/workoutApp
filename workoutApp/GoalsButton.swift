@@ -21,7 +21,10 @@ class GoalButton: UIButton {
     
     init(withGoal goal: Goal) {
         self.goal = goal
+
         super.init(frame: .zero)
+        
+        self.titleLabel!.font = UIFont.custom(style: .medium, ofSize: .small)
     }
     
     required init?(coder aDecoder: NSCoder) {

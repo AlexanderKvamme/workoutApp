@@ -244,8 +244,7 @@ fileprivate class SuggestionBoxHeader: BoxHeader {
     override init() {
         super.init()
         
-        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
-        boxHeaderLabel.textColor = .akLight
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .smallPlus)
         boxHeaderLabel.textAlignment = .center
         boxHeaderLabel.alpha = Constant.alpha.faded
         boxHeaderLabel.numberOfLines = 1
@@ -532,7 +531,6 @@ fileprivate class SuggestionBoxContent: BoxContent {
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.textColor = UIColor.lightest
         label.textAlignment = .center
-        label.backgroundColor = .red
         label.alpha = Constant.alpha.faded
         label.text = "label"
         label.applyCustomAttributes(.more)

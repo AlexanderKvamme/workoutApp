@@ -22,7 +22,7 @@ class SuggestionBox: Box {
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         boxFrame?.background.backgroundColor = .white
-        boxHeader?.boxHeaderLabel.textColor = .akDark
+        boxHeader?.boxHeaderLabel.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
         boxSubHeader?.label.textColor = .akDark
         
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
@@ -41,7 +41,7 @@ class SuggestionBox: Box {
         if let timeOfWorkout = muscle.lastPerformance() {
             let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
             let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
-            subHeaderText = "\(shortTimeInterval) since:"
+            subHeaderText = "\(shortTimeInterval)"
         } else {
             subHeaderText =  "Never performed"
         }

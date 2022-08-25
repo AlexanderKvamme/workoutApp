@@ -83,13 +83,13 @@ class GoalsController: UIViewController, isStringReceiver {
     private func setupStack() {
         let sideInsets: CGFloat = 40
 
-        stackOfGoalButtons.spacing = 4
-        stackOfGoalButtons.alignment = .leading
+        stackOfGoalButtons.spacing = 6
+        stackOfGoalButtons.alignment = .center
         stackOfGoalButtons.axis = .vertical
         stackOfGoalButtons.distribution = .equalSpacing
         stackOfGoalButtons.layoutMargins = UIEdgeInsets(top: 0, left: sideInsets, bottom: 0, right: sideInsets)
         stackOfGoalButtons.isLayoutMarginsRelativeArrangement = true
-        stackOfGoalButtons.alpha = Constant.alpha.faded
+        stackOfGoalButtons.alpha = .opacity.fullyFaded.rawValue
         stackOfGoalButtons.sizeToFit()
         view.addSubview(stackOfGoalButtons)
         
@@ -114,7 +114,7 @@ class GoalsController: UIViewController, isStringReceiver {
         
         // Title Label
         label.numberOfLines = 0
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.preferredMaxLayoutWidth = 100
         label.lineBreakMode = .byWordWrapping
         
