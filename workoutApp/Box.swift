@@ -148,19 +148,6 @@ public class Box: UIView {
 extension Box {
     
     /// Set colors and alpha for easier debugging
-    public func setDebugColors() {
-        button.backgroundColor = .blue
-        button.alpha = 0.5
-        backgroundColor = .red
-        alpha = 0.8
-        
-        header?.backgroundColor = .green
-        header?.boxHeaderLabel.backgroundColor = .yellow
-        subheader?.backgroundColor = .brown
-        subheader?.label.backgroundColor = .purple
-        
-        boxFrame.backgroundColor = .green
-        boxFrame.alpha = 0.5
-    }
+    public func setDebugColors() { }
 }
 

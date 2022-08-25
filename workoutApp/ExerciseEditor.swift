@@ -96,7 +96,7 @@ final class ExerciseEditor: UIViewController {
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         
         addSubViewsAndConstraints()
     }

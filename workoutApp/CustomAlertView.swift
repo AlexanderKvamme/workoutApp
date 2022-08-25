@@ -38,7 +38,7 @@ class CustomAlertView: UIView, isModal {
         setBackground()
     }
     
-    convenience init(type: ModalType, messageContent:String) {
+    convenience init(type: ModalType, messageContent: String) {
         self.init(frame: UIScreen.main.bounds)
         
         let ModalWidth = UIScreen.main.bounds.width - spaceFromSides
@@ -56,7 +56,7 @@ class CustomAlertView: UIView, isModal {
         switch type {
         case .message:
             let messageLabel = UILabel()
-            messageLabel.text = "Important Message".uppercased()
+            messageLabel.text = "Important Message"
             messageLabel.textAlignment = .left
             messageLabel.font = .custom(style: .bold, ofSize: .medium)
             messageLabel.textColor = .akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
@@ -69,16 +69,16 @@ class CustomAlertView: UIView, isModal {
             let errorNameLabel = UILabel()
             errorNameLabel.text = "Error".uppercased()
             errorNameLabel.textAlignment = .left
-            errorNameLabel.font = .custom(style: .bold, ofSize: .medium)
-            errorNameLabel.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
+            errorNameLabel.font = .custom(style: .bold, ofSize: .smallPlus)
+            errorNameLabel.textColor = .akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
             errorNameLabel.sizeToFit()
             modalView.addSubview(errorNameLabel)
             
             let errorNumberLabel = UILabel()
             errorNumberLabel.text = "42"
             errorNumberLabel.textAlignment = .center
-            errorNumberLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
-            errorNumberLabel.textColor = .secondary
+            errorNumberLabel.font = UIFont.custom(style: .bold, ofSize: .smallPlus)
+            errorNumberLabel.textColor = .akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
             errorNumberLabel.sizeToFit()
             modalView.addSubview(errorNumberLabel)
             
@@ -101,6 +101,7 @@ class CustomAlertView: UIView, isModal {
         let xView = UIButton()
         xView.tintColor = .akDark
         xView.setImage(UIImage.close.withRenderingMode(.alwaysTemplate), for: .normal)
+        xView.setImage(UIImage.close24.withRenderingMode(.alwaysTemplate), for: .normal)
         xView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         xView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         
@@ -128,10 +129,10 @@ class CustomAlertView: UIView, isModal {
         
         // Content
         let contentLabel = UILabel(frame: CGRect(x: insetToComponents, y: 30, width: ModalWidth - 2*insetToComponents, height: 100))
-        contentLabel.text = messageContent.uppercased()
+        contentLabel.text = messageContent
         contentLabel.textAlignment = .center
         contentLabel.numberOfLines = 0
-        contentLabel.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
+        contentLabel.textColor = .akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
         contentLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
         modalView.addSubview(contentLabel)
         
@@ -169,6 +170,7 @@ class CustomAlertView: UIView, isModal {
         modalView.frame.origin = CGPoint(x: 32, y: frame.height)
         modalView.frame.size = CGSize(width: frame.width - spaceFromSides, height: dialogViewHeight)
         modalView.backgroundColor = UIColor.akLight
+        modalView.layer.cornerRadius = 16
         modalView.layoutIfNeeded()
         
         addSubview(modalView)
@@ -189,8 +191,7 @@ class CustomAlertView: UIView, isModal {
     
     private func setBackground() {
         backgroundView.frame = frame
-        backgroundView.backgroundColor = UIColor.akDark
-        backgroundView.alpha = 0
+        backgroundView.backgroundColor = .black.withAlphaComponent(0.92)
         addSubview(backgroundView)
     }
 }

@@ -132,7 +132,7 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     private func setupTableFooter() {
-        let footerFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
+        let footerFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 64)
         let footer = ExerciseTableFooter(frame: footerFrame)
         footer.saveButton.accessibilityIdentifier = "footer-save-button"
         footer.saveButton.addTarget(self, action: #selector(saveButtonHandler), for: .touchUpInside)

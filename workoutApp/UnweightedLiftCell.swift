@@ -38,7 +38,7 @@ class UnweightedLiftCell: LiftCell {
         repsField.text = "-1"
         repsField.textAlignment = .center
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = UIColor.light
+        repsField.textColor = UIColor.akLight
         repsField.alpha = Constant.alpha.faded
         repsField.clearsOnBeginEditing = true
         addSubview(repsField)

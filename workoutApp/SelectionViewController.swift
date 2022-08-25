@@ -44,7 +44,7 @@ class SelectionViewController: UIViewController {
     // ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         setupStack()
         setupLayout()
     }

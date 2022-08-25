@@ -245,7 +245,7 @@ fileprivate class SuggestionBoxHeader: BoxHeader {
         super.init()
         
         boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
-        boxHeaderLabel.textColor = UIColor.light
+        boxHeaderLabel.textColor = .akLight
         boxHeaderLabel.textAlignment = .center
         boxHeaderLabel.alpha = Constant.alpha.faded
         boxHeaderLabel.numberOfLines = 1
@@ -618,7 +618,7 @@ fileprivate class WarningBoxContent: BoxContent {
         addSubview(messageLabel)
         
         messageLabel.font = UIFont.custom(style: .bold, ofSize: .big)
-        messageLabel.textColor = .light
+        messageLabel.textColor = .akLight
         messageLabel.numberOfLines = 0
         messageLabel.text = "Messages go here".uppercased()
         
@@ -654,7 +654,7 @@ fileprivate class DeletionBoxContent: BoxContent {
         addSubview(messageLabel)
         
         messageLabel.font = UIFont.custom(style: .bold, ofSize: .big)
-        messageLabel.textColor = .light
+        messageLabel.textColor = .akLight
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.text = "Message".uppercased()

@@ -176,7 +176,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
             }
             editAction.image = self.wrenchImage
-            editAction.backgroundColor = .light
+            editAction.backgroundColor = .akLight
             indexPathBeingEdited = indexPath
             
             return [editAction]

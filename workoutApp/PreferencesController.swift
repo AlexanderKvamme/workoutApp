@@ -78,7 +78,7 @@ class PreferencesController: UIViewController {
     }
     
     private func setupView() {
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
     }
     
     private func addPreferencePicker(for preferencePicker: PreferencePicker) {

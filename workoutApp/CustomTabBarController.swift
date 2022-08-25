@@ -90,7 +90,7 @@ class CustomTabBarController: UITabBarController {
         }
         
         tabBar.tintColor = UIColor.lightest
-        tabBar.unselectedItemTintColor = UIColor.light
+        tabBar.unselectedItemTintColor = .akLight
         tabBar.barTintColor = UIColor.akDark
         tabBar.isTranslucent = false
     }

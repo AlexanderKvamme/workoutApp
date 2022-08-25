@@ -83,6 +83,7 @@ final class ProfileController: UIViewController {
         stackView.layoutIfNeeded()
         // Update scrollview's contentSize, which will automatically enable/disable scrolling
         scrollView.contentSize = stackView.frame.size
+        scrollView.contentSize = UIScreen.main.bounds.size
     }
     
     private func setupStackView() {
@@ -131,6 +132,7 @@ final class ProfileController: UIViewController {
     
     private func addSuggestions(to stackView: UIStackView) {    
         let suggestionController = SuggestionController()
+        suggestionController.view.frame = UIScreen.main.bounds
         addChildViewController(suggestionController)
         stackView.addArrangedSubview(suggestionController.view)
     }

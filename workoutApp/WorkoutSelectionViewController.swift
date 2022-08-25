@@ -46,6 +46,11 @@ class WorkoutSelectionViewController: SelectionViewController {
         setupLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let modal = CustomAlertView(type: .error, messageContent: "Thats whats up")
+        modal.show(animated: true)
+    }
+    
     // MARK: - Methods
     
     private func setupLayout() {

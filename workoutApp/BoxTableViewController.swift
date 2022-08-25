@@ -52,7 +52,7 @@ class BoxTableViewController: UITableViewController {
     // MARK: - Life cycle
 
     override func viewDidLoad() {
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         super.viewDidLoad()
     }
     
@@ -147,7 +147,7 @@ class BoxTableViewController: UITableViewController {
         let myStyle = SwipeExpansionStyle(target: .percentage(0.5), additionalTriggers: [], elasticOverscroll: true, completionAnimation: .bounce)
         var options = SwipeTableOptions()
         options.expansionStyle = myStyle
-        options.backgroundColor = .light
+        options.backgroundColor = .akLight
         options.transitionStyle = .border
         
         return options

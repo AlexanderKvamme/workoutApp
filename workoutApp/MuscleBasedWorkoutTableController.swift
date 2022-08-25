@@ -39,7 +39,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         setupDataSource(with: muscle)
         setupTableView()
         setupRefreshControl()
@@ -50,11 +50,15 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
             let alert = CustomAlertView(type: .message, messageContent: "Go make a workout that contains \(self.muscle.getName())!")
             alert.show(animated: true)
         }
+        
+        styleBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateAnyChanges()
+        
+        globalTabBar.showIt()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -122,7 +126,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
                 self.navigationController?.pushViewController(workoutEditor, animated: Constant.Animation.pickerVCsShouldAnimateIn)
             }
             editAction.image = self.wrenchImage
-            editAction.backgroundColor = .light
+            editAction.backgroundColor = .akLight
             indexPathBeingEdited = indexPath
             
             return [editAction]

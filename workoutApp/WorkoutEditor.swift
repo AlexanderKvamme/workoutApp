@@ -47,7 +47,7 @@ class WorkoutEditor: WorkoutController {
     }
     
     override func viewDidLoad() {
-        view.backgroundColor = .light
+        view.backgroundColor = .akLight
         addSubviewsAndConstraints()
     }
     

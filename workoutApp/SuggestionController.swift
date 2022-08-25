@@ -73,7 +73,7 @@ fileprivate extension SuggestionController {
         return boxes
     }
     
-    @objc func presentWorkoutPicker(sender:UIButton) {
+    @objc func presentWorkoutPicker(sender: UIButton) {
         let muscle = suggestedMuscles[sender.tag]
         let muscleBasedWorkoutPicker = MuscleBasedWorkoutTableController(muscle: muscle)
         navigationController?.pushViewController(muscleBasedWorkoutPicker, animated: true)
@@ -103,7 +103,7 @@ fileprivate extension SuggestionController {
     }
     
     func setupStack() {
-        stackOfSuggestions.spacing = 8
+        stackOfSuggestions.spacing = 16
         stackOfSuggestions.alignment = .leading
         stackOfSuggestions.axis = .vertical
         stackOfSuggestions.distribution = .equalSpacing

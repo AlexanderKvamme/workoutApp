@@ -67,6 +67,8 @@ class ExerciseHistoryTableViewController: UITableViewController {
         let rightButton = UIBarButtonItem(image: xIcon, style: .done, target: self, action: #selector(xButtonHandler))
         self.navigationItem.rightBarButtonItem = rightButton
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        styleBackButton()
     }
     
     private func setupTable() {
@@ -74,7 +76,7 @@ class ExerciseHistoryTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         automaticallyAdjustsScrollViewInsets = true
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .light
+        tableView.backgroundColor = .akLight
         
         tableView.reloadData()
     }
@@ -86,3 +88,11 @@ class ExerciseHistoryTableViewController: UITableViewController {
     }
 }
 
+extension UIViewController {
+    func styleBackButton() {
+        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17, style: .plain, target: self, action: #selector(pop))
+        navigationItem.leftBarButtonItem = btnRefresh
+        navigationItem.leftBarButtonItem?.tintColor = .akDark
+        navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+    }
+}
