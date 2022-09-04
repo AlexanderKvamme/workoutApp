@@ -111,11 +111,16 @@ class ActiveWorkoutController: UITableViewController {
         globalTabBar?.hideIt()
         
         // Right navBar button
-        let xIcon = UIImage.close24.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 16))
-        let rightButton = UIBarButtonItem.menuButton(self, action: #selector(xButtonHandler), image: xIcon, size: 16, tint: .akDark)
-        rightButton.imageInsets = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: 16)
-        self.navigationItem.rightBarButtonItem = rightButton
-
+        let topinset = 12.0
+        let menuBtn = UIButton(type: .custom)
+        menuBtn.contentVerticalAlignment = .center
+        menuBtn.contentHorizontalAlignment = .center
+        menuBtn.imageView?.contentMode = .scaleAspectFit
+        menuBtn.setImage(.close24, for: .normal)
+        menuBtn.contentEdgeInsets = UIEdgeInsets(top: topinset, left: 0, bottom: topinset, right: 16)
+        menuBtn.addTarget(self, action: #selector(xButtonHandler), for: UIControlEvents.touchUpInside)
+        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+        self.navigationItem.rightBarButtonItem = menuBarItem
         self.navigationItem.hidesBackButton = true
     }
     
