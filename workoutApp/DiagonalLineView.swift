@@ -14,7 +14,6 @@ class DiagonalLineView: UIView {
         
         // Draw stuff
         let rect = UIBezierPath(roundedRect: CGRect(x: 150, y: 150, width: 100, height: 100), cornerRadius: 5.0)
-        UIColor.green.set()
         rect.fill()
     }
 }

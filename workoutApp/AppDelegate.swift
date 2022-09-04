@@ -53,6 +53,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .akLight
+            appearance.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor.akDark.withAlphaComponent(.opacity.fullyFaded.rawValue),
+                    NSAttributedString.Key.font: UIFont.custom(style: .bold, ofSize: .medium),
+                NSAttributedStringKey.kern: 0.7
+            ]
             UINavigationBar.appearance().standardAppearance = appearance
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
         }

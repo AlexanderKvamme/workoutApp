@@ -123,7 +123,6 @@ class ActiveWorkoutController: UITableViewController {
         // tableview setup
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
-        automaticallyAdjustsScrollViewInsets = true
         tableView.separatorStyle = .none
         tableView.backgroundColor = .akLight
         

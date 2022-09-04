@@ -687,7 +687,7 @@ public class BoxFrame: UIView {
         super.init(frame: CGRect.zero)
         background.backgroundColor = .white
         background.layer.cornerCurve = .continuous
-        background.layer.cornerRadius = 24
+        background.layer.cornerRadius = 16
 
         // Setup shimmer properties
         shimmer.backgroundColor = .clear
