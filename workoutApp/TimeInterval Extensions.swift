@@ -30,5 +30,25 @@ extension TimeInterval {
             return "\(s)S"
         }
     }
+    
+    func asShortString() -> String {
+    
+        guard self.isNaN == false else { return "NA" }
+        
+        let s = Int(self)
+        let m = Int(s/60)
+        let h = Int(m/60)
+        let d = Int(h/24)
+        
+        if d > 0 {
+            return "\(d) days ago".uppercased()
+        } else if h > 0 {
+            return "\(h) hours ago".uppercased()
+        } else if m > 0 {
+            return "\(m) minutes ago".uppercased()
+        } else {
+            return "\(s) seconds ago".uppercased()
+        }
+    }
 }
 

@@ -130,7 +130,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UINavigationBar.appearance().titleTextAttributes = [
             NSAttributedStringKey.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
-            NSAttributedStringKey.foregroundColor: UIColor.green.cgColor,
             NSAttributedStringKey.kern: 0.7,
         ]
     }

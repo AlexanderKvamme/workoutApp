@@ -13,6 +13,8 @@ import UIKit
 /// Header is the topLabel, describing time since last workout.. subHeader is the bottomLabel, explaining which muscle you should work out next
 class SuggestionBox: Box {
 
+    var stack: UIStackView!
+    
     // MARK: - Initializers
     
     init() {
@@ -22,7 +24,8 @@ class SuggestionBox: Box {
         let boxFrame = boxFactory.makeBoxFrame()
         let boxContent = boxFactory.makeBoxContent()
         boxFrame?.background.backgroundColor = .white
-        boxHeader?.boxHeaderLabel.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
+        boxHeader?.boxHeaderLabel.textColor = .akDark.withAlphaComponent(.opacity.barelyFaded.rawValue)
+        boxHeader?.boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .small)
         boxSubHeader?.label.textColor = .akDark
         
         super.init(header: boxHeader, subheader: boxSubHeader, bgFrame: boxFrame!, content: boxContent)
@@ -40,7 +43,7 @@ class SuggestionBox: Box {
         // Set suggestion header based on when it was performed
         if let timeOfWorkout = muscle.lastPerformance() {
             let timeIntervalSinceWorkout = Date().timeIntervalSince(timeOfWorkout as Date)
-            let shortTimeInterval = timeIntervalSinceWorkout.asMinimalString()
+            let shortTimeInterval = timeIntervalSinceWorkout.asShortString()
             subHeaderText = "\(shortTimeInterval)"
         } else {
             subHeaderText =  "Never performed"
@@ -64,7 +67,6 @@ class SuggestionBox: Box {
         setupHeader()
         setupSubheader()
         setupBoxFrame()
-        setupShimmer()
     }
     
     private func setupBoxFrame() {
@@ -72,27 +74,7 @@ class SuggestionBox: Box {
         clipsToBounds = false
         
         boxFrame.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            boxFrame.leftAnchor.constraint(equalTo: leftAnchor),
-            boxFrame.rightAnchor.constraint(equalTo: rightAnchor),
-            boxFrame.topAnchor.constraint(equalTo: topAnchor),
-            boxFrame.bottomAnchor.constraint(equalTo: bottomAnchor),
-            ])
-    }
-    
-    private func setupShimmer() {
-        // Position shimmer via autolayout
-        let shimmerInset = Constant.components.box.suggestion.shimmerInset
-        
-        boxFrame.shimmer.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            boxFrame.shimmer.leftAnchor.constraint(equalTo: boxFrame.leftAnchor, constant: shimmerInset),
-            boxFrame.shimmer.rightAnchor.constraint(equalTo: boxFrame.rightAnchor, constant: -shimmerInset),
-            boxFrame.shimmer.topAnchor.constraint(equalTo: boxFrame.topAnchor, constant: shimmerInset),
-            boxFrame.shimmer.bottomAnchor.constraint(equalTo: boxFrame.bottomAnchor, constant: -shimmerInset),
-            ])
+        boxFrame.frame = frame
     }
     
     private func setupHeader() {
@@ -101,26 +83,27 @@ class SuggestionBox: Box {
         }
         
         header.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            header.leftAnchor.constraint(equalTo: boxFrame.leftAnchor),
-            header.rightAnchor.constraint(equalTo: boxFrame.rightAnchor),
-            header.centerXAnchor.constraint(equalTo: boxFrame.centerXAnchor),
-            header.topAnchor.constraint(equalTo: boxFrame.shimmer.topAnchor, constant: 5),
-            ])
     }
     
     private func setupSubheader() {
         guard let header = header else { return }
         guard let subheader = subheader else { return }
         
-        subheader.translatesAutoresizingMaskIntoConstraints = false
+        stack = UIStackView(frame: frame)
+        stack.axis = UILayoutConstraintAxis.vertical
+        stack.distribution = UIStackViewDistribution.equalSpacing
+        stack.alignment = UIStackViewAlignment.center
+        stack.spacing = 0
+        stack.addArrangedSubview(subheader)
+        stack.addArrangedSubview(header)
+        stack.isUserInteractionEnabled = false
         
-        NSLayoutConstraint.activate([
-            subheader.leftAnchor.constraint(equalTo: boxFrame.leftAnchor),
-            subheader.rightAnchor.constraint(equalTo: boxFrame.rightAnchor),
-            subheader.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 0),
-            ])
+        addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        subheader.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func setSuggestionHeader(_ str: String) {
@@ -139,12 +122,9 @@ class SuggestionBox: Box {
         
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: topAnchor),
-            button.bottomAnchor.constraint(equalTo: bottomAnchor),
-            button.leftAnchor.constraint(equalTo: leftAnchor),
-            button.rightAnchor.constraint(equalTo: rightAnchor),
-            ])
+        button.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
 

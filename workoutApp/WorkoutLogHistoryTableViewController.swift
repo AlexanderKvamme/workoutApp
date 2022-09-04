@@ -22,6 +22,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
         super.init(workoutStyleName: workoutStyleName, cellIdentifier: "HistoryBoxCell")
         tableView.register(WorkoutLogHistoryBoxCell.self, forCellReuseIdentifier: cellIdentifier)
         setUpNavigationBar(withTitle: self.workoutStyleName)
+        styleBackButton()
     }
     
     required init?(coder aDecoder: NSCoder) {
