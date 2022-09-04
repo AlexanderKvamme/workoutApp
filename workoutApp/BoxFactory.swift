@@ -270,7 +270,7 @@ fileprivate class StandardBoxHeader: BoxHeader {
 
     override init() {
         super.init()
-        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .big)
+        boxHeaderLabel.font = UIFont.custom(style: .bold, ofSize: .mediumPlus)
         boxHeaderLabel.numberOfLines = 2
         boxHeaderLabel.sizeToFit()
         addSubview(boxHeaderLabel)
