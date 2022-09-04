@@ -273,7 +273,10 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         
         guard let plusButton = plusButton else { return }
         
-        plusButton.setTitle("+", for: .normal)
+        let img = UIImage.close24//.transformed(by: CGAffineTransform().rotated(by: .pi/4))
+        let scale = 0.45
+        plusButton.setImage(img, for: .normal)
+        plusButton.transform = plusButton.transform.rotated(by: .pi/4).scaledBy(x: scale, y: scale)
         plusButton.setTitleColor(.akDark, for: .normal)
         plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
         plusButton.accessibilityIdentifier = "cell-plus-button"
