@@ -18,8 +18,17 @@
   "platforms": {
     "ios": "15.0"
   },
-  "source_files": "AKKIT/code/**/*",
-  "resource_bundles": {
-    "AKKIT": "AKKIT/Assets/Media.xcassets"
+  "source_files": "AKKIT/Resources/Code/**/*.swift",
+  "resources": [
+    "AKKIT/Resources/Assets/Media.xcassets",
+    "AKKIT/Resources/Assets/Fonts/**/*"
+  ],
+  "dependencies": {
+    "VFont": [
+      "~> 0.6.1"
+    ],
+    "SnapKit": [
+
+    ]
   }
 }

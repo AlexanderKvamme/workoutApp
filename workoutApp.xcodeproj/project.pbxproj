@@ -121,6 +121,8 @@
 		DDCF834A1F8A3D8400F87B3E /* TallExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */; };
 		DDCF834D1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF834C1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift */; };
 		DDCF834F1F8B8B4000F87B3E /* UIResponder Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF834E1F8B8B4000F87B3E /* UIResponder Extensions.swift */; };
+		DDD3FC5828C88F8900890AE7 /* Sono-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */; };
+		DDD3FC5A28C88F9800890AE7 /* Gilroy-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */; };
 		DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */; };
 		DDD88F521F8CE5BD00552153 /* String Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD88F511F8CE5BD00552153 /* String Extensions.swift */; };
 		DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */; };
@@ -276,6 +278,8 @@
 		DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallExerciseTableCellBox.swift; sourceTree = "<group>"; };
 		DDCF834C1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortExerciseTableCellBox.swift; sourceTree = "<group>"; };
 		DDCF834E1F8B8B4000F87B3E /* UIResponder Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder Extensions.swift"; sourceTree = "<group>"; };
+		DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sono-Variable.ttf"; sourceTree = "<group>"; };
+		DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Black.ttf"; sourceTree = "<group>"; };
 		DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval Extensions.swift"; sourceTree = "<group>"; };
 		DDD88F511F8CE5BD00552153 /* String Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String Extensions.swift"; sourceTree = "<group>"; };
 		DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableProtocols.swift; sourceTree = "<group>"; };
@@ -578,6 +582,8 @@
 				DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */,
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
 				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
+				DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */,
+				DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
 			);
@@ -919,10 +925,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDD3FC5A28C88F9800890AE7 /* Gilroy-Black.ttf in Resources */,
 				DD585D541EC4D53900962B19 /* LaunchScreen.storyboard in Resources */,
 				DD585D511EC4D53900962B19 /* Assets.xcassets in Resources */,
 				DD1EA1601EEC1CB200EBB7B7 /* Keyboard.xib in Resources */,
 				DD585D4C1EC4D53900962B19 /* Main.storyboard in Resources */,
+				DDD3FC5828C88F8900890AE7 /* Sono-Variable.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,12 +954,14 @@
 				"${BUILT_PRODUCTS_DIR}/AKKIT/AKKIT.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+				"${BUILT_PRODUCTS_DIR}/VFont/VFont.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AKKIT.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VFont.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

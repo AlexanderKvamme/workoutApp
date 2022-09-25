@@ -15,6 +15,7 @@ import CoreData
 class WorkoutSelectionViewController: SelectionViewController {
 
     let plusButton = PlusButton()
+    var workoutButtons = [SelectionViewButton]()
     
     // MARK: - Initializers
     
@@ -44,6 +45,11 @@ class WorkoutSelectionViewController: SelectionViewController {
         view.backgroundColor = .akLight
         setupStack()
         setupLayout()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        debugEnterWorkout(0)
     }
     
     // MARK: - Methods
@@ -79,6 +85,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     /// Sends new fetch and updates buttons
     private func updateStackWithEntriesFromCoreData() {
         let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
+        workoutButtons = []
     
         buttonIndex = 0
         
@@ -87,7 +94,6 @@ class WorkoutSelectionViewController: SelectionViewController {
         }
         
         // make buttons from unique workout names
-        var workoutButtons = [SelectionViewButton]()
         buttonNames = [String]()
         
         for workoutStyle in workoutStyles where workoutStyle.getWorkoutDesignCount() > 0 { //where workoutStyle.usedInWorkoutsCount > 0 {
@@ -109,7 +115,6 @@ class WorkoutSelectionViewController: SelectionViewController {
             // Replace any default target action (Default modal presentation)
             newButton.button.removeTarget(nil, action: nil, for: .allEvents)
             newButton.button.addTarget(self, action: #selector(ShowWorkoutTable), for: UIControlEvents.touchUpInside)
-            
             workoutButtons.append(newButton)
         }
         
@@ -121,6 +126,10 @@ class WorkoutSelectionViewController: SelectionViewController {
         addNewWorkoutButton()
         
         stack.layoutIfNeeded()
+    }
+    
+    private func debugEnterWorkout(_ int: Int) {
+        workoutButtons[int].button.sendActions(for: .touchUpInside)
     }
     
     private func addNewWorkoutButton() {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AKKIT
 
 
 extension UIBarButtonItem {
@@ -26,10 +27,6 @@ extension UIBarButtonItem {
     }
 }
 
-
-
-
-
 /// This TableView is the actual workout when the user is working out
 class ActiveWorkoutController: UITableViewController {
     
@@ -45,7 +42,6 @@ class ActiveWorkoutController: UITableViewController {
     private var location: CGPoint!
     private var sourceIndexPath: IndexPath!
     
-    
     weak var presentingBoxTable: WorkoutTableViewController?
     
     // MARK: - Initializers
@@ -53,6 +49,9 @@ class ActiveWorkoutController: UITableViewController {
     init(withWorkout workout: Workout) {
         super.init(nibName: nil, bundle: nil)
         self.currentWorkout = workout
+        
+        UIStackView.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).spacing = 10
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -86,6 +85,8 @@ class ActiveWorkoutController: UITableViewController {
         // Long press recognizer
         let longPressRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressRecognized(_:)))
         tableView.addGestureRecognizer(longPressRecognizer)
+        
+        addTimerButtons()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,6 +95,14 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     // MARK: - Methods
+    
+    private func addTimerButtons() {
+        let spacer = UIBarButtonItem(customView: TimerView(" ", timerDelegate: self))
+        let one = UIBarButtonItem(customView: TimerView("1", timerDelegate: self))
+        let two = UIBarButtonItem(customView: TimerView("2", timerDelegate: self))
+        let three = UIBarButtonItem(customView: TimerView("3", timerDelegate: self))
+        navigationItem.leftBarButtonItems = [spacer, one, two, three]
+    }
     
     // MARK: setup methods
     
@@ -302,3 +311,101 @@ class ActiveWorkoutController: UITableViewController {
     }
 }
 
+extension ActiveWorkoutController: AKTimerDelegate {
+    func statusDidChange(to status: AKTimerStatus) {
+        print("bam fix hand status: ", status)
+    }
+}
+
+class TimerView: UIView {
+    
+    let akt = AKTimer()
+    let label = UILabel()
+    var delegate: AKTimerDelegate?
+    
+    init(_ text: String, timerDelegate: AKTimerDelegate) {
+        super.init(frame: .zero)
+        self.delegate = timerDelegate
+        setup()
+        label.text = text
+        label.isUserInteractionEnabled = false
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setup() {
+        label.textAlignment = .left
+        label.font = .custom(style: .bold, ofSize: .medium)
+        label.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
+        
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        let tr = UITapGestureRecognizer(target: self, action: #selector(insideTap))
+        addGestureRecognizer(tr)
+    }
+    
+    // MARK: - Timer
+    
+    
+    @objc func insideTap() {
+        print("bam tapped ", label.text)
+        let tappedNumber = Int(label.text!)!
+        akt.delegate = delegate
+        akt.startCountUpTo(tappedNumber)
+    }
+}
+
+    
+enum AKTimerStatus {
+    case ticking(Int, Int) // current and target
+    case inactive
+    case done
+}
+
+
+protocol AKTimerDelegate {
+    func statusDidChange(to status: AKTimerStatus)
+}
+
+class AKTimer {
+    var timer: Timer?
+    var delegate: AKTimerDelegate?
+    var status: AKTimerStatus = .inactive {
+        didSet {
+            propegateStatusChange()
+        }
+    }
+    
+    private func propegateStatusChange() {
+        delegate?.statusDidChange(to: status)
+    }
+    
+    func startCountUpTo(_ targetMinutes: Int) {
+        let targetSeconds = targetMinutes*5
+        
+        timer?.invalidate()
+        status = .ticking(0, targetSeconds)
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            switch self.status {
+            case .ticking(let current, let target):
+                if current == target {
+                    self.status = .done
+                    self.timer?.invalidate()
+                    return
+                } else {
+                    self.status = .ticking(current+1, target)
+                }
+            case .inactive:
+                print("Timer was inactive")
+            case .done:
+                print("Timer was done. Invalidating")
+                self.timer?.invalidate()
+            }
+        }
+    }
+}

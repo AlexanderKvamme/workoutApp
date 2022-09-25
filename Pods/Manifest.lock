@@ -1,7 +1,10 @@
 PODS:
-  - AKKIT (0.1.1)
+  - AKKIT (0.1.1):
+    - SnapKit
+    - VFont (~> 0.6.1)
   - SnapKit (5.6.0)
   - SwipeCellKit (1.9.1)
+  - VFont (0.6.1)
 
 DEPENDENCIES:
   - AKKIT (from `~/Documents/workspaces/code/swift/AKKIT`)
@@ -11,6 +14,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - SnapKit
+    - VFont
 
 EXTERNAL SOURCES:
   AKKIT:
@@ -25,9 +29,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwipeCellKit/SwipeCellKit.git
 
 SPEC CHECKSUMS:
-  AKKIT: 5f25cb284e84dda9b15816003e2bd20dd01e3685
+  AKKIT: 6a9f8f4d408923b9f36b967026b20db9259c0075
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwipeCellKit: 9fa65dd73e52e8fd139fec4d8f7d7cb44fa00559
+  VFont: ed3c3640a2c348487533718b479b03efc9ce9881
 
 PODFILE CHECKSUM: 28fb66917955a2cb7223d7a8fcc9cec6d8844923
 

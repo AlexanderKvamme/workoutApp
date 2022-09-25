@@ -63,6 +63,8 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         updateTableIfNeeded()
         
         refreshControl?.endRefreshing()
+        
+        debugEnterWorkout(0)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +72,12 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     }
     
     // MARK: - Methods
+    
+    private func debugEnterWorkout(_ i: Int) {
+        let indexPath = IndexPath(row: i, section: 0)
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        tableView.delegate?.tableView!(tableView, didSelectRowAt: indexPath)
+    }
     
     private func addLongPressRecognizer() {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(showEditor(_:)))
@@ -143,6 +151,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     // MARK: TableView delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("bam did select: ", indexPath)
         // Start a workout
         let wo = dataSource.getData() as? [Workout]
         if let wo = wo {
