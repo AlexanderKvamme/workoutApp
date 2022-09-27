@@ -117,13 +117,14 @@ class ActiveWorkoutController: UITableViewController {
         navigationItem.rightBarButtonItem = nil
         
         // FIXME: This is not good. Make an actual frame to fill it properly
-        let imageView = AKTimerStatusBar(time: target)
-        imageView.heightAnchor.constraint(equalToConstant: globalTimerHeight).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: globalTimerWidth).isActive = true
+        let timerBar = AKTimerStatusBar(time: target)
+        timerBar.delegate = self
+        timerBar.heightAnchor.constraint(equalToConstant: globalTimerHeight).isActive = true
+        timerBar.widthAnchor.constraint(equalToConstant: globalTimerWidth).isActive = true
 
         // This will assing your custom view to navigation title.
-        navigationItem.titleView = imageView
-        imageView.startAnimation(seconds: target) {
+        navigationItem.titleView = timerBar
+        timerBar.startAnimation(seconds: target) {
             self.addTimerButtons()
             self.addExitButtonToNavBar()
             Audioplayer.play(.congratulations)
@@ -340,6 +341,12 @@ class ActiveWorkoutController: UITableViewController {
     }
 }
 
+extension ActiveWorkoutController: AKTimerStatusBarDelegate {
+    func statusBarDidFinish(_ bool: Bool) {
+        addTimerButtons()
+    }
+}
+
 // FIXME: This is where the active vc handles the timer ticks
 extension ActiveWorkoutController: AKTimerDelegate {
     func statusDidChange(to status: AKTimerStatus) {
@@ -457,13 +464,16 @@ class AKTimer {
 }
 
 protocol AKTimerStatusBarDelegate {
-    func statusBarDidFinish()
+    func statusBarDidFinish(_ bool: Bool)
 }
 
 final class AKTimerStatusBar: UIView {
     
     var fillView = UIView()
+    var cancelButtonBackground = UIButton()
+    var cancelButton = UIImageView()
     var time: TimeInterval
+    var delegate: AKTimerStatusBarDelegate?
     
     init(time: TimeInterval) {
         self.time = time
@@ -482,6 +492,23 @@ final class AKTimerStatusBar: UIView {
         
         // Animate from left
         self.fillView.frame = CGRect(x: 0, y: 0, width: 0, height: 500)
+        
+        // Cancel button
+        cancelButtonBackground.backgroundColor = .akDark
+        cancelButton.image = UIImage.close24.withTintColor(.akLight)
+        cancelButton.contentMode = .scaleAspectFit
+        cancelButton.isUserInteractionEnabled = false
+        cancelButtonBackground.addTarget(self, action: #selector(cancelTimer), for: .touchUpInside)
+        
+        addSubview(cancelButtonBackground)
+        addSubview(cancelButton)
+        cancelButtonBackground.snp.makeConstraints { make in
+            make.top.right.bottom.equalToSuperview()
+            make.width.equalTo(44)
+        }
+        cancelButton.snp.makeConstraints { make in
+            make.edges.equalTo(cancelButtonBackground).inset(10)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -490,6 +517,11 @@ final class AKTimerStatusBar: UIView {
     
     func update(_ current: Int, _ target: Int) {
         let percentage: CGFloat = CGFloat(current)/CGFloat(target)*100
+    }
+    
+    @objc func cancelTimer() {
+        print("bam would cancel")
+        delegate?.statusBarDidFinish(false)
     }
     
     func startAnimation(seconds: TimeInterval, completion: @escaping (()->())) {
