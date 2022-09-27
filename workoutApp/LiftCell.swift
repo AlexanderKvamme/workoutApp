@@ -123,7 +123,7 @@ class LiftCell: UICollectionViewCell {
     
     func makeRepTextNormal() {
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = .red
+        repsField.textColor = .akDark
         repsField.alpha = Constant.alpha.faded
     }
     

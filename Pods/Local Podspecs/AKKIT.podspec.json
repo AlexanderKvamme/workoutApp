@@ -21,7 +21,8 @@
   "source_files": "AKKIT/Resources/Code/**/*.swift",
   "resources": [
     "AKKIT/Resources/Assets/Media.xcassets",
-    "AKKIT/Resources/Assets/Fonts/**/*"
+    "AKKIT/Resources/Assets/Fonts/**/*",
+    "AKKIT/Resources/Assets/Sounds/**/*"
   ],
   "dependencies": {
     "VFont": [

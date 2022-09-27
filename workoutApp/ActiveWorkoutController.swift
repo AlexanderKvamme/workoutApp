@@ -8,7 +8,12 @@
 
 import UIKit
 import AKKIT
+import SnapKit
 
+// FIXME: This must be done better
+//let globalTimerWidth: CGFloat = 220
+let globalTimerWidth: CGFloat = Constant.UI.width - 48 - 24
+let globalTimerHeight: CGFloat = 32
 
 extension UIBarButtonItem {
 
@@ -37,6 +42,7 @@ class ActiveWorkoutController: UITableViewController {
     private var dataSource: ExerciseTableDataSource!
     private var myWorkoutLog: WorkoutLog! // used in the end
     private var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
+    private var timerBar = AKTimerStatusBar(time: 0)
     // cells reorder
     private var snapShot: UIView?
     private var location: CGPoint!
@@ -49,9 +55,6 @@ class ActiveWorkoutController: UITableViewController {
     init(withWorkout workout: Workout) {
         super.init(nibName: nil, bundle: nil)
         self.currentWorkout = workout
-        
-        UIStackView.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).spacing = 10
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,11 +100,34 @@ class ActiveWorkoutController: UITableViewController {
     // MARK: - Methods
     
     private func addTimerButtons() {
-        let spacer = UIBarButtonItem(customView: TimerView(" ", timerDelegate: self))
+        navigationItem.titleView = nil
+        
+        let spacerView = UIView()
+        spacerView.backgroundColor = .green
+        
+        let spacer = UIBarButtonItem(customView: spacerView)
         let one = UIBarButtonItem(customView: TimerView("1", timerDelegate: self))
         let two = UIBarButtonItem(customView: TimerView("2", timerDelegate: self))
         let three = UIBarButtonItem(customView: TimerView("3", timerDelegate: self))
         navigationItem.leftBarButtonItems = [spacer, one, two, three]
+    }
+    
+    private func addTimerBar(target: TimeInterval) {
+        navigationItem.leftBarButtonItems = nil
+        navigationItem.rightBarButtonItem = nil
+        
+        // FIXME: This is not good. Make an actual frame to fill it properly
+        let imageView = AKTimerStatusBar(time: target)
+        imageView.heightAnchor.constraint(equalToConstant: globalTimerHeight).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: globalTimerWidth).isActive = true
+
+        // This will assing your custom view to navigation title.
+        navigationItem.titleView = imageView
+        imageView.startAnimation(seconds: target) {
+            self.addTimerButtons()
+            self.addExitButtonToNavBar()
+            Audioplayer.play(.congratulations)
+        }
     }
     
     // MARK: setup methods
@@ -118,7 +144,21 @@ class ActiveWorkoutController: UITableViewController {
         }
         
         globalTabBar?.hideIt()
+        addExitButtonToNavBar()
+    }
+    
+    private func setupTable() {
+        // tableview setup
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .akLight
         
+        setupTableFooter()
+        tableView.reloadData()
+    }
+    
+    private func addExitButtonToNavBar() {
         // Right navBar button
         let topinset = 12.0
         let menuBtn = UIButton(type: .custom)
@@ -131,17 +171,6 @@ class ActiveWorkoutController: UITableViewController {
         let menuBarItem = UIBarButtonItem(customView: menuBtn)
         self.navigationItem.rightBarButtonItem = menuBarItem
         self.navigationItem.hidesBackButton = true
-    }
-    
-    private func setupTable() {
-        // tableview setup
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = .akLight
-        
-        setupTableFooter()
-        tableView.reloadData()
     }
     
     private func setupTableFooter() {
@@ -311,9 +340,21 @@ class ActiveWorkoutController: UITableViewController {
     }
 }
 
+// FIXME: This is where the active vc handles the timer ticks
 extension ActiveWorkoutController: AKTimerDelegate {
     func statusDidChange(to status: AKTimerStatus) {
-        print("bam fix hand status: ", status)
+        switch status {
+        case .ticking(let current, let target):
+            if current == 0 {
+                addTimerBar(target: TimeInterval(target))
+            }
+            timerBar.update(current, target)
+        case .inactive:
+            print("bam would show timer buttons")
+        case .done:
+            print("bam would also show timer buttons")
+            addTimerButtons()
+        }
     }
 }
 
@@ -338,12 +379,18 @@ class TimerView: UIView {
     private func setup() {
         label.textAlignment = .left
         label.font = .custom(style: .bold, ofSize: .medium)
-        label.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
+        label.textColor = .akLight//.withAlphaComponent(.opacity.faded.rawValue)
+        label.textAlignment = .center
         
         addSubview(label)
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.height.equalTo(globalTimerHeight)
+            make.width.equalTo(40)
         }
+        label.backgroundColor = .akDark
+        label.layer.cornerRadius = 8
+        label.clipsToBounds = true
         
         let tr = UITapGestureRecognizer(target: self, action: #selector(insideTap))
         addGestureRecognizer(tr)
@@ -353,7 +400,6 @@ class TimerView: UIView {
     
     
     @objc func insideTap() {
-        print("bam tapped ", label.text)
         let tappedNumber = Int(label.text!)!
         akt.delegate = delegate
         akt.startCountUpTo(tappedNumber)
@@ -386,7 +432,7 @@ class AKTimer {
     }
     
     func startCountUpTo(_ targetMinutes: Int) {
-        let targetSeconds = targetMinutes*5
+        let targetSeconds = targetMinutes*60
         
         timer?.invalidate()
         status = .ticking(0, targetSeconds)
@@ -407,5 +453,48 @@ class AKTimer {
                 self.timer?.invalidate()
             }
         }
+    }
+}
+
+protocol AKTimerStatusBarDelegate {
+    func statusBarDidFinish()
+}
+
+final class AKTimerStatusBar: UIView {
+    
+    var fillView = UIView()
+    var time: TimeInterval
+    
+    init(time: TimeInterval) {
+        self.time = time
+        
+        super.init(frame: .zero)
+        
+        // Background view
+        backgroundColor = .akDark.withAlphaComponent(0.1)
+        layer.cornerRadius = 16
+        layer.cornerCurve = .continuous
+        clipsToBounds = true
+        
+        // Fill view
+        fillView.backgroundColor = .akDark
+        addSubview(fillView)
+        
+        // Animate from left
+        self.fillView.frame = CGRect(x: 0, y: 0, width: 0, height: 500)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func update(_ current: Int, _ target: Int) {
+        let percentage: CGFloat = CGFloat(current)/CGFloat(target)*100
+    }
+    
+    func startAnimation(seconds: TimeInterval, completion: @escaping (()->())) {
+         UIView.animate(withDuration: time, delay: 0, options: []) {
+            self.fillView.frame = CGRect(x: 0, y: 0, width: globalTimerWidth, height: globalTimerHeight)
+        } completion: { bool in completion() }
     }
 }
