@@ -14,6 +14,7 @@ import SnapKit
 //let globalTimerWidth: CGFloat = 220
 let globalTimerWidth: CGFloat = Constant.UI.width - 48 - 24
 let globalTimerHeight: CGFloat = 32
+let globalCancelTimerWidth: CGFloat = 44
 
 extension UIBarButtonItem {
 
@@ -106,10 +107,15 @@ class ActiveWorkoutController: UITableViewController {
         spacerView.backgroundColor = .green
         
         let spacer = UIBarButtonItem(customView: spacerView)
-        let one = UIBarButtonItem(customView: TimerView("1", timerDelegate: self))
-        let two = UIBarButtonItem(customView: TimerView("2", timerDelegate: self))
-        let three = UIBarButtonItem(customView: TimerView("3", timerDelegate: self))
-        navigationItem.leftBarButtonItems = [spacer, one, two, three]
+        let one = UIBarButtonItem(customView: TimerButton("1", timerDelegate: self))
+        let two = UIBarButtonItem(customView: TimerButton("2", timerDelegate: self))
+        let three = UIBarButtonItem(customView: TimerButton("3", timerDelegate: self))
+        
+        let hStack = UIStackView(arrangedSubviews: [one.customView!, two.customView!, three.customView!])
+        hStack.axis = .horizontal
+        hStack.alignment = .center
+        hStack.spacing = 8
+        navigationItem.titleView = hStack
     }
     
     private func addTimerBar(target: TimeInterval) {
@@ -117,6 +123,7 @@ class ActiveWorkoutController: UITableViewController {
         navigationItem.rightBarButtonItem = nil
         
         // FIXME: This is not good. Make an actual frame to fill it properly
+        let target = 10.0
         let timerBar = AKTimerStatusBar(time: target)
         timerBar.delegate = self
         timerBar.heightAnchor.constraint(equalToConstant: globalTimerHeight).isActive = true
@@ -365,7 +372,7 @@ extension ActiveWorkoutController: AKTimerDelegate {
     }
 }
 
-class TimerView: UIView {
+class TimerButton: UIView {
     
     let akt = AKTimer()
     let label = UILabel()
@@ -388,6 +395,10 @@ class TimerView: UIView {
         label.font = .custom(style: .bold, ofSize: .medium)
         label.textColor = .akLight//.withAlphaComponent(.opacity.faded.rawValue)
         label.textAlignment = .center
+        label.backgroundColor = .akDark
+        label.layer.cornerRadius = 8
+        label.layer.cornerCurve = .continuous
+        label.clipsToBounds = true
         
         addSubview(label)
         label.snp.makeConstraints { make in
@@ -395,9 +406,6 @@ class TimerView: UIView {
             make.height.equalTo(globalTimerHeight)
             make.width.equalTo(40)
         }
-        label.backgroundColor = .akDark
-        label.layer.cornerRadius = 8
-        label.clipsToBounds = true
         
         let tr = UITapGestureRecognizer(target: self, action: #selector(insideTap))
         addGestureRecognizer(tr)
@@ -504,7 +512,7 @@ final class AKTimerStatusBar: UIView {
         addSubview(cancelButton)
         cancelButtonBackground.snp.makeConstraints { make in
             make.top.right.bottom.equalToSuperview()
-            make.width.equalTo(44)
+            make.width.equalTo(globalCancelTimerWidth)
         }
         cancelButton.snp.makeConstraints { make in
             make.edges.equalTo(cancelButtonBackground).inset(10)
@@ -526,7 +534,7 @@ final class AKTimerStatusBar: UIView {
     
     func startAnimation(seconds: TimeInterval, completion: @escaping (()->())) {
          UIView.animate(withDuration: time, delay: 0, options: []) {
-            self.fillView.frame = CGRect(x: 0, y: 0, width: globalTimerWidth, height: globalTimerHeight)
+            self.fillView.frame = CGRect(x: 0, y: 0, width: globalTimerWidth - globalCancelTimerWidth, height: globalTimerHeight)
         } completion: { bool in completion() }
     }
 }
