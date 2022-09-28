@@ -270,30 +270,31 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     private func setupPlusButton() {
         let shimmerHeight = box.boxFrame.shimmer.frame.height
         plusButton = UIButton(frame: CGRect(x: 0, y: 0, width: shimmerHeight, height: shimmerHeight))
+        let plusButtonBackground = UIView()
+        plusButtonBackground.layer.cornerRadius = 14
+        plusButtonBackground.backgroundColor = .akDark
         
         guard let plusButton = plusButton else { return }
         
-        let img = UIImage.close24//.transformed(by: CGAffineTransform().rotated(by: .pi/4))
-        let scale = 0.45
+        let img = UIImage.close24.withTintColor(.akLight).rotate(radians: .pi/4)
         plusButton.setImage(img, for: .normal)
-        plusButton.transform = plusButton.transform.rotated(by: .pi/4).scaledBy(x: scale, y: scale)
-        plusButton.setTitleColor(.akDark, for: .normal)
-        plusButton.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .bigger)
         plusButton.accessibilityIdentifier = "cell-plus-button"
         plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)
-        
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Layout
+        contentView.addSubview(plusButtonBackground)
         contentView.addSubview(plusButton)
         
-        NSLayoutConstraint.activate([
-            plusButton.topAnchor.constraint(equalTo: box.boxFrame.topAnchor),
-            plusButton.bottomAnchor.constraint(equalTo: box.boxFrame.bottomAnchor),
-            plusButton.rightAnchor.constraint(equalTo: box.boxFrame.rightAnchor),
-            plusButton.centerYAnchor.constraint(equalTo: box.boxFrame.centerYAnchor),
-            plusButton.widthAnchor.constraint(equalTo: plusButton.heightAnchor),
-            ])
+        plusButtonBackground.snp.makeConstraints { make in
+            make.top.right.bottom.equalTo(box.boxFrame).inset(8 )
+            make.width.equalTo(plusButtonBackground.snp.height)
+        }
+        
+        plusButton.snp.makeConstraints { make in
+            make.edges.equalTo(plusButtonBackground).inset(8)
+        }
+        
         setNeedsLayout()
     }
     
@@ -429,3 +430,26 @@ extension ExerciseCellForWorkouts: UICollectionViewDataSource {
     }
 }
 
+extension UIImage {
+    func rotate(radians: Float) -> UIImage? {
+        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
+        // Trim off the extremely small float value to prevent core graphics from rounding it up
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
+        let context = UIGraphicsGetCurrentContext()!
+
+        // Move origin to middle
+        context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        // Rotate around middle
+        context.rotate(by: CGFloat(radians))
+        // Draw the image at its center
+        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+}

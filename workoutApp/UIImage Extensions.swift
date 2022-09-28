@@ -42,7 +42,7 @@ extension UIImage {
         return UIImage(named: "history")!
     }
     static var workoutIcon: UIImage {
-        return UIImage(named: "workout")!
+        return UIImage(named: "star-24")!
     }
     static var profileIcon: UIImage {
         return UIImage(named: "profile")!

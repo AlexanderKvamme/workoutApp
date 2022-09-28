@@ -122,8 +122,6 @@ class ActiveWorkoutController: UITableViewController {
         navigationItem.leftBarButtonItems = nil
         navigationItem.rightBarButtonItem = nil
         
-        // FIXME: This is not good. Make an actual frame to fill it properly
-        let target = 10.0
         let timerBar = AKTimerStatusBar(time: target)
         timerBar.delegate = self
         timerBar.heightAnchor.constraint(equalToConstant: globalTimerHeight).isActive = true

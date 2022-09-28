@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
+fileprivate var workoutToAutomaticallyEnter: Int? = nil
+
 /// The default workoutTableViewController used in both the history and workout tab
 class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {
     
@@ -64,7 +66,7 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
         
         refreshControl?.endRefreshing()
         
-        debugEnterWorkout(0)
+        debugEnterWorkout(workoutToAutomaticallyEnter)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,7 +75,8 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     
     // MARK: - Methods
     
-    private func debugEnterWorkout(_ i: Int) {
+    private func debugEnterWorkout(_ i: Int?) {
+        guard let i = i else { return }
         let indexPath = IndexPath(row: i, section: 0)
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
         tableView.delegate?.tableView!(tableView, didSelectRowAt: indexPath)

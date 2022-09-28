@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         wrappedProfile.tabBarItem = UITabBarItem(title: "3", image: UIImage.profileIcon.withTintColor(tabButtonTint), tag: 3)
         let screens = [wrappedProgress, wrappedHistory, wrappedWorkout, wrappedProfile, UIViewController()]
         
-        let centerIcon = Test.testIcon
+        let centerIcon = UIImage.close24.rotate(radians: .pi/4)!
         let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [0,4])
         window?.rootViewController = tabBar
         globalTabBar = tabBar
