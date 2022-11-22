@@ -6,7 +6,7 @@
 //  Copyright © 2017 Alexander Kvamme. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /// Used to edit an existing Workout
 class WorkoutEditor: WorkoutController {
@@ -49,6 +49,16 @@ class WorkoutEditor: WorkoutController {
     override func viewDidLoad() {
         view.backgroundColor = .akLight
         addSubviewsAndConstraints()
+        
+        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17, style: .plain, target: self, action: #selector(pop))
+        navigationItem.leftBarButtonItem = btnRefresh
+        navigationItem.leftBarButtonItem?.tintColor = .akDark
+        navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        globalTabBar.hideIt()
     }
     
     // MARK: Methods
