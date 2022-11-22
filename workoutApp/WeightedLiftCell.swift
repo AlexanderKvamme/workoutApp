@@ -93,7 +93,7 @@ class WeightedLiftCell: LiftCell {
         weightField.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            weightField.topAnchor.constraint(equalTo: repsField.bottomAnchor, constant: -10),
+            weightField.topAnchor.constraint(equalTo: repsField.bottomAnchor, constant: -30),
             weightField.centerXAnchor.constraint(equalTo: repsField.centerXAnchor),
             weightField.heightAnchor.constraint(equalToConstant: weightField.frame.height),
             weightField.widthAnchor.constraint(equalTo: repsField.widthAnchor),
