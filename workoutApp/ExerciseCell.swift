@@ -281,18 +281,27 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         plusButton.accessibilityIdentifier = "cell-plus-button"
         plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
+        plusButton.imageView?.contentMode = .scaleAspectFit
         
         // Layout
         contentView.addSubview(plusButtonBackground)
         contentView.addSubview(plusButton)
         
-        plusButtonBackground.snp.makeConstraints { make in
-            make.top.right.bottom.equalTo(box.boxFrame).inset(8)
-            make.width.height.equalTo(36)
+        if exercise.isWeighted() {
+            plusButtonBackground.snp.makeConstraints { make in
+                make.centerY.equalTo(box.boxFrame)
+                make.right.equalTo(box.boxFrame).inset(8)
+                make.width.equalTo(36)
+                make.height.equalTo(36)
+            }
+        } else {
+            plusButtonBackground.snp.makeConstraints { make in
+                make.top.right.bottom.equalTo(box.boxFrame).inset(8)
+                make.width.height.equalTo(36)
+            }
         }
         
         plusButton.snp.makeConstraints { make in
-//            make.edges.equalTo(plusButtonBackground).inset(8)
             make.edges.equalTo(plusButtonBackground).inset(8)
             plusButton.imageView?.contentMode = .scaleAspectFit
         }
