@@ -287,12 +287,14 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         contentView.addSubview(plusButton)
         
         plusButtonBackground.snp.makeConstraints { make in
-            make.top.right.bottom.equalTo(box.boxFrame).inset(8 )
-            make.width.equalTo(plusButtonBackground.snp.height)
+            make.top.right.bottom.equalTo(box.boxFrame).inset(8)
+            make.width.height.equalTo(36)
         }
         
         plusButton.snp.makeConstraints { make in
+//            make.edges.equalTo(plusButtonBackground).inset(8)
             make.edges.equalTo(plusButtonBackground).inset(8)
+            plusButton.imageView?.contentMode = .scaleAspectFit
         }
         
         setNeedsLayout()

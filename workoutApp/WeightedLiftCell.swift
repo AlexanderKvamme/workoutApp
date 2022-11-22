@@ -72,8 +72,8 @@ class WeightedLiftCell: LiftCell {
         repsField.text = "-1"
         repsField.textAlignment = .center
         repsField.font = UIFont.custom(style: .medium, ofSize: .big)
-        repsField.textColor = UIColor.blue
-//        repsField.alpha = Constant.alpha.faded
+        repsField.textColor = UIColor.akDark
+        repsField.alpha = 0.1
         repsField.clearsOnBeginEditing = true
         addSubview(repsField)
     }
@@ -83,8 +83,8 @@ class WeightedLiftCell: LiftCell {
         weightField.text = "-1"
         weightField.textAlignment = .center
         weightField.font = UIFont.custom(style: .medium, ofSize: .medium)
-        weightField.textColor = .red
-        weightField.alpha = Constant.alpha.faded
+        weightField.textColor = .akDark
+        weightField.alpha = 0.1
         weightField.clearsOnBeginEditing = true
         weightField.sizeToFit()
 
@@ -135,8 +135,8 @@ class WeightedLiftCell: LiftCell {
     }
     
     private func setPlaceholderVisualsOnWeightField(){
-        let color = UIColor.green
-        let font = UIFont.custom(style: .medium, ofSize: .medium)
+        let color = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
+        let font = UIFont.custom(style: .bold, ofSize: .medium)
         weightField.attributedPlaceholder = NSAttributedString(string: initialWeightAsString, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
     }
     
@@ -187,8 +187,6 @@ class WeightedLiftCell: LiftCell {
         weightField.isUserInteractionEnabled = true
         saveRepsToDataSource(newRepValue)
         isPerformed = true
-//        makeRepTextBold()
-//        makeWeightTextBold()
         endEditing(true)
     }
     
@@ -203,6 +201,7 @@ class WeightedLiftCell: LiftCell {
             saveWeightToDataSource(newWeight)
             weightField.text = String(newWeight).replacingOccurrences(of: ".0", with: "")
             makeWeightTextBold()
+            makeRepsTextBold()
 
             globalKeyboard.setKeyboardType(style: .weight)
             globalKeyboard.delegate = self
@@ -216,14 +215,20 @@ class WeightedLiftCell: LiftCell {
     
     func makeWeightTextBold() {
         weightField.font = UIFont.custom(style: .bold, ofSize: .medium)
-        weightField.textColor = .purple
+        weightField.textColor = .akDark
         weightField.alpha = 1
+    }
+    
+    func makeRepsTextBold() {
+        repsField.font = UIFont.custom(style: .bold, ofSize: .big)
+        repsField.textColor = .akDark
+        repsField.alpha = 1
     }
     
     private func makeWeightTextNormal() {
         weightField.font = UIFont.custom(style: .medium, ofSize: .medium)
-        weightField.textColor = .red
-        weightField.alpha = 0.5
+        weightField.textColor = .akDark.withAlphaComponent(Constant.alpha.faded)
+        weightField.alpha = 0.1
         weightField.text = initialWeightAsString
     }
 }
