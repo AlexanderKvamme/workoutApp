@@ -140,7 +140,7 @@ class CustomTabBarController: UITabBarController {
     
     public func hideSelectionIndicator(shouldAnimate: Bool) {
         if shouldAnimate {
-            UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
                 self.selectionIndicator?.alpha = 0
             }, completion: nil)
         } else {
@@ -149,7 +149,7 @@ class CustomTabBarController: UITabBarController {
     }
     
     public func showSelectionIndicator() {
-        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
             self.selectionIndicator?.alpha = 1
         })
     }

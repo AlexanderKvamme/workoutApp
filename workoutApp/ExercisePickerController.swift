@@ -238,7 +238,7 @@ class ExercisePickerController: UIViewController {
 
         let lineView = TriangleView()
         view.addSubview(lineView)
-        view.sendSubview(toBack: lineView)
+        view.sendSubviewToBack(lineView)
         
         lineView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -335,7 +335,7 @@ extension ExercisePickerController: UITableViewDelegate {
 
 // MARK: ExerciseEditorDataSource
 
-protocol ExerciseEditorDataSource: class {
+protocol ExerciseEditorDataSource: AnyObject {
     func removeFromDataSource(exercise: Exercise)
 }
 

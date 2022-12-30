@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Protocols
 
-protocol KeyboardDelegate: class {
+protocol KeyboardDelegate: AnyObject {
     func buttonDidTap(keyName: String)
 }
 
@@ -74,7 +74,7 @@ class Keyboard: UIView {
         let rotatedImage = UIImage(cgImage: tintableImage.cgImage!, scale: 0, orientation: .down)
         middleRightButton.setImage(rotatedImage, for: .normal)
         let inset: CGFloat = 22
-        middleRightButton.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+        middleRightButton.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         middleRightButton.tintColor = .akLight
         middleRightButton.accessibilityIdentifier = "customNextButton"
         middleRightButton.addTarget(self, action: #selector(postNextKeyDidPressNotification), for: .touchUpInside)

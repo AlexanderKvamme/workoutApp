@@ -46,9 +46,9 @@ class CustomAlertView: UIView, isModal {
         // Message
         let typeStack = UIStackView() // message or error
         var typeStackHeight: CGFloat = 0
-        typeStack.axis = UILayoutConstraintAxis.vertical
-        typeStack.distribution = UIStackViewDistribution.equalCentering
-        typeStack.alignment = UIStackViewAlignment.top
+        typeStack.axis = NSLayoutConstraint.Axis.vertical
+        typeStack.distribution = UIStackView.Distribution.equalCentering
+        typeStack.alignment = UIStackView.Alignment.top
         typeStack.spacing = 0
         modalView.addSubview(typeStack)
         
@@ -139,7 +139,7 @@ class CustomAlertView: UIView, isModal {
         // Add line spacing if theres any text
         if let text = contentLabel.text, text.count > 0 {
             let attributedString = NSMutableAttributedString(string: contentLabel.text!)
-            attributedString.addAttribute(NSAttributedStringKey.kern, value: CGFloat(0.7), range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttribute(NSAttributedString.Key.kern, value: CGFloat(0.7), range: NSRange(location: 0, length: attributedString.length))
             contentLabel.attributedText = attributedString
         }
     

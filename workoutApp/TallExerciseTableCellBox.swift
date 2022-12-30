@@ -28,7 +28,7 @@ class TallExerciseTableCellBox: ExerciseTableCellBox {
         // Header
         if let header = header {
             addSubview(header)
-            bringSubview(toFront: header)
+            bringSubviewToFront(header)
             totalHeight += header.frame.height
         }
         
@@ -40,7 +40,7 @@ class TallExerciseTableCellBox: ExerciseTableCellBox {
         if let subheader = subheader {
             addSubview(subheader)
             subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.boxHeaderLabel.frame.maxY - subheader.frame.height)
-            bringSubview(toFront: subheader)
+            bringSubviewToFront(subheader)
         }
         
         // Invisible button

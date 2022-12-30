@@ -25,7 +25,7 @@ extension UILabel {
         
         // Apply spacing
         let attributedString = NSMutableAttributedString(string: self.text!)
-        attributedString.addAttribute(NSAttributedStringKey.kern, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.kern, value: spacingValue, range: NSRange(location: 0, length: attributedString.length))
         self.attributedText = attributedString
     }
 }

@@ -49,7 +49,7 @@ public class Box: UIView {
         // Header
         if let header = header {
             addSubview(header)
-            bringSubview(toFront: header)
+            bringSubviewToFront(header)
             totalHeight += header.frame.height
         }
         
@@ -61,7 +61,7 @@ public class Box: UIView {
         if let subheader = subheader {
             addSubview(subheader)
             subheader.frame.origin = CGPoint(x: Constant.components.box.spacingFromSides, y: header!.boxHeaderLabel.frame.maxY - subheader.frame.height)
-            bringSubview(toFront: subheader)
+            bringSubviewToFront(subheader)
         }
         
         // Invisible button
@@ -76,7 +76,7 @@ public class Box: UIView {
         if let header = header {
             newHeight += header.frame.height
         }
-        return CGSize(width: UIViewNoIntrinsicMetric, height: newHeight)
+        return CGSize(width: UIView.noIntrinsicMetric, height: newHeight)
     }
     
     // MARK: Box methods

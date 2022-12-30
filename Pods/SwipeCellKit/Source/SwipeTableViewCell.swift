@@ -56,7 +56,7 @@ open class SwipeTableViewCell: UITableViewCell {
     }
     
     /// :nodoc:
-    override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         configure()
@@ -335,7 +335,7 @@ open class SwipeTableViewCell: UITableViewCell {
      
         let point = convert(point, to: superview)
 
-        if !UIAccessibilityIsVoiceOverRunning() {
+        if !UIAccessibility.isVoiceOverRunning {
             for cell in tableView?.swipeCells ?? [] {
                 if (cell.state == .left || cell.state == .right) && !cell.contains(point: point) {
                     tableView?.hideSwipeCell()
@@ -486,7 +486,7 @@ extension SwipeTableViewCell {
     /// :nodoc:
     override open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer == tapGestureRecognizer {
-            if UIAccessibilityIsVoiceOverRunning() {
+            if UIAccessibility.isVoiceOverRunning {
                 tableView?.hideSwipeCell()
             }
 

@@ -86,9 +86,9 @@ class SelectionViewController: UIViewController {
     
     private func setupStack() {
         stack = UIStackView(frame: CGRect.zero)
-        stack.axis = UILayoutConstraintAxis.vertical
-        stack.distribution = UIStackViewDistribution.equalSpacing
-        stack.alignment = UIStackViewAlignment.center
+        stack.axis = NSLayoutConstraint.Axis.vertical
+        stack.distribution = UIStackView.Distribution.equalSpacing
+        stack.alignment = UIStackView.Alignment.center
         stack.spacing = Constant.components.SelectionVC.Stack.spacing
     }
 

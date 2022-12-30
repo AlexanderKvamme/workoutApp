@@ -36,7 +36,7 @@ class HistorySelectionViewController: SelectionViewController {
         super.viewWillAppear(animated)
         
         updateStackToDisplayStylesAndAll()
-        view.bringSubview(toFront: stack) // Bring above diagonal line
+        view.bringSubviewToFront(stack) // Bring above diagonal line
         view.layoutIfNeeded()
     }
     
@@ -69,9 +69,9 @@ class HistorySelectionViewController: SelectionViewController {
     
     private func setupStack() {
         stack = UIStackView(frame: CGRect.zero)
-        stack.axis = UILayoutConstraintAxis.vertical
-        stack.distribution = UIStackViewDistribution.equalSpacing
-        stack.alignment = UIStackViewAlignment.center
+        stack.axis = NSLayoutConstraint.Axis.vertical
+        stack.distribution = UIStackView.Distribution.equalSpacing
+        stack.alignment = UIStackView.Alignment.center
         stack.spacing = Constant.components.SelectionVC.Stack.spacing
     }
     
@@ -105,7 +105,7 @@ class HistorySelectionViewController: SelectionViewController {
             
             // Replace any default target action (Default modal presentation)
             newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-            newButton.button.addTarget(self, action: #selector(showTableForWorkoutStyle), for: UIControlEvents.touchUpInside)
+            newButton.button.addTarget(self, action: #selector(showTableForWorkoutStyle), for: UIControl.Event.touchUpInside)
             
             workoutButtons.append(newButton)
         }

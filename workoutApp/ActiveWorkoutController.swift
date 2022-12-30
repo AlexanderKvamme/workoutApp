@@ -106,7 +106,7 @@ class ActiveWorkoutController: UITableViewController {
         let spacerView = UIView()
         spacerView.backgroundColor = .green
         
-        let spacer = UIBarButtonItem(customView: spacerView)
+        _ = UIBarButtonItem(customView: spacerView)
         let one = UIBarButtonItem(customView: TimerButton("1", timerDelegate: self))
         let two = UIBarButtonItem(customView: TimerButton("2", timerDelegate: self))
         let three = UIBarButtonItem(customView: TimerButton("3", timerDelegate: self))
@@ -156,7 +156,7 @@ class ActiveWorkoutController: UITableViewController {
     private func setupTable() {
         // tableview setup
         tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.backgroundColor = .akLight
         
@@ -173,7 +173,7 @@ class ActiveWorkoutController: UITableViewController {
         menuBtn.imageView?.contentMode = .scaleAspectFit
         menuBtn.setImage(.close24.withTintColor(.akDark), for: .normal)
         menuBtn.contentEdgeInsets = UIEdgeInsets(top: topinset, left: 0, bottom: topinset, right: 16)
-        menuBtn.addTarget(self, action: #selector(xButtonHandler), for: UIControlEvents.touchUpInside)
+        menuBtn.addTarget(self, action: #selector(xButtonHandler), for: UIControl.Event.touchUpInside)
         let menuBarItem = UIBarButtonItem(customView: menuBtn)
         self.navigationItem.rightBarButtonItem = menuBarItem
         self.navigationItem.hidesBackButton = true
@@ -301,13 +301,13 @@ class ActiveWorkoutController: UITableViewController {
     // MARK: Observers
     
     private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowHandler), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideHandler), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowHandler), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideHandler), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc private func keyboardWillShowHandler(notification: NSNotification) {
@@ -316,7 +316,7 @@ class ActiveWorkoutController: UITableViewController {
             return
         }
         
-        let keyboardRect = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        let keyboardRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         
         if let keyboardRect = keyboardRect {
             // Adjust tableViews insets
@@ -522,7 +522,7 @@ final class AKTimerStatusBar: UIView {
     }
     
     func update(_ current: Int, _ target: Int) {
-        let percentage: CGFloat = CGFloat(current)/CGFloat(target)*100
+        let _: CGFloat = CGFloat(current)/CGFloat(target)*100
     }
     
     @objc func cancelTimer() {

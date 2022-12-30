@@ -31,7 +31,7 @@ class TriangleView: UIView {
         shape.path = path.cgPath
         shape.lineWidth = 5
         shape.strokeColor = UIColor.primary.cgColor
-        shape.lineCap = "round"
+        shape.lineCap = .round
         
         self.layer.insertSublayer(shape, at: 0)
     }

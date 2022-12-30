@@ -18,7 +18,7 @@ class WorkoutBoxCell: SwipeTableViewCell {
     
     // MARK: - Init
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         let boxFactory = BoxFactory.makeFactory(type: .WorkoutBox)
         let boxHeader = boxFactory.makeBoxHeader()

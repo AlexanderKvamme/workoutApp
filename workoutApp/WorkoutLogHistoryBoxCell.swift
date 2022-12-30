@@ -18,7 +18,7 @@ class WorkoutLogHistoryBoxCell: SwipeTableViewCell {
     
     // MARK: - Initializers
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         let boxFactory = BoxFactory.makeFactory(type: .HistoryBox)
         let boxHeader = boxFactory.makeBoxHeader()

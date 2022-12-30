@@ -75,9 +75,9 @@ class InputView: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 0), for: .horizontal)
         
-        stack.axis = UILayoutConstraintAxis.vertical
-        stack.distribution = UIStackViewDistribution.fill
-        stack.alignment = UIStackViewAlignment.center
+        stack.axis = NSLayoutConstraint.Axis.vertical
+        stack.distribution = UIStackView.Distribution.fill
+        stack.alignment = UIStackView.Alignment.center
         stack.spacing = 10
         stack.addArrangedSubview(header)
         stack.addArrangedSubview(textField)
@@ -102,7 +102,7 @@ class InputView: UIView {
             diagonalView.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
             ])
         
-        sendSubview(toBack: diagonalView)
+        sendSubviewToBack(diagonalView)
         textField.becomeFirstResponder()
     }
     
@@ -127,7 +127,7 @@ class InputView: UIView {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
         shapeLayer.strokeColor = UIColor.clear.cgColor
-        shapeLayer.lineCap = "round"
+        shapeLayer.lineCap = .round
         shapeLayer.lineWidth = 3.0
         shapeLayer.backgroundColor = UIColor.red.cgColor
         v.layer.addSublayer(shapeLayer)

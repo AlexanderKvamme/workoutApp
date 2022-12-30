@@ -18,7 +18,7 @@ extension isModal where Self: UIView {
             UIView.animate(withDuration: 0.33, animations: {
                 self.backgroundView.alpha = 1
             })
-            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 10, options: UIView.AnimationOptions(rawValue: 0), animations: {
                 self.modalView.center  = self.center
             }, completion: nil)
         } else {
@@ -33,7 +33,7 @@ extension isModal where Self: UIView {
                 self.backgroundView.alpha = 0
             }, completion: nil)
             
-            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 10, options: UIView.AnimationOptions(rawValue: 0), animations: {
                 self.modalView.center = CGPoint(x: self.center.x, y: self.frame.height + self.modalView.frame.height/2)
             }, completion: { (completed) in
                 self.removeFromSuperview()

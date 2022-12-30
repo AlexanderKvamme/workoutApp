@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let context = DatabaseFacade.persistentContainer.viewContext
         
         // Seed for Fastlane Snapshot data
@@ -75,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             appearance.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: UIColor.akDark.withAlphaComponent(.opacity.fullyFaded.rawValue),
                     NSAttributedString.Key.font: UIFont.custom(style: .bold, ofSize: .medium),
-                NSAttributedStringKey.kern: 0.7
+                NSAttributedString.Key.kern: 0.7
             ]
             UINavigationBar.appearance().standardAppearance = appearance
             UINavigationBar.appearance().scrollEdgeAppearance = appearance
@@ -148,8 +148,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = renderedImage
         
         UINavigationBar.appearance().titleTextAttributes = [
-            NSAttributedStringKey.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
-            NSAttributedStringKey.kern: 0.7,
+            NSAttributedString.Key.font: UIFont.custom(style: CustomFont.bold, ofSize: FontSize.medium),
+            NSAttributedString.Key.kern: 0.7,
         ]
     }
 }

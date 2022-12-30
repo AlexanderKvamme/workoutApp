@@ -77,7 +77,7 @@ class LiftCell: UICollectionViewCell {
         // Make a placeholder in a nice color
         let color = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
         let font = UIFont.custom(style: .medium, ofSize: .big)
-        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
+        textField.attributedPlaceholder = NSAttributedString(string: initialRepValue, attributes: [NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font: font])
         
         setInputtedStyle()
     }

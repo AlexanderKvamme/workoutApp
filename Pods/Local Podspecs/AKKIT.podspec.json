@@ -2,7 +2,6 @@
   "name": "AKKIT",
   "version": "0.1.1",
   "summary": "A short description of AKKIT.",
-  "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/alexanderkvamme/AKKIT",
   "license": {
     "type": "MIT",
@@ -16,7 +15,7 @@
     "tag": "0.1.1"
   },
   "platforms": {
-    "ios": "15.0"
+    "ios": "16.0"
   },
   "source_files": "AKKIT/Resources/Code/**/*.swift",
   "resources": [

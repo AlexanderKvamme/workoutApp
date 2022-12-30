@@ -65,7 +65,7 @@ class BoxTableViewController: UITableViewController {
     func setupTableView() {
         tableView.delegate = self
         tableView.estimatedRowHeight = 115
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorInset.left = 0
         tableView.separatorStyle = .none
     }
@@ -98,7 +98,7 @@ class BoxTableViewController: UITableViewController {
     func setUpNavigationBar(withTitle title: String?) {
         navigationController?.setNavigationBarHidden(false, animated: true)
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
         
         if let name = title {
             var suffix = ""

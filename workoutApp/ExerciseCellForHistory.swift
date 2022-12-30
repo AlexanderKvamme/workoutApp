@@ -35,7 +35,7 @@ class ExerciseCellForHistory: ExerciseCellBaseClass, LiftCellManager {
         selectionStyle = .none
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
@@ -76,7 +76,7 @@ class ExerciseCellForHistory: ExerciseCellBaseClass, LiftCellManager {
 extension ExerciseCellForHistory {
     
     override func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
-        if gestureReconizer.state != UIGestureRecognizerState.began {
+        if gestureReconizer.state != UIGestureRecognizer.State.began {
             return
         }
         print("would handle in ECFH")

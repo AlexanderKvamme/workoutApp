@@ -108,7 +108,7 @@ final class ProfileController: UIViewController {
     
     private func addGoalsController(to stackView: UIStackView) {
         let goalsController = GoalsController()
-        addChildViewController(goalsController)
+        addChild(goalsController)
         stackView.addArrangedSubview(goalsController.view)
     }
     
@@ -133,7 +133,7 @@ final class ProfileController: UIViewController {
     private func addSuggestions(to stackView: UIStackView) {    
         let suggestionController = SuggestionController()
         suggestionController.view.frame = UIScreen.main.bounds
-        addChildViewController(suggestionController)
+        addChild(suggestionController)
         stackView.addArrangedSubview(suggestionController.view)
     }
     

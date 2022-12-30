@@ -68,7 +68,7 @@ class ExerciseHistoryTableViewController: UITableViewController {
     
     private func setupTable() {
         tableView.estimatedRowHeight = 55
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         automaticallyAdjustsScrollViewInsets = true
         tableView.separatorStyle = .none
         tableView.backgroundColor = .akLight

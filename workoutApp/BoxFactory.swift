@@ -778,7 +778,7 @@ fileprivate class DeletionBoxFrame: BoxFrame {
         
         addSubview(background)
         addSubview(shimmer)
-        bringSubview(toFront: shimmer)
+        bringSubviewToFront(shimmer)
         
         // Set up background and shimmer to fill frame of the boxFrame, but with insets
         translatesAutoresizingMaskIntoConstraints = false
@@ -872,7 +872,7 @@ fileprivate class WarningBoxFrame: BoxFrame {
         
         addSubview(background)
         addSubview(shimmer)
-        bringSubview(toFront: shimmer)
+        bringSubviewToFront(shimmer)
         
         // Set up background and shimmer to fill frame of the boxFrame, but with insets
         translatesAutoresizingMaskIntoConstraints = false // the class itself

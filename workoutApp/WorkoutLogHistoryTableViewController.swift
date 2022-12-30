@@ -91,7 +91,7 @@ class WorkoutLogHistoryTableViewController: BoxTableViewController, SwipeTableVi
     private func deleteCell(at indexPath: IndexPath) {
         tableView.beginUpdates()
         self.dataSource.deleteDataAt(indexPath)
-        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
         tableView.endUpdates()
     }
     

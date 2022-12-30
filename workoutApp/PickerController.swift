@@ -222,7 +222,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
 
         let v = TriangleView(frame: table.frame)
         view.addSubview(v)
-        view.sendSubview(toBack: v)
+        view.sendSubviewToBack(v)
         
         v.translatesAutoresizingMaskIntoConstraints = false
         

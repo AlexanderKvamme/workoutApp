@@ -27,7 +27,7 @@ class ExerciseCellBaseClass: UITableViewCell {
     
     // MARK: Initializers
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .akLight
     }
@@ -139,7 +139,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
     
     // MARK: Initializer
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
@@ -332,7 +332,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
 extension ExerciseCellForWorkouts {
     
     override func handleLongPress(_ gestureReconizer: UILongPressGestureRecognizer) {
-        guard gestureReconizer.state == UIGestureRecognizerState.began else {
+        guard gestureReconizer.state == UIGestureRecognizer.State.began else {
             return
         }
         

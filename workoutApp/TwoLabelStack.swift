@@ -62,7 +62,7 @@ class TwoLabelStack: UIView {
         // Hidden button
         button = UIButton(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
         addSubview(button)
-        bringSubview(toFront: button)
+        bringSubviewToFront(button)
         
         setup()
         

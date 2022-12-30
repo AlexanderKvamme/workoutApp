@@ -88,7 +88,7 @@ class PreferencesController: UIViewController {
         }
         
         // Add to view
-        addChildViewController(preferencePicker)
+        addChild(preferencePicker)
         view.addSubview(preferencePicker.view)
         
         // Make Constraints

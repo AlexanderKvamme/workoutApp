@@ -77,7 +77,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     
     override func setUpNavigationBar(withTitle title: String?) {
         navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
         self.title = muscle.getName()
         refreshControl?.endRefreshing()
         removeBackButton()
@@ -169,7 +169,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
     
     private func deleteCell(at indexPath: IndexPath) {
         self.dataSource.deleteDataAt(indexPath)
-        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
     
     // Update table only if new workouts are added

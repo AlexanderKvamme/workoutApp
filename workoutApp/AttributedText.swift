@@ -23,10 +23,10 @@ extension GoalsController {
         let bulletSize: CGFloat = font.pointSize
         
         // Setup
-        let textAttributesDictionary = [NSAttributedStringKey.font : font,
-                                        NSAttributedStringKey.foregroundColor:textColor]
-        let bulletAttributesDictionary = [NSAttributedStringKey.font : font.withSize(bulletSize),
-                                          NSAttributedStringKey.foregroundColor:bulletColor]
+        let textAttributesDictionary = [NSAttributedString.Key.font : font,
+                                        NSAttributedString.Key.foregroundColor:textColor]
+        let bulletAttributesDictionary = [NSAttributedString.Key.font : font.withSize(bulletSize),
+                                          NSAttributedString.Key.foregroundColor:bulletColor]
         let fullAttributedString = NSMutableAttributedString.init()
         
 //        let bulletPoint: String = "\u{2022}"
@@ -36,7 +36,7 @@ extension GoalsController {
         let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: formattedString)
         let paragraphStyle = createParagraphAttribute()
         
-        attributedString.addAttributes([NSAttributedStringKey.paragraphStyle: paragraphStyle],
+        attributedString.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle],
                                        range: NSMakeRange(0, attributedString.length))
         attributedString.addAttributes(textAttributesDictionary, range: NSMakeRange(0, attributedString.length))
         
@@ -60,8 +60,8 @@ extension GoalsController {
         
         // Setup
         
-        let textAttributesDictionary = [NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor:textColor]
-        let bulletAttributesDictionary = [NSAttributedStringKey.font : font.withSize(bulletSize), NSAttributedStringKey.foregroundColor:bulletColor]
+        let textAttributesDictionary = [NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor:textColor]
+        let bulletAttributesDictionary = [NSAttributedString.Key.font : font.withSize(bulletSize), NSAttributedString.Key.foregroundColor:bulletColor]
         let fullAttributedString = NSMutableAttributedString.init()
         
         for string: String in strings {
@@ -70,7 +70,7 @@ extension GoalsController {
             let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: formattedString)
             let paragraphStyle = createParagraphAttribute()
             
-            attributedString.addAttributes([NSAttributedStringKey.paragraphStyle: paragraphStyle], range: NSMakeRange(0, attributedString.length))
+            attributedString.addAttributes([NSAttributedString.Key.paragraphStyle: paragraphStyle], range: NSMakeRange(0, attributedString.length))
             attributedString.addAttributes(textAttributesDictionary, range: NSMakeRange(0, attributedString.length))
             
             let string: NSString = NSString(string: formattedString)

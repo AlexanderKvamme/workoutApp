@@ -137,7 +137,7 @@ class WeightedLiftCell: LiftCell {
     private func setPlaceholderVisualsOnWeightField(){
         let color = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
         let font = UIFont.custom(style: .bold, ofSize: .medium)
-        weightField.attributedPlaceholder = NSAttributedString(string: initialWeightAsString, attributes: [NSAttributedStringKey.foregroundColor : color, NSAttributedStringKey.font: font])
+        weightField.attributedPlaceholder = NSAttributedString(string: initialWeightAsString, attributes: [NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font: font])
     }
     
     private func saveWeightToDataSource(_ double: Double) {

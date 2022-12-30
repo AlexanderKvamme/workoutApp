@@ -90,9 +90,9 @@ class SuggestionBox: Box {
         guard let subheader = subheader else { return }
         
         stack = UIStackView(frame: frame)
-        stack.axis = UILayoutConstraintAxis.vertical
-        stack.distribution = UIStackViewDistribution.equalSpacing
-        stack.alignment = UIStackViewAlignment.center
+        stack.axis = NSLayoutConstraint.Axis.vertical
+        stack.distribution = UIStackView.Distribution.equalSpacing
+        stack.alignment = UIStackView.Alignment.center
         stack.spacing = 0
         stack.addArrangedSubview(subheader)
         stack.addArrangedSubview(header)

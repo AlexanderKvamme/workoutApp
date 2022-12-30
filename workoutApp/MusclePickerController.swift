@@ -198,7 +198,7 @@ class MusclePickerController: UIViewController {
         
         let lineView = TriangleView()
         view.addSubview(lineView)
-        view.sendSubview(toBack: lineView)
+        view.sendSubviewToBack(lineView)
 
         lineView.translatesAutoresizingMaskIntoConstraints = false
         
