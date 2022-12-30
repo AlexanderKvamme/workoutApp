@@ -247,8 +247,28 @@ class ActiveWorkoutController: UITableViewController {
     }
     
     @objc private func xButtonHandler() {
-        dataSource.deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs()
-        navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+        let alert = UIAlertController(
+            title: "Are you sure?",
+            message: "The progress of this workout will be lost",
+            preferredStyle: .actionSheet
+        )
+        alert.addAction(UIAlertAction(
+            title: "Delete and exit",
+            style: .destructive,
+            handler: { _ in
+                self.dataSource.deleteAssosciatedLiftsExerciseLogsAndWorkoutLogs()
+                self.navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
+        }))
+        alert.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: { _ in
+            // Do nothing on cancel
+        }))
+        present(alert,
+                animated: true,
+                completion: nil
+        )
     }
     
     /// Handles the long press by 'lifting' the target cell and letting the user move it around
