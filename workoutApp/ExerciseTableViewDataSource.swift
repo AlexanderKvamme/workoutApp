@@ -35,13 +35,8 @@ class ExerciseTableDataSource: NSObject {
     
     // MARK: - Methods
     
-    // TableView dataSource methods
-    
-    // Save methods
-    
-    /// Saves this inactive workout as
+    // Saves this inactive workout as
     func saveWorkoutLog() {
-        
         guard countPerformedExercises() > 0 else {
             // present error
             let modal = CustomAlertView(type: .error, messageContent: "You have to actually work out to be able to log an exercise!")

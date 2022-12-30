@@ -154,7 +154,6 @@ class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDele
     // MARK: TableView delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("bam did select: ", indexPath)
         // Start a workout
         let wo = dataSource.getData() as? [Workout]
         if let wo = wo {

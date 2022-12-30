@@ -12,5 +12,6 @@ import Foundation
 
 extension Notification.Name {
     static let keyboardsNextButtonDidPress = Notification.Name("keyboardsNextButtonDidPress")
+    static let didEndEditingActiveWorkoutField = Notification.Name("didEndEditingActiveWorkoutField")
 }
 

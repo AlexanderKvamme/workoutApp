@@ -121,6 +121,11 @@
 		DDCF834A1F8A3D8400F87B3E /* TallExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */; };
 		DDCF834D1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF834C1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift */; };
 		DDCF834F1F8B8B4000F87B3E /* UIResponder Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF834E1F8B8B4000F87B3E /* UIResponder Extensions.swift */; };
+		DDD0D53E295F50F500CD11A5 /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D53D295F50F500CD11A5 /* TimerButton.swift */; };
+		DDD0D540295F510F00CD11A5 /* AKTimerStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D53F295F510F00CD11A5 /* AKTimerStatus.swift */; };
+		DDD0D542295F512800CD11A5 /* AKTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D541295F512800CD11A5 /* AKTimer.swift */; };
+		DDD0D544295F517D00CD11A5 /* CounterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D543295F517D00CD11A5 /* CounterButton.swift */; };
+		DDD0D546295F51A300CD11A5 /* AKTimerStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */; };
 		DDD3FC5828C88F8900890AE7 /* Sono-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */; };
 		DDD3FC5A28C88F9800890AE7 /* Gilroy-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */; };
 		DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */; };
@@ -278,6 +283,11 @@
 		DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallExerciseTableCellBox.swift; sourceTree = "<group>"; };
 		DDCF834C1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortExerciseTableCellBox.swift; sourceTree = "<group>"; };
 		DDCF834E1F8B8B4000F87B3E /* UIResponder Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder Extensions.swift"; sourceTree = "<group>"; };
+		DDD0D53D295F50F500CD11A5 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
+		DDD0D53F295F510F00CD11A5 /* AKTimerStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTimerStatus.swift; sourceTree = "<group>"; };
+		DDD0D541295F512800CD11A5 /* AKTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTimer.swift; sourceTree = "<group>"; };
+		DDD0D543295F517D00CD11A5 /* CounterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterButton.swift; sourceTree = "<group>"; };
+		DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTimerStatusBar.swift; sourceTree = "<group>"; };
 		DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sono-Variable.ttf"; sourceTree = "<group>"; };
 		DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Black.ttf"; sourceTree = "<group>"; };
 		DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval Extensions.swift"; sourceTree = "<group>"; };
@@ -576,6 +586,7 @@
 				DD585D6E1EC5F41200962B19 /* SelectionViewController */,
 				DD585D671EC5B24500962B19 /* Tab bar */,
 				DD585D5B1EC4D78D00962B19 /* Style */,
+				DDD0D53C295F50E000CD11A5 /* Timers */,
 				DD9838711F12716900B876C7 /* Notifications */,
 				DD585D501EC4D53900962B19 /* Assets.xcassets */,
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
@@ -755,6 +766,18 @@
 				DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */,
 			);
 			name = "ExerciseTable Boxes";
+			sourceTree = "<group>";
+		};
+		DDD0D53C295F50E000CD11A5 /* Timers */ = {
+			isa = PBXGroup;
+			children = (
+				DDD0D53D295F50F500CD11A5 /* TimerButton.swift */,
+				DDD0D543295F517D00CD11A5 /* CounterButton.swift */,
+				DDD0D541295F512800CD11A5 /* AKTimer.swift */,
+				DDD0D53F295F510F00CD11A5 /* AKTimerStatus.swift */,
+				DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */,
+			);
+			name = Timers;
 			sourceTree = "<group>";
 		};
 		DDDE6E521ED4DF4900A03886 /* Box Tables */ = {
@@ -1020,6 +1043,7 @@
 				DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				1121237720835BBA005C27D2 /* ExerciseLog+CoreDataClass.swift in Sources */,
+				DDD0D546295F51A300CD11A5 /* AKTimerStatusBar.swift in Sources */,
 				1121236920835BBA005C27D2 /* Workout+CoreDataClass.swift in Sources */,
 				DD77AD151F8F9CF1007A6759 /* CellIdentifiers.swift in Sources */,
 				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
@@ -1030,6 +1054,7 @@
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */,
 				DD9477B61F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift in Sources */,
+				DDD0D53E295F50F500CD11A5 /* TimerButton.swift in Sources */,
 				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,
 				1121236520835BBA005C27D2 /* Warning+CoreDataClass.swift in Sources */,
 				DD47BAF41FBC5FFE00F75F04 /* Globals.swift in Sources */,
@@ -1045,6 +1070,7 @@
 				DDA866D81F536E8D00F277AF /* PickerHeader.swift in Sources */,
 				DD2EB3D11F39DB43007A556A /* GoalsController.swift in Sources */,
 				DD3AF44D1EE45AB500C55453 /* PickerController.swift in Sources */,
+				DDD0D544295F517D00CD11A5 /* CounterButton.swift in Sources */,
 				DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */,
 				DDBD94FE1FB3650A0047918F /* WorkoutStyleExtensions.swift in Sources */,
 				DD5CD5D01F4660A500672A1E /* ExerciseHistoryTableController.swift in Sources */,
@@ -1109,6 +1135,7 @@
 				DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */,
 				1121236C20835BBA005C27D2 /* WorkoutStyle+CoreDataProperties.swift in Sources */,
 				DD5CD5D21F46EECA00672A1E /* ExerciseHistoryTableDataSource.swift in Sources */,
+				DDD0D540295F510F00CD11A5 /* AKTimerStatus.swift in Sources */,
 				DD4B1C101EC8606F00BD313B /* PreferencesController.swift in Sources */,
 				DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */,
 				DD1EA1621EEC1CBC00EBB7B7 /* Keyboard.swift in Sources */,
@@ -1124,6 +1151,7 @@
 				1121236B20835BBA005C27D2 /* WorkoutStyle+CoreDataClass.swift in Sources */,
 				1121237820835BBA005C27D2 /* ExerciseLog+CoreDataProperties.swift in Sources */,
 				DD4FF0151F6C3383005040A0 /* UIImage Extensions.swift in Sources */,
+				DDD0D542295F512800CD11A5 /* AKTimer.swift in Sources */,
 				DDF117121F3F562000E677CB /* SuggestionBox.swift in Sources */,
 				1121236620835BBA005C27D2 /* Warning+CoreDataProperties.swift in Sources */,
 			);

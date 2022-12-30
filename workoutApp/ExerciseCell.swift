@@ -383,6 +383,7 @@ extension ExerciseCellForWorkouts: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         activeLiftCell?.validateFields()
         NotificationCenter.default.removeObserver(self, name: .keyboardsNextButtonDidPress, object: nil)
+        NotificationCenter.default.post(name: .didEndEditingActiveWorkoutField, object: nil)
     }
     
     // MARK: Clean this

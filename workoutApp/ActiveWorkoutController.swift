@@ -16,6 +16,24 @@ let globalTimerWidth: CGFloat = Constant.UI.width - 48 - 24
 let globalTimerHeight: CGFloat = 32
 let globalCancelTimerWidth: CGFloat = 44
 
+
+class CounterManager: AKTimerDelegate {
+    
+    var tickHandler: ((Int) -> ())?
+    
+    func statusDidChange(to status: AKTimerStatus) {
+        
+        switch status {
+        case .ticking(let current, let target):
+            tickHandler?(current)
+        case .inactive:
+            print("bam would show timer buttons")
+        case .done:
+            print("bam would also show timer buttons")
+        }
+    }
+}
+
 extension UIBarButtonItem {
 
     static func menuButton(_ target: Any?, action: Selector, image: UIImage, size: CGFloat, tint: UIColor) -> UIBarButtonItem {
@@ -39,15 +57,16 @@ class ActiveWorkoutController: UITableViewController {
     // MARK: - Properties
     
     var activeTableCell: UITableViewCell? // used by cell to make correct collectionView.label firstResponder
-    private var currentWorkout: Workout! // The workout that contains the exercises this tableVC is displaying
+    private var currentWorkout: Workout!
     private var dataSource: ExerciseTableDataSource!
-    private var myWorkoutLog: WorkoutLog! // used in the end
-    private var exercisesToLog: [ExerciseLog]! // make an array of ExerciseLogs, and every time a tableViewCell.liftsToDisplay is updated, add it to here
+    private var myWorkoutLog: WorkoutLog!
     private var timerBar = AKTimerStatusBar(time: 0)
-    // cells reorder
     private var snapShot: UIView?
     private var location: CGPoint!
     private var sourceIndexPath: IndexPath!
+    private lazy var counter = CounterButton("0", timerDelegate: self)
+    private var counterManager = CounterManager()
+    private var akCounter = AKTimer()
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
@@ -70,6 +89,11 @@ class ActiveWorkoutController: UITableViewController {
         enableSwipeBackGesture(false)
         
         self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
+        NotificationCenter.default.addObserver(self, selector: #selector(restartCounter), name: Notification.Name.didEndEditingActiveWorkoutField, object: nil)
+    }
+    
+    @objc private func restartCounter() {
+        akCounter.startCountUpTo(3)
     }
     
     override func viewDidLoad() {
@@ -91,6 +115,11 @@ class ActiveWorkoutController: UITableViewController {
         tableView.addGestureRecognizer(longPressRecognizer)
         
         addTimerButtons()
+        
+        akCounter.delegate = counterManager
+        counterManager.tickHandler = { currentValue in
+            self.counter.label.text = "\(currentValue)"
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -104,9 +133,6 @@ class ActiveWorkoutController: UITableViewController {
         navigationItem.titleView = nil
         
         let spacerView = UIView()
-        spacerView.backgroundColor = .green
-        
-        _ = UIBarButtonItem(customView: spacerView)
         let one = UIBarButtonItem(customView: TimerButton("1", timerDelegate: self))
         let two = UIBarButtonItem(customView: TimerButton("2", timerDelegate: self))
         let three = UIBarButtonItem(customView: TimerButton("3", timerDelegate: self))
@@ -116,6 +142,10 @@ class ActiveWorkoutController: UITableViewController {
         hStack.alignment = .center
         hStack.spacing = 8
         navigationItem.titleView = hStack
+        
+        // Timer
+        let timerItem = UIBarButtonItem(customView: counter)
+        navigationItem.leftBarButtonItem = timerItem
     }
     
     private func addTimerBar(target: TimeInterval) {
@@ -353,6 +383,7 @@ extension ActiveWorkoutController: AKTimerStatusBarDelegate {
 }
 
 // FIXME: This is where the active vc handles the timer ticks
+// FIXME: Do more shit here
 extension ActiveWorkoutController: AKTimerDelegate {
     func statusDidChange(to status: AKTimerStatus) {
         switch status {
@@ -370,169 +401,3 @@ extension ActiveWorkoutController: AKTimerDelegate {
     }
 }
 
-class TimerButton: UIView {
-    
-    let akt = AKTimer()
-    let label = UILabel()
-    var delegate: AKTimerDelegate?
-    
-    init(_ text: String, timerDelegate: AKTimerDelegate) {
-        super.init(frame: .zero)
-        self.delegate = timerDelegate
-        setup()
-        label.text = text
-        label.isUserInteractionEnabled = false
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setup() {
-        label.textAlignment = .left
-        label.font = .custom(style: .bold, ofSize: .medium)
-        label.textColor = .akLight//.withAlphaComponent(.opacity.faded.rawValue)
-        label.textAlignment = .center
-        label.backgroundColor = .akDark
-        label.layer.cornerRadius = 8
-        label.layer.cornerCurve = .continuous
-        label.clipsToBounds = true
-        
-        addSubview(label)
-        label.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalTo(globalTimerHeight)
-            make.width.equalTo(40)
-        }
-        
-        let tr = UITapGestureRecognizer(target: self, action: #selector(insideTap))
-        addGestureRecognizer(tr)
-    }
-    
-    // MARK: - Timer
-    
-    
-    @objc func insideTap() {
-        let tappedNumber = Int(label.text!)!
-        akt.delegate = delegate
-        akt.startCountUpTo(tappedNumber)
-    }
-}
-
-    
-enum AKTimerStatus {
-    case ticking(Int, Int) // current and target
-    case inactive
-    case done
-}
-
-
-protocol AKTimerDelegate {
-    func statusDidChange(to status: AKTimerStatus)
-}
-
-class AKTimer {
-    var timer: Timer?
-    var delegate: AKTimerDelegate?
-    var status: AKTimerStatus = .inactive {
-        didSet {
-            propegateStatusChange()
-        }
-    }
-    
-    private func propegateStatusChange() {
-        delegate?.statusDidChange(to: status)
-    }
-    
-    func startCountUpTo(_ targetMinutes: Int) {
-        let targetSeconds = targetMinutes*60
-        
-        timer?.invalidate()
-        status = .ticking(0, targetSeconds)
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            switch self.status {
-            case .ticking(let current, let target):
-                if current == target {
-                    self.status = .done
-                    self.timer?.invalidate()
-                    return
-                } else {
-                    self.status = .ticking(current+1, target)
-                }
-            case .inactive:
-                print("Timer was inactive")
-            case .done:
-                print("Timer was done. Invalidating")
-                self.timer?.invalidate()
-            }
-        }
-    }
-}
-
-protocol AKTimerStatusBarDelegate {
-    func statusBarDidFinish(_ bool: Bool)
-}
-
-final class AKTimerStatusBar: UIView {
-    
-    var fillView = UIView()
-    var cancelButtonBackground = UIButton()
-    var cancelButton = UIImageView()
-    var time: TimeInterval
-    var delegate: AKTimerStatusBarDelegate?
-    
-    init(time: TimeInterval) {
-        self.time = time
-        
-        super.init(frame: .zero)
-        
-        // Background view
-        backgroundColor = .akDark.withAlphaComponent(0.1)
-        layer.cornerRadius = 16
-        layer.cornerCurve = .continuous
-        clipsToBounds = true
-        
-        // Fill view
-        fillView.backgroundColor = .akDark
-        addSubview(fillView)
-        
-        // Animate from left
-        self.fillView.frame = CGRect(x: 0, y: 0, width: 0, height: 500)
-        
-        // Cancel button
-        cancelButtonBackground.backgroundColor = .akDark
-        cancelButton.image = UIImage.close24.withTintColor(.akLight)
-        cancelButton.contentMode = .scaleAspectFit
-        cancelButton.isUserInteractionEnabled = false
-        cancelButtonBackground.addTarget(self, action: #selector(cancelTimer), for: .touchUpInside)
-        
-        addSubview(cancelButtonBackground)
-        addSubview(cancelButton)
-        cancelButtonBackground.snp.makeConstraints { make in
-            make.top.right.bottom.equalToSuperview()
-            make.width.equalTo(globalCancelTimerWidth)
-        }
-        cancelButton.snp.makeConstraints { make in
-            make.edges.equalTo(cancelButtonBackground).inset(10)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func update(_ current: Int, _ target: Int) {
-        let _: CGFloat = CGFloat(current)/CGFloat(target)*100
-    }
-    
-    @objc func cancelTimer() {
-        print("bam would cancel")
-        delegate?.statusBarDidFinish(false)
-    }
-    
-    func startAnimation(seconds: TimeInterval, completion: @escaping (()->())) {
-         UIView.animate(withDuration: time, delay: 0, options: []) {
-            self.fillView.frame = CGRect(x: 0, y: 0, width: globalTimerWidth - globalCancelTimerWidth, height: globalTimerHeight)
-        } completion: { bool in completion() }
-    }
-}
