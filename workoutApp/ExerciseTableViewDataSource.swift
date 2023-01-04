@@ -39,7 +39,7 @@ class ExerciseTableDataSource: NSObject {
     func saveWorkoutLog() {
         guard countPerformedExercises() > 0 else {
             // present error
-            let modal = CustomAlertView(type: .error, messageContent: "You have to actually work out to be able to log an exercise!")
+            let modal = PostWorkoutView(type: .error, messageContent: "You have to actually work out to be able to log an exercise!")
             modal.show(animated: true)
             return
         }
@@ -52,7 +52,7 @@ class ExerciseTableDataSource: NSObject {
         
         dataSourceWorkoutLog.markAsLatestperformence()
         owner.navigationController?.popViewController(animated: true)
-        let modal = CustomAlertView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
+        let modal = PostWorkoutView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
         modal.show(animated: true)
         DatabaseFacade.saveContext()
     }

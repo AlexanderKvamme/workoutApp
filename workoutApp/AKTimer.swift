@@ -10,6 +10,7 @@ import Foundation
 
 
 class AKTimer {
+    var startDate = Date()
     var timer: Timer?
     var delegate: AKTimerDelegate?
     var status: AKTimerStatus = .inactive {
@@ -23,11 +24,12 @@ class AKTimer {
     }
     
     func startCountUpTo(_ targetMinutes: Int) {
+        startDate = Date()
         let targetSeconds = targetMinutes*60
-        
         timer?.invalidate()
         status = .ticking(0, targetSeconds)
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            let timepassed = Int(Date().timeIntervalSince(self.startDate))
             switch self.status {
             case .ticking(let current, let target):
                 if current == target {
@@ -35,7 +37,7 @@ class AKTimer {
                     self.timer?.invalidate()
                     return
                 } else {
-                    self.status = .ticking(current+1, target)
+                    self.status = .ticking(timepassed, target)
                 }
             case .inactive:
                 print("Timer was inactive")

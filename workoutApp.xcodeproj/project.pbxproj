@@ -126,6 +126,7 @@
 		DDD0D542295F512800CD11A5 /* AKTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D541295F512800CD11A5 /* AKTimer.swift */; };
 		DDD0D544295F517D00CD11A5 /* CounterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D543295F517D00CD11A5 /* CounterButton.swift */; };
 		DDD0D546295F51A300CD11A5 /* AKTimerStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */; };
+		DDD0D548295F746100CD11A5 /* PostWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D547295F746100CD11A5 /* PostWorkoutView.swift */; };
 		DDD3FC5828C88F8900890AE7 /* Sono-Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */; };
 		DDD3FC5A28C88F9800890AE7 /* Gilroy-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */; };
 		DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */; };
@@ -288,6 +289,7 @@
 		DDD0D541295F512800CD11A5 /* AKTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTimer.swift; sourceTree = "<group>"; };
 		DDD0D543295F517D00CD11A5 /* CounterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterButton.swift; sourceTree = "<group>"; };
 		DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTimerStatusBar.swift; sourceTree = "<group>"; };
+		DDD0D547295F746100CD11A5 /* PostWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWorkoutView.swift; sourceTree = "<group>"; };
 		DDD3FC5728C88F8800890AE7 /* Sono-Variable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sono-Variable.ttf"; sourceTree = "<group>"; };
 		DDD3FC5928C88F9800890AE7 /* Gilroy-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Black.ttf"; sourceTree = "<group>"; };
 		DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval Extensions.swift"; sourceTree = "<group>"; };
@@ -640,6 +642,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5ED8371ECA5F5100D3EB1A /* CustomAlertView.swift */,
+				DDD0D547295F746100CD11A5 /* PostWorkoutView.swift */,
 				DD0437401ECCF29F0016EFBB /* Modal.swift */,
 			);
 			name = Modal;
@@ -1117,6 +1120,7 @@
 				1121236F20835BBA005C27D2 /* WorkoutLog+CoreDataClass.swift in Sources */,
 				DDDE6E511ED4DED400A03886 /* BoxTableViewController.swift in Sources */,
 				DD468F831F2E1A8100A945A9 /* HistorySelectionViewController.swift in Sources */,
+				DDD0D548295F746100CD11A5 /* PostWorkoutView.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
 				1121237120835BBA005C27D2 /* Muscle+CoreDataClass.swift in Sources */,
 				DD9838731F12717B00B876C7 /* Notification Extensions.swift in Sources */,

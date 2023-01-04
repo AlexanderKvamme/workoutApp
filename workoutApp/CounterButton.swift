@@ -29,7 +29,7 @@ class CounterButton: UIView {
     
     private func setup() {
         label.textAlignment = .left
-        label.font = .custom(style: .bold, ofSize: .medium)
+        label.font = .custom(style: .bold, ofSize: .big)
         label.textColor = .akDark.withAlphaComponent(.opacity.faded.rawValue)
         label.textAlignment = .center
         label.backgroundColor = .akDark
@@ -37,12 +37,14 @@ class CounterButton: UIView {
         label.layer.cornerRadius = 8
         label.layer.cornerCurve = .continuous
         label.clipsToBounds = true
+        label.adjustsFontSizeToFitWidth = true
         
         addSubview(label)
         label.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.right.top.bottom.equalToSuperview()
+            make.left.equalToSuperview().offset(8)
             make.height.equalTo(globalTimerHeight)
-            make.width.equalTo(40)
+            make.width.equalTo(48)
         }
     }
     

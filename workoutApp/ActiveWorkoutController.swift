@@ -241,9 +241,28 @@ class ActiveWorkoutController: UITableViewController {
     // MARK: Handlers
     
     @objc private func saveButtonHandler() {
-        print("tapped SAVE")
-        dataSource.saveWorkoutLog()
-        presentingBoxTable?.shouldUpdateUponAppearing = true
+        let alert = UIAlertController(
+            title: "Are you sure?",
+            message: "You will no close the exit and save this workout in your history.",
+            preferredStyle: .actionSheet
+        )
+        alert.addAction(UIAlertAction(
+            title: "Save and exit",
+            style: .destructive,
+            handler: { _ in
+                self.dataSource.saveWorkoutLog()
+                self.presentingBoxTable?.shouldUpdateUponAppearing = true
+        }))
+        alert.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: { _ in
+            // Do nothing on cancel
+        }))
+        present(alert,
+                animated: true,
+                completion: nil
+        )
     }
     
     @objc private func xButtonHandler() {
