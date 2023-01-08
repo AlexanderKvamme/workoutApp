@@ -52,7 +52,11 @@ extension UIBarButtonItem {
 }
 
 /// This TableView is the actual workout when the user is working out
-class ActiveWorkoutController: UITableViewController {
+class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
+    
+    func didSelectValue(_ string: String) {
+        print("bam active workout selected string: ", string)
+    }
     
     // MARK: - Properties
     
@@ -132,20 +136,13 @@ class ActiveWorkoutController: UITableViewController {
     private func addTimerButtons() {
         navigationItem.titleView = nil
         
-        let spacerView = UIView()
-        let one = UIBarButtonItem(customView: TimerButton("1", timerDelegate: self))
-        let two = UIBarButtonItem(customView: TimerButton("2", timerDelegate: self))
-        let three = UIBarButtonItem(customView: TimerButton("3", timerDelegate: self))
-        
-        let hStack = UIStackView(arrangedSubviews: [one.customView!, two.customView!, three.customView!])
-        hStack.axis = .horizontal
-        hStack.alignment = .center
-        hStack.spacing = 8
-        navigationItem.titleView = hStack
-        
         // Timer
         let timerItem = UIBarButtonItem(customView: counter)
         navigationItem.leftBarButtonItem = timerItem
+        
+        let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["1", "2", "3"])
+        stepper.delegate = self
+        navigationItem.titleView = stepper
     }
     
     private func addTimerBar(target: TimeInterval) {

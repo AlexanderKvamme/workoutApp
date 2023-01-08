@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import SwipeCellKit
 
-fileprivate var workoutToAutomaticallyEnter: Int? = nil
+fileprivate var workoutToAutomaticallyEnter: Int? = 0
 
 /// The default workoutTableViewController used in both the history and workout tab
 class WorkoutTableViewController: BoxTableViewController, SwipeTableViewCellDelegate {

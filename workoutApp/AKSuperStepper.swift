@@ -19,6 +19,8 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     var dataViews = [StepperDataView]()
     var dataViewStack = UIStackView()
     let hScroll = UIScrollView()
+    
+    var delegate: AKStepperDelegate?
 
     // MARK: - Initializers
 
@@ -94,6 +96,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
                 let loc = sender.location(in: hScroll)
                 if let width = dataViews.first?.frame.width {
                     let idx = Int(loc.x/width)
+                    delegate?.didSelectValue(self.data[idx])
                     hScroll.setContentOffset(CGPoint(x: CGFloat(idx)*width-width, y: 0), animated: true)
                 }
             }
@@ -223,3 +226,6 @@ final class StepperDataView: UIView {
     }
 }
 
+protocol AKStepperDelegate {
+    func didSelectValue(_ string: String)
+}
