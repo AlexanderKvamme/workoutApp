@@ -192,7 +192,8 @@ final class StepperDataView: UIView {
     func addSubviewsAndConstraints() {
         addSubview(label)
         label.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview().inset(8)
+            make.top.bottom.equalToSuperview().inset(8)
+            make.right.left.equalToSuperview()
         }
     }
 
