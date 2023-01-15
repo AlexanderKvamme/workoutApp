@@ -47,7 +47,7 @@ class MuscleBasedWorkoutTableController: BoxTableViewController, SwipeTableViewC
         addLongPressRecognizer()
         
         if dataSource.getDataCount() == 0 {
-            let alert = CustomAlertView(type: .message, messageContent: "Go make a workout that contains \(self.muscle.getName())!")
+            let alert = CustomAlertView(messageContent: "Go make a workout that contains \(self.muscle.getName())!")
             alert.show(animated: true)
         }
         

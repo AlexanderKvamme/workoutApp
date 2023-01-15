@@ -56,10 +56,11 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     
     // Stepper related
     // FIXME: Change color if nothing selected
-    lazy private var currentTimerGoal = Int(stepper.getCurrentValue() ?? "99999")!
-    func didSelectValue(_ string: String) {
-        print("bam active workout selected string: ", string)
+    private var currentTimerGoal: Double {
+        let current = Double(stepper.getCurrentValue() ?? "99999")!
+        return current
     }
+    func didSelectValue(_ string: String) { }
     
     // MARK: - Properties
     
@@ -74,7 +75,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     private lazy var counter = CounterButton("0", timerDelegate: self)
     private var counterManager = CounterManager()
     private var akCounter = AKTimer()
-    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["30", "1", "2", "3"])
+    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"])
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
@@ -133,13 +134,29 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         
         akCounter.delegate = counterManager
         counterManager.tickHandler = { currentValue in
+            let currentValue = currentValue
             self.counter.label.text = "\(currentValue)"
-            let currentValue = currentValue*10
-            print("bam tick: ", currentValue)
             
-            let targetInSeconds = self.getTimerGoalInSeconds()
+            var targetInSeconds = self.getTimerGoalInSeconds()
+            guard targetInSeconds != 0 else {
+                return
+            }
+            
+            if targetInSeconds == 0.5 {
+                targetInSeconds = 30
+            }
+            
+            let minutes = currentValue*60
             if targetInSeconds == Double(currentValue) {
-                print("goal reached")
+                let errorMessage = "Let's get back to it"
+                let modal = CustomAlertView(title: "Time's up!", messageContent: errorMessage)
+                modal.modalPresentationStyle = .fullScreen
+                modal.onDismiss = {
+                    globalTabBar.showIt()
+                    self.navigationController?.dismiss(animated: false)
+                }
+                globalTabBar.hideIt()
+                self.navigationController?.present(modal, animated: false)
             }
         }
     }
@@ -153,7 +170,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     
     private func getTimerGoalInSeconds() -> Double {
         let targetInSeconds: Double!
-        if currentTimerGoal == 30 {
+        if Double(currentTimerGoal) == 0.5 {
             targetInSeconds = 0.5
         } else {
             targetInSeconds = Double(currentTimerGoal)*60.0
@@ -454,12 +471,10 @@ extension ActiveWorkoutController: AKTimerDelegate {
             if current == 0 {
                 addTimerBar(target: TimeInterval(target))
             }
-            print("bam tick to ", current)
             timerBar.update(current, target)
         case .inactive:
             print("bam would show timer buttons")
         case .done:
-            print("bam would also show timer buttons")
             addTimerButtons()
         }
     }

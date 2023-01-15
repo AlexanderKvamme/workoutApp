@@ -14,7 +14,7 @@ class PostWorkoutView: UIView, isModal {
     // MARK: - Properties
     
     var backgroundView = UIView()
-    var modalView = UIView()
+    var containerView = UIView()
     
     // MARK: - Initializers
     
@@ -27,19 +27,6 @@ class PostWorkoutView: UIView, isModal {
     convenience init(type: ModalType, messageContent: String) {
         self.init(frame: UIScreen.main.bounds)
         
-        // top right x mark
-        let xView = UIButton()
-        xView.tintColor = .akDark
-        xView.setImage(UIImage.close24.withRenderingMode(.alwaysTemplate), for: .normal)
-        xView.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
-        xView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        
-        modalView.addSubview(xView)
-        xView.snp.makeConstraints { make in
-            make.size.equalTo(48)
-            make.top.right.equalToSuperview().inset(24)
-        }
-        
         // Header
         let headerLabel = UILabel()
         headerLabel.text = "Nice!"
@@ -48,9 +35,9 @@ class PostWorkoutView: UIView, isModal {
         headerLabel.textColor = .akDark
         headerLabel.font = UIFont.custom(style: .bold, ofSize: .bigger)
         headerLabel.sizeToFit()
-        modalView.addSubview(headerLabel)
+        containerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
-            make.top.equalTo(modalView.snp.centerY)
+            make.top.equalTo(containerView.snp.centerY)
             make.left.right.equalToSuperview()
         }
         
@@ -61,7 +48,7 @@ class PostWorkoutView: UIView, isModal {
         contentLabel.numberOfLines = 0
         contentLabel.textColor = .akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
         contentLabel.font = UIFont.custom(style: .medium, ofSize: .medium)
-        modalView.addSubview(contentLabel)
+        containerView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(headerLabel.snp.bottom).offset(8)
             make.left.right.equalToSuperview().inset(24)
@@ -78,7 +65,7 @@ class PostWorkoutView: UIView, isModal {
         let container = UIButton()
         container.backgroundColor = .black
         container.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
-        modalView.addSubview(container)
+        containerView.addSubview(container)
         container.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(100)
@@ -91,20 +78,20 @@ class PostWorkoutView: UIView, isModal {
         checkmarkView.accessibilityIdentifier = "approve-modal-button"
         checkmarkView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         checkmarkView.isUserInteractionEnabled = false
-        modalView.addSubview(checkmarkView)
+        containerView.addSubview(checkmarkView)
         checkmarkView.snp.makeConstraints { make in
             make.center.equalTo(container)
         }
         
         // Modal
         let dialogViewHeight = UIScreen.main.bounds.height
-        modalView.frame.origin = CGPoint(x: 32, y: frame.height)
-        modalView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: dialogViewHeight)
-        modalView.backgroundColor = UIColor.akLight
-        modalView.layer.cornerRadius = 16
-        modalView.layoutIfNeeded()
+        containerView.frame.origin = CGPoint(x: 32, y: frame.height)
+        containerView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: dialogViewHeight)
+        containerView.backgroundColor = UIColor.akLight
+        containerView.layer.cornerRadius = 16
+        containerView.layoutIfNeeded()
         
-        addSubview(modalView)
+        addSubview(containerView)
         
         // Make dismissable by backgorund tap
         backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissView)))

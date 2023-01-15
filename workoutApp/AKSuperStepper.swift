@@ -42,6 +42,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     func setup() {
         let dataViewSize = CGRect(x: 0, y: 0, width: frame.width/3, height: frame.height)
         dataViews = data.map({ return StepperDataView(frame: dataViewSize, value: $0) })
+        hScroll.contentInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
 
         dataViews.forEach({ dataViewStack.addArrangedSubview($0) })
         dataViewStack.axis = .horizontal
@@ -97,7 +98,8 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
                 if let width = dataViews.first?.frame.width {
                     let idx = Int(loc.x/width)
                     delegate?.didSelectValue(self.data[idx])
-                    hScroll.setContentOffset(CGPoint(x: CGFloat(idx)*width-width, y: 0), animated: true)
+                    let newPoint = CGPoint(x: CGFloat(idx)*width-width, y: 0)
+                    hScroll.setContentOffset(newPoint, animated: true)
                 }
             }
 
@@ -118,13 +120,19 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     }
 
     // MARK: - ScrollViewDelegate
-
+    
     // Snap to points after letting go of scroll touch
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard let dataViewWidth = dataViews.first?.frame.width else { return }
-        let x = targetContentOffset.pointee.x
-        let mod = Int((+x+dataViewWidth/2)/dataViewWidth)
-        let newX = CGFloat(mod)*dataViewWidth
+        var x = targetContentOffset.pointee.x
+        if x == 0 {
+            x = -1
+        }
+        let mod = Int((x+dataViewWidth/2)/dataViewWidth)
+        var newX = CGFloat(mod)*dataViewWidth
+        if -dataViewWidth/2 > x {
+            newX = -dataViewWidth
+        }
         let newEndpoint = CGPoint(x: newX, y: 0)
         targetContentOffset.pointee = newEndpoint
     }

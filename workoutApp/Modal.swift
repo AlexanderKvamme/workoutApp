@@ -4,7 +4,7 @@ protocol isModal {
     func show(animated:Bool)
     func dismiss(animated:Bool)
     var backgroundView:UIView {get}
-    var modalView:UIView {get set}
+    var containerView:UIView {get set}
 }
 
 extension isModal where Self: UIView {
@@ -12,18 +12,22 @@ extension isModal where Self: UIView {
     /// Shows the moda
     func show(animated:Bool){
         self.backgroundView.alpha = 0
-        self.modalView.center = CGPoint(x: self.center.x, y: self.frame.height + self.modalView.frame.height/2)
+        self.containerView.center = CGPoint(x: self.center.x, y: self.frame.height + self.containerView.frame.height/2)
         UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(self)
         if animated {
-            UIView.animate(withDuration: 0.33, animations: {
+//            UIView.animate(withDuration: 0.33, animations: {
                 self.backgroundView.alpha = 1
-            })
-            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 10, options: UIView.AnimationOptions(rawValue: 0), animations: {
-                self.modalView.center  = self.center
-            }, completion: nil)
+//            })
+//            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 1, options: UIView.AnimationOptions(rawValue: 0), animations: {
+//                self.containerView.center  = self.center
+//            }, completion: nil)
+            
+//            UIView.animate(withDuration: 0.0) {
+                self.containerView.center  = self.center
+//            }
         } else {
             self.backgroundView.alpha = 1
-            self.modalView.center  = self.center
+            self.containerView.center  = self.center
         }
     }
     
@@ -34,11 +38,11 @@ extension isModal where Self: UIView {
             }, completion: nil)
             
             UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 10, options: UIView.AnimationOptions(rawValue: 0), animations: {
-                self.modalView.center = CGPoint(x: self.center.x, y: self.frame.height + self.modalView.frame.height/2)
+                self.containerView.center = CGPoint(x: self.center.x, y: self.frame.height + self.containerView.frame.height/2)
             }, completion: { (completed) in
                 self.removeFromSuperview()
             })
-        }else{
+        } else {
             self.removeFromSuperview()
         }
     }

@@ -28,11 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        
-        
-        
-        
-        
 //        for family in UIFont.familyNames {
 //
 //            let sName: String = family as String
@@ -42,8 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                print("-- \(name as String)")
 //            }
 //        }
-        
-        
         
         
         customizeUIAppearance()
@@ -122,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             dataSeeder.seedCoreData()
             
             // Show Welcome message
-            let modal = CustomAlertView(type: .message, messageContent: "Welcome to the workout!")
+            let modal = CustomAlertView(messageContent: "Welcome to the workout!")
             modal.show(animated: true)
             
             // Seed User Defaults

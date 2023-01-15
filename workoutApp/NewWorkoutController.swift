@@ -72,7 +72,7 @@ class NewWorkoutController: WorkoutController {
     @objc private func makeWorkoutAndDismissVC() {
         // Present error modal if workout contains no exercises
         guard hasExercises else {
-            let modal = CustomAlertView(type: .message, messageContent: "Add at least one exercise, please!")
+            let modal = CustomAlertView(messageContent: "Add at least one exercise, please!")
             modal.show(animated: true)
             return
         }

@@ -156,7 +156,7 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
     
     @objc func mailDeveloper() {
         guard MFMailComposeViewController.canSendMail() else {
-            let modal = CustomAlertView(type: .error, messageContent: "Your device is not configured to send mail!")
+            let modal = CustomAlertView(messageContent: "Your device is not configured to send mail!")
             modal.show(animated: true)
             return
         }
@@ -173,16 +173,16 @@ extension ProfileController: MFMailComposeViewControllerDelegate {
         // Present modal based on result
         switch result {
         case .cancelled:
-            let modal = CustomAlertView(type: .message, messageContent: "Another time, then! :)")
+            let modal = CustomAlertView(messageContent: "Another time, then! :)")
             modal.show(animated: true)
         case .sent:
-            let modal = CustomAlertView(type: .message, messageContent: "Great stuff! Thanks! :)")
+            let modal = CustomAlertView(messageContent: "Great stuff! Thanks! :)")
             modal.show(animated: true)
         case .failed:
-            let modal = CustomAlertView(type: .error, messageContent: "Ohh my! Something wrong happened with your email and it could not be sent: \(error?.localizedDescription ?? "Try again later")")
+            let modal = CustomAlertView(messageContent: "Ohh my! Something wrong happened with your email and it could not be sent: \(error?.localizedDescription ?? "Try again later")")
             modal.show(animated: true)
         case .saved:
-            let modal = CustomAlertView(type: .message, messageContent: "Great idea! Save it for later!")
+            let modal = CustomAlertView(messageContent: "Great idea! Save it for later!")
             modal.show(animated: true)
         }
         controller.dismiss(animated: true, completion: nil)

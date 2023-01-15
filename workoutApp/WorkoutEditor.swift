@@ -109,7 +109,7 @@ class WorkoutEditor: WorkoutController {
         // Present error modal if workout contains no exercises
         guard hasExercises else {
             let errorMessage = "Add at least one exercise, please!"
-            let modal = CustomAlertView(type: .error, messageContent: errorMessage)
+            let modal = CustomAlertView(messageContent: errorMessage)
             modal.show(animated: true)
             return
         }

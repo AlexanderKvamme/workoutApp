@@ -84,7 +84,7 @@ public class SelectionViewButton: UIView {
     }
     
     func showNotYetImplementedModal() {
-        let alert = CustomAlertView(type: .error, messageContent: "This feature is not yet implemented!")
+        let alert = CustomAlertView(messageContent: "This feature is not yet implemented!")
         alert.show(animated: true)
     }
 }
