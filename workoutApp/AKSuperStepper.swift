@@ -19,14 +19,18 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     var dataViews = [StepperDataView]()
     var dataViewStack = UIStackView()
     let hScroll = UIScrollView()
+    var primaryColor: UIColor
+    var customBackgroundColor: UIColor
     
     var delegate: AKStepperDelegate?
 
     // MARK: - Initializers
 
-    init(frame: CGRect, options: [String]) {
+    init(frame: CGRect, options: [String], primaryColor: UIColor, backgroundColor: UIColor) {
+        self.primaryColor = primaryColor
+        self.customBackgroundColor = backgroundColor
         self.data = options
-
+        
         super.init(frame: frame)
 
         setup()
@@ -58,7 +62,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
         hScroll.showsHorizontalScrollIndicator = false
         hScroll.delegate = self
 
-        backgroundColor = .akDark
+        backgroundColor = customBackgroundColor
         layer.cornerRadius = 16
         clipsToBounds = true
 

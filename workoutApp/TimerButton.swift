@@ -53,6 +53,6 @@ class TimerButton: UIView {
     @objc func insideTap() {
         let tappedNumber = Int(label.text!)!
         akt.delegate = delegate
-        akt.startCountUpTo(tappedNumber)
+        akt.startCountUpTo(targetInSeconds: tappedNumber*60)
     }
 }

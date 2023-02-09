@@ -11,7 +11,7 @@
 import UIKit
 import CoreData
 
-fileprivate var workoutToAutomaticallyEnter: Int? = 0
+fileprivate var workoutToAutomaticallyEnter: Int? = nil
 
 /// WorkoutSelectionViewController is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
 class WorkoutSelectionViewController: SelectionViewController {

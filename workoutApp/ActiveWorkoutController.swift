@@ -75,7 +75,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     private lazy var counter = CounterButton("0", timerDelegate: self)
     private var counterManager = CounterManager()
     private var akCounter = AKTimer()
-    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"])
+    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"], primaryColor: .black, backgroundColor: .red)
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
@@ -92,6 +92,10 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     // MARK: - Lifecycle
+
+
+    
+    // MARK: - This
     
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
@@ -103,11 +107,24 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     @objc private func restartCounter() {
-        akCounter.startCountUpTo(3)
+        switch akCounter.status {
+        case .ticking(let _, let to):
+            akCounter.startCountUpTo(targetInSeconds: to)
+        case .inactive:
+            let targetInSeconds: Int = stepper.getCurrentValue() ?? "3" == ".5" ? 30 : Int(stepper.getCurrentValue() ?? "3")!*60
+            akCounter.startCountUpTo(targetInSeconds: targetInSeconds)
+        default: return
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Prepare notifications after breaks
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(handleAppMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        AKKITPushNotificationManager.registerForPushNotifications()
+        
         self.hideKeyboardWhenTappedAround()
 
         dataSource = ExerciseTableDataSource(workout: currentWorkout) // Make datasource out of the provided Workout
@@ -146,7 +163,6 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
                 targetInSeconds = 30
             }
             
-            let minutes = currentValue*60
             if targetInSeconds == Double(currentValue) {
                 let errorMessage = "Let's get back to it"
                 let modal = CustomAlertView(title: "Time's up!", messageContent: errorMessage)
@@ -167,6 +183,28 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     // MARK: - Methods
+    
+    @objc func handleAppMovedToBackground() {
+        let targetString = stepper.getCurrentValue()
+        guard let targetString = targetString, let target = Double(targetString) else {
+            fatalError()
+        }
+        
+        switch akCounter.status {
+        case .done:
+            return
+        case .inactive:
+            return
+        case .ticking(let from, let to):
+            let diff = Double(to)-Double(from)
+            print("bam will wait seconds before notification: ", diff)
+            postReadyNotification(afterSeconds: diff)
+        }
+    }
+    
+    private func postReadyNotification(afterSeconds seconds: Double) {
+        AKKITPushNotificationManager.scheduleLocalNotification(title: "Get back to workout", body: "Break is over", inSeconds: seconds)
+    }
     
     private func getTimerGoalInSeconds() -> Double {
         let targetInSeconds: Double!

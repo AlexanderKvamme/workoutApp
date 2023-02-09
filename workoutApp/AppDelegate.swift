@@ -27,18 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             seeder.seedCoreDataForFastlaneSnapshots()
         }
         
-        
-//        for family in UIFont.familyNames {
-//
-//            let sName: String = family as String
-//            print("\nfamily: \(sName)")
-//
-//            for name in UIFont.fontNames(forFamilyName: sName) {
-//                print("-- \(name as String)")
-//            }
-//        }
-        
-        
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
         

@@ -23,13 +23,13 @@ class AKTimer {
         delegate?.statusDidChange(to: status)
     }
     
-    func startCountUpTo(_ targetMinutes: Int) {
+    func startCountUpTo(targetInSeconds: Int) {
         startDate = Date()
-        let targetSeconds = targetMinutes*60
         timer?.invalidate()
-        status = .ticking(0, targetSeconds)
+        status = .ticking(0, targetInSeconds)
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             let timepassed = Int(Date().timeIntervalSince(self.startDate))
+            print("timer.tick: ", timepassed)
             switch self.status {
             case .ticking(let current, let target):
                 if current == target {
