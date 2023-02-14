@@ -29,10 +29,10 @@ class AKTimer {
         status = .ticking(0, targetInSeconds)
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             let timepassed = Int(Date().timeIntervalSince(self.startDate))
-            print("timer.tick: ", timepassed)
             switch self.status {
             case .ticking(let current, let target):
-                if current == target {
+                let isInfiniteCounter = target == 0 && current == 0
+                if current == target && !isInfiniteCounter {
                     self.status = .done
                     self.timer?.invalidate()
                     return

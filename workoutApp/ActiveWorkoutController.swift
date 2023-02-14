@@ -27,9 +27,9 @@ class CounterManager: AKTimerDelegate {
         case .ticking(let current, let target):
             tickHandler?(current)
         case .inactive:
-            print("bam would show timer buttons")
+            print("bam inactive")
         case .done:
-            print("bam would also show timer buttons")
+            print("bam done")
         }
     }
 }
@@ -107,6 +107,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     @objc private func restartCounter() {
+        print("restartCounter")
         switch akCounter.status {
         case .ticking(let _, let to):
             akCounter.startCountUpTo(targetInSeconds: to)
@@ -192,12 +193,12 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         
         switch akCounter.status {
         case .done:
+            print("done")
             return
         case .inactive:
             return
         case .ticking(let from, let to):
             let diff = Double(to)-Double(from)
-            print("bam will wait seconds before notification: ", diff)
             postReadyNotification(afterSeconds: diff)
         }
     }
