@@ -21,14 +21,18 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     let hScroll = UIScrollView()
     var primaryColor: UIColor
     var customBackgroundColor: UIColor
+    var activeColor: UIColor?
+    var inactiveColor: UIColor?
     
     var delegate: AKStepperDelegate?
 
     // MARK: - Initializers
 
-    init(frame: CGRect, options: [String], primaryColor: UIColor, backgroundColor: UIColor) {
+    init(frame: CGRect, options: [String], primaryColor: UIColor, backgroundColor: UIColor, activeColor: UIColor? = nil, inactiveColor: UIColor? = nil) {
         self.primaryColor = primaryColor
         self.customBackgroundColor = backgroundColor
+        self.activeColor = activeColor
+        self.inactiveColor = inactiveColor
         self.data = options
         
         super.init(frame: frame)
@@ -101,6 +105,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
                 let loc = sender.location(in: hScroll)
                 if let width = dataViews.first?.frame.width {
                     let idx = Int(loc.x/width)
+                    handleWillGoToIndex(idx)
                     delegate?.didSelectValue(self.data[idx])
                     let newPoint = CGPoint(x: CGFloat(idx)*width-width, y: 0)
                     hScroll.setContentOffset(newPoint, animated: true)
@@ -133,12 +138,28 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
             x = -1
         }
         let mod = Int((x+dataViewWidth/2)/dataViewWidth)
+        handleWillGoToIndex(mod)
+        
         var newX = CGFloat(mod)*dataViewWidth
         if -dataViewWidth/2 > x {
             newX = -dataViewWidth
         }
         let newEndpoint = CGPoint(x: newX, y: 0)
         targetContentOffset.pointee = newEndpoint
+    }
+    
+    func handleWillGoToIndex(_ idx: Int) {
+        let hasValue = idx != 0
+        
+        UIView.animate(withDuration: 0.3) {
+            if hasValue {
+                self.backgroundColor = self.activeColor
+                self.dataViews.forEach({ $0.label.textColor = .akLight.withAlphaComponent(0.5) })
+            } else {
+                self.backgroundColor = self.inactiveColor
+                self.dataViews.forEach({ $0.label.textColor = .akDark })
+            }
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -171,7 +192,7 @@ final class StepperDataView: UIView {
     // MARK: - Properties
 
     private var value: String
-    private var label = UILabel.make(.exercise)
+    var label = UILabel.make(.exercise)
 
     // MARK: - Initializers
 

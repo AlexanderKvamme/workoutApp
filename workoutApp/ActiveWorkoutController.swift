@@ -75,7 +75,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     private lazy var counter = CounterButton("0", timerDelegate: self)
     private var counterManager = CounterManager()
     private var akCounter = AKTimer()
-    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"], primaryColor: .black, backgroundColor: .red)
+    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"], primaryColor: .black, backgroundColor: .red, activeColor: .akDark, inactiveColor: .clear)
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
@@ -107,9 +107,8 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     @objc private func restartCounter() {
-        print("restartCounter")
         switch akCounter.status {
-        case .ticking(let _, let to):
+        case .ticking(let from, let to):
             akCounter.startCountUpTo(targetInSeconds: to)
         case .inactive:
             let targetInSeconds: Int = stepper.getCurrentValue() ?? "3" == ".5" ? 30 : Int(stepper.getCurrentValue() ?? "3")!*60
@@ -143,12 +142,6 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         tableView.addGestureRecognizer(longPressRecognizer)
         
         addTimerButtons()
-        
-        // FIXME: 1. Get the current alarm treshold
-        
-        // FIXME: 2. Show screenm when treshold is reached
-        
-        // FIXME: 3. Put notification when going to background
         
         akCounter.delegate = counterManager
         counterManager.tickHandler = { currentValue in
