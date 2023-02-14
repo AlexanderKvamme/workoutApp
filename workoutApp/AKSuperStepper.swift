@@ -19,8 +19,6 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     var dataViews = [StepperDataView]()
     var dataViewStack = UIStackView()
     let hScroll = UIScrollView()
-    var primaryColor: UIColor
-    var customBackgroundColor: UIColor
     var activeColor: UIColor?
     var inactiveColor: UIColor?
     
@@ -28,9 +26,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
 
     // MARK: - Initializers
 
-    init(frame: CGRect, options: [String], primaryColor: UIColor, backgroundColor: UIColor, activeColor: UIColor? = nil, inactiveColor: UIColor? = nil) {
-        self.primaryColor = primaryColor
-        self.customBackgroundColor = backgroundColor
+    init(frame: CGRect, options: [String], activeColor: UIColor? = nil, inactiveColor: UIColor? = nil) {
         self.activeColor = activeColor
         self.inactiveColor = inactiveColor
         self.data = options
@@ -65,8 +61,9 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
         hScroll.alwaysBounceHorizontal = true
         hScroll.showsHorizontalScrollIndicator = false
         hScroll.delegate = self
-
-        backgroundColor = customBackgroundColor
+        
+        updateColors(forIdx: 0)
+        
         layer.cornerRadius = 16
         clipsToBounds = true
 
@@ -149,16 +146,19 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     }
     
     func handleWillGoToIndex(_ idx: Int) {
+        UIView.animate(withDuration: 0.5) {
+            self.updateColors(forIdx: idx)
+        }
+    }
+    
+    func updateColors(forIdx idx: Int) {
         let hasValue = idx != 0
-        
-        UIView.animate(withDuration: 0.3) {
-            if hasValue {
-                self.backgroundColor = self.activeColor
-                self.dataViews.forEach({ $0.label.textColor = .akLight.withAlphaComponent(0.5) })
-            } else {
-                self.backgroundColor = self.inactiveColor
-                self.dataViews.forEach({ $0.label.textColor = .akDark })
-            }
+        if hasValue {
+            self.backgroundColor = self.activeColor
+            self.dataViews.forEach({ $0.label.textColor = .akLight.withAlphaComponent(0.7) })
+        } else {
+            self.backgroundColor = self.activeColor?.withAlphaComponent(0.1)
+            self.dataViews.forEach({ $0.label.textColor = .akDark })
         }
     }
 

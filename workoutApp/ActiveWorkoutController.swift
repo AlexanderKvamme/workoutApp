@@ -75,7 +75,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     private lazy var counter = CounterButton("0", timerDelegate: self)
     private var counterManager = CounterManager()
     private var akCounter = AKTimer()
-    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"], primaryColor: .black, backgroundColor: .red, activeColor: .akDark, inactiveColor: .clear)
+    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"], activeColor: .akDark, inactiveColor: .clear)
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
