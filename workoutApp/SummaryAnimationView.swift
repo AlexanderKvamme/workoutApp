@@ -35,19 +35,19 @@ final class SummaryAnimationView: UIView {
     
     func start() {
         userProfileView.startPulseAnimation()
+        addRotatingElements()
     }
     
-    private func setup() {
-        backgroundColor = .green
-        
-        // TEST ROTATING VEIW
+    private func addRotatingElements() {
         let elements: [RotatingElementType] = [.fire, .eye, .clock, .category, .priceLabel]
         for (idx, element) in elements.enumerated() {
             let rotatingView = RotatingElement(element: element)
-            rotatingView.frame.origin = CGPoint(x: idx*80, y: idx*80)
             addSubview(rotatingView)
+            startOrbiting(rotatingView, no: idx, of: elements.count)
         }
-        
+    }
+    
+    private func setup() {
         addSubview(circleView)
         circleView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(80)
@@ -58,11 +58,25 @@ final class SummaryAnimationView: UIView {
             make.center.equalTo(circleView)
             make.size.equalTo(60)
         }
+        
+    }
+    
+    private func startOrbiting(_ element: UIView, no: Int, of: Int) {
+        let circlePath = circleView.getPath().translated(by: CGPoint(x: 80, y: 80))
+        let animation = CAKeyframeAnimation(keyPath: #keyPath(CALayer.position))
+        animation.path = circlePath
+        animation.duration = 200
+        animation.repeatCount = .infinity
+        animation.timeOffset = animation.duration*Double(no)/Double(of)
+        addSubview(element)
+        element.layer.add(animation, forKey: nil)
     }
     
 }
 
 final class DottedCircleView: UIView {
+    
+    var path: CGPath!
     
     init() {
         super.init(frame: .zero)
@@ -80,19 +94,23 @@ final class DottedCircleView: UIView {
     
     private func addCircularThing() {
         let shapeLayer = CAShapeLayer()
-        shapeLayer.strokeColor = UIColor.akCard.cgColor
+        shapeLayer.strokeColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 4
         shapeLayer.lineCap = .round
         shapeLayer.lineDashPattern = [4, 8]
         
-        //
         let rect = bounds.insetBy(dx: shapeLayer.lineWidth / 2, dy: shapeLayer.lineWidth / 2)
         let radius = min(rect.width, rect.height) / 2
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let path = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true)
         shapeLayer.path = path.cgPath
+        self.path = path.cgPath
         layer.addSublayer(shapeLayer)
+    }
+    
+    func getPath() -> CGPath {
+        return path
     }
     
 }
@@ -220,5 +238,16 @@ final class RotatingElement: UIView {
         imageview.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(8)
         }
+    }
+}
+
+
+extension CGPath {
+    func translated(by point: CGPoint) -> CGPath? {
+        print("bam: ", point)
+        let bezeirPath = UIBezierPath()
+        bezeirPath.cgPath = self
+        bezeirPath.apply(CGAffineTransform(translationX: point.x, y: point.y))
+        return bezeirPath.cgPath
     }
 }
