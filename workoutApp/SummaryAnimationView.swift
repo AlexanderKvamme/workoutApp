@@ -38,6 +38,16 @@ final class SummaryAnimationView: UIView {
     }
     
     private func setup() {
+        backgroundColor = .green
+        
+        // TEST ROTATING VEIW
+        let elements: [RotatingElementType] = [.fire, .eye, .clock, .category, .priceLabel]
+        for (idx, element) in elements.enumerated() {
+            let rotatingView = RotatingElement(element: element)
+            rotatingView.frame.origin = CGPoint(x: idx*80, y: idx*80)
+            addSubview(rotatingView)
+        }
+        
         addSubview(circleView)
         circleView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(80)
@@ -153,4 +163,62 @@ final class UserProfileView: UIView {
         })
     }
 
+}
+
+enum RotatingElementType: String {
+    case fire = "Fire"
+    case threeDots = "3 Dot Horizontal"
+    case star = "Star"
+    case category = "Category"
+    case home = "Home"
+    case emoticon = "Emoticon"
+    case notification = "Notification"
+    case ticket = "Ticket"
+    case priceLabel = "Price Label"
+    case box = "Box"
+    case lock = "Lock"
+    case scanning = "Scanning"
+    case globe = "Globe"
+    case location = "Location"
+    case struck = "Struck"
+    case eye = "Eye"
+    case clock = "Clock"
+    case clock2 = "Clock 2"
+    case love = "Love"
+    case user = "User"
+    case checklist = "Checklist"
+}
+
+final class RotatingElement: UIView {
+    
+    // MARK: - Properties
+    
+    private var imageview = UIImageView()
+    
+    // MARK: - Initializers
+    
+    init(element: RotatingElementType) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        imageview.image = UIImage(named: element.rawValue)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Life Cycle
+    
+    // MARK: - Methods
+    
+    private func setup() {
+        layer.cornerCurve = .continuous
+        layer.cornerRadius = 8
+        backgroundColor = .akDark
+        
+        addSubview(imageview)
+        imageview.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(8)
+        }
+    }
 }
