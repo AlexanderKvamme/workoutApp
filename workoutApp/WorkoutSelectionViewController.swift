@@ -62,6 +62,10 @@ class WorkoutSelectionViewController: SelectionViewController {
 //        globalTabBar.hideIt()
 //        addChild(modal)
 //        view.addSubview(modal.view)
+        
+        let wrappedWorkout = SummaryScreen(workout: Mock.workout)
+        wrappedWorkout.modalPresentationStyle = .fullScreen
+        present(wrappedWorkout, animated: false)
     }
     
     // MARK: - Methods

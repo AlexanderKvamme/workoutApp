@@ -312,13 +312,14 @@ final class DatabaseFacade {
         return log
     }
     
-    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) {
+    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) -> Workout {
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         workoutRecord.setName(workoutName)
         workoutRecord.setInitialWorkoutStyle(workoutStyle)
         workoutRecord.musclesUsed = NSSet(array: muscles)
         workoutStyle.addToUsedInWorkouts(workoutRecord)
         workoutRecord.setExercises(exercises)
+        return workoutRecord
     }
     
     // MARK: - Fetch/get methods

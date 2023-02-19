@@ -30,6 +30,9 @@
 		1121237920835BBA005C27D2 /* Goal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1121236320835BBA005C27D2 /* Goal+CoreDataClass.swift */; };
 		1121237A20835BBA005C27D2 /* Goal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1121236420835BBA005C27D2 /* Goal+CoreDataProperties.swift */; };
 		A831EA923BF256860CDA923F /* Pods_workoutApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA574822879E36F3F40F6646 /* Pods_workoutApp.framework */; };
+		DD03A19829A2617D00D5D2AB /* SummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */; };
+		DD03A19A29A262BB00D5D2AB /* WorkoutMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */; };
+		DD03A19D29A2761B00D5D2AB /* SummaryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */; };
 		DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */; };
@@ -189,6 +192,9 @@
 		1121236420835BBA005C27D2 /* Goal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		723877A7307B57494223988E /* Pods-workoutApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.release.xcconfig"; path = "Target Support Files/Pods-workoutApp/Pods-workoutApp.release.xcconfig"; sourceTree = "<group>"; };
 		CB064640EE81AEE22F6FE74B /* Pods-workoutApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.debug.xcconfig"; path = "Target Support Files/Pods-workoutApp/Pods-workoutApp.debug.xcconfig"; sourceTree = "<group>"; };
+		DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryScreen.swift; sourceTree = "<group>"; };
+		DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMock.swift; sourceTree = "<group>"; };
+		DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryHeader.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerController.swift; sourceTree = "<group>"; };
 		DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowHeader.swift; sourceTree = "<group>"; };
@@ -385,6 +391,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DD03A19629A2616000D5D2AB /* Summary Screen */ = {
+			isa = PBXGroup;
+			children = (
+				DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */,
+				DD03A19B29A2761000D5D2AB /* Components */,
+				DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */,
+			);
+			name = "Summary Screen";
+			sourceTree = "<group>";
+		};
+		DD03A19B29A2761000D5D2AB /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
 		DD06118D1F4B013300AEACCF /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
@@ -576,6 +600,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DD03A19629A2616000D5D2AB /* Summary Screen */,
 				DD47BAF21FBC5FEA00F75F04 /* Global */,
 				DD151E001ED47C200014DBC1 /* Native Extensions */,
 				DD36F5111F33D41300FD31B3 /* Profile */,
@@ -1051,6 +1076,7 @@
 				1121237720835BBA005C27D2 /* ExerciseLog+CoreDataClass.swift in Sources */,
 				DDD0D546295F51A300CD11A5 /* AKTimerStatusBar.swift in Sources */,
 				1121236920835BBA005C27D2 /* Workout+CoreDataClass.swift in Sources */,
+				DD03A19D29A2761B00D5D2AB /* SummaryHeader.swift in Sources */,
 				DD77AD151F8F9CF1007A6759 /* CellIdentifiers.swift in Sources */,
 				DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */,
 				1121237920835BBA005C27D2 /* Goal+CoreDataClass.swift in Sources */,
@@ -1065,6 +1091,7 @@
 				1121236520835BBA005C27D2 /* Warning+CoreDataClass.swift in Sources */,
 				DD47BAF41FBC5FFE00F75F04 /* Globals.swift in Sources */,
 				DD3AF44B1EE45A9300C55453 /* PickerCell.swift in Sources */,
+				DD03A19A29A262BB00D5D2AB /* WorkoutMock.swift in Sources */,
 				DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */,
 				1121237A20835BBA005C27D2 /* Goal+CoreDataProperties.swift in Sources */,
 				DDE55B9E1F30AD4D00ED1D15 /* UserDefaults Extensions.swift in Sources */,
@@ -1129,6 +1156,7 @@
 				1121237120835BBA005C27D2 /* Muscle+CoreDataClass.swift in Sources */,
 				DD9838731F12717B00B876C7 /* Notification Extensions.swift in Sources */,
 				DD49BAB31F98A964001AFAE3 /* Nextable.swift in Sources */,
+				DD03A19829A2617D00D5D2AB /* SummaryScreen.swift in Sources */,
 				1121236D20835BBA005C27D2 /* Lift+CoreDataClass.swift in Sources */,
 				DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */,
 				DDFA50FF1F571E7E00AF28A4 /* UserDefaultsFacade.swift in Sources */,
