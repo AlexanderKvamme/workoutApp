@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AKKIT
 
 
 final class SummaryScreen: UIViewController {
@@ -14,6 +15,7 @@ final class SummaryScreen: UIViewController {
     // MARK: - Properties
     
     let header = SummaryHeader()
+    let animationView = SummaryAnimationView()
     
     // MARK: - Initializers
     
@@ -33,14 +35,23 @@ final class SummaryScreen: UIViewController {
         view.backgroundColor = .akLight
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        animationView.start()
+    }
+    
     // MARK: - Methods
     
     func addSubviewsAndConstraints() {
         view.addSubview(header)
-        
         header.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(64)
             make.centerX.equalToSuperview()
+        }
+        
+        view.addSubview(animationView)
+        animationView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(screenWidth)
         }
     }
     

@@ -33,6 +33,7 @@
 		DD03A19829A2617D00D5D2AB /* SummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */; };
 		DD03A19A29A262BB00D5D2AB /* WorkoutMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */; };
 		DD03A19D29A2761B00D5D2AB /* SummaryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */; };
+		DD03A19F29A27C1A00D5D2AB /* SummaryAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19E29A27C1A00D5D2AB /* SummaryAnimationView.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */; };
 		DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */; };
@@ -195,6 +196,7 @@
 		DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryScreen.swift; sourceTree = "<group>"; };
 		DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMock.swift; sourceTree = "<group>"; };
 		DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryHeader.swift; sourceTree = "<group>"; };
+		DD03A19E29A27C1A00D5D2AB /* SummaryAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryAnimationView.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerController.swift; sourceTree = "<group>"; };
 		DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowHeader.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 			isa = PBXGroup;
 			children = (
 				DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */,
+				DD03A19E29A27C1A00D5D2AB /* SummaryAnimationView.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -1129,6 +1132,7 @@
 				1121236720835BBA005C27D2 /* MeasurementStyle+CoreDataClass.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */,
+				DD03A19F29A27C1A00D5D2AB /* SummaryAnimationView.swift in Sources */,
 				DD4025D31F87AF4600A83D45 /* WeightedLiftCell.swift in Sources */,
 				DDEE8B591F8A222800176D0E /* ExerciseTableCellBox.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
