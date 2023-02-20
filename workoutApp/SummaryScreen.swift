@@ -17,6 +17,7 @@ final class SummaryScreen: UIViewController {
     let header = SummaryHeader()
     let animationView = SummaryAnimationView()
     let summarySection = SummarySectionView()
+    let dismissButton = BigButton()
     
     // MARK: - Initializers
     
@@ -51,14 +52,22 @@ final class SummaryScreen: UIViewController {
         
         view.addSubview(animationView)
         animationView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalTo(header).offset(32)
             make.size.equalTo(screenWidth)
         }
         
         view.addSubview(summarySection.view)
         summarySection.view.snp.makeConstraints { make in
             make.top.equalTo(animationView.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.equalToSuperview()
+        }
+        
+        view.addSubview(dismissButton)
+        dismissButton.snp.makeConstraints { make in
+            make.top.equalTo(summarySection.view.snp.bottom).offset(16)
+            make.left.right.equalToSuperview().inset(24)
+            make.height.equalTo(56)
+            make.bottom.equalToSuperview().inset(32)
         }
     }
     

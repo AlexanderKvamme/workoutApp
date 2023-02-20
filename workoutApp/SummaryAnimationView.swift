@@ -97,7 +97,7 @@ final class DottedCircleView: UIView {
     
     private func addCircularThing() {
         let shapeLayer = CAShapeLayer()
-        shapeLayer.strokeColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
+        shapeLayer.strokeColor = akGray.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 4
         shapeLayer.lineCap = .round
@@ -219,7 +219,7 @@ final class RotatingElement: UIView {
     // MARK: - Initializers
     
     init(element: RotatingElementType) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        super.init(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         imageview.image = UIImage(named: element.rawValue)
         setup()
     }
@@ -385,12 +385,6 @@ final class SummaryCell: UICollectionViewCell {
 }
 
 
-
-
-
-
-
-
 class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -467,3 +461,40 @@ class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
 }
 
 
+final class BigButton: UIView {
+    
+    // MARK: - Properties
+    
+    let label = UILabel()
+    
+    // MARK: - Initializers
+    
+    override init(frame: CGRect) {
+        super.init(frame: CGRect(x: 0, y: 0, width: screenWidth-48, height: 48))
+        
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    func setup() {
+        backgroundColor = .black
+        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.textAlignment = .center
+        label.text = "DISMISS"
+        label.textColor = .white
+        layer.cornerCurve = .continuous
+        layer.cornerRadius = 16
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        // TODO: Add some shadow?
+    }
+    
+}
