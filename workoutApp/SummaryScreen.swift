@@ -16,6 +16,7 @@ final class SummaryScreen: UIViewController {
     
     let header = SummaryHeader()
     let animationView = SummaryAnimationView()
+    let summarySection = SummarySectionView()
     
     // MARK: - Initializers
     
@@ -52,6 +53,12 @@ final class SummaryScreen: UIViewController {
         animationView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.size.equalTo(screenWidth)
+        }
+        
+        view.addSubview(summarySection.view)
+        summarySection.view.snp.makeConstraints { make in
+            make.top.equalTo(animationView.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
         }
     }
     

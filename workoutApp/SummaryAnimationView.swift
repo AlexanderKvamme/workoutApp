@@ -8,7 +8,10 @@
 
 import UIKit
 import AKKIT
+import SnapKit
 
+
+let akGray = UIColor(hexString: "EDEDED")
 
 final class SummaryAnimationView: UIView {
     
@@ -241,13 +244,226 @@ final class RotatingElement: UIView {
     }
 }
 
-
 extension CGPath {
     func translated(by point: CGPoint) -> CGPath? {
-        print("bam: ", point)
         let bezeirPath = UIBezierPath()
         bezeirPath.cgPath = self
         bezeirPath.apply(CGAffineTransform(translationX: point.x, y: point.y))
         return bezeirPath.cgPath
     }
 }
+
+final class SummarySectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    // MARK: - Properties
+    
+    var labelTitle = UILabel()
+    var items = ["100 sets", "56m total", "3m pause", "100 reps", "4 workouts this week", "4 workouts this year"]
+    var collectionView: UICollectionView!
+    let layout = CenterAlignedCollectionViewFlowLayout()
+    
+    // MARK: - Initializers
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    private func setup() {
+        labelTitle.font = UIFont.custom(style: .bold, ofSize: .big)
+        view.addSubview(labelTitle)
+        labelTitle.text = "SUMMARY"
+        labelTitle.textAlignment = .center
+        labelTitle.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.right.equalToSuperview()
+        }
+        
+        // Layout
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        // Collectionview
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(SummaryCell.self, forCellWithReuseIdentifier: SummaryCell.cellIdentifier)
+        collectionView.backgroundColor = .clear
+        
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(labelTitle.snp.bottom).offset(16)
+            make.left.right.bottom.equalToSuperview().inset(16)
+        }
+    }
+    
+    // MARK: - Delegate methods
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        items.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let item = items[indexPath.item]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SummaryCell.cellIdentifier, for: indexPath) as! SummaryCell
+        
+        cell.update(with: item)
+        return cell
+    }
+    
+    
+    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 100)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+}
+
+
+final class SummaryCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
+    static let cellIdentifier = "SummaryCell"
+    
+    private var label = UILabel()
+    
+    // MARK: - Initializers
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    
+    func setup() {
+        contentView.addSubview(label)
+        label.font = UIFont.custom(style: .bold, ofSize: .smallPlus)
+        
+        contentView.backgroundColor = akGray
+        contentView.layer.cornerRadius = 8
+        contentView.layer.cornerCurve = .continuous
+        contentView.clipsToBounds = true
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        snp.makeConstraints { make in
+            make.size.equalTo(contentView)
+        }
+        
+        label.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(8).priority(.high)
+        }
+        
+        contentView.snp.makeConstraints({ (make) in
+            make.edges.equalToSuperview()
+        })
+    }
+    
+    func update(with item: String) {
+        label.text = item
+    }
+}
+
+
+
+
+
+
+
+
+class CenterAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let superAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
+        // Copy each item to prevent "UICollectionViewFlowLayout has cached frame mismatch" warning
+        guard let attributes = NSArray(array: superAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes] else { return nil }
+        
+        // Constants
+        let leftPadding: CGFloat = 8
+        let interItemSpacing = minimumInteritemSpacing
+        
+        // Tracking values
+        var leftMargin: CGFloat = leftPadding // Modified to determine origin.x for each item
+        var maxY: CGFloat = -1.0 // Modified to determine origin.y for each item
+        var rowSizes: [[CGFloat]] = [] // Tracks the starting and ending x-values for the first and last item in the row
+        var currentRow: Int = 0 // Tracks the current row
+        attributes.forEach { layoutAttribute in
+            
+            // Each layoutAttribute represents its own item
+            if layoutAttribute.frame.origin.y >= maxY {
+                
+                // This layoutAttribute represents the left-most item in the row
+                leftMargin = leftPadding
+                
+                // Register its origin.x in rowSizes for use later
+                if rowSizes.count == 0 {
+                    // Add to first row
+                    rowSizes = [[leftMargin, 0]]
+                } else {
+                    // Append a new row
+                    rowSizes.append([leftMargin, 0])
+                    currentRow += 1
+                }
+            }
+            
+            layoutAttribute.frame.origin.x = leftMargin
+            
+            leftMargin += layoutAttribute.frame.width + interItemSpacing
+            maxY = max(layoutAttribute.frame.maxY, maxY)
+            
+            // Add right-most x value for last item in the row
+            rowSizes[currentRow][1] = leftMargin - interItemSpacing
+        }
+        
+        // At this point, all cells are left aligned
+        // Reset tracking values and add extra left padding to center align entire row
+        leftMargin = leftPadding
+        maxY = -1.0
+        currentRow = 0
+        attributes.forEach { layoutAttribute in
+            
+            // Each layoutAttribute is its own item
+            if layoutAttribute.frame.origin.y >= maxY {
+                
+                // This layoutAttribute represents the left-most item in the row
+                leftMargin = leftPadding
+                
+                // Need to bump it up by an appended margin
+                let rowWidth = rowSizes[currentRow][1] - rowSizes[currentRow][0] // last.x - first.x
+                let appendedMargin = (collectionView!.frame.width - leftPadding  - rowWidth - leftPadding) / 2
+                leftMargin += appendedMargin
+                
+                currentRow += 1
+            }
+            
+            layoutAttribute.frame.origin.x = leftMargin
+            
+            leftMargin += layoutAttribute.frame.width + interItemSpacing
+            maxY = max(layoutAttribute.frame.maxY, maxY)
+        }
+        
+        return attributes
+    }
+}
+
+

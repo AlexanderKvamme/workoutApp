@@ -52,7 +52,7 @@ final class SummaryHeader: UIView {
         
         
         addSubview(hat)
-        hat.backgroundColor = UIColor.akCard
+        hat.backgroundColor = akGray
         hat.snp.makeConstraints { make in
             make.centerX.equalTo(snp.right).offset(-4)
             make.centerY.equalTo(snp.top).offset(10)
