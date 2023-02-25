@@ -19,6 +19,7 @@ final class Hat: UIView {
         label.font = UIFont.custom(style: .bold, ofSize: .medium)
         label.text = "23"
         label.textAlignment = .center
+        label.textColor = .akDark
         addSubview(label)
         
         label.snp.makeConstraints { make in
@@ -45,6 +46,7 @@ final class SummaryHeader: UIView {
         
         label.font = UIFont.custom(style: .bold, ofSize: .biggest)
         label.text = "FINISHED"
+        label.textColor = .akDark
         addSubview(label)
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview()

@@ -316,7 +316,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     @objc private func saveButtonHandler() {
         let alert = UIAlertController(
             title: "Are you sure?",
-            message: "You will no close the exit and save this workout in your history.",
+            message: "You will now exit and save this workout in your history.",
             preferredStyle: .actionSheet
         )
         alert.addAction(UIAlertAction(

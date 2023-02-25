@@ -20,6 +20,7 @@ final class SummaryAnimationView: UIView {
     private var circleView = DottedCircleView()
     private var circleShapeLayer: CAShapeLayer!
     private var userProfileView = UserProfileView()
+    private var circleInset: CGFloat = 50
     
     // MARK: - Initializers
     
@@ -53,7 +54,7 @@ final class SummaryAnimationView: UIView {
     private func setup() {
         addSubview(circleView)
         circleView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(80)
+            make.edges.equalToSuperview().inset(circleInset)
         }
         
         addSubview(userProfileView)
@@ -65,7 +66,7 @@ final class SummaryAnimationView: UIView {
     }
     
     private func startOrbiting(_ element: UIView, no: Int, of: Int) {
-        let circlePath = circleView.getPath().translated(by: CGPoint(x: 80, y: 80))
+        let circlePath = circleView.getPath().translated(by: CGPoint(x: circleInset, y: circleInset))
         let animation = CAKeyframeAnimation(keyPath: #keyPath(CALayer.position))
         animation.path = circlePath
         animation.duration = 200
@@ -152,7 +153,7 @@ final class UserProfileView: UIView {
     private func setup() {
         addSubview(animatedExpander)
         backgroundColor = .akDark
-        self.animatedExpander.alpha = 0.4
+        self.animatedExpander.alpha = 0.2
         animatedExpander.backgroundColor = .akDark
         let image = UIImage(named: "User")!
         imageView.image = image
@@ -180,8 +181,13 @@ final class UserProfileView: UIView {
             self.animatedExpander.transform = self.animatedExpander.transform.scaledBy(x: 1.6, y: 1.6)
             self.animatedExpander.alpha = 0
         }, completion: { (finished: Bool) -> Void in
-            self.animatedExpander.alpha = 0.4
+            self.animatedExpander.alpha = 0.2
         })
+        
+        // Self pulse
+        UIView.animate(withDuration: 3, delay: 0, options: [.autoreverse, .curveEaseIn, .repeat], animations: {
+            self.transform = self.transform.scaledBy(x: 1.1, y: 1.1)
+        }, completion: nil)
     }
 
 }
@@ -227,8 +233,6 @@ final class RotatingElement: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Life Cycle
     
     // MARK: - Methods
     
@@ -278,6 +282,7 @@ final class SummarySectionView: UIViewController, UICollectionViewDataSource, UI
     
     private func setup() {
         labelTitle.font = UIFont.custom(style: .bold, ofSize: .big)
+        labelTitle.textColor = .akDark
         view.addSubview(labelTitle)
         labelTitle.text = "SUMMARY"
         labelTitle.textAlignment = .center
@@ -299,7 +304,7 @@ final class SummarySectionView: UIViewController, UICollectionViewDataSource, UI
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(labelTitle.snp.bottom).offset(16)
-            make.left.right.bottom.equalToSuperview().inset(16)
+            make.left.right.bottom.equalToSuperview().inset(24)
         }
     }
     
@@ -356,6 +361,7 @@ final class SummaryCell: UICollectionViewCell {
     func setup() {
         contentView.addSubview(label)
         label.font = UIFont.custom(style: .bold, ofSize: .smallPlus)
+        label.textColor = .akDark
         
         contentView.backgroundColor = akGray
         contentView.layer.cornerRadius = 8
@@ -483,7 +489,7 @@ final class BigButton: UIView {
     
     func setup() {
         backgroundColor = .black
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
+        label.font = UIFont.custom(style: .bold, ofSize: .mediumPlus)
         label.textAlignment = .center
         label.text = "DISMISS"
         label.textColor = .white
@@ -493,8 +499,6 @@ final class BigButton: UIView {
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        // TODO: Add some shadow?
     }
     
 }

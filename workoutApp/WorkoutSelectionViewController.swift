@@ -52,20 +52,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugEnterWorkout(workoutToAutomaticallyEnter)
-        
-        // FIXME: NOW
-//        let errorMessage = "Let's get back to it"
-//        let modal = CustomAlertView(title: "Time's up!", messageContent: errorMessage)
-//        modal.onDismiss = {
-//            globalTabBar.showIt()
-//        }
-//        globalTabBar.hideIt()
-//        addChild(modal)
-//        view.addSubview(modal.view)
-        
-        let wrappedWorkout = SummaryScreen(workout: Mock.workout)
-        wrappedWorkout.modalPresentationStyle = .fullScreen
-        present(wrappedWorkout, animated: false)
     }
     
     // MARK: - Methods

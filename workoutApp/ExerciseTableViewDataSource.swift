@@ -51,9 +51,13 @@ class ExerciseTableDataSource: NSObject {
         deleteUnperformedLifts()
         
         dataSourceWorkoutLog.markAsLatestperformence()
-        owner.navigationController?.popViewController(animated: true)
+//        owner.navigationController?.popViewController(animated: true)
+        owner.navigationController?.popViewController(animated: false)
         let modal = PostWorkoutView(type: .message, messageContent: "Good job! You performed \(countPerformedExercises()) Lifts")
-        modal.show(animated: true)
+//        modal.show(animated: true)
+        let screen = SummaryScreen(workout: dataSourceWorkoutLog)
+//        owner.navigationController?.present(screen, animated: false)
+        screen.show()
         DatabaseFacade.saveContext()
     }
     

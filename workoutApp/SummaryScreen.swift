@@ -21,10 +21,11 @@ final class SummaryScreen: UIViewController {
     
     // MARK: - Initializers
     
-    init(workout: Workout) {
+    init(workout: WorkoutLog?) {
         super.init(nibName: nil, bundle: nil)
         
         addSubviewsAndConstraints()
+        setup()
     }
     
     required init?(coder: NSCoder) {
@@ -37,23 +38,51 @@ final class SummaryScreen: UIViewController {
         view.backgroundColor = .akLight
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         animationView.start()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     // MARK: - Methods
     
-    func addSubviewsAndConstraints() {
+    func show() {
+        UIApplication.shared.delegate?.window??.rootViewController?.present(self, animated: false)
+    }
+    
+    private func setup() {
+        modalPresentationStyle = .fullScreen
+        let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissMe))
+        dismissButton.addGestureRecognizer(dismissTap)
+    }
+    
+    @objc private func dismissMe() {
+        if let nav = navigationController {
+            nav.popViewController(animated: true)
+        } else {
+            dismiss(animated: false)
+        }
+    }
+    
+    private func addSubviewsAndConstraints() {
         view.addSubview(header)
         header.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(64)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(24)
             make.centerX.equalToSuperview()
         }
         
         view.addSubview(animationView)
         animationView.snp.makeConstraints { make in
             make.top.equalTo(header).offset(32)
-            make.size.equalTo(screenWidth)
+            make.width.equalTo(screenWidth)
+            make.height.equalTo(280)
         }
         
         view.addSubview(summarySection.view)
