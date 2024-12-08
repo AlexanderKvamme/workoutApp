@@ -1,5 +1,5 @@
 PODS:
-  - AKKIT (0.1.1):
+  - AKKIT (0.1.2):
     - SnapKit
     - VFont (~> 0.6.1)
   - SnapKit (5.6.0)
@@ -7,7 +7,7 @@ PODS:
   - VFont (0.6.1)
 
 DEPENDENCIES:
-  - AKKIT (from `~/Documents/workspaces/code/swift/AKKIT`)
+  - AKKIT (from `../AKKIT`)
   - SnapKit
   - SwipeCellKit (from `https://github.com/SwipeCellKit/SwipeCellKit.git`)
 
@@ -18,7 +18,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   AKKIT:
-    :path: "~/Documents/workspaces/code/swift/AKKIT"
+    :path: "../AKKIT"
   SwipeCellKit:
     :git: https://github.com/SwipeCellKit/SwipeCellKit.git
 
@@ -28,11 +28,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwipeCellKit/SwipeCellKit.git
 
 SPEC CHECKSUMS:
-  AKKIT: c2fbb992709a68348f2ee548ce6e42fe96e0bbb0
+  AKKIT: ae62b4ccd2a1778b15f76fa9d48b0e039dc46575
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SwipeCellKit: 3972254a826da74609926daf59b08d6c72e619ea
   VFont: ed3c3640a2c348487533718b479b03efc9ce9881
 
-PODFILE CHECKSUM: 9283e9907bc8fd45a2b972d440ad380ae425a6bd
+PODFILE CHECKSUM: 262e0e985772ec1ecbce7250492fdb0f8c263dd3
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.16.2

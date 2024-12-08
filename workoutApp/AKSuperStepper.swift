@@ -192,7 +192,7 @@ final class StepperDataView: UIView {
     // MARK: - Properties
 
     private var value: String
-    var label = UILabel.make(.exercise)
+    var label = UILabel.make(.h2)
 
     // MARK: - Initializers
 

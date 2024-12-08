@@ -945,7 +945,7 @@
 				TargetAttributes = {
 					DD585D421EC4D53900962B19 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 52VSB9N5CT;
+						DevelopmentTeam = RMURDMDZGD;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -1346,11 +1346,11 @@
 			baseConfigurationReference = CB064640EE81AEE22F6FE74B /* Pods-workoutApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 52VSB9N5CT;
+				DEVELOPMENT_TEAM = RMURDMDZGD;
 				INFOPLIST_FILE = workoutApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = HomeOfficesInternational1.workoutApp1;
+				PRODUCT_BUNDLE_IDENTIFIER = HomeOfficesInternational1.workoutApp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
@@ -1363,11 +1363,11 @@
 			baseConfigurationReference = 723877A7307B57494223988E /* Pods-workoutApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 52VSB9N5CT;
+				DEVELOPMENT_TEAM = RMURDMDZGD;
 				INFOPLIST_FILE = workoutApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = HomeOfficesInternational1.workoutApp1;
+				PRODUCT_BUNDLE_IDENTIFIER = HomeOfficesInternational1.workoutApp2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;

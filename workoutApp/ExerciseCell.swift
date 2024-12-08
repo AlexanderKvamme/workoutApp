@@ -276,7 +276,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         
         guard let plusButton = plusButton else { return }
         
-        let img = UIImage.close24.withTintColor(.akLight).rotate(radians: .pi/4)
+        let img = UIImage.xmarkIcon.withTintColor(.akLight).rotate(radians: .pi/4)
         plusButton.setImage(img, for: .normal)
         plusButton.accessibilityIdentifier = "cell-plus-button"
         plusButton.addTarget(self, action: #selector(plusButtonHandler), for: .touchUpInside)

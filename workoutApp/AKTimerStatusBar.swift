@@ -37,7 +37,7 @@ final class AKTimerStatusBar: UIView {
         
         // Cancel button
         cancelButtonBackground.backgroundColor = .akDark
-        cancelButton.image = UIImage.close24.withTintColor(.akLight)
+        cancelButton.image = UIImage.xmarkIcon.withTintColor(.akLight)
         cancelButton.contentMode = .scaleAspectFit
         cancelButton.isUserInteractionEnabled = false
         cancelButtonBackground.addTarget(self, action: #selector(cancelTimer), for: .touchUpInside)

@@ -274,7 +274,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         menuBtn.contentVerticalAlignment = .center
         menuBtn.contentHorizontalAlignment = .center
         menuBtn.imageView?.contentMode = .scaleAspectFit
-        menuBtn.setImage(.close24.withTintColor(.akDark), for: .normal)
+        menuBtn.setImage(.xmarkIcon.withTintColor(.akDark), for: .normal)
         menuBtn.contentEdgeInsets = UIEdgeInsets(top: topinset, left: 0, bottom: topinset, right: 16)
         menuBtn.addTarget(self, action: #selector(xButtonHandler), for: UIControl.Event.touchUpInside)
         let menuBarItem = UIBarButtonItem(customView: menuBtn)

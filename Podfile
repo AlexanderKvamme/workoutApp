@@ -7,6 +7,6 @@ target 'workoutApp' do
 
   # Latest Swift 4 release in CocoaPods
   pod 'SwipeCellKit', :git => 'https://github.com/SwipeCellKit/SwipeCellKit.git'
-  pod 'AKKIT', :path => '~/Documents/workspaces/code/swift/AKKIT'
+  pod 'AKKIT', :path => '../AKKIT'
   pod 'SnapKit'
 end
