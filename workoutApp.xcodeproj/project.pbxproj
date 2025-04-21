@@ -115,6 +115,7 @@
 		DDB3BE4B2DB6606300411AC5 /* AKKIT in Frameworks */ = {isa = PBXBuildFile; productRef = DDB3BE4A2DB6606300411AC5 /* AKKIT */; };
 		DDB3BEF62DB6646300411AC5 /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDB3BEF52DB6646300411AC5 /* SwipeCellKit */; };
 		DDB3BEF82DB6874100411AC5 /* ImprovWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */; };
+		DDB3BEFA2DB68A3A00411AC5 /* HoneyCombGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB3BEF92DB68A3500411AC5 /* HoneyCombGridView.swift */; };
 		DDB539AC1F2E017600824CFC /* WorkoutLogHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB539AB1F2E017500824CFC /* WorkoutLogHistoryTableViewController.swift */; };
 		DDB539AE1F2E074800824CFC /* WorkoutSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB539AD1F2E074800824CFC /* WorkoutSelectionViewController.swift */; };
 		DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB5FF3A1F4B806300202705 /* PickableEntity.swift */; };
@@ -284,6 +285,7 @@
 		DDA54B021EDB426D008C601C /* DatabaseFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseFacade.swift; sourceTree = "<group>"; };
 		DDA866D71F536E8D00F277AF /* PickerHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerHeader.swift; sourceTree = "<group>"; };
 		DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImprovWorkoutController.swift; sourceTree = "<group>"; };
+		DDB3BEF92DB68A3500411AC5 /* HoneyCombGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoneyCombGridView.swift; sourceTree = "<group>"; };
 		DDB539AB1F2E017500824CFC /* WorkoutLogHistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogHistoryTableViewController.swift; sourceTree = "<group>"; };
 		DDB539AD1F2E074800824CFC /* WorkoutSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutSelectionViewController.swift; sourceTree = "<group>"; };
 		DDB5FF3A1F4B806300202705 /* PickableEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickableEntity.swift; sourceTree = "<group>"; };
@@ -906,6 +908,7 @@
 				DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */,
 				DDFEA4DC2DB59F0900C4F787 /* HexagonalButton.swift */,
 				DDFEA4D82DB59ECF00C4F787 /* HexagonalGridView.swift */,
+				DDB3BEF92DB68A3500411AC5 /* HoneyCombGridView.swift */,
 				DDFEA4DA2DB59EE900C4F787 /* ViewController.swift */,
 			);
 			path = Improv;
@@ -1125,6 +1128,7 @@
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
 				DD4FF01D1F6E9CCB005040A0 /* ExerciseExtensions.swift in Sources */,
 				DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */,
+				DDB3BEFA2DB68A3A00411AC5 /* HoneyCombGridView.swift in Sources */,
 				DD151E021ED47C390014DBC1 /* UIStackView Extensions.swift in Sources */,
 				DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */,
 				DD0EB24B1F46FE9200CDA1CF /* ExerciseCellForHistory.swift in Sources */,
