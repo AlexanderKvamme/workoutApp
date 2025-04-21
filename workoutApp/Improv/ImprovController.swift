@@ -34,6 +34,17 @@ class HoneycombViewController: UIViewController {
             (0, 1, true)      // Index 6: Bottom
         ]
         
+        // Sample texts for each hexagon
+        let texts = [
+            "Mountain\nPose",
+            "Forward\nFold",
+            "Downward\nDog",
+            "Warrior\nI",
+            "Warrior\nII",
+            "Triangle\nPose",
+            "Tree\nPose"
+        ]
+        
         // Center the entire pattern in the view
         let centerX = view.bounds.width / 2
         let centerY = view.bounds.height / 2
@@ -48,14 +59,15 @@ class HoneycombViewController: UIViewController {
             let hexButton = createHexagon(
                 x: xPos - width/2,
                 y: yPos - height/2,
-                index: index
+                index: index,
+                text: texts[index]
             )
             
             view.addSubview(hexButton)
         }
     }
     
-    private func createHexagon(x: CGFloat, y: CGFloat, index: Int) -> UIButton {
+    private func createHexagon(x: CGFloat, y: CGFloat, index: Int, text: String) -> UIButton {
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize)
         
@@ -76,13 +88,40 @@ class HoneycombViewController: UIViewController {
         button.layer.addSublayer(hexagonLayer)
         button.layer.addSublayer(borderLayer)
         
-        // Add index label
-        let label = UILabel(frame: button.bounds)
-        label.text = "Forward fold"
-        label.textColor = .white
-        label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        button.addSubview(label)
+        // Create a mask for the textView to fit within the hexagon
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = createHexagonPath(size: hexagonSize * 0.8).cgPath // Slightly smaller for padding
+        
+        // Replace the UITextView with a UILabel
+        let textView = UILabel()
+        textView.frame = CGRect(
+            x: hexagonSize * 0.1,
+            y: hexagonSize * 0.1,
+            width: hexagonSize * 0.8,
+            height: hexagonSize * 0.8
+        )
+        textView.text = text
+        textView.textColor = .white
+        textView.textAlignment = .center
+        textView.font = UIFont.boldSystemFont(ofSize: 18)
+        textView.backgroundColor = .clear
+        textView.numberOfLines = 0 // Allow multiple lines
+        textView.layer.mask = maskLayer
+
+        // Center vertically
+        textView.adjustsFontSizeToFitWidth = false
+        textView.lineBreakMode = .byWordWrapping
+        textView.baselineAdjustment = .alignCenters
+
+        button.addSubview(textView)
+        
+        // Center the text vertically
+        let fixedWidth = textView.frame.size.width
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let yOffset = (textView.frame.size.height - newSize.height) / 2
+        let topOffset = max(0, yOffset)
+        
+        button.addSubview(textView)
         
         // Add tap action
         button.addTarget(self, action: #selector(hexagonTapped(_:)), for: .touchUpInside)
@@ -113,9 +152,6 @@ class HoneycombViewController: UIViewController {
             let currentPoint = points[i]
             let nextPoint = points[(i + 1) % 6]
             
-            // Calculate the corner points (slightly inset from the vertex)
-//            let cornerInset = cornerRadius * 0.3
-
             // Calculate direction vectors
             let dx1 = currentPoint.x - points[(i + 5) % 6].x
             let dy1 = currentPoint.y - points[(i + 5) % 6].y
@@ -184,8 +220,8 @@ class HoneycombViewController: UIViewController {
             
             // Update text color
             for subview in sender.subviews {
-                if let label = subview as? UILabel {
-                    label.textColor = isBlack ? .black : .white
+                if let textView = subview as? UITextView {
+                    textView.textColor = isBlack ? .black : .white
                 }
             }
         }
