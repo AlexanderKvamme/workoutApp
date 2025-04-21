@@ -4,7 +4,7 @@ class HoneycombViewController: UIViewController {
     
     // Configuration
     private let numberOfHexagons = 7
-    private let hexagonSize: CGFloat = 75 // Slightly smaller hexagons
+    private let hexagonSize: CGFloat = 75
     private let spacing: CGFloat = 2 // Small gap between hexagons
     
     override func viewDidLoad() {
@@ -25,13 +25,13 @@ class HoneycombViewController: UIViewController {
         // Define positions to match the exact pattern in the image
         // Format: (q, r, isBlack) - using axial coordinates
         let positions = [
-            (0, 0, false),    // Index 0: Center (white)
-            (1, -1, true),    // Index 1: Top right (black)
-            (0, -1, false),   // Index 2: Top (white)
-            (-1, 0, true),    // Index 3: Left (black)
-            (1, 0, true),     // Index 4: Right (black)
-            (-1, 1, false),   // Index 5: Bottom left (white)
-            (0, 1, true)      // Index 6: Bottom (black)
+            (0, 0, false),    // Index 0: Center
+            (1, -1, true),    // Index 1: Top right
+            (0, -1, false),   // Index 2: Top
+            (-1, 0, true),    // Index 3: Left
+            (1, 0, true),     // Index 4: Right
+            (-1, 1, false),   // Index 5: Bottom left
+            (0, 1, true)      // Index 6: Bottom
         ]
         
         // Center the entire pattern in the view
@@ -48,7 +48,6 @@ class HoneycombViewController: UIViewController {
             let hexButton = createHexagon(
                 x: xPos - width/2,
                 y: yPos - height/2,
-                isBlack: position.2,
                 index: index
             )
             
@@ -56,7 +55,7 @@ class HoneycombViewController: UIViewController {
         }
     }
     
-    private func createHexagon(x: CGFloat, y: CGFloat, isBlack: Bool, index: Int) -> UIButton {
+    private func createHexagon(x: CGFloat, y: CGFloat, index: Int) -> UIButton {
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize)
         
@@ -64,14 +63,14 @@ class HoneycombViewController: UIViewController {
         let hexagonLayer = CAShapeLayer()
         hexagonLayer.path = createHexagonPath(size: hexagonSize).cgPath
         
-        // Set color based on the pattern
-        hexagonLayer.fillColor = isBlack ? UIColor.black.cgColor : UIColor.white.cgColor
+        // Set all hexagons to black
+        hexagonLayer.fillColor = UIColor.black.cgColor
         
         // Add border
         let borderLayer = CAShapeLayer()
         borderLayer.path = hexagonLayer.path
         borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = isBlack ? UIColor.white.cgColor : UIColor.black.cgColor
+        borderLayer.strokeColor = UIColor.white.cgColor
         borderLayer.lineWidth = 2
         
         button.layer.addSublayer(hexagonLayer)
@@ -80,7 +79,7 @@ class HoneycombViewController: UIViewController {
         // Add index label
         let label = UILabel(frame: button.bounds)
         label.text = "\(index)"
-        label.textColor = isBlack ? .white : .black
+        label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 20)
         button.addSubview(label)
@@ -92,6 +91,7 @@ class HoneycombViewController: UIViewController {
     }
     
     private func createHexagonPath(size: CGFloat) -> UIBezierPath {
+        let cornerInset = cornerRadius
         let path = UIBezierPath()
         let center = CGPoint(x: size/2, y: size/2)
         let radius = size/2 - 2 // Smaller radius to prevent overlap
@@ -108,27 +108,51 @@ class HoneycombViewController: UIViewController {
             points.append(point)
         }
         
-        // Create a hexagon with rounded corners
+        // Create a hexagon with ONLY rounded corners (straight sides)
         for i in 0..<6 {
             let currentPoint = points[i]
             let nextPoint = points[(i + 1) % 6]
             
-            if i == 0 {
-                path.move(to: currentPoint)
-            }
+            // Calculate the corner points (slightly inset from the vertex)
+//            let cornerInset = cornerRadius * 0.3
+
+            // Calculate direction vectors
+            let dx1 = currentPoint.x - points[(i + 5) % 6].x
+            let dy1 = currentPoint.y - points[(i + 5) % 6].y
+            let len1 = sqrt(dx1*dx1 + dy1*dy1)
             
-            // Simple approach for rounded corners
-            let distance = sqrt(pow(nextPoint.x - currentPoint.x, 2) + pow(nextPoint.y - currentPoint.y, 2))
-            let directionX = (nextPoint.x - currentPoint.x) / distance
-            let directionY = (nextPoint.y - currentPoint.y) / distance
+            let dx2 = nextPoint.x - currentPoint.x
+            let dy2 = nextPoint.y - currentPoint.y
+            let len2 = sqrt(dx2*dx2 + dy2*dy2)
             
-            let controlPoint = CGPoint(
-                x: (currentPoint.x + nextPoint.x) / 2 + directionY * cornerRadius * 0.5,
-                y: (currentPoint.y + nextPoint.y) / 2 - directionX * cornerRadius * 0.5
+            // Inset points from the vertex
+            let insetPoint1 = CGPoint(
+                x: currentPoint.x - (dx1 / len1) * cornerInset,
+                y: currentPoint.y - (dy1 / len1) * cornerInset
             )
             
-            path.addLine(to: currentPoint)
-            path.addQuadCurve(to: nextPoint, controlPoint: controlPoint)
+            let insetPoint2 = CGPoint(
+                x: currentPoint.x + (dx2 / len2) * cornerInset,
+                y: currentPoint.y + (dy2 / len2) * cornerInset
+            )
+            
+            // First point or continuing the path
+            if i == 0 {
+                path.move(to: insetPoint1)
+            } else {
+                path.addLine(to: insetPoint1)
+            }
+            
+            // Add the rounded corner
+            path.addQuadCurve(to: insetPoint2, controlPoint: currentPoint)
+            
+            // Add the straight line to the next corner
+            if i < 5 {
+                path.addLine(to: CGPoint(
+                    x: nextPoint.x - (dx2 / len2) * cornerInset,
+                    y: nextPoint.y - (dy2 / len2) * cornerInset
+                ))
+            }
         }
         
         path.close()
