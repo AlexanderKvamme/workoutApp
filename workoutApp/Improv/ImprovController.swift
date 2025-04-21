@@ -4,7 +4,7 @@ class HoneycombViewController: UIViewController {
     
     // Configuration
     private let numberOfHexagons = 7
-    private let hexagonSize: CGFloat = 75
+    private let hexagonSize: CGFloat = UIScreen.main.bounds.width/3
     private let spacing: CGFloat = 2 // Small gap between hexagons
     
     override func viewDidLoad() {
@@ -78,7 +78,7 @@ class HoneycombViewController: UIViewController {
         
         // Add index label
         let label = UILabel(frame: button.bounds)
-        label.text = "\(index)"
+        label.text = "Forward fold"
         label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -91,12 +91,12 @@ class HoneycombViewController: UIViewController {
     }
     
     private func createHexagonPath(size: CGFloat) -> UIBezierPath {
-        let cornerInset = cornerRadius
         let path = UIBezierPath()
         let center = CGPoint(x: size/2, y: size/2)
         let radius = size/2 - 2 // Smaller radius to prevent overlap
         let cornerRadius: CGFloat = 10
-        
+        let cornerInset = cornerRadius
+
         // Calculate points of the hexagon
         var points: [CGPoint] = []
         for i in 0..<6 {
