@@ -210,6 +210,7 @@ class HoneycombViewController: SelectionViewController {
     }
     
     private func createHexagon(x: CGFloat, y: CGFloat, index: Int, text: String) -> UIButton {
+        // Create the main button
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize)
         button.tag = index // Store index for reference
@@ -217,47 +218,44 @@ class HoneycombViewController: SelectionViewController {
         // Create hexagon shape
         let hexagonLayer = CAShapeLayer()
         hexagonLayer.path = createHexagonPath(size: hexagonSize).cgPath
-        
-        // Set all hexagons to black
         hexagonLayer.fillColor = UIColor.black.cgColor
         
-        // Add border
-        let borderLayer = CAShapeLayer()
-        borderLayer.path = hexagonLayer.path
-        borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = UIColor.white.cgColor
-        borderLayer.lineWidth = 2
-        
+        // Add the hexagon shape to the button
         button.layer.addSublayer(hexagonLayer)
-        button.layer.addSublayer(borderLayer)
         
-        // Create a mask for the label to fit within the hexagon
+        // Create a container view for the text that will be clipped to the hexagon shape
+        let containerView = UIView(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: hexagonSize,
+            height: hexagonSize
+        ))
+        
+        // Create the mask for the container
         let maskLayer = CAShapeLayer()
-        maskLayer.path = createHexagonPath(size: hexagonSize * 0.8).cgPath // Slightly smaller for padding
+        maskLayer.path = createHexagonPath(size: hexagonSize).cgPath
+        containerView.layer.mask = maskLayer
         
-        // Use UILabel for text display
-        let textView = UILabel()
-        textView.frame = CGRect(
-            x: hexagonSize * 0.1,
-            y: hexagonSize * 0.1,
-            width: hexagonSize * 0.8,
-            height: hexagonSize * 0.8
-        )
-        textView.text = text
-        textView.textColor = .white
-        textView.textAlignment = .center
-        textView.font = AKFont.round(.bold, 18)
-        textView.backgroundColor = .clear
-        textView.numberOfLines = 0 // Allow multiple lines
-        textView.layer.mask = maskLayer
-
-        // Center vertically
-        textView.adjustsFontSizeToFitWidth = true
-        textView.minimumScaleFactor = 0.5
-        textView.lineBreakMode = .byWordWrapping
-        textView.baselineAdjustment = .alignCenters
-
-        button.addSubview(textView)
+        // Add the text label to the container
+        let textLabel = UILabel(frame: CGRect(
+            x: hexagonSize * 0.15, // Increased padding
+            y: hexagonSize * 0.15, // Increased padding
+            width: hexagonSize * 0.7, // Reduced width to avoid edge clipping
+            height: hexagonSize * 0.7 // Reduced height to avoid edge clipping
+        ))
+        
+        textLabel.text = text
+        textLabel.textColor = .white
+        textLabel.textAlignment = .center
+        textLabel.font = AKFont.round(.bold, 16) // Slightly smaller font
+        textLabel.backgroundColor = .clear
+        textLabel.numberOfLines = 0
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.5
+        textLabel.lineBreakMode = .byWordWrapping
+        
+        containerView.addSubview(textLabel)
+        button.addSubview(containerView)
         
         // Add tap action
         button.addTarget(self, action: #selector(hexagonTapped(_:)), for: .touchUpInside)
@@ -333,32 +331,22 @@ class HoneycombViewController: SelectionViewController {
     
     @objc private func hexagonTapped(_ sender: UIButton) {
         // Toggle appearance when tapped
-        if let hexLayer = sender.layer.sublayers?.first as? CAShapeLayer,
-           let borderLayer = sender.layer.sublayers?[1] as? CAShapeLayer {
-            
-            let isBlack = hexLayer.fillColor == UIColor.black.cgColor
+        if let hexLayer = sender.layer.sublayers?.first as? CAShapeLayer {
+            let isOrange = hexLayer.fillColor == UIColor.orange.cgColor
             
             // Update fill color with animation
             let fillAnimation = CABasicAnimation(keyPath: "fillColor")
             fillAnimation.fromValue = hexLayer.fillColor
-            fillAnimation.toValue = isBlack ? UIColor.white.cgColor : UIColor.black.cgColor
+            fillAnimation.toValue = isOrange ? UIColor.blue.cgColor : UIColor.orange.cgColor
             fillAnimation.duration = 0.2
             hexLayer.add(fillAnimation, forKey: "fillColor")
-            hexLayer.fillColor = isBlack ? UIColor.white.cgColor : UIColor.black.cgColor
+            hexLayer.fillColor = isOrange ? UIColor.blue.cgColor : UIColor.orange.cgColor
             
-            // Update border color with animation
-            let strokeAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeAnimation.fromValue = borderLayer.strokeColor
-            strokeAnimation.toValue = isBlack ? UIColor.black.cgColor : UIColor.white.cgColor
-            strokeAnimation.duration = 0.2
-            borderLayer.add(strokeAnimation, forKey: "strokeColor")
-            borderLayer.strokeColor = isBlack ? UIColor.black.cgColor : UIColor.white.cgColor
-            
-            // Update text color
-            for subview in sender.subviews {
-                if let label = subview as? UILabel {
-                    label.textColor = isBlack ? .black : .white
-                }
+            // Find the text label and update its color if needed
+            if let containerView = sender.subviews.first,
+               let textLabel = containerView.subviews.first as? UILabel {
+                // Keep text white for both states for better contrast
+                textLabel.textColor = .white
             }
         }
     }
