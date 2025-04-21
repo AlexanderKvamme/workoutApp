@@ -8,7 +8,7 @@ class HoneycombViewController: SelectionViewController {
     private let spacing: CGFloat = 2 // Small gap between hexagons
     
     // Data source
-    private var hexagonTexts: [String] = []
+    private var muscleGroups: [Muscle] = []
     
     init() {
         super.init(header: SelectionViewHeader(header: "Improv", subheader: "Today"))
@@ -23,8 +23,9 @@ class HoneycombViewController: SelectionViewController {
         view.backgroundColor = .akLight
         
         // Get data from database
-        hexagonTexts = DatabaseFacade.fetchMuscles().map { $0.name ?? "NA" }
-        print("bam muscles: ", hexagonTexts)
+        muscleGroups = DatabaseFacade.fetchMuscles()
+        let muscleNames = muscleGroups.map { $0.name ?? "NA" }
+        print("bam muscles: ", muscleNames)
         
         createHoneycombGrid()
     }
@@ -49,7 +50,7 @@ class HoneycombViewController: SelectionViewController {
         let verticalSpacing = height + spacing
         
         // Generate spiral coordinates for a honeycomb pattern
-        let positions = generateSpiralHexCoordinates(count: hexagonTexts.count)
+        let positions = generateSpiralHexCoordinates(count: muscleGroups.count)
         
         // Create a container view that will hold all hexagons
         let containerView = UIView()
@@ -83,6 +84,9 @@ class HoneycombViewController: SelectionViewController {
         
         // Second pass: create and position hexagons
         for (index, position) in positions.enumerated() {
+            // Skip if index is out of bounds
+            guard index < muscleGroups.count else { break }
+            
             // Convert axial coordinates to pixel coordinates
             let xPos = (CGFloat(position.q) * horizontalSpacing * 0.75)
             let yPos = (CGFloat(position.q) * verticalSpacing * 0.5 + CGFloat(position.r) * verticalSpacing)
@@ -91,14 +95,15 @@ class HoneycombViewController: SelectionViewController {
             let hexagonX = xPos - width/2 - minX
             let hexagonY = yPos - height/2 - minY
             
-            let hexButton = createHexagon(
+            let muscleGroup = muscleGroups[index]
+            let hexView = createHexagonView(
                 x: hexagonX,
                 y: hexagonY,
                 index: index,
-                text: index < hexagonTexts.count ? hexagonTexts[index] : "Item \(index)"
+                text: muscleGroup.name ?? "Unknown"
             )
             
-            containerView.addSubview(hexButton)
+            containerView.addSubview(hexView)
         }
         
         // Set container size and center it in the view
@@ -209,58 +214,12 @@ class HoneycombViewController: SelectionViewController {
         return coordinates
     }
     
-    private func createHexagon(x: CGFloat, y: CGFloat, index: Int, text: String) -> UIButton {
-        // Create the main button
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize)
-        button.tag = index // Store index for reference
-        
-        // Create hexagon shape
-        let hexagonLayer = CAShapeLayer()
-        hexagonLayer.path = createHexagonPath(size: hexagonSize).cgPath
-        hexagonLayer.fillColor = UIColor.black.cgColor
-        
-        // Add the hexagon shape to the button
-        button.layer.addSublayer(hexagonLayer)
-        
-        // Create a container view for the text that will be clipped to the hexagon shape
-        let containerView = UIView(frame: CGRect(
-            x: 0,
-            y: 0,
-            width: hexagonSize,
-            height: hexagonSize
-        ))
-        
-        // Create the mask for the container
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = createHexagonPath(size: hexagonSize).cgPath
-        containerView.layer.mask = maskLayer
-        
-        // Add the text label to the container
-        let textLabel = UILabel(frame: CGRect(
-            x: hexagonSize * 0.15, // Increased padding
-            y: hexagonSize * 0.15, // Increased padding
-            width: hexagonSize * 0.7, // Reduced width to avoid edge clipping
-            height: hexagonSize * 0.7 // Reduced height to avoid edge clipping
-        ))
-        
-        textLabel.text = text
-        textLabel.textColor = .white
-        textLabel.textAlignment = .center
-        textLabel.font = AKFont.round(.bold, 16) // Slightly smaller font
-        textLabel.backgroundColor = .clear
-        textLabel.numberOfLines = 0
-        textLabel.adjustsFontSizeToFitWidth = true
-        textLabel.minimumScaleFactor = 0.5
-        textLabel.lineBreakMode = .byWordWrapping
-        
-        containerView.addSubview(textLabel)
-        button.addSubview(containerView)
-        
-        // Add tap action
-        button.addTarget(self, action: #selector(hexagonTapped(_:)), for: .touchUpInside)
-        
-        return button
+    // Create a custom UIView for the hexagon that handles its own touch events
+    private func createHexagonView(x: CGFloat, y: CGFloat, index: Int, text: String) -> HexagonView {
+        let hexView = HexagonView(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
+        hexView.configure(withText: text, index: index)
+        hexView.delegate = self
+        return hexView
     }
     
     private func createHexagonPath(size: CGFloat) -> UIBezierPath {
@@ -329,25 +288,217 @@ class HoneycombViewController: SelectionViewController {
         return path
     }
     
-    @objc private func hexagonTapped(_ sender: UIButton) {
-        // Toggle appearance when tapped
-        if let hexLayer = sender.layer.sublayers?.first as? CAShapeLayer {
-            let isOrange = hexLayer.fillColor == UIColor.orange.cgColor
+    func handleHexagonTapped(at index: Int) {
+        print("Hexagon tapped at index: \(index)")
+        
+        // Make sure the index is valid
+        guard index >= 0 && index < muscleGroups.count else {
+            print("Invalid muscle group index")
+            return
+        }
+        
+        // Get the selected muscle group
+        let selectedMuscleGroup = muscleGroups[index]
+        print("Selected muscle group: \(selectedMuscleGroup.name ?? "Unknown")")
+        
+        // Navigate to the ImprovWorkoutController with the selected muscle group
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            print("Navigating to ImprovWorkoutController")
+            let improvWorkoutController = ImprovWorkoutController(muscleGroup: selectedMuscleGroup)
+            self?.navigationController?.pushViewController(improvWorkoutController, animated: true)
+        }
+    }
+}
+
+// MARK: - HexagonView
+protocol HexagonViewDelegate: AnyObject {
+    func handleHexagonTapped(at index: Int)
+}
+
+class HexagonView: UIView {
+    private var index: Int = 0
+    private var hexagonLayer: CAShapeLayer?
+    weak var delegate: HexagonViewDelegate?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        isUserInteractionEnabled = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(withText text: String, index: Int) {
+        self.index = index
+        
+        // Clear any existing layers
+        layer.sublayers?.removeAll()
+        subviews.forEach { $0.removeFromSuperview() }
+        
+        // Create hexagon shape
+        let hexagonLayer = CAShapeLayer()
+        hexagonLayer.path = createHexagonPath().cgPath
+        hexagonLayer.fillColor = UIColor.black.cgColor
+        layer.addSublayer(hexagonLayer)
+        self.hexagonLayer = hexagonLayer
+        
+        // Add text label
+        let textLabel = UILabel()
+        textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
+        textLabel.text = text
+        textLabel.textColor = .white
+        textLabel.textAlignment = .center
+        textLabel.font = AKFont.round(.bold, 16)
+        textLabel.numberOfLines = 0
+        textLabel.adjustsFontSizeToFitWidth = true
+        textLabel.minimumScaleFactor = 0.5
+        addSubview(textLabel)
+    }
+    
+    private func createHexagonPath() -> UIBezierPath {
+        let size = bounds.width
+        let path = UIBezierPath()
+        let center = CGPoint(x: size/2, y: size/2)
+        let radius = size/2 - 2
+        let cornerRadius: CGFloat = 10
+        let cornerInset = cornerRadius
+        
+        // Calculate points of the hexagon
+        var points: [CGPoint] = []
+        for i in 0..<6 {
+            let angle = CGFloat(i) * (CGFloat.pi / 3)
+            let point = CGPoint(
+                x: center.x + radius * cos(angle),
+                y: center.y + radius * sin(angle)
+            )
+            points.append(point)
+        }
+        
+        // Create a hexagon with rounded corners
+        for i in 0..<6 {
+            let currentPoint = points[i]
+            let nextPoint = points[(i + 1) % 6]
             
-            // Update fill color with animation
-            let fillAnimation = CABasicAnimation(keyPath: "fillColor")
-            fillAnimation.fromValue = hexLayer.fillColor
-            fillAnimation.toValue = isOrange ? UIColor.blue.cgColor : UIColor.orange.cgColor
-            fillAnimation.duration = 0.2
-            hexLayer.add(fillAnimation, forKey: "fillColor")
-            hexLayer.fillColor = isOrange ? UIColor.blue.cgColor : UIColor.orange.cgColor
+            // Calculate direction vectors
+            let dx1 = currentPoint.x - points[(i + 5) % 6].x
+            let dy1 = currentPoint.y - points[(i + 5) % 6].y
+            let len1 = sqrt(dx1*dx1 + dy1*dy1)
             
-            // Find the text label and update its color if needed
-            if let containerView = sender.subviews.first,
-               let textLabel = containerView.subviews.first as? UILabel {
-                // Keep text white for both states for better contrast
-                textLabel.textColor = .white
+            let dx2 = nextPoint.x - currentPoint.x
+            let dy2 = nextPoint.y - currentPoint.y
+            let len2 = sqrt(dx2*dx2 + dy2*dy2)
+            
+            // Inset points from the vertex
+            let insetPoint1 = CGPoint(
+                x: currentPoint.x - (dx1 / len1) * cornerInset,
+                y: currentPoint.y - (dy1 / len1) * cornerInset
+            )
+            
+            let insetPoint2 = CGPoint(
+                x: currentPoint.x + (dx2 / len2) * cornerInset,
+                y: currentPoint.y + (dy2 / len2) * cornerInset
+            )
+            
+            // First point or continuing the path
+            if i == 0 {
+                path.move(to: insetPoint1)
+            } else {
+                path.addLine(to: insetPoint1)
+            }
+            
+            // Add the rounded corner
+            path.addQuadCurve(to: insetPoint2, controlPoint: currentPoint)
+            
+            // Add the straight line to the next corner
+            if i < 5 {
+                path.addLine(to: CGPoint(
+                    x: nextPoint.x - (dx2 / len2) * cornerInset,
+                    y: nextPoint.y - (dy2 / len2) * cornerInset
+                ))
             }
         }
+        
+        path.close()
+        return path
+    }
+    
+    // Handle touch events
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        animateHighlight(true)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        animateHighlight(false)
+        
+        // Check if touch is inside the view
+        if let touch = touches.first {
+            let location = touch.location(in: self)
+            if bounds.contains(location) {
+                print("Touch ended inside hexagon at index: \(index)")
+                delegate?.handleHexagonTapped(at: index)
+            }
+        }
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        animateHighlight(false)
+    }
+    
+    private func animateHighlight(_ highlighted: Bool) {
+        guard let hexagonLayer = hexagonLayer else { return }
+        
+        let toColor = highlighted ? UIColor.systemBlue.cgColor : UIColor.black.cgColor
+        
+        let animation = CABasicAnimation(keyPath: "fillColor")
+        animation.fromValue = hexagonLayer.fillColor
+        animation.toValue = toColor
+        animation.duration = 0.2
+        hexagonLayer.add(animation, forKey: "fillColor")
+        hexagonLayer.fillColor = toColor
+    }
+}
+
+// MARK: - HexagonViewDelegate
+extension HoneycombViewController: HexagonViewDelegate {}
+
+// MARK: - ImprovWorkoutController
+class ImprovWorkoutController: UIViewController {
+    private let muscleGroup: Muscle
+    
+    init(muscleGroup: Muscle) {
+        self.muscleGroup = muscleGroup
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .akLight
+        
+        // Set up the view with the selected muscle group
+        setupView()
+    }
+    
+    private func setupView() {
+        // Title label
+        let titleLabel = UILabel()
+        titleLabel.text = muscleGroup.name
+        titleLabel.font = AKFont.round(.bold, 24)
+        titleLabel.textColor = .white
+        titleLabel.textAlignment = .center
+        
+        view.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+        
+        // Add more UI components as needed for your workout view
     }
 }
