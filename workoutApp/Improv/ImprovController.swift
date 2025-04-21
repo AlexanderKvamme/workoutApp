@@ -4,9 +4,11 @@ import AKKIT
 class HoneycombViewController: SelectionViewController {
     
     // Configuration
-    private let numberOfHexagons = 7
     private let hexagonSize: CGFloat = UIScreen.main.bounds.width/3
     private let spacing: CGFloat = 2 // Small gap between hexagons
+    
+    // Data source
+    private var hexagonTexts: [String] = []
     
     init() {
         super.init(header: SelectionViewHeader(header: "Improv", subheader: "Today"))
@@ -19,6 +21,11 @@ class HoneycombViewController: SelectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
+        
+        // Get data from database
+        hexagonTexts = DatabaseFacade.fetchMuscles().map { $0.name ?? "NA" }
+        print("bam muscles: ", hexagonTexts)
+        
         createHoneycombGrid()
     }
     
@@ -41,54 +48,171 @@ class HoneycombViewController: SelectionViewController {
         let horizontalSpacing = width + spacing
         let verticalSpacing = height + spacing
         
-        // Define positions to match the exact pattern in the image
-        // Format: (q, r, isBlack) - using axial coordinates
-        let positions = [
-            (0, 0, false),    // Index 0: Center
-            (1, -1, true),    // Index 1: Top right
-            (0, -1, false),   // Index 2: Top
-            (-1, 0, true),    // Index 3: Left
-            (1, 0, true),     // Index 4: Right
-            (-1, 1, false),   // Index 5: Bottom left
-            (0, 1, true)      // Index 6: Bottom
-        ]
+        // Generate spiral coordinates for a honeycomb pattern
+        let positions = generateSpiralHexCoordinates(count: hexagonTexts.count)
         
-        // Sample texts for each hexagon
-        let texts = [
-            "Mountain\nPose",
-            "Forward\nFold",
-            "Downward\nDog",
-            "Warrior\nI",
-            "Warrior\nII",
-            "Triangle\nPose",
-            "Tree\nPose"
-        ]
+        // Create a container view that will hold all hexagons
+        let containerView = UIView()
+        view.addSubview(containerView)
         
-        // Center the entire pattern in the view
-        let centerX = view.bounds.width / 2
-        let centerY = view.bounds.height / 2
+        // Add hexagons to the container
+        var minX: CGFloat = .greatestFiniteMagnitude
+        var minY: CGFloat = .greatestFiniteMagnitude
+        var maxX: CGFloat = -.greatestFiniteMagnitude
+        var maxY: CGFloat = -.greatestFiniteMagnitude
         
-        // Position and add each hexagon
+        // First pass: calculate bounds
+        for position in positions {
+            // Convert axial coordinates to pixel coordinates
+            let xPos = (CGFloat(position.q) * horizontalSpacing * 0.75)
+            let yPos = (CGFloat(position.q) * verticalSpacing * 0.5 + CGFloat(position.r) * verticalSpacing)
+            
+            let hexagonX = xPos - width/2
+            let hexagonY = yPos - height/2
+            
+            // Update bounds
+            minX = min(minX, hexagonX)
+            minY = min(minY, hexagonY)
+            maxX = max(maxX, hexagonX + width)
+            maxY = max(maxY, hexagonY + height)
+        }
+        
+        // Calculate container size
+        let containerWidth = maxX - minX
+        let containerHeight = maxY - minY
+        
+        // Second pass: create and position hexagons
         for (index, position) in positions.enumerated() {
-            // Convert axial coordinates to pixel coordinates with spacing
-            // This formula ensures tessellation with small gaps
-            let xPos = centerX + (CGFloat(position.0) * horizontalSpacing * 0.75)
-            let yPos = centerY + (CGFloat(position.0) * verticalSpacing * 0.5 + CGFloat(position.1) * verticalSpacing)
+            // Convert axial coordinates to pixel coordinates
+            let xPos = (CGFloat(position.q) * horizontalSpacing * 0.75)
+            let yPos = (CGFloat(position.q) * verticalSpacing * 0.5 + CGFloat(position.r) * verticalSpacing)
+            
+            // Position relative to container, adjusting for the minimum bounds
+            let hexagonX = xPos - width/2 - minX
+            let hexagonY = yPos - height/2 - minY
             
             let hexButton = createHexagon(
-                x: xPos - width/2,
-                y: yPos - height/2,
+                x: hexagonX,
+                y: hexagonY,
                 index: index,
-                text: texts[index]
+                text: index < hexagonTexts.count ? hexagonTexts[index] : "Item \(index)"
             )
             
-            view.addSubview(hexButton)
+            containerView.addSubview(hexButton)
         }
+        
+        // Set container size and center it in the view
+        containerView.frame = CGRect(x: 0, y: 0, width: containerWidth, height: containerHeight)
+        containerView.center = CGPoint(
+            x: view.bounds.width / 2,
+            y: view.bounds.height / 2
+        )
+        
+        // If the container is larger than the view, make it scrollable
+        if containerWidth > view.bounds.width || containerHeight > view.bounds.height {
+            // Create a scroll view
+            let scrollView = UIScrollView(frame: view.bounds)
+            scrollView.showsHorizontalScrollIndicator = false
+            scrollView.showsVerticalScrollIndicator = false
+            
+            // Move container to scroll view
+            containerView.removeFromSuperview()
+            scrollView.addSubview(containerView)
+            view.addSubview(scrollView)
+            
+            // Set content size
+            scrollView.contentSize = containerView.frame.size
+            
+            // Center content
+            let xOffset = max(0, (scrollView.contentSize.width - scrollView.bounds.width) / 2)
+            let yOffset = max(0, (scrollView.contentSize.height - scrollView.bounds.height) / 2)
+            scrollView.contentOffset = CGPoint(x: xOffset, y: yOffset)
+        }
+    }
+    
+    // Hexagon coordinates in axial coordinate system (q,r)
+    private struct HexCoord: Hashable {
+        let q: Int
+        let r: Int
+        
+        // Returns the 6 neighbors of this hex in axial coordinates
+        func neighbors() -> [HexCoord] {
+            let directions = [
+                HexCoord(q: 1, r: 0),   // East
+                HexCoord(q: 1, r: -1),  // Northeast
+                HexCoord(q: 0, r: -1),  // Northwest
+                HexCoord(q: -1, r: 0),  // West
+                HexCoord(q: -1, r: 1),  // Southwest
+                HexCoord(q: 0, r: 1)    // Southeast
+            ]
+            
+            return directions.map { HexCoord(q: self.q + $0.q, r: self.r + $0.r) }
+        }
+    }
+    
+    // Generate spiral coordinates for hexagons
+    private func generateSpiralHexCoordinates(count: Int) -> [(q: Int, r: Int, isBlack: Bool)] {
+        guard count > 0 else { return [] }
+        
+        var coordinates: [(q: Int, r: Int, isBlack: Bool)] = []
+        var visited = Set<HexCoord>()
+        
+        // Start with center hexagon
+        let center = HexCoord(q: 0, r: 0)
+        coordinates.append((q: center.q, r: center.r, isBlack: false))
+        visited.insert(center)
+        
+        if count == 1 {
+            return coordinates
+        }
+        
+        // BFS-like approach to generate a spiral
+        var queue = center.neighbors()
+        
+        while coordinates.count < count {
+            var nextRingNeighbors = [HexCoord]()
+            
+            // Process current ring
+            for hex in queue {
+                if visited.contains(hex) {
+                    continue
+                }
+                
+                // Alternate black and white based on position
+                let isBlack = (coordinates.count % 2 == 1)
+                coordinates.append((q: hex.q, r: hex.r, isBlack: isBlack))
+                visited.insert(hex)
+                
+                // Break if we've reached the requested count
+                if coordinates.count >= count {
+                    break
+                }
+                
+                // Collect neighbors for the next ring
+                for neighbor in hex.neighbors() {
+                    if !visited.contains(neighbor) && !nextRingNeighbors.contains(neighbor) {
+                        nextRingNeighbors.append(neighbor)
+                    }
+                }
+            }
+            
+            // Sort neighbors to maintain a spiral pattern
+            nextRingNeighbors.sort { a, b in
+                let angleA = atan2(Double(a.r), Double(a.q))
+                let angleB = atan2(Double(b.r), Double(b.q))
+                return angleA < angleB
+            }
+            
+            queue = nextRingNeighbors
+        }
+        
+        return coordinates
     }
     
     private func createHexagon(x: CGFloat, y: CGFloat, index: Int, text: String) -> UIButton {
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize)
+        button.tag = index // Store index for reference
         
         // Create hexagon shape
         let hexagonLayer = CAShapeLayer()
@@ -107,11 +231,11 @@ class HoneycombViewController: SelectionViewController {
         button.layer.addSublayer(hexagonLayer)
         button.layer.addSublayer(borderLayer)
         
-        // Create a mask for the textView to fit within the hexagon
+        // Create a mask for the label to fit within the hexagon
         let maskLayer = CAShapeLayer()
         maskLayer.path = createHexagonPath(size: hexagonSize * 0.8).cgPath // Slightly smaller for padding
         
-        // Replace the UITextView with a UILabel
+        // Use UILabel for text display
         let textView = UILabel()
         textView.frame = CGRect(
             x: hexagonSize * 0.1,
@@ -122,25 +246,17 @@ class HoneycombViewController: SelectionViewController {
         textView.text = text
         textView.textColor = .white
         textView.textAlignment = .center
-        textView.font = UIFont.boldSystemFont(ofSize: 18)
         textView.font = AKFont.round(.bold, 18)
         textView.backgroundColor = .clear
         textView.numberOfLines = 0 // Allow multiple lines
         textView.layer.mask = maskLayer
 
         // Center vertically
-        textView.adjustsFontSizeToFitWidth = false
+        textView.adjustsFontSizeToFitWidth = true
+        textView.minimumScaleFactor = 0.5
         textView.lineBreakMode = .byWordWrapping
         textView.baselineAdjustment = .alignCenters
 
-        button.addSubview(textView)
-        
-        // Center the text vertically
-        let fixedWidth = textView.frame.size.width
-        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
-        let yOffset = (textView.frame.size.height - newSize.height) / 2
-        let topOffset = max(0, yOffset)
-        
         button.addSubview(textView)
         
         // Add tap action
@@ -167,7 +283,7 @@ class HoneycombViewController: SelectionViewController {
             points.append(point)
         }
         
-        // Create a hexagon with ONLY rounded corners (straight sides)
+        // Create a hexagon with rounded corners (straight sides)
         for i in 0..<6 {
             let currentPoint = points[i]
             let nextPoint = points[(i + 1) % 6]
@@ -240,8 +356,8 @@ class HoneycombViewController: SelectionViewController {
             
             // Update text color
             for subview in sender.subviews {
-                if let textView = subview as? UITextView {
-                    textView.textColor = isBlack ? .black : .white
+                if let label = subview as? UILabel {
+                    label.textColor = isBlack ? .black : .white
                 }
             }
         }
