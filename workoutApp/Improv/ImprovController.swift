@@ -1,16 +1,34 @@
 import UIKit
 
-class HoneycombViewController: UIViewController {
+class HoneycombViewController: SelectionViewController {
     
     // Configuration
     private let numberOfHexagons = 7
     private let hexagonSize: CGFloat = UIScreen.main.bounds.width/3
     private let spacing: CGFloat = 2 // Small gap between hexagons
     
+    init() {
+        super.init(header: SelectionViewHeader(header: "Improv", subheader: "Today"))
+    }
+    
+    @MainActor required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .akLight
         createHoneycombGrid()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+            customTabBarController.hideSelectionIndicator(shouldAnimate: true)
+            navigationController?.setNavigationBarHidden(true, animated: true)
+        }
     }
     
     private func createHoneycombGrid() {

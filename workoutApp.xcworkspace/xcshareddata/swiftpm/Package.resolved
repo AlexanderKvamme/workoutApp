@@ -1,0 +1,33 @@
+{
+  "originHash" : "f470de2f906f38f413f1b8e1e682fb6d5446b18bc99c53ad4f48adfecf335303",
+  "pins" : [
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "swipecellkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwipeCellKit/SwipeCellKit",
+      "state" : {
+        "revision" : "7219cad3098637176ace311510d11467dbfb9bb0",
+        "version" : "2.7.1"
+      }
+    },
+    {
+      "identity" : "vfont",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dufflink/vfont.git",
+      "state" : {
+        "revision" : "eceae7296a3bb54a1e8b5fca0bda047c5ca31264",
+        "version" : "0.6.1"
+      }
+    }
+  ],
+  "version" : 3
+}

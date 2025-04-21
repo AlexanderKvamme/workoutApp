@@ -29,7 +29,6 @@
 		1121237820835BBA005C27D2 /* ExerciseLog+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1121236220835BBA005C27D2 /* ExerciseLog+CoreDataProperties.swift */; };
 		1121237920835BBA005C27D2 /* Goal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1121236320835BBA005C27D2 /* Goal+CoreDataClass.swift */; };
 		1121237A20835BBA005C27D2 /* Goal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1121236420835BBA005C27D2 /* Goal+CoreDataProperties.swift */; };
-		A831EA923BF256860CDA923F /* Pods_workoutApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA574822879E36F3F40F6646 /* Pods_workoutApp.framework */; };
 		DD03A19829A2617D00D5D2AB /* SummaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */; };
 		DD03A19A29A262BB00D5D2AB /* WorkoutMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */; };
 		DD03A19D29A2761B00D5D2AB /* SummaryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */; };
@@ -113,6 +112,8 @@
 		DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54AD81ED84B1B008C601C /* ModelEnums.swift */; };
 		DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54B021EDB426D008C601C /* DatabaseFacade.swift */; };
 		DDA866D81F536E8D00F277AF /* PickerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA866D71F536E8D00F277AF /* PickerHeader.swift */; };
+		DDB3BE4B2DB6606300411AC5 /* AKKIT in Frameworks */ = {isa = PBXBuildFile; productRef = DDB3BE4A2DB6606300411AC5 /* AKKIT */; };
+		DDB3BEF62DB6646300411AC5 /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDB3BEF52DB6646300411AC5 /* SwipeCellKit */; };
 		DDB539AC1F2E017600824CFC /* WorkoutLogHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB539AB1F2E017500824CFC /* WorkoutLogHistoryTableViewController.swift */; };
 		DDB539AE1F2E074800824CFC /* WorkoutSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB539AD1F2E074800824CFC /* WorkoutSelectionViewController.swift */; };
 		DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB5FF3A1F4B806300202705 /* PickableEntity.swift */; };
@@ -193,8 +194,6 @@
 		1121236220835BBA005C27D2 /* ExerciseLog+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExerciseLog+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1121236320835BBA005C27D2 /* Goal+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1121236420835BBA005C27D2 /* Goal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Goal+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		723877A7307B57494223988E /* Pods-workoutApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.release.xcconfig"; path = "Target Support Files/Pods-workoutApp/Pods-workoutApp.release.xcconfig"; sourceTree = "<group>"; };
-		CB064640EE81AEE22F6FE74B /* Pods-workoutApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-workoutApp.debug.xcconfig"; path = "Target Support Files/Pods-workoutApp/Pods-workoutApp.debug.xcconfig"; sourceTree = "<group>"; };
 		DD03A19729A2617D00D5D2AB /* SummaryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryScreen.swift; sourceTree = "<group>"; };
 		DD03A19929A262BB00D5D2AB /* WorkoutMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutMock.swift; sourceTree = "<group>"; };
 		DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryHeader.swift; sourceTree = "<group>"; };
@@ -328,7 +327,6 @@
 		DDFEA4D82DB59ECF00C4F787 /* HexagonalGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonalGridView.swift; sourceTree = "<group>"; };
 		DDFEA4DA2DB59EE900C4F787 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DDFEA4DC2DB59F0900C4F787 /* HexagonalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonalButton.swift; sourceTree = "<group>"; };
-		EA574822879E36F3F40F6646 /* Pods_workoutApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_workoutApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -340,7 +338,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A831EA923BF256860CDA923F /* Pods_workoutApp.framework in Frameworks */,
+				DDB3BEF62DB6646300411AC5 /* SwipeCellKit in Frameworks */,
+				DDB3BE4B2DB6606300411AC5 /* AKKIT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,8 +385,6 @@
 		2F6E20DB512AD2468427D62E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CB064640EE81AEE22F6FE74B /* Pods-workoutApp.debug.xcconfig */,
-				723877A7307B57494223988E /* Pods-workoutApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -396,7 +393,6 @@
 			isa = PBXGroup;
 			children = (
 				DD5B9E31289ECA6500EB733E /* AKKIT.bundle */,
-				EA574822879E36F3F40F6646 /* Pods_workoutApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -919,11 +915,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DD585D581EC4D53900962B19 /* Build configuration list for PBXNativeTarget "workoutApp" */;
 			buildPhases = (
-				B626753949FABDB0FAF0107B /* [CP] Check Pods Manifest.lock */,
 				DD585D3F1EC4D53900962B19 /* Sources */,
 				DD585D401EC4D53900962B19 /* Frameworks */,
 				DD585D411EC4D53900962B19 /* Resources */,
-				00BCD6DB872163781B926C29 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -989,6 +983,10 @@
 				Base,
 			);
 			mainGroup = DD585D3A1EC4D53900962B19;
+			packageReferences = (
+				DDB3BE492DB6606300411AC5 /* XCLocalSwiftPackageReference "../AKKIT" */,
+				DDB3BEF42DB6646300411AC5 /* XCRemoteSwiftPackageReference "SwipeCellKit" */,
+			);
 			productRefGroup = DD585D441EC4D53900962B19 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1019,55 +1017,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		00BCD6DB872163781B926C29 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-workoutApp/Pods-workoutApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AKKIT/AKKIT.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
-				"${BUILT_PRODUCTS_DIR}/VFont/VFont.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AKKIT.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VFont.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-workoutApp/Pods-workoutApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B626753949FABDB0FAF0107B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-workoutApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DD585D3F1EC4D53900962B19 /* Sources */ = {
@@ -1368,12 +1317,11 @@
 		};
 		DD585D591EC4D53900962B19 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB064640EE81AEE22F6FE74B /* Pods-workoutApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = RMURDMDZGD;
 				INFOPLIST_FILE = workoutApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1388,12 +1336,11 @@
 		};
 		DD585D5A1EC4D53900962B19 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 723877A7307B57494223988E /* Pods-workoutApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = RMURDMDZGD;
 				INFOPLIST_FILE = workoutApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1487,6 +1434,36 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		DDB3BE492DB6606300411AC5 /* XCLocalSwiftPackageReference "../AKKIT" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../AKKIT;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DDB3BEF42DB6646300411AC5 /* XCRemoteSwiftPackageReference "SwipeCellKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwipeCellKit/SwipeCellKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DDB3BE4A2DB6606300411AC5 /* AKKIT */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AKKIT;
+		};
+		DDB3BEF52DB6646300411AC5 /* SwipeCellKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DDB3BEF42DB6646300411AC5 /* XCRemoteSwiftPackageReference "SwipeCellKit" */;
+			productName = SwipeCellKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */ = {
