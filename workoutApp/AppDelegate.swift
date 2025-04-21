@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         seedIfFirstLaunch(context: context)
         
         // Set initial viewController
-        let wrappedProgress = CustomNavigationViewController(rootViewController: UIViewController())
+        let wrappedProgress = CustomNavigationViewController(rootViewController: HoneycombViewController())
         let wrappedHistory = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
         let wrappedWorkout = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
         let wrappedProfile = CustomNavigationViewController(rootViewController: ProfileController())
@@ -45,7 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let screens = [wrappedProgress, wrappedHistory, wrappedWorkout, wrappedProfile, UIViewController()]
         
         let centerIcon = UIImage.xmarkIcon.rotate(radians: .pi/4)!
-        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [0,4])
+//        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [4])
+        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [4])
         window?.rootViewController = tabBar
         globalTabBar = tabBar
         
