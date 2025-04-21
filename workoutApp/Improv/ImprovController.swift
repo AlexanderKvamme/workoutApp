@@ -1,4 +1,5 @@
 import UIKit
+import AKKIT
 
 class HoneycombViewController: SelectionViewController {
     
@@ -122,6 +123,7 @@ class HoneycombViewController: SelectionViewController {
         textView.textColor = .white
         textView.textAlignment = .center
         textView.font = UIFont.boldSystemFont(ofSize: 18)
+        textView.font = AKFont.round(.bold, 18)
         textView.backgroundColor = .clear
         textView.numberOfLines = 0 // Allow multiple lines
         textView.layer.mask = maskLayer
