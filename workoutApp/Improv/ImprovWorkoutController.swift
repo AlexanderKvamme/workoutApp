@@ -27,6 +27,17 @@ class ImprovWorkoutController: UIViewController {
 //            "\(baseName) Hold",
 //            "\(baseName) Stretch"
 //        ]
+        
+        let listButton = UIBarButtonItem(
+            image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),  // SF Symbol for list
+            style: .plain,
+            target: self,
+            action: #selector(showList)
+        )
+
+        // Add it to the navigation bar
+        self.navigationItem.rightBarButtonItem = listButton
+        self.navigationController?.navigationBar.tintColor = .black
     }
     
     required init?(coder: NSCoder) {
@@ -49,6 +60,12 @@ class ImprovWorkoutController: UIViewController {
         
         // This ensures the honeycomb grid is laid out after the view's bounds are finalized
         honeycombGrid?.setNeedsLayout()
+    }
+    
+    // Handler method
+    @objc func showList() {
+        // Your code to show the list
+        print("List button tapped")
     }
     
     private func setupView() {
