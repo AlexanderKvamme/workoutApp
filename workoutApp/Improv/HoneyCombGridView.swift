@@ -37,22 +37,18 @@ class HoneycombGridView<T>: UIView {
         // Mark for layout update
         needsLayout = true
         setNeedsLayout()
-        
-        print("Configured honeycomb with \(items.count) items")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         if needsLayout && bounds.width > 0 && bounds.height > 0 {
-            print("Laying out honeycomb grid with bounds: \(bounds)")
             createHoneycombGrid()
             needsLayout = false
         }
     }
     
     private func createHoneycombGrid() {
-        print("Creating honeycomb grid with \(items.count) items")
         
         // Basic measurements
         let width = hexagonSize
@@ -94,15 +90,12 @@ class HoneycombGridView<T>: UIView {
         
         // Handle the case where there are no items
         if positions.isEmpty {
-            print("No positions to display")
             return
         }
         
         // Calculate container size
         let containerWidth = max(maxX - minX, width) // Ensure minimum width
         let containerHeight = max(maxY - minY, height) // Ensure minimum height
-        
-        print("Container size: \(containerWidth) x \(containerHeight)")
         
         // Second pass: create and position hexagons
         for (index, position) in positions.enumerated() {
@@ -126,7 +119,6 @@ class HoneycombGridView<T>: UIView {
             )
             
             containerView.addSubview(hexView)
-            print("Added hexagon at position: \(hexagonX), \(hexagonY) with text: \(textProvider(item))")
         }
         
         // Set container size and center it in the view
@@ -162,8 +154,6 @@ class HoneycombGridView<T>: UIView {
             let xOffset = max(0, (scrollView.contentSize.width - scrollView.bounds.width) / 2)
             let yOffset = max(0, (scrollView.contentSize.height - scrollView.bounds.height) / 2)
             scrollView.contentOffset = CGPoint(x: xOffset, y: yOffset)
-            
-            print("Added scroll view with content size: \(scrollView.contentSize)")
         }
     }
     
@@ -311,8 +301,6 @@ class HexagonItemView: UIView {
         textLabel.minimumScaleFactor = 0.5
         addSubview(textLabel)
         self.textLabel = textLabel
-        
-        print("Set up hexagon view with frame: \(frame)")
     }
     
     func configure(withText text: String) {

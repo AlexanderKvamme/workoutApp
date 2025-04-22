@@ -11,16 +11,22 @@ class ImprovWorkoutController: UIViewController {
         self.muscleGroup = muscleGroup
         super.init(nibName: nil, bundle: nil)
         
+        let dbExercises = DatabaseFacade.fetchExercises(containing: muscleGroup) ?? []
+        print("exercises: ", (dbExercises ?? []).map {$0.name ?? "NA" })
+        exercises = dbExercises.map { $0.getName() }
+        
         // Example: Generate some exercise names for this muscle group
         // In a real app, you would fetch these from your database
         let baseName = muscleGroup.name ?? "Exercise"
-        exercises = [
-            "\(baseName) Push",
-            "\(baseName) Pull",
-            "\(baseName) Lift",
-            "\(baseName) Hold",
-            "\(baseName) Stretch"
-        ]
+        title = baseName
+        
+//        exercises = [
+//            "\(baseName) Push",
+//            "\(baseName) Pull",
+//            "\(baseName) Lift",
+//            "\(baseName) Hold",
+//            "\(baseName) Stretch"
+//        ]
     }
     
     required init?(coder: NSCoder) {
@@ -31,6 +37,11 @@ class ImprovWorkoutController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .akLight
         setupView()
+        
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationItem.hidesBackButton = false
+        
+        styleBackButton()
     }
     
     override func viewDidLayoutSubviews() {
@@ -41,16 +52,6 @@ class ImprovWorkoutController: UIViewController {
     }
     
     private func setupView() {
-        // Title label
-        let titleLabel = UILabel()
-        titleLabel.text = muscleGroup.name
-        titleLabel.font = AKFont.round(.bold, 24)
-        titleLabel.textColor = .white
-        titleLabel.textAlignment = .center
-        
-        view.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         // Create the honeycomb grid with smaller hexagons
         let honeycombGrid = HoneycombGridView<String>(
             hexagonSize: UIScreen.main.bounds.width/4, // Smaller hexagons
@@ -61,11 +62,7 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            honeycombGrid.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
+            honeycombGrid.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             honeycombGrid.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             honeycombGrid.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             honeycombGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -73,8 +70,6 @@ class ImprovWorkoutController: UIViewController {
         
         // Force layout to ensure the grid has a valid size
         view.layoutIfNeeded()
-        
-        print("Exercise honeycomb grid frame after layout: \(honeycombGrid.frame)")
         
         // Configure with exercises
         honeycombGrid.configure(with: exercises) { [weak self] selectedExercise in
@@ -98,51 +93,3 @@ class ImprovWorkoutController: UIViewController {
         present(alert, animated: true)
     }
 }
-//import AKKIT
-//
-//
-//// MARK: - ImprovWorkoutController
-//class ImprovWorkoutController: UIViewController {
-//    private let muscleGroup: Muscle
-//    
-//    init(muscleGroup: Muscle) {
-//        self.muscleGroup = muscleGroup
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .akLight
-//        
-//        // Set up the view with the selected muscle group
-//        setupView()
-//        styleBackButton()
-//    }
-//    
-//    override func viewWillAppear(_ animated: Bool) {
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
-//    }
-//    
-//    private func setupView() {
-//        // Title label
-//        let titleLabel = UILabel()
-//        titleLabel.text = muscleGroup.name
-//        titleLabel.font = AKFont.round(.bold, 24)
-//        titleLabel.textColor = .white
-//        titleLabel.textAlignment = .center
-//        
-//        view.addSubview(titleLabel)
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-//            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-//        ])
-//        
-//        // Add more UI components as needed for your workout view
-//    }
-//}

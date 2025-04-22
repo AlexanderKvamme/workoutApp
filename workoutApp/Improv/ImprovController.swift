@@ -46,8 +46,6 @@ class HoneycombViewController: SelectionViewController {
     }
     
     private func setupHoneycombGrid() {
-        print("Setting up honeycomb grid")
-        
         // Create the honeycomb grid with a text provider
         honeycombGrid = HoneycombGridView<Muscle>(textProvider: { muscle in
             return muscle.name ?? "Unknown"
@@ -67,8 +65,6 @@ class HoneycombViewController: SelectionViewController {
         
         // Force layout to ensure the grid has a valid size
         view.layoutIfNeeded()
-        
-        print("Honeycomb grid frame after layout: \(honeycombGrid.frame)")
         
         // Configure with data and selection handler
         honeycombGrid.configure(with: muscleGroups) { [weak self] selectedMuscle in
