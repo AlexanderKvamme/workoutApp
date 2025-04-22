@@ -6,6 +6,7 @@ class ImprovWorkoutController: UIViewController {
     private let muscleGroup: Muscle
     private var honeycombGrid: HoneycombGridView<String>?
     private var exercises: [String] = []
+    private var progressBar = DotProgressView()
     
     init(muscleGroup: Muscle) {
         self.muscleGroup = muscleGroup
@@ -38,6 +39,8 @@ class ImprovWorkoutController: UIViewController {
         // Add it to the navigation bar
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
+        
+        setup()
     }
     
     required init?(coder: NSCoder) {
@@ -53,6 +56,19 @@ class ImprovWorkoutController: UIViewController {
         navigationController?.navigationItem.hidesBackButton = false
         
         styleBackButton()
+        
+        setup()
+    }
+    
+    private func setup() {
+        view.addSubview(progressBar)
+        progressBar.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(60)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        progressBar.configure(current: 7, total: 9)
     }
     
     override func viewDidLayoutSubviews() {

@@ -47,6 +47,7 @@
 		DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFE1ED2DD310014DBC1 /* Box.swift */; };
 		DD151E021ED47C390014DBC1 /* UIStackView Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151E011ED47C390014DBC1 /* UIStackView Extensions.swift */; };
 		DD180FC71FB1295500B44F94 /* DiagonalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD180FC61FB1295500B44F94 /* DiagonalView.swift */; };
+		DD1861982DB81CFC0038744F /* DotProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1861972DB81CF80038744F /* DotProgressView.swift */; };
 		DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */; };
 		DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */; };
 		DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */; };
@@ -214,6 +215,7 @@
 		DD151DFE1ED2DD310014DBC1 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		DD151E011ED47C390014DBC1 /* UIStackView Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView Extensions.swift"; sourceTree = "<group>"; };
 		DD180FC61FB1295500B44F94 /* DiagonalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagonalView.swift; sourceTree = "<group>"; };
+		DD1861972DB81CF80038744F /* DotProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotProgressView.swift; sourceTree = "<group>"; };
 		DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerProtocols.swift; sourceTree = "<group>"; };
 		DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStyleExtensions.swift; sourceTree = "<group>"; };
@@ -906,6 +908,7 @@
 			children = (
 				DDFEA4D62DB5365A00C4F787 /* ImprovController.swift */,
 				DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */,
+				DD1861972DB81CF80038744F /* DotProgressView.swift */,
 				DDFEA4DC2DB59F0900C4F787 /* HexagonalButton.swift */,
 				DDFEA4D82DB59ECF00C4F787 /* HexagonalGridView.swift */,
 				DDB3BEF92DB68A3500411AC5 /* HoneyCombGridView.swift */,
@@ -1122,6 +1125,7 @@
 				DDCF834A1F8A3D8400F87B3E /* TallExerciseTableCellBox.swift in Sources */,
 				DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */,
 				DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */,
+				DD1861982DB81CFC0038744F /* DotProgressView.swift in Sources */,
 				DDE55B981F2F745F00ED1D15 /* isBoxTableViewDataSource.swift in Sources */,
 				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DDB539AE1F2E074800824CFC /* WorkoutSelectionViewController.swift in Sources */,
