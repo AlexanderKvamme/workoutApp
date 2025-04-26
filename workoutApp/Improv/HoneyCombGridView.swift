@@ -8,8 +8,8 @@ class HoneycombGridView<T>: UIView {
     private let spacing: CGFloat
     private var items: [T] = []
     private var textProvider: (T) -> String
-    private var onItemSelected: ((T) -> Void)?
-    private var onItemLongPressed: ((T) -> Void)?
+    private var onItemSelected: ((T, HexagonItemView) -> Void)?
+    private var onItemLongPressed: ((T, HexagonItemView) -> Void)?
     private var needsLayout = true
     
     // Store hexagon views and their positions for lookup
@@ -32,8 +32,8 @@ class HoneycombGridView<T>: UIView {
     
     // Configure the grid with data and selection handlers
     func configure(with items: [T],
-                  onItemSelected: @escaping (T) -> Void,
-                  onItemLongPressed: ((T) -> Void)? = nil) {
+                  onItemSelected: @escaping (T, HexagonItemView) -> Void,
+                  onItemLongPressed: ((T, HexagonItemView) -> Void)? = nil) {
         self.items = items
         self.onItemSelected = onItemSelected
         self.onItemLongPressed = onItemLongPressed
@@ -87,7 +87,6 @@ class HoneycombGridView<T>: UIView {
     }
     
     private func createHoneycombGrid() {
-        
         // Basic measurements
         let width = hexagonSize
         let height = width * 0.866 // height of a hexagon (sqrt(3)/2 * width)
@@ -280,6 +279,16 @@ class HoneycombGridView<T>: UIView {
         let hexView = HexagonItemView(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
         hexView.configure(withText: text)
         
+        // Configure stripes - 3 stripes by default
+//        hexView.configureStripes(
+//            count: 3,
+//            color: .white,
+//            width: 6.0,
+//            spacing: hexagonSize / 6, // Space them evenly
+//            angle: .pi / 4,
+//            inset: 0.2
+//        )
+        
         // Add tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hexagonTapped(_:)))
         hexView.addGestureRecognizer(tapGesture)
@@ -287,6 +296,7 @@ class HoneycombGridView<T>: UIView {
         // Add long press gesture recognizer
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(hexagonLongPressed(_:)))
         longPressGesture.minimumPressDuration = 0.1 // Start quickly for visual feedback
+        hexView.isMultipleTouchEnabled = true
         hexView.addGestureRecognizer(longPressGesture)
         
         hexView.tag = index
@@ -298,7 +308,7 @@ class HoneycombGridView<T>: UIView {
                   index >= 0 && index < self.items.count else { return }
             
             let selectedItem = self.items[index]
-            onItemLongPressed(selectedItem)
+            onItemLongPressed(selectedItem, hexView)
         }
         
         return hexView
@@ -316,13 +326,16 @@ class HoneycombGridView<T>: UIView {
         
         // Call the selection handler
         let selectedItem = items[index]
+        print("bam selected will be called in 0.2")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-            self?.onItemSelected?(selectedItem)
+            self?.onItemSelected?(selectedItem, hexView)
         }
     }
     
     @objc private func hexagonLongPressed(_ sender: UILongPressGestureRecognizer) {
         guard let hexView = sender.view as? HexagonItemView else { return }
+        
+        print("hexagonLongPressed")
         
         switch sender.state {
         case .began:

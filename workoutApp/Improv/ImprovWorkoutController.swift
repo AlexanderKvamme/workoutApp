@@ -104,12 +104,15 @@ class ImprovWorkoutController: UIViewController {
         // Configure with exercises
         honeycombGrid.configure(
             with: exercises,
-            onItemSelected: { [weak self] selectedExercise in
+            onItemSelected: { [weak self] (selectedExercise, item) in
+                print("item selected")
                 self?.addCompletedExercise(selectedExercise)
                 let pos = self?.getPositionForExercise(selectedExercise)
                 self?.confettiView.startConfettiCannon(at: pos!)
+                
+                item.bumpStripes()
             },
-            onItemLongPressed: { [weak self] selectedExercise in
+            onItemLongPressed: { [weak self] (selectedExercise, item) in
 //                print("LONG PRESSED: \(selectedExercise)")
 //                self?.addCompletedExercise(selectedExercise)
 //                

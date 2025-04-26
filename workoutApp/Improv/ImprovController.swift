@@ -23,7 +23,6 @@ class HoneycombViewController: SelectionViewController {
         // Get data from database
         muscleGroups = DatabaseFacade.fetchMuscles()
         let muscleNames = muscleGroups.map { $0.name ?? "NA" }
-        print("bam muscles: ", muscleNames)
         
         setupHoneycombGrid()
     }
@@ -67,7 +66,7 @@ class HoneycombViewController: SelectionViewController {
         view.layoutIfNeeded()
         
         // Configure with data and selection handler
-        honeycombGrid.configure(with: muscleGroups) { [weak self] selectedMuscle in
+        honeycombGrid.configure(with: muscleGroups) { [weak self] (selectedMuscle, hexView: HexagonItemView) in
             print("Selected muscle: \(selectedMuscle.name ?? "Unknown")")
             let improvWorkoutController = ImprovWorkoutController(muscleGroup: selectedMuscle)
             self?.navigationController?.pushViewController(improvWorkoutController, animated: true)
