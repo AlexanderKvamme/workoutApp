@@ -7,6 +7,7 @@ class ImprovWorkoutController: UIViewController {
     private var honeycombGrid: HoneycombGridView<String>?
     private var exercises: [String] = []
     private var progressBar = DotProgressView()
+    private var confettiView: ConfettiView!
     
     init(muscleGroup: Muscle) {
         self.muscleGroup = muscleGroup
@@ -16,27 +17,16 @@ class ImprovWorkoutController: UIViewController {
         print("exercises: ", (dbExercises ?? []).map {$0.name ?? "NA" })
         exercises = dbExercises.map { $0.getName() }
         
-        // Example: Generate some exercise names for this muscle group
-        // In a real app, you would fetch these from your database
         let baseName = muscleGroup.name ?? "Exercise"
         title = baseName
         
-//        exercises = [
-//            "\(baseName) Push",
-//            "\(baseName) Pull",
-//            "\(baseName) Lift",
-//            "\(baseName) Hold",
-//            "\(baseName) Stretch"
-//        ]
-        
         let listButton = UIBarButtonItem(
-            image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),  // SF Symbol for list
+            image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
             style: .plain,
             target: self,
             action: #selector(showList)
         )
 
-        // Add it to the navigation bar
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
         
@@ -50,6 +40,12 @@ class ImprovWorkoutController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
+        
+        // Initialize confetti view
+        confettiView = ConfettiView(frame: view.bounds)
+        confettiView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(confettiView)
+        
         setupView()
         
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -76,11 +72,12 @@ class ImprovWorkoutController: UIViewController {
         
         // This ensures the honeycomb grid is laid out after the view's bounds are finalized
         honeycombGrid?.setNeedsLayout()
+        
+        // Make sure confetti view covers the entire screen
+        confettiView.frame = view.bounds
     }
     
-    // Handler method
     @objc func showList() {
-        // Your code to show the list
         print("List button tapped")
     }
     
@@ -113,10 +110,24 @@ class ImprovWorkoutController: UIViewController {
             onItemLongPressed: { [weak self] selectedExercise in
                 print("LONG PRESSED: \(selectedExercise)")
                 self?.addCompletedExercise(selectedExercise)
+                
+                // Get the position of the selected exercise in the honeycomb grid
+                if let position = self?.getPositionForExercise(selectedExercise) {
+                    // Trigger confetti at that position
+                    self?.confettiView.startConfettiCannon(at: position)
+                }
             }
         )
         
         self.honeycombGrid = honeycombGrid
+    }
+    
+    private func getPositionForExercise(_ exercise: String) -> CGPoint {
+        // This is a simplified approach - you may need to adjust this based on your HoneycombGridView implementation
+        // Ideally, your HoneycombGridView should provide a way to get the center position of a specific cell
+        
+        // For now, let's use the center of the view as a fallback
+        return view.center
     }
     
     private func addCompletedExercise(_ exercise: String) {
