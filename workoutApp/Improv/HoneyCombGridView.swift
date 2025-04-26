@@ -9,6 +9,7 @@ class HoneycombGridView<T>: UIView {
     private var items: [T] = []
     private var textProvider: (T) -> String
     private var onItemSelected: ((T) -> Void)?
+    private var onItemLongPressed: ((T) -> Void)?
     private var needsLayout = true
     
     // Initializer with configuration options
@@ -26,10 +27,13 @@ class HoneycombGridView<T>: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Configure the grid with data and selection handler
-    func configure(with items: [T], onItemSelected: @escaping (T) -> Void) {
+    // Configure the grid with data and selection handlers
+    func configure(with items: [T],
+                  onItemSelected: @escaping (T) -> Void,
+                  onItemLongPressed: ((T) -> Void)? = nil) {
         self.items = items
         self.onItemSelected = onItemSelected
+        self.onItemLongPressed = onItemLongPressed
         
         // Clear existing content
         subviews.forEach { $0.removeFromSuperview() }
@@ -242,7 +246,23 @@ class HoneycombGridView<T>: UIView {
         // Add tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hexagonTapped(_:)))
         hexView.addGestureRecognizer(tapGesture)
+        
+        // Add long press gesture recognizer
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(hexagonLongPressed(_:)))
+        longPressGesture.minimumPressDuration = 0.1 // Start quickly for visual feedback
+        hexView.addGestureRecognizer(longPressGesture)
+        
         hexView.tag = index
+        
+        // Set the long press completion handler
+        hexView.setLongPressAction { [weak self] in
+            guard let self = self,
+                  let onItemLongPressed = self.onItemLongPressed,
+                  index >= 0 && index < self.items.count else { return }
+            
+            let selectedItem = self.items[index]
+            onItemLongPressed(selectedItem)
+        }
         
         return hexView
     }
@@ -263,12 +283,32 @@ class HoneycombGridView<T>: UIView {
             self?.onItemSelected?(selectedItem)
         }
     }
+    
+    @objc private func hexagonLongPressed(_ sender: UILongPressGestureRecognizer) {
+        guard let hexView = sender.view as? HexagonItemView else { return }
+        
+        switch sender.state {
+        case .began:
+            hexView.startLongPressAnimation()
+        case .ended, .cancelled, .failed:
+            hexView.cancelLongPressAnimation()
+        default:
+            break
+        }
+    }
 }
 
 // MARK: - HexagonItemView
 class HexagonItemView: UIView {
     private var hexagonLayer: CAShapeLayer?
     private var textLabel: UILabel?
+    
+    // Long press properties
+    private let longPressDuration: TimeInterval = 1.0
+    private var progressShapeLayer: CAShapeLayer?
+    private var animationStartTime: CFTimeInterval?
+    private var displayLink: CADisplayLink?
+    private var completionHandler: (() -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -387,5 +427,88 @@ class HexagonItemView: UIView {
         
         path.close()
         return path
+    }
+    
+    // MARK: - Long Press Handling
+    
+    /// Set the action to be performed when long press completes
+    func setLongPressAction(_ completion: @escaping () -> Void) {
+        completionHandler = completion
+    }
+    
+    func startLongPressAnimation() {
+        // Cancel any existing animation
+        cancelLongPressAnimation()
+        
+        // Create progress shape layer if needed
+        if progressShapeLayer == nil {
+            let progressLayer = CAShapeLayer()
+            progressLayer.path = createHexagonPath().cgPath
+            progressLayer.fillColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor // Semi-transparent fill
+            progressLayer.opacity = 0 // Start with opacity 0
+            layer.insertSublayer(progressLayer, below: hexagonLayer) // Insert below the main hexagon
+            progressShapeLayer = progressLayer
+        }
+        
+        // Set up display link for smooth animation
+        animationStartTime = CACurrentMediaTime()
+        displayLink = CADisplayLink(target: self, selector: #selector(updateLongPressAnimation))
+        displayLink?.add(to: .main, forMode: .common)
+        
+        // Add haptic feedback
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+        feedbackGenerator.prepare()
+        feedbackGenerator.impactOccurred()
+    }
+    
+    @objc private func updateLongPressAnimation() {
+        guard let startTime = animationStartTime,
+              let progressLayer = progressShapeLayer else {
+            return
+        }
+        
+        let elapsedTime = CACurrentMediaTime() - startTime
+        let progress = min(elapsedTime / longPressDuration, 1.0)
+        
+        // Update the fill opacity based on progress
+        progressLayer.opacity = Float(progress)
+        
+        // Check if animation is complete
+        if progress >= 1.0 {
+            completeAction()
+        }
+    }
+    
+    func cancelLongPressAnimation() {
+        displayLink?.invalidate()
+        displayLink = nil
+        animationStartTime = nil
+        
+        // Fade out the fill with animation
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.3)
+        progressShapeLayer?.opacity = 0
+        CATransaction.commit()
+    }
+    
+    private func completeAction() {
+        // Clean up animation
+        displayLink?.invalidate()
+        displayLink = nil
+        
+        // Provide haptic feedback
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+        feedbackGenerator.impactOccurred()
+        
+        // Execute the completion handler
+        completionHandler?()
+        
+        // Reset the progress layer with animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.3)
+            self?.progressShapeLayer?.opacity = 0
+            CATransaction.commit()
+        }
     }
 }

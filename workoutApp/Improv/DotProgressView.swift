@@ -6,8 +6,8 @@ class DotProgressView: UIView {
     
     private var currentStep: Int = 0
     private var totalSteps: Int = 0
-    private let dotSize: CGFloat = 20
-    private let dotSpacing: CGFloat = 20
+    private let dotSize: CGFloat = 16
+    private let dotSpacing: CGFloat = 16
     private var completedColor: UIColor = .black
     private var remainingColor: UIColor = .lightGray
     private let trackHeight: CGFloat = 32
@@ -44,6 +44,64 @@ class DotProgressView: UIView {
         self.completedColor = completedColor
         self.remainingColor = remainingColor
         setNeedsDisplay()
+    }
+    
+    /// Animates the transition to the next step with a bump animation
+    func bump() {
+        // Calculate the next step (one step up)
+        let nextStep = min(currentStep + 1, totalSteps)
+        
+        // If already at max, do nothing
+        guard nextStep > currentStep else { return }
+        
+        // Get the dot that will be bumped
+        let dotIndex = nextStep - 1
+        let width = bounds.width
+        let totalDotsWidth = CGFloat(totalSteps) * dotSize
+        let totalSpacingWidth = CGFloat(totalSteps - 1) * dotSpacing
+        let totalWidth = totalDotsWidth + totalSpacingWidth
+        let startX = (width - totalWidth) / 2
+        let dotX = startX + CGFloat(dotIndex) * (dotSize + dotSpacing)
+        let dotCenter = CGPoint(x: dotX + dotSize/2, y: bounds.height/2)
+        let centerY = bounds.height / 2
+        
+        // Create a temporary view for the dot animation
+        let animatedDot = UIView(frame: CGRect(x: 0, y: 0, width: dotSize, height: dotSize))
+        animatedDot.backgroundColor = UIColor.white
+        animatedDot.layer.borderColor = UIColor.white.cgColor
+        animatedDot.layer.borderWidth = 5
+        animatedDot.layer.cornerRadius = dotSize/2
+        animatedDot.center = dotCenter
+        addSubview(animatedDot)
+        
+        // Create a black progress bar for animation
+        let progressBar = UIView(frame: CGRect(
+            x: startX - dotSize/2,
+            y: centerY - trackHeight/2,
+            width: currentStep > 0 ? (CGFloat(currentStep - 1) * (dotSize + dotSpacing) + dotSize) : 0,
+            height: trackHeight
+        ))
+        progressBar.backgroundColor = completedColor
+        progressBar.layer.cornerRadius = trackHeight/2
+        insertSubview(progressBar, at: 0)
+        
+        // Calculate the final width for the progress bar
+        let finalWidth = CGFloat(nextStep - 1) * (dotSize + dotSpacing) + dotSize + dotSpacing
+        
+        // Update the model
+        currentStep = nextStep
+        
+        // Animation duration
+        let duration: TimeInterval = 0.2
+        
+        UIView.animate(withDuration: duration) {
+            progressBar.frame = CGRect(
+                x: startX - self.dotSize/2,
+                y: centerY - self.trackHeight/2,
+                width: finalWidth,
+                height: self.trackHeight
+            )
+        }
     }
     
     // MARK: - Drawing
@@ -93,7 +151,6 @@ class DotProgressView: UIView {
             // Add border to dots
             let borderColor = i < currentStep ? completedColor : remainingColor
             borderColor.setStroke()
-//            dotPath.lineWidth = 1
             dotPath.stroke()
         }
     }

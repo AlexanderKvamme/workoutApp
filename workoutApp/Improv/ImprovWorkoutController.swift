@@ -63,12 +63,12 @@ class ImprovWorkoutController: UIViewController {
     private func setup() {
         view.addSubview(progressBar)
         progressBar.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(60)
+            make.top.equalToSuperview().offset(64)
             make.left.right.equalToSuperview()
             make.height.equalTo(40)
         }
         
-        progressBar.configure(current: 7, total: 9)
+        progressBar.configure(current: 0, total: 9)
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,7 +87,7 @@ class ImprovWorkoutController: UIViewController {
     private func setupView() {
         // Create the honeycomb grid with smaller hexagons
         let honeycombGrid = HoneycombGridView<String>(
-            hexagonSize: UIScreen.main.bounds.width/4, // Smaller hexagons
+            hexagonSize: UIScreen.main.bounds.width/4,
             textProvider: { $0 }
         )
         
@@ -105,13 +105,23 @@ class ImprovWorkoutController: UIViewController {
         view.layoutIfNeeded()
         
         // Configure with exercises
-        honeycombGrid.configure(with: exercises) { [weak self] selectedExercise in
-            print("Selected exercise: \(selectedExercise)")
-            // Handle exercise selection - perhaps start the exercise or show details
-            self?.showExerciseDetails(selectedExercise)
-        }
+        honeycombGrid.configure(
+            with: exercises,
+            onItemSelected: { [weak self] selectedExercise in
+                self?.showExerciseDetails(selectedExercise)
+            },
+            onItemLongPressed: { [weak self] selectedExercise in
+                print("LONG PRESSED: \(selectedExercise)")
+                self?.addCompletedExercise(selectedExercise)
+            }
+        )
         
         self.honeycombGrid = honeycombGrid
+    }
+    
+    private func addCompletedExercise(_ exercise: String) {
+        print("bam would add ", exercise)
+        progressBar.bump()
     }
     
     private func showExerciseDetails(_ exercise: String) {
