@@ -11,6 +11,7 @@ class DotProgressView: UIView {
     private var completedColor: UIColor = .black
     private var remainingColor: UIColor = .lightGray
     private let trackHeight: CGFloat = 32
+    private var sidePadding: CGFloat = 24  // Padding before first dot and after last dot
     
     // MARK: - Initialization
     
@@ -26,8 +27,6 @@ class DotProgressView: UIView {
     
     private func setupView() {
         backgroundColor = .clear
-        layer.cornerRadius = trackHeight / 2
-        clipsToBounds = true
     }
     
     // MARK: - Public Methods
@@ -38,11 +37,17 @@ class DotProgressView: UIView {
     ///   - total: Total steps (e.g., 9 for "7 of 9")
     ///   - completedColor: Color for completed dots and track
     ///   - remainingColor: Color for remaining dots and track
-    func configure(current: Int, total: Int, completedColor: UIColor = .black, remainingColor: UIColor = .lightGray) {
+    ///   - sidePadding: Padding before first dot and after last dot
+    func configure(current: Int,
+                  total: Int,
+                  completedColor: UIColor = .black,
+                  remainingColor: UIColor = .lightGray,
+                  sidePadding: CGFloat = 24) {
         self.currentStep = max(0, min(current, total))
         self.totalSteps = max(1, total)
         self.completedColor = completedColor
         self.remainingColor = remainingColor
+        self.sidePadding = sidePadding
         setNeedsDisplay()
     }
     
@@ -54,54 +59,17 @@ class DotProgressView: UIView {
         // If already at max, do nothing
         guard nextStep > currentStep else { return }
         
-        // Get the dot that will be bumped
-        let dotIndex = nextStep - 1
-        let width = bounds.width
-        let totalDotsWidth = CGFloat(totalSteps) * dotSize
-        let totalSpacingWidth = CGFloat(totalSteps - 1) * dotSpacing
-        let totalWidth = totalDotsWidth + totalSpacingWidth
-        let startX = (width - totalWidth) / 2
-        let dotX = startX + CGFloat(dotIndex) * (dotSize + dotSpacing)
-        let dotCenter = CGPoint(x: dotX + dotSize/2, y: bounds.height/2)
-        let centerY = bounds.height / 2
-        
-        // Create a temporary view for the dot animation
-        let animatedDot = UIView(frame: CGRect(x: 0, y: 0, width: dotSize, height: dotSize))
-        animatedDot.backgroundColor = UIColor.white
-        animatedDot.layer.borderColor = UIColor.white.cgColor
-        animatedDot.layer.borderWidth = 5
-        animatedDot.layer.cornerRadius = dotSize/2
-        animatedDot.center = dotCenter
-        addSubview(animatedDot)
-        
-        // Create a black progress bar for animation
-        let progressBar = UIView(frame: CGRect(
-            x: startX - dotSize/2,
-            y: centerY - trackHeight/2,
-            width: currentStep > 0 ? (CGFloat(currentStep - 1) * (dotSize + dotSpacing) + dotSize) : 0,
-            height: trackHeight
-        ))
-        progressBar.backgroundColor = completedColor
-        progressBar.layer.cornerRadius = trackHeight/2
-        insertSubview(progressBar, at: 0)
-        
-        // Calculate the final width for the progress bar
-        let finalWidth = CGFloat(nextStep - 1) * (dotSize + dotSpacing) + dotSize + dotSpacing
-        
         // Update the model
         currentStep = nextStep
         
-        // Animation duration
-        let duration: TimeInterval = 0.2
-        
-        UIView.animate(withDuration: duration) {
-            progressBar.frame = CGRect(
-                x: startX - self.dotSize/2,
-                y: centerY - self.trackHeight/2,
-                width: finalWidth,
-                height: self.trackHeight
-            )
+        // Redraw with animation
+        UIView.animate(withDuration: 0.2) {
+            self.setNeedsDisplay()
         }
+        
+        // Add haptic feedback
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        feedbackGenerator.impactOccurred()
     }
     
     // MARK: - Drawing
@@ -111,29 +79,36 @@ class DotProgressView: UIView {
         
         let width = rect.width
         let height = rect.height
-        
-        // Calculate total width needed for all dots
-        let totalDotsWidth = CGFloat(totalSteps) * dotSize
-        let totalSpacingWidth = CGFloat(totalSteps - 1) * dotSpacing
-        let totalWidth = totalDotsWidth + totalSpacingWidth
-        
-        // Center everything horizontally
-        let startX = (width - totalWidth) / 2
         let centerY = height / 2
         
+        // Calculate total width needed for all dots with padding
+        let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
+        let totalWidth = dotsWidth + (sidePadding * 2)
+        
+        // Center everything horizontally
+        let startX = (width - dotsWidth) / 2
+        
         // Draw the track background
-        let trackPath = UIBezierPath(roundedRect: CGRect(x: startX - dotSize/2, y: centerY - trackHeight/2,
-                                                        width: totalWidth + dotSize, height: trackHeight),
-                                    cornerRadius: trackHeight/2)
+        let trackPath = UIBezierPath(roundedRect: CGRect(
+            x: startX - sidePadding,
+            y: centerY - trackHeight/2,
+            width: dotsWidth + (sidePadding * 2),
+            height: trackHeight),
+            cornerRadius: trackHeight/2)
         remainingColor.setFill()
         trackPath.fill()
         
         // Draw the completed portion of the track
         if currentStep > 0 {
-            let completedWidth = startX - dotSize/2 + CGFloat(currentStep - 1) * (dotSize + dotSpacing) + dotSize
-            let completedTrackPath = UIBezierPath(roundedRect: CGRect(x: startX - dotSize/2, y: centerY - trackHeight/2,
-                                                                     width: completedWidth, height: trackHeight),
-                                                cornerRadius: trackHeight/2)
+            let lastStep = currentStep == totalSteps
+            let endingExtraLength = lastStep ? sidePadding : 0
+            let completedWidth = CGFloat(currentStep) * (dotSize + dotSpacing) - 2*dotSpacing + endingExtraLength
+            let completedTrackPath = UIBezierPath(roundedRect: CGRect(
+                x: startX - sidePadding,
+                y: centerY - trackHeight/2,
+                width: completedWidth + (sidePadding * 2),
+                height: trackHeight),
+                cornerRadius: trackHeight/2)
             completedColor.setFill()
             completedTrackPath.fill()
         }
@@ -156,9 +131,8 @@ class DotProgressView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        let totalDotsWidth = CGFloat(totalSteps) * dotSize
-        let totalSpacingWidth = CGFloat(totalSteps - 1) * dotSpacing
-        let width = totalDotsWidth + totalSpacingWidth + dotSize * 2  // Extra padding
-        return CGSize(width: width, height: max(dotSize * 2, trackHeight * 3))
+        let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
+        let width = dotsWidth + (sidePadding * 2)
+        return CGSize(width: width, height: trackHeight * 1.5)
     }
 }
