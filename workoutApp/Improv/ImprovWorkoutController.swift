@@ -105,15 +105,17 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.configure(
             with: exercises,
             onItemSelected: { [weak self] selectedExercise in
-                self?.showExerciseDetails(selectedExercise)
+                self?.addCompletedExercise(selectedExercise)
+                let pos = self?.getPositionForExercise(selectedExercise)
+                self?.confettiView.startConfettiCannon(at: pos!)
             },
             onItemLongPressed: { [weak self] selectedExercise in
-                print("LONG PRESSED: \(selectedExercise)")
-                self?.addCompletedExercise(selectedExercise)
-                
-                // Get the position of the selected exercise in the honeycomb grid
-                let test = self?.getPositionForExercise(selectedExercise)
-                self?.confettiView.startConfettiCannon(at: test!)
+//                print("LONG PRESSED: \(selectedExercise)")
+//                self?.addCompletedExercise(selectedExercise)
+//                
+//                // Get the position of the selected exercise in the honeycomb grid
+//                let test = self?.getPositionForExercise(selectedExercise)
+//                self?.confettiView.startConfettiCannon(at: test!)
             }
         )
         
