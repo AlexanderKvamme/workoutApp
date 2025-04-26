@@ -1,29 +1,28 @@
 import UIKit
 
 class ConfettiView: UIView {
-    private var emitter: CAEmitterLayer!
+    // Keep track of active emitters
+    private var emitters: [CAEmitterLayer] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setup()
+        backgroundColor = .clear
     }
     
-    private func setup() {
-        emitter = CAEmitterLayer()
-        // We'll set the position dynamically when triggered
-        emitter.emitterPosition = CGPoint.zero
-        // Use a point shape for a cannon-like effect
+    // Create a fresh emitter each time instead of reusing
+    private func createEmitterLayer(at position: CGPoint) -> CAEmitterLayer {
+        let emitter = CAEmitterLayer()
+        emitter.emitterPosition = position
         emitter.emitterShape = .point
-        // Small emitter size for concentrated burst
         emitter.emitterSize = CGSize(width: 20, height: 20)
-        // Additive rendering for brighter colors
         emitter.renderMode = .additive
         
+        // Create cells with the exact same visual properties as the original
         let colors: [UIColor] = [
             .systemRed,
             .systemBlue,
@@ -39,38 +38,30 @@ class ConfettiView: UIView {
         
         for color in colors {
             let cell = CAEmitterCell()
-            // Higher birth rate for more particles
+            // Exactly the same parameters as your original code
             cell.birthRate = 100
-            // Shorter lifetime for a quick burst
             cell.lifetime = 2.0
             cell.lifetimeRange = 1.0
-            // Higher velocity for explosive effect
             cell.velocity = 600
             cell.velocityRange = 200
-            // Emit in all directions (360 degrees)
             cell.emissionRange = .pi * 2
             cell.spin = 3.5
             cell.spinRange = 4
-            // Start larger and shrink
             cell.scale = 0.1
             cell.scaleRange = 0.1
             cell.scaleSpeed = -0.03
-            // Add some physics
-            cell.yAcceleration = 70 // gravity
-            // Create different shapes for variety
+            cell.yAcceleration = 70
             cell.contents = createConfettiShape(color: color)
             
             cells.append(cell)
         }
         
         emitter.emitterCells = cells
-        layer.addSublayer(emitter)
-        
-        // Initially hidden
-        emitter.birthRate = 0
+        return emitter
     }
     
     private func createConfettiShape(color: UIColor) -> CGImage? {
+        // Exactly the same shape creation as your original code
         let size = CGSize(width: 24, height: 24)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         
@@ -106,21 +97,55 @@ class ConfettiView: UIView {
     }
     
     func startConfettiCannon(at position: CGPoint) {
-        // Update emitter position to the tap location
-        emitter.emitterPosition = position
+        print("Starting cannon at position: \(position)")
         
-        // Create a burst effect by briefly setting a high birth rate
+        // Ensure we're on the main thread
+        if !Thread.isMainThread {
+            DispatchQueue.main.async { [weak self] in
+                self?.startConfettiCannon(at: position)
+            }
+            return
+        }
+        
+        // Create a fresh emitter for this burst
+        let emitter = createEmitterLayer(at: position)
+        layer.addSublayer(emitter)
+        emitters.append(emitter)
+        
+        // Start emitting - exactly like your original code
         emitter.birthRate = 1
         
-        // Explosive animation
+        // Explosive animation - exactly like your original code
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.1)
         emitter.beginTime = CACurrentMediaTime()
         CATransaction.commit()
         
-        // Stop emitting after a very short duration (cannon burst effect)
+        // Stop emitting after a short duration - exactly like your original code
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.emitter.birthRate = 0
+            emitter.birthRate = 0
+            
+            // Clean up after animation completes
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
+                emitter.removeFromSuperlayer()
+                if let index = self?.emitters.firstIndex(where: { $0 === emitter }) {
+                    self?.emitters.remove(at: index)
+                }
+            }
         }
+    }
+    
+    // Clean up method - call this when the view is about to be removed
+    func cleanup() {
+        for emitter in emitters {
+            emitter.removeFromSuperlayer()
+        }
+        emitters.removeAll()
+    }
+    
+    // Override removeFromSuperview to ensure cleanup
+    override func removeFromSuperview() {
+        cleanup()
+        super.removeFromSuperview()
     }
 }

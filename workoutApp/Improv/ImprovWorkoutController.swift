@@ -112,10 +112,8 @@ class ImprovWorkoutController: UIViewController {
                 self?.addCompletedExercise(selectedExercise)
                 
                 // Get the position of the selected exercise in the honeycomb grid
-                if let position = self?.getPositionForExercise(selectedExercise) {
-                    // Trigger confetti at that position
-                    self?.confettiView.startConfettiCannon(at: position)
-                }
+                let test = self?.getPositionForExercise(selectedExercise)
+                self?.confettiView.startConfettiCannon(at: test!)
             }
         )
         
