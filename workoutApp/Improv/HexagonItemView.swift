@@ -51,7 +51,7 @@ class HexagonItemView: UIView {
         let textLabel = UILabel()
         textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
         textLabel.textAlignment = .center
-        textLabel.font = AKFont.round(.bold, 20)
+        textLabel.font = AKFont.round(.black, 20)
         textLabel.numberOfLines = 0
         textLabel.adjustsFontSizeToFitWidth = true
         textLabel.minimumScaleFactor = 0.5

@@ -7,7 +7,7 @@ class StripesView: UIView {
     
     private var stripesLayer: CAShapeLayer?
     private var stripeCount: Int = 3 // Default to 3 stripes
-    private var stripeColor: UIColor = UIColor.white.withAlphaComponent(0.75)
+    private var stripeColor: UIColor = UIColor.white.withAlphaComponent(0.35)
     private var stripeWidth: CGFloat = 8.0
     private var stripeSpacing: CGFloat = 16.0
     private var stripeAngle: CGFloat = .pi / 4
