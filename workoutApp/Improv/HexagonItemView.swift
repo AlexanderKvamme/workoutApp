@@ -51,7 +51,7 @@ class HexagonItemView: UIView {
         let textLabel = UILabel()
         textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
         textLabel.textAlignment = .center
-        textLabel.font = AKFont.round(.bold, 16)
+        textLabel.font = AKFont.round(.bold, 20)
         textLabel.numberOfLines = 0
         textLabel.adjustsFontSizeToFitWidth = true
         textLabel.minimumScaleFactor = 0.5
@@ -59,7 +59,8 @@ class HexagonItemView: UIView {
         addSubview(textLabel)
         self.textLabel = textLabel
         
-        configureStripes(count: 0)
+        configureStripes(count: 0,
+                         color: .purple)
     }
     
     // MARK: - Public Methods
@@ -94,7 +95,7 @@ class HexagonItemView: UIView {
     ///   - angle: Angle of the stripes in radians (default is π/4 or 45°)
     ///   - inset: How much to inset the stripes from the edges (0.0-1.0, where 0.2 means 20% inset)
     func configureStripes(count: Int,
-                          color: UIColor = UIColor.akLight,
+                          color: UIColor = UIColor.green,
                           width: CGFloat = 10.0,
                           spacing: CGFloat = 16.0,
                           angle: CGFloat = .pi / 4,

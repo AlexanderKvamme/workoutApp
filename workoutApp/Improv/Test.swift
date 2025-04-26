@@ -7,7 +7,7 @@ class StripesView: UIView {
     
     private var stripesLayer: CAShapeLayer?
     private var stripeCount: Int = 3 // Default to 3 stripes
-    private var stripeColor: UIColor = .white
+    private var stripeColor: UIColor = UIColor.white.withAlphaComponent(0.75)
     private var stripeWidth: CGFloat = 8.0
     private var stripeSpacing: CGFloat = 16.0
     private var stripeAngle: CGFloat = .pi / 4
@@ -28,6 +28,7 @@ class StripesView: UIView {
     }
     
     private func setupView() {
+        self.transform = self.transform.scaledBy(x: 0.9, y: 0.9)
         backgroundColor = .clear
         isUserInteractionEnabled = false
         
@@ -53,14 +54,12 @@ class StripesView: UIView {
     ///   - inset: How much to inset the stripes from the edges (0.0-1.0, where 0.2 means 20% inset)
     ///   - maxCount: Maximum number of stripes (default is 10)
     func configureStripes(count: Int = 3,
-                          color: UIColor = .white,
                           width: CGFloat = 8.0,
                           spacing: CGFloat = 16.0,
                           angle: CGFloat = .pi / 4,
                           inset: CGFloat = 0.2,
                           maxCount: Int = 10) {
         self.stripeCount = count
-        self.stripeColor = color
         self.stripeWidth = width
         self.stripeSpacing = spacing
         self.stripeAngle = angle
@@ -92,7 +91,7 @@ class StripesView: UIView {
         }
         
         UIView.animate(withDuration: 1) {
-            let scale = 0.9
+            let scale = 0.95
             self.transform = self.transform.scaledBy(x: scale, y: scale)
         }
         

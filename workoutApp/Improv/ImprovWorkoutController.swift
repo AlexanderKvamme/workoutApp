@@ -82,9 +82,20 @@ class ImprovWorkoutController: UIViewController {
     }
     
     private func setupView() {
+        
+        // Adaptive sizing based on number of exercises
+        let hexSize: CGFloat
+        if exercises.count <= 6 {
+            hexSize = UIScreen.main.bounds.width/2.5  // Larger hexagons for fewer exercises
+        } else if exercises.count <= 12 {
+            hexSize = UIScreen.main.bounds.width/3    // Medium hexagons
+        } else {
+            hexSize = UIScreen.main.bounds.width/4    // Smaller hexagons for many exercises
+        }
+        
         // Create the honeycomb grid with smaller hexagons
         let honeycombGrid = HoneycombGridView<String>(
-            hexagonSize: UIScreen.main.bounds.width/4,
+            hexagonSize: hexSize,
             textProvider: { $0 }
         )
         
