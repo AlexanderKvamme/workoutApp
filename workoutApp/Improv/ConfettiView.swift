@@ -20,7 +20,7 @@ class ConfettiView: UIView {
         // Use a point shape for a cannon-like effect
         emitter.emitterShape = .point
         // Small emitter size for concentrated burst
-        emitter.emitterSize = CGSize(width: 10, height: 10)
+        emitter.emitterSize = CGSize(width: 20, height: 20)
         // Additive rendering for brighter colors
         emitter.renderMode = .additive
         
@@ -45,8 +45,8 @@ class ConfettiView: UIView {
             cell.lifetime = 2.0
             cell.lifetimeRange = 1.0
             // Higher velocity for explosive effect
-            cell.velocity = 350
-            cell.velocityRange = 150
+            cell.velocity = 600
+            cell.velocityRange = 200
             // Emit in all directions (360 degrees)
             cell.emissionRange = .pi * 2
             cell.spin = 3.5
@@ -71,7 +71,7 @@ class ConfettiView: UIView {
     }
     
     private func createConfettiShape(color: UIColor) -> CGImage? {
-        let size = CGSize(width: 8, height: 8)
+        let size = CGSize(width: 24, height: 24)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
