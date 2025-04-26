@@ -9,7 +9,7 @@ class DotProgressView: UIView {
     private let dotSize: CGFloat = 14
     private let dotSpacing: CGFloat = 16
     private var completedColor: UIColor = .black
-    private var remainingColor: UIColor = .lightGray
+    private var remainingColor: UIColor = .black.withAlphaComponent(0.1)
     private let trackHeight: CGFloat = 32
     private var sidePadding: CGFloat = 24  // Padding before first dot and after last dot
     
@@ -65,12 +65,10 @@ class DotProgressView: UIView {
     func configure(current: Int,
                   total: Int,
                   completedColor: UIColor = .black,
-                  remainingColor: UIColor = .lightGray,
                   sidePadding: CGFloat = 24) {
         self.currentStep = max(0, min(current, total))
         self.totalSteps = max(1, total)
         self.completedColor = completedColor
-        self.remainingColor = remainingColor
         self.sidePadding = sidePadding
         
         // Update colors
