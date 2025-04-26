@@ -13,6 +13,11 @@ class DotProgressView: UIView {
     private let trackHeight: CGFloat = 32
     private var sidePadding: CGFloat = 24  // Padding before first dot and after last dot
     
+    // Progress layer for animation
+    private var progressLayer: CALayer?
+    private var backgroundLayer: CALayer?
+    private var dotsLayer: CALayer?
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -27,6 +32,25 @@ class DotProgressView: UIView {
     
     private func setupView() {
         backgroundColor = .clear
+        
+        // Create background track layer
+        let bgLayer = CALayer()
+        bgLayer.cornerRadius = trackHeight / 2
+        bgLayer.backgroundColor = remainingColor.cgColor
+        layer.addSublayer(bgLayer)
+        backgroundLayer = bgLayer
+        
+        // Create progress layer
+        let progLayer = CALayer()
+        progLayer.cornerRadius = trackHeight / 2
+        progLayer.backgroundColor = completedColor.cgColor
+        layer.addSublayer(progLayer)
+        progressLayer = progLayer
+        
+        // Create dots layer (will be populated in layoutSubviews)
+        let dotsContainerLayer = CALayer()
+        layer.addSublayer(dotsContainerLayer)
+        dotsLayer = dotsContainerLayer
     }
     
     // MARK: - Public Methods
@@ -48,7 +72,12 @@ class DotProgressView: UIView {
         self.completedColor = completedColor
         self.remainingColor = remainingColor
         self.sidePadding = sidePadding
-        setNeedsDisplay()
+        
+        // Update colors
+        backgroundLayer?.backgroundColor = remainingColor.cgColor
+        progressLayer?.backgroundColor = completedColor.cgColor
+        
+        setNeedsLayout()
     }
     
     /// Animates the transition to the next step with a bump animation
@@ -62,73 +91,118 @@ class DotProgressView: UIView {
         // Update the model
         currentStep = nextStep
         
-        // Redraw with animation
-        UIView.animate(withDuration: 0.2) {
-            self.setNeedsDisplay()
-        }
+        // Animate the progress layer
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.3)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+        
+        // Update progress layer frame with animation
+        updateProgressLayerFrame()
+        
+        // Update dot colors
+        updateDotLayers()
+        
+        CATransaction.commit()
         
         // Add haptic feedback
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
     }
     
-    // MARK: - Drawing
+    // MARK: - Layout
     
-    override func draw(_ rect: CGRect) {
-        guard let context = UIGraphicsGetCurrentContext(), totalSteps > 0 else { return }
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        let width = rect.width
-        let height = rect.height
+        let width = bounds.width
+        let height = bounds.height
         let centerY = height / 2
         
         // Calculate total width needed for all dots with padding
         let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
-        let totalWidth = dotsWidth + (sidePadding * 2)
         
         // Center everything horizontally
         let startX = (width - dotsWidth) / 2
         
-        // Draw the track background
-        let trackPath = UIBezierPath(roundedRect: CGRect(
+        // Update background track layer
+        backgroundLayer?.frame = CGRect(
             x: startX - sidePadding,
             y: centerY - trackHeight/2,
             width: dotsWidth + (sidePadding * 2),
-            height: trackHeight),
-            cornerRadius: trackHeight/2)
-        remainingColor.setFill()
-        trackPath.fill()
+            height: trackHeight
+        )
         
-        // Draw the completed portion of the track
-        if currentStep > 0 {
-            let lastStep = currentStep == totalSteps
-            let endingExtraLength = lastStep ? sidePadding : 0
-            let completedWidth = CGFloat(currentStep) * (dotSize + dotSpacing) - 2*dotSpacing + endingExtraLength
-            let completedTrackPath = UIBezierPath(roundedRect: CGRect(
-                x: startX - sidePadding,
-                y: centerY - trackHeight/2,
-                width: completedWidth + (sidePadding * 2),
-                height: trackHeight),
-                cornerRadius: trackHeight/2)
-            completedColor.setFill()
-            completedTrackPath.fill()
+        // Update progress layer
+        updateProgressLayerFrame(animated: false)
+        
+        // Update dots
+        updateDotLayers()
+    }
+    
+    private func updateProgressLayerFrame(animated: Bool = true) {
+        let width = bounds.width
+        let height = bounds.height
+        let centerY = height / 2
+        
+        // Calculate total width needed for all dots with padding
+        let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
+        
+        // Center everything horizontally
+        let startX = (width - dotsWidth) / 2
+        
+        // Calculate completed width
+        let completedWidth: CGFloat
+        if currentStep <= 0 {
+            completedWidth = 0
+        } else if currentStep >= totalSteps {
+            completedWidth = dotsWidth + (sidePadding * 2)
+        } else {
+            completedWidth = CGFloat(currentStep) * (dotSize + dotSpacing) - dotSpacing + sidePadding + 8
         }
         
-        // Draw the dots
+        // Update progress layer
+        progressLayer?.frame = CGRect(
+            x: startX - sidePadding,
+            y: centerY - trackHeight/2,
+            width: completedWidth,
+            height: trackHeight
+        )
+    }
+    
+    private func updateDotLayers() {
+        guard let dotsLayer = dotsLayer else { return }
+        
+        // Remove existing dot layers
+        dotsLayer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        
+        let width = bounds.width
+        let height = bounds.height
+        let centerY = height / 2
+        
+        // Calculate total width needed for all dots with padding
+        let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
+        
+        // Center everything horizontally
+        let startX = (width - dotsWidth) / 2
+        
+        // Create new dot layers
         for i in 0..<totalSteps {
             let dotX = startX + CGFloat(i) * (dotSize + dotSpacing)
+            
+            // Create dot layer
+            let dotLayer = CAShapeLayer()
             let dotRect = CGRect(x: dotX, y: centerY - dotSize/2, width: dotSize, height: dotSize)
-            let dotPath = UIBezierPath(ovalIn: dotRect)
+            let dotPath = UIBezierPath(ovalIn: dotRect).cgPath
             
-            // Use white color for dots to make them stand out from the track
-            UIColor.white.setFill()
-            dotPath.fill()
+            dotLayer.path = dotPath
+            dotLayer.fillColor = UIColor.white.cgColor
+            dotLayer.lineWidth = 2
             
-            // Add border to dots
-            let borderColor = i < currentStep ? completedColor : remainingColor
-            borderColor.setStroke()
-            dotPath.stroke()
+            dotsLayer.addSublayer(dotLayer)
         }
     }
+    
+    // MARK: - Intrinsic Content Size
     
     override var intrinsicContentSize: CGSize {
         let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
