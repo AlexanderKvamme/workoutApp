@@ -11,7 +11,7 @@ class DotProgressView: UIView {
     private var completedColor: UIColor = .black
     private var remainingColor: UIColor = .black.withAlphaComponent(0.1)
     private let trackHeight: CGFloat = 32
-    private var sidePadding: CGFloat = 24  // Padding before first dot and after last dot
+    private var sidePadding: CGFloat = 12
     
     // Progress layer for animation
     private var progressLayer: CALayer?

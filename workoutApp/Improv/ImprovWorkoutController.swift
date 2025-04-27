@@ -8,6 +8,7 @@ class ImprovWorkoutController: UIViewController {
     private var exercises: [String] = []
     private var progressBar = DotProgressView()
     private var confettiView: ConfettiView!
+    private var timerView = TimerView()
     
     init(muscleGroup: Muscle) {
         self.muscleGroup = muscleGroup
@@ -27,10 +28,10 @@ class ImprovWorkoutController: UIViewController {
             action: #selector(showList)
         )
 
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationItem.hidesBackButton = false
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
-        
-        setup()
     }
     
     required init?(coder: NSCoder) {
@@ -46,25 +47,19 @@ class ImprovWorkoutController: UIViewController {
         confettiView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(confettiView)
         
-        setupView()
+        // Set up UI components
+        setupProgressBar()
+        setupTimerView()
+        setupHoneycombGrid()
         
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationItem.hidesBackButton = false
+        // Make sure navigation bar is visible
+        navigationController?.setNavigationBarHidden(true, animated: false)
+//        navigationController?.navigationBar.isHidden = false
+        
+        // Ensure back button is visible
+        navigationItem.hidesBackButton = false
         
         styleBackButton()
-        
-        setup()
-    }
-    
-    private func setup() {
-        view.addSubview(progressBar)
-        progressBar.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(64)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        
-        progressBar.configure(current: 0, total: 9)
     }
     
     override func viewDidLayoutSubviews() {
@@ -81,8 +76,32 @@ class ImprovWorkoutController: UIViewController {
         print("List button tapped")
     }
     
-    private func setupView() {
+    // MARK: - UI Setup Methods
+    
+    private func setupProgressBar() {
+        view.addSubview(progressBar)
+        progressBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.left.equalToSuperview().offset(16)
+            make.height.equalTo(40)
+        }
         
+        progressBar.configure(current: 0, total: 9)
+    }
+    
+    private func setupTimerView() {
+        view.addSubview(timerView)
+        timerView.snp.makeConstraints { make in
+            make.top.equalTo(progressBar)
+            make.left.equalTo(progressBar.snp.right).offset(-10)
+            make.right.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        timerView.configure(format: .minutesSeconds, textColor: .black)
+    }
+    
+    private func setupHoneycombGrid() {
         // Adaptive sizing based on number of exercises
         let hexSize: CGFloat
         if exercises.count <= 6 {
@@ -93,7 +112,7 @@ class ImprovWorkoutController: UIViewController {
             hexSize = UIScreen.main.bounds.width/4    // Smaller hexagons for many exercises
         }
         
-        // Create the honeycomb grid with smaller hexagons
+        // Create the honeycomb grid
         let honeycombGrid = HoneycombGridView<String>(
             hexagonSize: hexSize,
             textProvider: { $0 }
@@ -103,14 +122,11 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            honeycombGrid.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            honeycombGrid.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 20),
             honeycombGrid.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             honeycombGrid.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             honeycombGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
-        // Force layout to ensure the grid has a valid size
-        view.layoutIfNeeded()
         
         // Configure with exercises
         honeycombGrid.configure(
@@ -122,14 +138,19 @@ class ImprovWorkoutController: UIViewController {
                 self?.confettiView.startConfettiCannon(at: pos!)
                 
                 item.bumpStripes()
+                self?.timerView.reset()
+                self?.timerView.start()
             },
             onItemLongPressed: { [weak self] (selectedExercise, item) in
-//                print("LONG PRESSED: \(selectedExercise)")
-//                self?.addCompletedExercise(selectedExercise)
-//                
-//                // Get the position of the selected exercise in the honeycomb grid
-//                let test = self?.getPositionForExercise(selectedExercise)
-//                self?.confettiView.startConfettiCannon(at: test!)
+                print("LONG PRESSED: \(selectedExercise)")
+                
+                // Start the timer when long pressed
+//                self?.timerView.start()
+                
+                // You can also add other actions here
+                // self?.addCompletedExercise(selectedExercise)
+                // let pos = self?.getPositionForExercise(selectedExercise)
+                // self?.confettiView.startConfettiCannon(at: pos!)
             }
         )
         
