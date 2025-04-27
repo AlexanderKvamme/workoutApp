@@ -17,6 +17,14 @@ class ImprovWorkoutController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         
+        let wStyle = DatabaseFacade.getWorkoutStyle(named: "IMPROV") ?? DatabaseFacade.makeWorkoutStyle(named: "IMPROV")
+        let workout = DatabaseFacade.makeWorkout(withName: "Improv",
+                                   workoutStyle: wStyle,
+                                   muscles: [muscleGroup],
+                                   exercises: []) // FIXME: Start empty
+        // FIXME: Figure out a way of how to add exercises?
+        self.log = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
+
         let dbExercises = DatabaseFacade.fetchExercises(containing: muscleGroup) ?? []
         print("exercises: ", (dbExercises ?? []).map {$0.name ?? "NA" })
         exercises = dbExercises.map { $0 }
@@ -35,16 +43,6 @@ class ImprovWorkoutController: UIViewController {
         navigationController?.navigationItem.hidesBackButton = false
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
-        
-        let wStyle = DatabaseFacade.getWorkoutStyle(named: "IMPROV") ?? DatabaseFacade.makeWorkoutStyle(named: "IMPROV")
-        DatabaseFacade.makeWorkout(withName: "Improv",
-                                   workoutStyle: wStyle,
-                                   muscles: [muscleGroup],
-                                   exercises: []) // FIXME: Start empty
-        let workout = DatabaseFacade.makeWorkout()
-        private var log = DatabaseFacade.makeWorkoutLog(ofDesign: <#T##Workout#>)
-
-        // FIXME: Figure out a way of how to add exercises?
         
     }
     
@@ -150,7 +148,7 @@ class ImprovWorkoutController: UIViewController {
                 self?.popConfetti(on: hex)
                 
                 hex.bumpStripes() // Move into configure?
-                print("bam IWC had log: ", log)
+//                print("bam IWC had log: ", self?.log)
                 hex.configure(withExercise: selectedExercise, andLog: self?.log)
                 self?.startTimer()
             },
@@ -198,6 +196,11 @@ class ImprovWorkoutController: UIViewController {
     }
     
     private func addCompletedExercise(_ exercise: Exercise) {
+        print("IWC completed: ", exercise.name)
+        let eLog = DatabaseFacade.makeExerciseLog(forExercise: exercise)
+        print("IWC made eLog")
+        log.addToLoggedExercises(eLog)
+        print("IWD log now has exerciseLogs: ", log.loggedExercises?.count)
         progressBar.bump()
     }
     

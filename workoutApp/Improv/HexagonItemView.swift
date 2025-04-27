@@ -101,22 +101,35 @@ class HexagonItemView<T>: UIView {
         }
     }
     
-    // FIXME: Continue
     func configure(withExercise exercise: Exercise, andLog log: WorkoutLog?) {
-        print("shazam configuring exercise: ", exercise.name)
+        self.hexagonLayer?.fillColor = UIColor.white.cgColor
+        
         if let log = log {
             let sets = log.loggedExercises?.array as! [ExerciseLog]
-            print("shazam sets: ", sets.count)
-            print("shazam sets: ", sets)
+            let filteredSets = sets.filter { $0.getName() == exercise.getName() }
+            
+            let progressiveColors = [
+                    UIColor.white,         // 0-3 days (very recent)
+                    UIColor.akLightGray,   // 4-7 days
+                    UIColor.akGray,        // 8-13 days
+                    UIColor.akDarkGray,
+                    UIColor.black          // 14+ days (needs attention)
+                ]
+            
+            let count = filteredSets.count
+            if count >= progressiveColors.count {
+                self.hexagonLayer?.fillColor = progressiveColors.last?.cgColor
+            } else {
+                self.hexagonLayer?.fillColor = progressiveColors[count].cgColor
+            }
+            
         } else {
             print("❌ no workout log")
         }
 
         textLabel?.text = exercise.name
         
-        let performedExercises = log?.loggedExercises as? [ExerciseLog]
-        print(performedExercises)
-        self.hexagonLayer?.fillColor = UIColor.random.cgColor
+        
     }
 
     // MARK: - Public Methods
