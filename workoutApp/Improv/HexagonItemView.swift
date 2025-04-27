@@ -233,7 +233,6 @@ class HexagonItemView<T>: UIView {
     ///   - color: Optional color for the dots
     ///   - completion: Optional completion handler
     func bumpDots(color: UIColor? = nil, completion: (() -> Void)? = nil) {
-        print("HexagonItemView.bumpDots called")
         if dotsView == nil {
             print("DotsView is nil, setting up...")
             setupDotsView()

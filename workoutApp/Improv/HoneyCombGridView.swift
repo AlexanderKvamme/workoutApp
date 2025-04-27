@@ -285,10 +285,10 @@ class HoneycombGridView<T>: UIView {
         hexView.addGestureRecognizer(tapGesture)
         
         // Add long press gesture recognizer
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(hexagonLongPressed(_:)))
-        longPressGesture.minimumPressDuration = 0.1 // Start quickly for visual feedback
-        hexView.isMultipleTouchEnabled = true
-        hexView.addGestureRecognizer(longPressGesture)
+//        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(hexagonLongPressed(_:)))
+//        longPressGesture.minimumPressDuration = 0.1 // Start quickly for visual feedback
+//        hexView.isMultipleTouchEnabled = true
+//        hexView.addGestureRecognizer(longPressGesture)
         
         hexView.tag = index
         
