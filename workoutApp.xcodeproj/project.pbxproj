@@ -140,6 +140,7 @@
 		DDD0D546295F51A300CD11A5 /* AKTimerStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */; };
 		DDD0D548295F746100CD11A5 /* PostWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D547295F746100CD11A5 /* PostWorkoutView.swift */; };
 		DDD0D54A296B63DB00CD11A5 /* AKSuperStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0D549296B63DB00CD11A5 /* AKSuperStepper.swift */; };
+		DDD5300C2DBEAF0E00CD6FFC /* DotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD5300B2DBEAF0B00CD6FFC /* DotsView.swift */; };
 		DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */; };
 		DDD88F521F8CE5BD00552153 /* String Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD88F511F8CE5BD00552153 /* String Extensions.swift */; };
 		DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */; };
@@ -316,6 +317,7 @@
 		DDD0D545295F51A300CD11A5 /* AKTimerStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKTimerStatusBar.swift; sourceTree = "<group>"; };
 		DDD0D547295F746100CD11A5 /* PostWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostWorkoutView.swift; sourceTree = "<group>"; };
 		DDD0D549296B63DB00CD11A5 /* AKSuperStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKSuperStepper.swift; sourceTree = "<group>"; };
+		DDD5300B2DBEAF0B00CD6FFC /* DotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsView.swift; sourceTree = "<group>"; };
 		DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval Extensions.swift"; sourceTree = "<group>"; };
 		DDD88F511F8CE5BD00552153 /* String Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String Extensions.swift"; sourceTree = "<group>"; };
 		DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableProtocols.swift; sourceTree = "<group>"; };
@@ -927,6 +929,7 @@
 				DDFEA4D82DB59ECF00C4F787 /* HexagonalGridView.swift */,
 				DDB3BEF92DB68A3500411AC5 /* HoneyCombGridView.swift */,
 				DD01CF6E2DBCED3100D63A82 /* HexagonItemView.swift */,
+				DDD5300B2DBEAF0B00CD6FFC /* DotsView.swift */,
 				DDFEA4DA2DB59EE900C4F787 /* ViewController.swift */,
 			);
 			path = Improv;
@@ -1152,6 +1155,7 @@
 				DD4FF01D1F6E9CCB005040A0 /* ExerciseExtensions.swift in Sources */,
 				DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */,
 				DDB3BEFA2DB68A3A00411AC5 /* HoneyCombGridView.swift in Sources */,
+				DDD5300C2DBEAF0E00CD6FFC /* DotsView.swift in Sources */,
 				DD151E021ED47C390014DBC1 /* UIStackView Extensions.swift in Sources */,
 				DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */,
 				DD0EB24B1F46FE9200CDA1CF /* ExerciseCellForHistory.swift in Sources */,

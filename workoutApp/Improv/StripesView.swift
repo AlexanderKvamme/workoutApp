@@ -39,7 +39,7 @@ class StripesView: UIView {
         layer.addSublayer(newStripesLayer)
         stripesLayer = newStripesLayer
         
-        self.transform = self.transform.rotated(by: .pi/12)
+//        self.transform = self.transform.rotated(by: .pi/12)
         clipsToBounds = false
     }
     

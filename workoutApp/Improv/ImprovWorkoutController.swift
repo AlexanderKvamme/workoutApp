@@ -147,7 +147,9 @@ class ImprovWorkoutController: UIViewController {
                 self?.addCompletedExercise(selectedExercise)
                 self?.popConfetti(on: hex)
                 
-                hex.bumpStripes() // Move into configure?
+//                hex.bumpStripes() // Move into configure?
+                hex.bumpDots()
+                
 //                print("bam IWC had log: ", self?.log)
                 hex.configure(withExercise: selectedExercise, andLog: self?.log)
                 self?.startTimer()
@@ -196,11 +198,8 @@ class ImprovWorkoutController: UIViewController {
     }
     
     private func addCompletedExercise(_ exercise: Exercise) {
-        print("IWC completed: ", exercise.name)
         let eLog = DatabaseFacade.makeExerciseLog(forExercise: exercise)
-        print("IWC made eLog")
         log.addToLoggedExercises(eLog)
-        print("IWD log now has exerciseLogs: ", log.loggedExercises?.count)
         progressBar.bump()
     }
     

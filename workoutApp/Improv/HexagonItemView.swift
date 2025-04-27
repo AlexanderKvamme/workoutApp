@@ -1,10 +1,3 @@
-//
-//  HexagonItemView.swift
-//  workoutApp
-//
-//  Created by Alexander Kvamme on 26/04/2025.
-//  Copyright © 2025 Alexander Kvamme. All rights reserved.
-//
 import AKKIT
 import UIKit
 
@@ -18,6 +11,9 @@ class HexagonItemView<T>: UIView {
     
     // Stripes view
     private var stripesView: StripesView?
+    
+    // Dots view
+    private var dotsView: DotsView?
     
     // Long press properties
     private let longPressDuration: TimeInterval = 1.0
@@ -68,8 +64,40 @@ class HexagonItemView<T>: UIView {
         addSubview(textLabel)
         self.textLabel = textLabel
         
-        configureStripes(count: 0,
-                         color: .purple)
+        // Setup stripes view
+        configureStripes(count: 0, color: .purple)
+        
+        // Setup dots view (after other views are set up)
+        setupDotsView()
+    }
+    
+    private func setupDotsView() {
+        // Remove any existing dots view
+        dotsView?.removeFromSuperview()
+        
+        // Create dots view
+        let newDotsView = DotsView(frame: bounds)
+        addSubview(newDotsView) // Add as a direct subview
+        dotsView = newDotsView
+        dotsView!.transform = dotsView!.transform.rotated(by: 4*Double.pi/3)
+        dotsView?.alpha = 0.5
+        
+        // Make sure dots view fills the bounds
+        newDotsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            newDotsView.topAnchor.constraint(equalTo: topAnchor),
+            newDotsView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            newDotsView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            newDotsView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
+        // Configure initial dots (optional)
+        newDotsView.configureDots(count: 0, size: 8.0, spacing: 5.0, color: .white)
+        
+        // Bring text label to front to ensure it's visible
+        if let textLabel = textLabel {
+            bringSubviewToFront(textLabel)
+        }
     }
     
     func configure(withMuscle muscle: Muscle) {
@@ -145,8 +173,6 @@ class HexagonItemView<T>: UIView {
 
     // MARK: - Public Methods
     
-    // FIXME: Continue here... send in the entire exercise and reconfigure the cell...
-    // make the cells go from white to black
     func configure(withItem item: T, log: WorkoutLog?) {
         print("configure!")
         if let item = item as? Muscle {
@@ -161,14 +187,6 @@ class HexagonItemView<T>: UIView {
     
     // MARK: - Stripes Methods
     
-    /// Configure the stripes appearance
-    /// - Parameters:
-    ///   - count: Number of stripes to display
-    ///   - color: Color of the stripes
-    ///   - width: Width of each stripe
-    ///   - spacing: Spacing between stripes
-    ///   - angle: Angle of the stripes in radians (default is π/4 or 45°)
-    ///   - inset: How much to inset the stripes from the edges (0.0-1.0, where 0.2 means 20% inset)
     func configureStripes(count: Int,
                           color: UIColor = UIColor.green,
                           width: CGFloat = 10.0,
@@ -208,6 +226,34 @@ class HexagonItemView<T>: UIView {
         stripesView?.bumpStripes()
     }
     
+    // MARK: - Dots Methods
+    
+    /// Bump the dots (add one more dot)
+    /// - Parameters:
+    ///   - color: Optional color for the dots
+    ///   - completion: Optional completion handler
+    func bumpDots(color: UIColor? = nil, completion: (() -> Void)? = nil) {
+        print("HexagonItemView.bumpDots called")
+        if dotsView == nil {
+            print("DotsView is nil, setting up...")
+            setupDotsView()
+        }
+        dotsView?.bumpDots(color: color, completion: completion)
+    }
+
+    /// Reset dots when needed
+    func resetDots(animated: Bool = true) {
+        dotsView?.resetDots(animated: animated)
+    }
+
+    /// Configure dots
+    func configureDots(count: Int = 0,
+                      size: CGFloat = 8.0,
+                      spacing: CGFloat = 5.0,
+                      color: UIColor = .white) {
+        dotsView?.configureDots(count: count, size: size, spacing: spacing, color: color)
+    }
+    
     // MARK: - Long Press Handling
     
     /// Set the action to be performed when long press completes
@@ -218,16 +264,6 @@ class HexagonItemView<T>: UIView {
     func startLongPressAnimation() {
         // Cancel any existing animation
         cancelLongPressAnimation()
-        
-        // Create progress shape layer if needed
-//        if progressShapeLayer == nil {
-//            let progressLayer = CAShapeLayer()
-//            progressLayer.path = createHexagonPath().cgPath
-//            progressLayer.fillColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor // Semi-transparent fill
-//            progressLayer.opacity = 0 // Start with opacity 0
-//            layer.insertSublayer(progressLayer, below: hexagonLayer) // Insert below the main hexagon
-//            progressShapeLayer = progressLayer
-//        }
         
         // Set up display link for smooth animation
         animationStartTime = CACurrentMediaTime()
@@ -305,11 +341,6 @@ class HexagonItemView<T>: UIView {
         if let textLabel = textLabel {
             textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
         }
-        
-        // Update stripes view mask
-//        if let stripesView = stripesView {
-//            stripesView.setHexagonMask(
-//        }
         
         // Update progress layer if needed
         if let progressShapeLayer = progressShapeLayer {

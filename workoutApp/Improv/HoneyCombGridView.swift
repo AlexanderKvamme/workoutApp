@@ -314,7 +314,6 @@ class HoneycombGridView<T>: UIView {
         
         // Call the selection handler
         let selectedItem = items[index]
-        print("bam selected will be called in 0.2")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             self?.onItemSelected?(selectedItem, hexView)
         }
