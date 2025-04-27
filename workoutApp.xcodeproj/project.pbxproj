@@ -143,6 +143,7 @@
 		DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */; };
 		DDD88F521F8CE5BD00552153 /* String Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD88F511F8CE5BD00552153 /* String Extensions.swift */; };
 		DDD8F6761F260D1E002ED206 /* ExerciseTableProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */; };
+		DDDC40FE2DBE36DE001FC230 /* Date Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDC40FD2DBE36DA001FC230 /* Date Extensions.swift */; };
 		DDDCA7791EDF6F4900F7544E /* UILabelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */; };
 		DDDE6E511ED4DED400A03886 /* BoxTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */; };
 		DDE55B961F2F733400ED1D15 /* WorkoutLogHistoryBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE55B951F2F733400ED1D15 /* WorkoutLogHistoryBoxCell.swift */; };
@@ -318,6 +319,7 @@
 		DDD73FC41F700681006B905D /* TimeInterval Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval Extensions.swift"; sourceTree = "<group>"; };
 		DDD88F511F8CE5BD00552153 /* String Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String Extensions.swift"; sourceTree = "<group>"; };
 		DDD8F6751F260D1E002ED206 /* ExerciseTableProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableProtocols.swift; sourceTree = "<group>"; };
+		DDDC40FD2DBE36DA001FC230 /* Date Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date Extensions.swift"; sourceTree = "<group>"; };
 		DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelExtensions.swift; sourceTree = "<group>"; };
 		DDDE6E501ED4DED400A03886 /* BoxTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxTableViewController.swift; sourceTree = "<group>"; };
 		DDE55B951F2F733400ED1D15 /* WorkoutLogHistoryBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogHistoryBoxCell.swift; sourceTree = "<group>"; };
@@ -521,6 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				DDE55B9D1F30AD4D00ED1D15 /* UserDefaults Extensions.swift */,
+				DDDC40FD2DBE36DA001FC230 /* Date Extensions.swift */,
 				DD151E011ED47C390014DBC1 /* UIStackView Extensions.swift */,
 				DDDCA7781EDF6F4900F7544E /* UILabelExtensions.swift */,
 				DD4FF0141F6C3383005040A0 /* UIImage Extensions.swift */,
@@ -1114,6 +1117,7 @@
 				DD372BB01F635F76007C35B8 /* WorkoutLogExtensions.swift in Sources */,
 				DDB3BEF82DB6874100411AC5 /* ImprovWorkoutController.swift in Sources */,
 				DD585D6B1EC5E03900962B19 /* TabBarSelectionIndicator.swift in Sources */,
+				DDDC40FE2DBE36DE001FC230 /* Date Extensions.swift in Sources */,
 				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,
 				1121237220835BBA005C27D2 /* Muscle+CoreDataProperties.swift in Sources */,

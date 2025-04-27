@@ -11,7 +11,7 @@ import AKKIT
 import SnapKit
 
 
-let akGray = UIColor(hexString: "EDEDED")
+public let akGray = UIColor(hexString: "EDEDED")
 
 final class SummaryAnimationView: UIView {
     

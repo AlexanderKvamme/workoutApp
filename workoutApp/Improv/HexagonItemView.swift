@@ -44,7 +44,7 @@ class HexagonItemView<T>: UIView {
         // Create hexagon shape
         let hexagonLayer = CAShapeLayer()
         hexagonLayer.path = createHexagonPath().cgPath
-        hexagonLayer.fillColor = UIColor.black.cgColor
+        hexagonLayer.fillColor = UIColor.red.cgColor
         layer.addSublayer(hexagonLayer)
         self.hexagonLayer = hexagonLayer
         
@@ -64,15 +64,54 @@ class HexagonItemView<T>: UIView {
                          color: .purple)
     }
     
+    func configure(withMuscle muscle: Muscle) {
+        textLabel?.text = muscle.name
+        
+        let colors: [UIColor] = [
+            UIColor.white,         // 0-3 days (very recent)
+            UIColor.akLightGray,   // 4-7 days
+            UIColor.akGray,        // 8-13 days
+            UIColor.black          // 14+ days (needs attention)
+        ]
+        
+        let daysSincePerformance = muscle.lastPerformance()?.daysSinceNow() ?? Int.max
+        print("Last \(muscle.getName()) performance: \(daysSincePerformance) days ago")
+        
+        // Select color based on days since last performance
+        let selectedColor: UIColor
+        
+        if daysSincePerformance >= 14 {
+            selectedColor = colors[3]  // black (14+ days)
+        } else if daysSincePerformance >= 8 {
+            selectedColor = colors[2]  // dark gray (8-13 days)
+        } else if daysSincePerformance >= 4 {
+            selectedColor = colors[1]  // light gray (4-7 days)
+        } else {
+            selectedColor = colors[0]  // white (0-3 days)
+        }
+        
+        // Apply the selected color
+        self.hexagonLayer?.fillColor = selectedColor.cgColor
+        
+        // Adjust text color for readability
+        if selectedColor == UIColor.white {
+            textLabel?.textColor = UIColor.akLightGray
+        } else {
+            textLabel?.textColor = UIColor.white
+        }
+    }
+    
+    func configure(withExercise exercise: Exercise) {
+        textLabel?.text = exercise.name
+    }
+
     // MARK: - Public Methods
     
     func configure(withItem item: T) {
-//        textLabel?.text = text
-        
         if let item = item as? Muscle {
-            textLabel?.text = item.name
+            configure(withMuscle: item)
         } else if let item = item as? Exercise {
-            textLabel?.text = item.name
+            configure(withExercise: item)
         } else {
             textLabel?.text = "not muscle"
         }
