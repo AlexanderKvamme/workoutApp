@@ -276,9 +276,9 @@ class HoneycombGridView<T>: UIView {
     }
     
     // Create a custom UIView for the hexagon that handles its own touch events
-    private func createHexagonView(x: CGFloat, y: CGFloat, item: T, text: String, index: Int) -> HexagonItemView<T> {
+    private func createHexagonView(x: CGFloat, y: CGFloat, item: T, log: WorkoutLog? = nil, text: String, index: Int) -> HexagonItemView<T> {
         let hexView = HexagonItemView<T>(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
-        hexView.configure(withItem: item)
+        hexView.configure(withItem: item, log: log)
         
         // Add tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hexagonTapped(_:)))

@@ -101,17 +101,30 @@ class HexagonItemView<T>: UIView {
         }
     }
     
-    func configure(withExercise exercise: Exercise) {
+    // FIXME: Continue
+    func configure(withExercise exercise: Exercise, andLog log: WorkoutLog?) {
+        print("shazam configuring exercise: ", exercise.name)
+        if let log = log {
+            let sets = log.loggedExercises?.array as! [ExerciseLog]
+            print("shazam sets: ", sets.count)
+            print("shazam sets: ", sets)
+        }
+
         textLabel?.text = exercise.name
+        self.hexagonLayer?.fillColor = UIColor.random.cgColor
     }
 
     // MARK: - Public Methods
     
-    func configure(withItem item: T) {
+    // FIXME: Continue here... send in the entire exercise and reconfigure the cell...
+    // make the cells go from white to black
+    func configure(withItem item: T, log: WorkoutLog?) {
+        print("configure!")
         if let item = item as? Muscle {
             configure(withMuscle: item)
         } else if let item = item as? Exercise {
-            configure(withExercise: item)
+            print("configuring exercise cell: ", item.name)
+            configure(withExercise: item, andLog: log)
         } else {
             textLabel?.text = "not muscle"
         }

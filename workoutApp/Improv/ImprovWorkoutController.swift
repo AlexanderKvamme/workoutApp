@@ -131,13 +131,14 @@ class ImprovWorkoutController: UIViewController {
         // Configure with exercises
         honeycombGrid.configure(
             with: exercises,
-            onItemSelected: { [weak self] (selectedExercise, item) in
+            onItemSelected: { [weak self] (selectedExercise, hex) in
                 print("item selected")
+                
+                let pos = self?.getPositionForHex(hex)
                 self?.addCompletedExercise(selectedExercise)
-                let pos = self?.getPositionForExercise(selectedExercise)
                 self?.confettiView.startConfettiCannon(at: pos!)
                 
-                item.bumpStripes()
+                hex.bumpStripes()
                 self?.timerView.reset()
                 self?.timerView.start()
             },
@@ -157,12 +158,21 @@ class ImprovWorkoutController: UIViewController {
         self.honeycombGrid = honeycombGrid
     }
     
-    private func getPositionForExercise(_ exercise: Exercise) -> CGPoint {
-        // This is a simplified approach - you may need to adjust this based on your HoneycombGridView implementation
-        // Ideally, your HoneycombGridView should provide a way to get the center position of a specific cell
+    private func getPositionForHex(_ hex: HexagonItemView<Exercise>) -> CGPoint {
+        // Get the frame of the hex in its own coordinate system
+        let hexFrame = hex.frame
         
-        // For now, let's use the center of the view as a fallback
-        return view.center
+        // Convert the center point of the hex to the coordinate system of the view controller's view
+        if let hexSuperview = hex.superview {
+            // First convert to the superview's coordinate system
+            let centerInSuperview = CGPoint(x: hexFrame.midX, y: hexFrame.midY)
+            
+            // Then convert from the superview's coordinate system to the view controller's view coordinate system
+            return hexSuperview.convert(centerInSuperview, to: view)
+        }
+        
+        // Fallback to the hex's center if conversion isn't possible
+        return hex.center
     }
     
     private func addCompletedExercise(_ exercise: Exercise) {
