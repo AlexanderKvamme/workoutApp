@@ -9,7 +9,8 @@ import AKKIT
 import UIKit
 
 // MARK: - HexagonItemView
-class HexagonItemView: UIView {
+class HexagonItemView<T>: UIView {
+    
     // MARK: - Properties
     
     private var hexagonLayer: CAShapeLayer?
@@ -65,8 +66,16 @@ class HexagonItemView: UIView {
     
     // MARK: - Public Methods
     
-    func configure(withText text: String) {
-        textLabel?.text = text
+    func configure(withItem item: T) {
+//        textLabel?.text = text
+        
+        if let item = item as? Muscle {
+            textLabel?.text = item.name
+        } else if let item = item as? Exercise {
+            textLabel?.text = item.name
+        } else {
+            textLabel?.text = "not muscle"
+        }
     }
     
     func animateHighlight() {

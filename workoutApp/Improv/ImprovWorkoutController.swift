@@ -4,8 +4,8 @@ import AKKIT
 // MARK: - ImprovWorkoutController
 class ImprovWorkoutController: UIViewController {
     private let muscleGroup: Muscle
-    private var honeycombGrid: HoneycombGridView<String>?
-    private var exercises: [String] = []
+    private var honeycombGrid: HoneycombGridView<Exercise>?
+    private var exercises: [Exercise] = []
     private var progressBar = DotProgressView()
     private var confettiView: ConfettiView!
     private var timerView = TimerView()
@@ -16,7 +16,7 @@ class ImprovWorkoutController: UIViewController {
         
         let dbExercises = DatabaseFacade.fetchExercises(containing: muscleGroup) ?? []
         print("exercises: ", (dbExercises ?? []).map {$0.name ?? "NA" })
-        exercises = dbExercises.map { $0.getName() }
+        exercises = dbExercises.map { $0 }
         
         let baseName = muscleGroup.name ?? "Exercise"
         title = baseName
@@ -113,9 +113,9 @@ class ImprovWorkoutController: UIViewController {
         }
         
         // Create the honeycomb grid
-        let honeycombGrid = HoneycombGridView<String>(
+        let honeycombGrid = HoneycombGridView<Exercise>(
             hexagonSize: hexSize,
-            textProvider: { $0 }
+            textProvider: { $0.getName() }
         )
         
         view.addSubview(honeycombGrid)
@@ -157,7 +157,7 @@ class ImprovWorkoutController: UIViewController {
         self.honeycombGrid = honeycombGrid
     }
     
-    private func getPositionForExercise(_ exercise: String) -> CGPoint {
+    private func getPositionForExercise(_ exercise: Exercise) -> CGPoint {
         // This is a simplified approach - you may need to adjust this based on your HoneycombGridView implementation
         // Ideally, your HoneycombGridView should provide a way to get the center position of a specific cell
         
@@ -165,8 +165,7 @@ class ImprovWorkoutController: UIViewController {
         return view.center
     }
     
-    private func addCompletedExercise(_ exercise: String) {
-        print("bam would add ", exercise)
+    private func addCompletedExercise(_ exercise: Exercise) {
         progressBar.bump()
     }
     

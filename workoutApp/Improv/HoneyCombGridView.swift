@@ -8,12 +8,12 @@ class HoneycombGridView<T>: UIView {
     private let spacing: CGFloat
     private var items: [T] = []
     private var textProvider: (T) -> String
-    private var onItemSelected: ((T, HexagonItemView) -> Void)?
-    private var onItemLongPressed: ((T, HexagonItemView) -> Void)?
+    private var onItemSelected: ((T, HexagonItemView<T>) -> Void)?
+    private var onItemLongPressed: ((T, HexagonItemView<T>) -> Void)?
     private var needsLayout = true
     
     // Store hexagon views and their positions for lookup
-    private var hexagonViews: [Int: HexagonItemView] = [:]
+    private var hexagonViews: [Int: HexagonItemView<T>] = [:]
     
     // Initializer with configuration options
     init(hexagonSize: CGFloat = UIScreen.main.bounds.width/3,
@@ -32,8 +32,8 @@ class HoneycombGridView<T>: UIView {
     
     // Configure the grid with data and selection handlers
     func configure(with items: [T],
-                  onItemSelected: @escaping (T, HexagonItemView) -> Void,
-                  onItemLongPressed: ((T, HexagonItemView) -> Void)? = nil) {
+                  onItemSelected: @escaping (T, HexagonItemView<T>) -> Void,
+                  onItemLongPressed: ((T, HexagonItemView<T>) -> Void)? = nil) {
         self.items = items
         self.onItemSelected = onItemSelected
         self.onItemLongPressed = onItemLongPressed
@@ -151,6 +151,7 @@ class HoneycombGridView<T>: UIView {
             let hexView = createHexagonView(
                 x: hexagonX,
                 y: hexagonY,
+                item: item,
                 text: textProvider(item),
                 index: index
             )
@@ -275,19 +276,9 @@ class HoneycombGridView<T>: UIView {
     }
     
     // Create a custom UIView for the hexagon that handles its own touch events
-    private func createHexagonView(x: CGFloat, y: CGFloat, text: String, index: Int) -> HexagonItemView {
-        let hexView = HexagonItemView(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
-        hexView.configure(withText: text)
-        
-        // Configure stripes - 3 stripes by default
-//        hexView.configureStripes(
-//            count: 3,
-//            color: .white,
-//            width: 6.0,
-//            spacing: hexagonSize / 6, // Space them evenly
-//            angle: .pi / 4,
-//            inset: 0.2
-//        )
+    private func createHexagonView(x: CGFloat, y: CGFloat, item: T, text: String, index: Int) -> HexagonItemView<T> {
+        let hexView = HexagonItemView<T>(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
+        hexView.configure(withItem: item)
         
         // Add tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hexagonTapped(_:)))
@@ -315,7 +306,7 @@ class HoneycombGridView<T>: UIView {
     }
     
     @objc private func hexagonTapped(_ sender: UITapGestureRecognizer) {
-        guard let hexView = sender.view as? HexagonItemView else { return }
+        guard let hexView = sender.view as? HexagonItemView<T> else { return }
         
         // Get the index and make sure it's valid
         let index = hexView.tag
@@ -333,7 +324,7 @@ class HoneycombGridView<T>: UIView {
     }
     
     @objc private func hexagonLongPressed(_ sender: UILongPressGestureRecognizer) {
-        guard let hexView = sender.view as? HexagonItemView else { return }
+        guard let hexView = sender.view as? HexagonItemView<T> else { return }
         
         print("hexagonLongPressed")
         
