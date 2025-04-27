@@ -97,7 +97,6 @@ class ConfettiView: UIView {
     }
     
     func startConfettiCannon(at position: CGPoint) {
-        print("Starting cannon at position: \(position)")
         
         // Ensure we're on the main thread
         if !Thread.isMainThread {

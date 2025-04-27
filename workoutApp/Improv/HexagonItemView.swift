@@ -108,9 +108,14 @@ class HexagonItemView<T>: UIView {
             let sets = log.loggedExercises?.array as! [ExerciseLog]
             print("shazam sets: ", sets.count)
             print("shazam sets: ", sets)
+        } else {
+            print("❌ no workout log")
         }
 
         textLabel?.text = exercise.name
+        
+        let performedExercises = log?.loggedExercises as? [ExerciseLog]
+        print(performedExercises)
         self.hexagonLayer?.fillColor = UIColor.random.cgColor
     }
 

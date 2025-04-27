@@ -1,5 +1,6 @@
 import UIKit
 import AKKIT
+import CoreData
 
 // MARK: - ImprovWorkoutController
 class ImprovWorkoutController: UIViewController {
@@ -9,9 +10,11 @@ class ImprovWorkoutController: UIViewController {
     private var progressBar = DotProgressView()
     private var confettiView: ConfettiView!
     private var timerView = TimerView()
-    
+    private var log: WorkoutLog!
+
     init(muscleGroup: Muscle) {
         self.muscleGroup = muscleGroup
+        
         super.init(nibName: nil, bundle: nil)
         
         let dbExercises = DatabaseFacade.fetchExercises(containing: muscleGroup) ?? []
@@ -32,6 +35,17 @@ class ImprovWorkoutController: UIViewController {
         navigationController?.navigationItem.hidesBackButton = false
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
+        
+        let wStyle = DatabaseFacade.getWorkoutStyle(named: "IMPROV") ?? DatabaseFacade.makeWorkoutStyle(named: "IMPROV")
+        DatabaseFacade.makeWorkout(withName: "Improv",
+                                   workoutStyle: wStyle,
+                                   muscles: [muscleGroup],
+                                   exercises: []) // FIXME: Start empty
+        let workout = DatabaseFacade.makeWorkout()
+        private var log = DatabaseFacade.makeWorkoutLog(ofDesign: <#T##Workout#>)
+
+        // FIXME: Figure out a way of how to add exercises?
+        
     }
     
     required init?(coder: NSCoder) {
@@ -132,15 +146,13 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.configure(
             with: exercises,
             onItemSelected: { [weak self] (selectedExercise, hex) in
-                print("item selected")
-                
-                let pos = self?.getPositionForHex(hex)
                 self?.addCompletedExercise(selectedExercise)
-                self?.confettiView.startConfettiCannon(at: pos!)
+                self?.popConfetti(on: hex)
                 
-                hex.bumpStripes()
-                self?.timerView.reset()
-                self?.timerView.start()
+                hex.bumpStripes() // Move into configure?
+                print("bam IWC had log: ", log)
+                hex.configure(withExercise: selectedExercise, andLog: self?.log)
+                self?.startTimer()
             },
             onItemLongPressed: { [weak self] (selectedExercise, item) in
                 print("LONG PRESSED: \(selectedExercise)")
@@ -156,6 +168,16 @@ class ImprovWorkoutController: UIViewController {
         )
         
         self.honeycombGrid = honeycombGrid
+    }
+    
+    private func popConfetti(on hex: HexagonItemView<Exercise>) {
+        let pos = getPositionForHex(hex)
+        confettiView.startConfettiCannon(at: pos)
+    }
+    
+    private func startTimer() {
+        timerView.reset()
+        timerView.start()
     }
     
     private func getPositionForHex(_ hex: HexagonItemView<Exercise>) -> CGPoint {

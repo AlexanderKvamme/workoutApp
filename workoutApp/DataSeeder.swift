@@ -21,7 +21,7 @@ final class DataSeeder {
     
     // Properties for seeding to Core Data
     private let defaultMuscles = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP", "OTHER"]
-    private let defaultWorkoutStyles = ["NORMAL", "WEIGHTED", "OTHER", "DROP SET", "SUPERSET", "CARDIO", "FUN", "TECHNIQUE"]
+    private let defaultWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
     private let defaultExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
     private let defaultMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
     
@@ -402,6 +402,10 @@ fileprivate final class WorkoutStyles {
     
     static var cardio: WorkoutStyle {
         return getOrMakeWorkoutStyle(named: "CARDIO")
+    }
+    
+    static var improv: WorkoutStyle {
+        return getOrMakeWorkoutStyle(named: "IMPROV")
     }
     
     static var dropSet: WorkoutStyle {
