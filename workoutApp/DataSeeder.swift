@@ -20,7 +20,7 @@ final class DataSeeder {
     private let context: NSManagedObjectContext
     
     // Properties for seeding to Core Data
-    private let defaultMuscles = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP", "OTHER"]
+    private let defaultMuscles = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
     private let defaultWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
     private let defaultExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
     private let defaultMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown

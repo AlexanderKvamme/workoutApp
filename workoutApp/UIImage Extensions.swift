@@ -48,7 +48,7 @@ extension UIImage {
         return UIImage(named: "profile")!
     }
     static var progressIcon: UIImage {
-        return UIImage(named: "progress")!
+        return UIImage(named: "hexagon")!.resize(maxWidthHeight: 30)!.rotate(radians: .pi/2)!
     }
 }
 
