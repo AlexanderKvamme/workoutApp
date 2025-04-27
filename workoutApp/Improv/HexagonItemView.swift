@@ -38,6 +38,14 @@ class HexagonItemView<T>: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        // Create the hexagon path
+        let hexPath = createHexagonPath()
+        
+        // Check if the point is inside the hexagon path
+        return hexPath.contains(point)
+    }
+    
     private func setupView() {
         backgroundColor = .clear
         
