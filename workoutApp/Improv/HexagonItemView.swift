@@ -102,8 +102,9 @@ class HexagonItemView<T>: UIView {
     }
     
     func configure(withExercise exercise: Exercise, andLog log: WorkoutLog?) {
+        var textColor = UIColor.black
         self.hexagonLayer?.fillColor = UIColor.white.cgColor
-        
+
         if let log = log {
             let sets = log.loggedExercises?.array as! [ExerciseLog]
             let filteredSets = sets.filter { $0.getName() == exercise.getName() }
@@ -117,19 +118,21 @@ class HexagonItemView<T>: UIView {
                 ]
             
             let count = filteredSets.count
+            if count > 1 {
+                textColor = .white
+            }
+            
             if count >= progressiveColors.count {
                 self.hexagonLayer?.fillColor = progressiveColors.last?.cgColor
             } else {
                 self.hexagonLayer?.fillColor = progressiveColors[count].cgColor
             }
-            
         } else {
             print("❌ no workout log")
         }
 
         textLabel?.text = exercise.name
-        
-        
+        textLabel?.textColor = textColor
     }
 
     // MARK: - Public Methods
@@ -146,21 +149,6 @@ class HexagonItemView<T>: UIView {
         } else {
             textLabel?.text = "not muscle"
         }
-    }
-    
-    func animateHighlight() {
-        guard let hexagonLayer = hexagonLayer else { return }
-        
-        let originalColor = hexagonLayer.fillColor
-        let highlightColor = UIColor.systemBlue.cgColor
-        
-        let animation = CABasicAnimation(keyPath: "fillColor")
-        animation.fromValue = originalColor
-        animation.toValue = highlightColor
-        animation.duration = 0.1
-        animation.autoreverses = true
-        animation.repeatCount = 1
-        hexagonLayer.add(animation, forKey: "highlightAnimation")
     }
     
     // MARK: - Stripes Methods
@@ -224,14 +212,14 @@ class HexagonItemView<T>: UIView {
         cancelLongPressAnimation()
         
         // Create progress shape layer if needed
-        if progressShapeLayer == nil {
-            let progressLayer = CAShapeLayer()
-            progressLayer.path = createHexagonPath().cgPath
-            progressLayer.fillColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor // Semi-transparent fill
-            progressLayer.opacity = 0 // Start with opacity 0
-            layer.insertSublayer(progressLayer, below: hexagonLayer) // Insert below the main hexagon
-            progressShapeLayer = progressLayer
-        }
+//        if progressShapeLayer == nil {
+//            let progressLayer = CAShapeLayer()
+//            progressLayer.path = createHexagonPath().cgPath
+//            progressLayer.fillColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor // Semi-transparent fill
+//            progressLayer.opacity = 0 // Start with opacity 0
+//            layer.insertSublayer(progressLayer, below: hexagonLayer) // Insert below the main hexagon
+//            progressShapeLayer = progressLayer
+//        }
         
         // Set up display link for smooth animation
         animationStartTime = CACurrentMediaTime()

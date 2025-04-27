@@ -312,9 +312,6 @@ class HoneycombGridView<T>: UIView {
         let index = hexView.tag
         guard index >= 0 && index < items.count else { return }
         
-        // Provide visual feedback
-        hexView.animateHighlight()
-        
         // Call the selection handler
         let selectedItem = items[index]
         print("bam selected will be called in 0.2")
