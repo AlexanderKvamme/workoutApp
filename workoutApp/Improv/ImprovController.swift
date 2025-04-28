@@ -27,15 +27,15 @@ class HoneycombViewController: SelectionViewController {
         setupHoneycombGrid()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Hide the navigation bar
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-            customTabBarController.hideSelectionIndicator(shouldAnimate: true)
-            navigationController?.setNavigationBarHidden(true, animated: true)
-        }
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        // Hide the navigation bar
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        if let customTabBarController = self.tabBarController as? CustomTabBarController {
+//            customTabBarController.hideSelectionIndicator(shouldAnimate: true)
+//            navigationController?.setNavigationBarHidden(true, animated: true)
+//        }
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

@@ -41,14 +41,18 @@ extension UIImage {
     static var historyIcon: UIImage {
         return UIImage(named: "history")!
     }
-    static var workoutIcon: UIImage {
+    static var starIcon: UIImage {
         return UIImage(named: "star-24")!
     }
     static var profileIcon: UIImage {
         return UIImage(named: "profile")!
     }
-    static var progressIcon: UIImage {
+    static var hexIcon: UIImage {
         return UIImage(named: "hexagon")!.resize(maxWidthHeight: 30)!.rotate(radians: .pi/2)!
+    }
+    
+    static var progressIcon: UIImage {
+        return UIImage(named: "progress")!.resize(maxWidthHeight: 30)!.rotate(radians: .pi/2)!
     }
 }
 

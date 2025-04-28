@@ -75,7 +75,7 @@ class CustomTabBarController: UITabBarController {
         // Set up navbar
         viewControllers = [historyNavigationController, workoutNavigationController, profileNavigationController]
         historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.historyIcon, tag: 0)
-        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.workoutIcon, tag: 1)
+        workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.starIcon, tag: 1)
         profileController.tabBarItem = UITabBarItem(title: "", image: UIImage.profileIcon, tag: 2)
         
         // Accessibility

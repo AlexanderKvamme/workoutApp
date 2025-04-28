@@ -51,6 +51,8 @@
 		DD180FC71FB1295500B44F94 /* DiagonalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD180FC61FB1295500B44F94 /* DiagonalView.swift */; };
 		DD1861982DB81CFC0038744F /* DotProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1861972DB81CF80038744F /* DotProgressView.swift */; };
 		DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */; };
+		DD19A20D2DBFE92200BEC938 /* CreatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */; };
+		DD19A20F2DBFEC2100BEC938 /* CreatorScreenWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */; };
 		DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */; };
 		DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */; };
 		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
@@ -225,6 +227,8 @@
 		DD180FC61FB1295500B44F94 /* DiagonalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagonalView.swift; sourceTree = "<group>"; };
 		DD1861972DB81CF80038744F /* DotProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotProgressView.swift; sourceTree = "<group>"; };
 		DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerProtocols.swift; sourceTree = "<group>"; };
+		DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorScreen.swift; sourceTree = "<group>"; };
+		DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorScreenWorkout.swift; sourceTree = "<group>"; };
 		DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
@@ -537,6 +541,15 @@
 			name = "Native Extensions";
 			sourceTree = "<group>";
 		};
+		DD19A20B2DBFE91700BEC938 /* CreatorScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */,
+				DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */,
+			);
+			path = CreatorScreen;
+			sourceTree = "<group>";
+		};
 		DD1DF75D1EDB77B100CD3426 /* NavigationController */ = {
 			isa = PBXGroup;
 			children = (
@@ -626,6 +639,7 @@
 		DD585D451EC4D53900962B19 /* workoutApp */ = {
 			isa = PBXGroup;
 			children = (
+				DD19A20B2DBFE91700BEC938 /* CreatorScreen */,
 				DDFEA4D52DB535DB00C4F787 /* Improv */,
 				DD03A19629A2616000D5D2AB /* Summary Screen */,
 				DD47BAF21FBC5FEA00F75F04 /* Global */,
@@ -1070,6 +1084,7 @@
 				DD468F851F2E875000A945A9 /* WorkoutTableViewController.swift in Sources */,
 				DDF1F1F01F07ADE0001A6F0C /* ActiveWorkoutController.swift in Sources */,
 				DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */,
+				DD19A20D2DBFE92200BEC938 /* CreatorScreen.swift in Sources */,
 				DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */,
 				DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
@@ -1141,6 +1156,7 @@
 				DDFEA4DD2DB59F0C00C4F787 /* HexagonalButton.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */,
+				DD19A20F2DBFEC2100BEC938 /* CreatorScreenWorkout.swift in Sources */,
 				DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,
 				DDEE859F1ED4922600A3F81C /* TwoRowStack.swift in Sources */,

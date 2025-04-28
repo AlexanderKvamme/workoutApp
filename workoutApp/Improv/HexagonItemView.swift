@@ -174,7 +174,6 @@ class HexagonItemView<T>: UIView {
     // MARK: - Public Methods
     
     func configure(withItem item: T, log: WorkoutLog?) {
-        print("configure!")
         if let item = item as? Muscle {
             configure(withMuscle: item)
         } else if let item = item as? Exercise {

@@ -21,9 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let context = DatabaseFacade.persistentContainer.viewContext
         
-        
-        let test = Test.testIcon
-        
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
             let seeder = DataSeeder(context: context)
@@ -34,23 +31,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         seedIfFirstLaunch(context: context)
         
         // Set initial viewController
-        let wrappedProgress = CustomNavigationViewController(rootViewController: HoneycombViewController())
-        let wrappedHistory = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
-        let wrappedWorkout = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
-        let wrappedProfile = CustomNavigationViewController(rootViewController: ProfileController())
-        
+        let hexagonScreen = CustomNavigationViewController(rootViewController: HoneycombViewController())
+        let historyScreen = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
+        let creatorScreen = CustomNavigationViewController(rootViewController: CreatorScreen())
+        let goalsScreen = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
+        let profileScreen = CustomNavigationViewController(rootViewController: ProfileController())
+
         // FIXME: Make the tabbar controller actually use the images supplied here
         let tabButtonTint = UIColor.black
-        wrappedProgress.tabBarItem = UITabBarItem(title: "0", image: UIImage.progressIcon.withTintColor(tabButtonTint), tag: 0)
-        wrappedHistory.tabBarItem = UITabBarItem(title: "1", image: UIImage.historyIcon.withTintColor(tabButtonTint), tag: 1)
-        wrappedWorkout.tabBarItem = UITabBarItem(title: "2", image: UIImage.workoutIcon.withTintColor(tabButtonTint), tag: 2)
-        wrappedProfile.tabBarItem = UITabBarItem(title: "3", image: UIImage.profileIcon.withTintColor(tabButtonTint), tag: 3)
-        let screens = [wrappedProgress, wrappedHistory, wrappedWorkout, wrappedProfile, UIViewController()]
+        hexagonScreen.tabBarItem = UITabBarItem(title: "0", image: UIImage.hexIcon.withTintColor(tabButtonTint), tag: 0)
+        historyScreen.tabBarItem = UITabBarItem(title: "1", image: UIImage.historyIcon.withTintColor(tabButtonTint), tag: 1)
+        creatorScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage.progressIcon.withTintColor(tabButtonTint), tag: 2)
+        goalsScreen.tabBarItem   = UITabBarItem(title: "3", image: UIImage.starIcon.withTintColor(tabButtonTint), tag: 3)
+        profileScreen.tabBarItem = UITabBarItem(title: "4", image: UIImage.profileIcon.withTintColor(tabButtonTint), tag: 4)
         
+        let screens = [hexagonScreen, historyScreen, creatorScreen, goalsScreen, profileScreen]
 //        let centerIcon = UIImage.xmarkIcon.rotate(radians: .pi/4)!
         let centerIcon = UIImage.close24.rotate(radians: .pi/4)!
 //        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [4])
-        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [4])
+        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [])
         window?.rootViewController = tabBar
         globalTabBar = tabBar
         
