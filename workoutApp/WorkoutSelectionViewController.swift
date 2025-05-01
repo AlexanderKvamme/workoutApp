@@ -22,7 +22,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     // MARK: - Initializers
     
     init() {
-        super.init(header: SelectionViewHeader(header: "Select", subheader: "Workout Style"))
+        super.init(header: SelectionViewHeader(header: "Start a workout", subheader: "Select type"))
     }
     
     required init?(coder aDecoder: NSCoder) {

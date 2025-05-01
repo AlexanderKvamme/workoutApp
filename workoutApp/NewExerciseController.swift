@@ -52,6 +52,7 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     let halfScreenWidth = Constant.UI.width/2
     let screenWidth = Constant.UI.width
     let selecterHeight: CGFloat = 125
+    let showBackButton: Bool
     
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // Receive name/time pickers
@@ -65,7 +66,8 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
     
     // MARK: - Initializers
     
-    init(withPreselectedMuscle muscles: [Muscle]?) {
+    init(withPreselectedMuscle muscles: [Muscle]?, showBackButton: Bool = false) {
+        self.showBackButton = showBackButton
         super.init(nibName: nil, bundle: nil)
         currentMuscles = muscles ?? [DatabaseFacade.defaultMuscle]
         currentMeasurementStyle = DatabaseFacade.defaultMeasurementStyle
@@ -82,8 +84,8 @@ class NewExerciseController: UIViewController, ExerciseReceiver, isStringReceive
         // Hide tab bar's selection indicator
         if let customTabBarController = self.tabBarController as? CustomTabBarController {
             customTabBarController.hideSelectionIndicator(shouldAnimate: false)
-            navigationController?.setNavigationBarHidden(true, animated: true)
         }
+        navigationController?.setNavigationBarHidden(!showBackButton, animated: true)
     }
     
     override func viewDidLoad() {

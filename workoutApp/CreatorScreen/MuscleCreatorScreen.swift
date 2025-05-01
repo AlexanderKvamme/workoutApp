@@ -21,7 +21,7 @@ class MuscleCreatorScreen: UIViewController, isStringReceiver, MuscleReceiver {
     }
 
     lazy var header: TwoLabelStack = {
-        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name of new workout", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "My workout", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
+        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "New skill", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "Name of new Skill", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "workout-name-button"
         stack.bottomLabel.adjustsFontSizeToFitWidth = true
         

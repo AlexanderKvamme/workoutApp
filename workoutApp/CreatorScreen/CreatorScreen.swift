@@ -37,9 +37,9 @@ class CreatorScreen: UIViewController {
         return createButton(withTitle: "Workout", action: #selector(createWorkoutTapped))
     }()
     
-    private lazy var createTypeButton: UIButton = {
-        return createButton(withTitle: "Type", action: #selector(createTypeTapped))
-    }()
+//    private lazy var createTypeButton: UIButton = {
+//        return createButton(withTitle: "Type", action: #selector(createTypeTapped))
+//    }()
     
     private lazy var createMuscleButton: UIButton = {
         return createButton(withTitle: "Muscle/Skill", action: #selector(createMuscleTapped))
@@ -76,9 +76,9 @@ class CreatorScreen: UIViewController {
         
         // Add buttons to stack view
         stackView.addArrangedSubview(createWorkoutButton)
-        stackView.addArrangedSubview(createTypeButton)
-        stackView.addArrangedSubview(createMuscleButton)
         stackView.addArrangedSubview(createExerciseButton)
+        stackView.addArrangedSubview(createMuscleButton)
+        //        stackView.addArrangedSubview(createTypeButton)
     }
     
     private func setupConstraints() {
@@ -117,51 +117,20 @@ class CreatorScreen: UIViewController {
         navigationController?.pushViewController(workoutCreator, animated: true)
     }
     
-    @objc private func createTypeTapped() {
-        let typeCreator = TypeCreatorScreen()
-        navigationController?.pushViewController(typeCreator, animated: true)
-    }
-    
     @objc private func createMuscleTapped() {
         let muscleCreator = MuscleCreatorScreen()
         navigationController?.pushViewController(muscleCreator, animated: true)
     }
     
     @objc private func createExerciseTapped() {
-        let exerciseCreator = TypeCreatorScreen()
-        navigationController?.pushViewController(exerciseCreator, animated: true)
-    }
-}
-
-// Placeholder classes for the different creator screens
-// You'll need to implement these separately
-
-class TypeCreatorScreen: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .akLight
-        navigationItem.title = "Create Type"
+        let newExerciseController = NewExerciseController(withPreselectedMuscle: [], showBackButton: true)
+        newExerciseController.styleBackButton()
         
-        styleBackButton()
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationItem.hidesBackButton = false
+        
+        newExerciseController.navigationController?.setNavigationBarHidden(false, animated: true)
+        newExerciseController.navigationController?.navigationItem.hidesBackButton = false
+//        newExerciseController.navigationController?.addCustomNavBarBackButton()
+        navigationController?.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
-    
 }
 
-//class MuscleCreatorScreen: UIViewController {
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .white
-//        navigationItem.title = "Create Muscle/Skill"
-//        navigationItem.hidesBackButton = false
-//    }
-//}
-//
-//class ExerciseCreatorScreen: UIViewController {
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        view.backgroundColor = .white
-//        navigationItem.title = "Create Exercise"
-//    }
-//}
