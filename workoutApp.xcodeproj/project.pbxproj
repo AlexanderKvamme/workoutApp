@@ -77,6 +77,8 @@
 		DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD491B7B1ED7464E008A4619 /* DataSeeder.swift */; };
 		DD49BAB31F98A964001AFAE3 /* Nextable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD49BAB21F98A964001AFAE3 /* Nextable.swift */; };
 		DD49BAB51F98C29A001AFAE3 /* LiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD49BAB41F98C29A001AFAE3 /* LiftExtensions.swift */; };
+		DD4A65CD2DC410FD000540C3 /* Skill+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4A65CC2DC410FD000540C3 /* Skill+CoreDataProperties.swift */; };
+		DD4A65CE2DC410FD000540C3 /* Skill+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4A65CB2DC410FD000540C3 /* Skill+CoreDataClass.swift */; };
 		DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */; };
 		DD4B1C101EC8606F00BD313B /* PreferencesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C0F1EC8606F00BD313B /* PreferencesController.swift */; };
 		DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B1C111EC8616800BD313B /* SelectionViewController.swift */; };
@@ -256,6 +258,8 @@
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
 		DD49BAB21F98A964001AFAE3 /* Nextable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nextable.swift; sourceTree = "<group>"; };
 		DD49BAB41F98C29A001AFAE3 /* LiftExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiftExtensions.swift; sourceTree = "<group>"; };
+		DD4A65CB2DC410FD000540C3 /* Skill+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Skill+CoreDataClass.swift"; sourceTree = "<group>"; };
+		DD4A65CC2DC410FD000540C3 /* Skill+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Skill+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButtonStack.swift; sourceTree = "<group>"; };
 		DD4B1C0F1EC8606F00BD313B /* PreferencesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesController.swift; sourceTree = "<group>"; };
 		DD4B1C111EC8616800BD313B /* SelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
@@ -384,6 +388,8 @@
 		1121234E20835BA4005C27D2 /* Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				DD4A65CB2DC410FD000540C3 /* Skill+CoreDataClass.swift */,
+				DD4A65CC2DC410FD000540C3 /* Skill+CoreDataProperties.swift */,
 				1121234F20835BBA005C27D2 /* Warning+CoreDataClass.swift */,
 				1121235020835BBA005C27D2 /* Warning+CoreDataProperties.swift */,
 				1121235120835BBA005C27D2 /* MeasurementStyle+CoreDataClass.swift */,
@@ -1224,6 +1230,8 @@
 				1121237420835BBA005C27D2 /* Exercise+CoreDataProperties.swift in Sources */,
 				DDB539AC1F2E017600824CFC /* WorkoutLogHistoryTableViewController.swift in Sources */,
 				DDA54B031EDB426D008C601C /* DatabaseFacade.swift in Sources */,
+				DD4A65CD2DC410FD000540C3 /* Skill+CoreDataProperties.swift in Sources */,
+				DD4A65CE2DC410FD000540C3 /* Skill+CoreDataClass.swift in Sources */,
 				1121237520835BBA005C27D2 /* ExerciseStyle+CoreDataClass.swift in Sources */,
 				1121236B20835BBA005C27D2 /* WorkoutStyle+CoreDataClass.swift in Sources */,
 				1121237820835BBA005C27D2 /* ExerciseLog+CoreDataProperties.swift in Sources */,

@@ -199,6 +199,16 @@ final class DatabaseFacade {
         return result
     }
     
+    static func makeSkill() -> Skill {
+        let newSkill = createManagedObjectForEntity(.Skill) as! Skill
+        return newSkill
+    }
+    
+    static func fetchSkills() -> [Skill] {
+        let skill = fetchManagedObjectsForEntity(.Skill) as! [Skill]
+        return skill
+    }
+    
     static func makeMuscle() -> Muscle {
         let newMuscle = createManagedObjectForEntity(.Muscle) as! Muscle
         return newMuscle

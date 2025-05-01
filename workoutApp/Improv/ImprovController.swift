@@ -20,6 +20,21 @@ class HoneycombViewController: SelectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
+        
+        let skill = DatabaseFacade.makeSkill()
+        skill.title = "Caseman"
+        let skill2 = DatabaseFacade.makeSkill()
+        skill2.title = "The fuckening"
+        
+        let skills = DatabaseFacade.fetchSkills()
+        print("shazam skills: ", skills.count)
+        print("shazam skills: ", skills.map{ $0.title })
+        
+        for skill in skills {
+            DatabaseFacade.delete(skill)
+        }
+        
+        DatabaseFacade.saveContext()
     }
     
     override func viewWillAppear(_ animated: Bool) {

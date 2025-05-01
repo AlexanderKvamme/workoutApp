@@ -9,6 +9,7 @@
 import Foundation
 
 enum Entity: String {
+    case Skill = "Skill"
     case Workout = "Workout"
     case Exercise = "Exercise"
     case ExerciseLog = "ExerciseLog"

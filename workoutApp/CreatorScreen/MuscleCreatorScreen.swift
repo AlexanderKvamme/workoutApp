@@ -37,7 +37,6 @@ class MuscleCreatorScreen: UIViewController, isStringReceiver, MuscleReceiver {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
-        navigationItem.title = "Create Muscle/Skill"
         navigationItem.hidesBackButton = false
         
         setupNavigationBar()
