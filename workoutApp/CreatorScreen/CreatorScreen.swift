@@ -126,7 +126,6 @@ class CreatorScreen: UIViewController {
         let newExerciseController = NewExerciseController(withPreselectedMuscle: [], showBackButton: true)
         newExerciseController.styleBackButton()
         
-        
         newExerciseController.navigationController?.setNavigationBarHidden(false, animated: true)
         newExerciseController.navigationController?.navigationItem.hidesBackButton = false
 //        newExerciseController.navigationController?.addCustomNavBarBackButton()

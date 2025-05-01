@@ -52,7 +52,7 @@ extension UIImage {
     }
     
     static var progressIcon: UIImage {
-        return UIImage(named: "progress")!.resize(maxWidthHeight: 30)!.rotate(radians: .pi/2)!
+        return UIImage(named: "progress")!.resize(maxWidthHeight: 30)!//.rotate(radians: .pi/2)!
     }
 }
 

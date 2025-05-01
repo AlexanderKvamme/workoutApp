@@ -41,6 +41,7 @@ class NewWorkoutController: WorkoutController {
     
     override func viewWillAppear(_ animated: Bool) {
         globalTabBar.hideIt()
+        styleBackButton()
     }
     
     // MARK: Methods

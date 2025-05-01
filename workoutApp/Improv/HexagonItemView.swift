@@ -154,7 +154,7 @@ class HexagonItemView<T>: UIView {
                 ]
             
             let count = filteredSets.count
-            if count > 1 {
+            if count > 0 {
                 textColor = .white
             }
             

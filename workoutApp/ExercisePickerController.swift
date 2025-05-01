@@ -96,6 +96,7 @@ class ExercisePickerController: UIViewController {
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
+        styleBackButton()
         addSubViewsAndConstraints()
         view.backgroundColor = .akLight
         
@@ -139,7 +140,7 @@ class ExercisePickerController: UIViewController {
             footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             // Header
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
             header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             // "+" button
             plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),

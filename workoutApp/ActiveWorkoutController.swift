@@ -120,6 +120,8 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addExitButtonToNavBar(withAction: #selector(xButtonHandler))
+    
         // Prepare notifications after breaks
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleAppMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
@@ -267,21 +269,6 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         tableView.reloadData()
     }
     
-    private func addExitButtonToNavBar() {
-        // Right navBar button
-        let topinset = 12.0
-        let menuBtn = UIButton(type: .custom)
-        menuBtn.contentVerticalAlignment = .center
-        menuBtn.contentHorizontalAlignment = .center
-        menuBtn.imageView?.contentMode = .scaleAspectFit
-        menuBtn.setImage(.xmarkIcon.withTintColor(.akDark), for: .normal)
-        menuBtn.contentEdgeInsets = UIEdgeInsets(top: topinset, left: 0, bottom: topinset, right: 16)
-        menuBtn.addTarget(self, action: #selector(xButtonHandler), for: UIControl.Event.touchUpInside)
-        let menuBarItem = UIBarButtonItem(customView: menuBtn)
-        self.navigationItem.rightBarButtonItem = menuBarItem
-        self.navigationItem.hidesBackButton = true
-    }
-    
     private func setupTableFooter() {
         let footerFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 64)
         let footer = ExerciseTableFooter(frame: footerFrame)
@@ -338,7 +325,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         )
     }
     
-    @objc private func xButtonHandler() {
+    @objc override func xButtonHandler() {
         let alert = UIAlertController(
             title: "Are you sure?",
             message: "The progress of this workout will be lost",

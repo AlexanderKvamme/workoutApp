@@ -78,14 +78,14 @@ class ExerciseHistoryTableViewController: UITableViewController {
     
     // MARK: Helper methods
     
-    @objc private func xButtonHandler() {
+    @objc override func xButtonHandler() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
 }
 
 extension UIViewController {
     func styleBackButton() {
-        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17, style: .plain, target: self, action: #selector(pop))
+        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(pop))
         navigationItem.leftBarButtonItem = btnRefresh
         navigationItem.leftBarButtonItem?.tintColor = .akDark
         navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)

@@ -39,8 +39,6 @@ class ImprovWorkoutController: UIViewController {
             action: #selector(showList)
         )
 
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationItem.hidesBackButton = false
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
         
@@ -63,15 +61,18 @@ class ImprovWorkoutController: UIViewController {
         setupProgressBar()
         setupTimerView()
         setupHoneycombGrid()
+
+//        styleBackButton()
+        addExitButtonToNavBar()
         
         // Make sure navigation bar is visible
-        navigationController?.setNavigationBarHidden(true, animated: false)
-//        navigationController?.navigationBar.isHidden = false
-        
-        // Ensure back button is visible
-        navigationItem.hidesBackButton = false
-        
-        styleBackButton()
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func viewDidLayoutSubviews() {
@@ -79,8 +80,6 @@ class ImprovWorkoutController: UIViewController {
         
         // This ensures the honeycomb grid is laid out after the view's bounds are finalized
         honeycombGrid?.setNeedsLayout()
-        
-        // Make sure confetti view covers the entire screen
         confettiView.frame = view.bounds
     }
     
@@ -215,3 +214,5 @@ class ImprovWorkoutController: UIViewController {
         present(alert, animated: true)
     }
 }
+
+

@@ -165,6 +165,7 @@
 		DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */; };
 		DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF254061F35F75C0032ED75 /* Warningbox.swift */; };
 		DDF34D3D2DC2AF5600597433 /* DeletePickableScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF34D3C2DC2AF5100597433 /* DeletePickableScreen.swift */; };
+		DDF34D3F2DC3C31200597433 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF34D3E2DC3C30C00597433 /* UIViewControllerExtensions.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDFA50FF1F571E7E00AF28A4 /* UserDefaultsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */; };
 		DDFA51011F583AE900AF28A4 /* PreferencePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */; };
@@ -346,6 +347,7 @@
 		DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDF254061F35F75C0032ED75 /* Warningbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Warningbox.swift; sourceTree = "<group>"; };
 		DDF34D3C2DC2AF5100597433 /* DeletePickableScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePickableScreen.swift; sourceTree = "<group>"; };
+		DDF34D3E2DC3C30C00597433 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsFacade.swift; sourceTree = "<group>"; };
 		DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencePicker.swift; sourceTree = "<group>"; };
@@ -821,6 +823,7 @@
 		DDB5FF391F4B804600202705 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				DDF34D3E2DC3C30C00597433 /* UIViewControllerExtensions.swift */,
 				DDB5FF3A1F4B806300202705 /* PickableEntity.swift */,
 				DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */,
 				DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */,
@@ -1144,6 +1147,7 @@
 				DD585D6B1EC5E03900962B19 /* TabBarSelectionIndicator.swift in Sources */,
 				DDDC40FE2DBE36DE001FC230 /* Date Extensions.swift in Sources */,
 				DDEE85A31ED4AAA800A3F81C /* ThreeColumnStack.swift in Sources */,
+				DDF34D3F2DC3C31200597433 /* UIViewControllerExtensions.swift in Sources */,
 				DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */,
 				1121237220835BBA005C27D2 /* Muscle+CoreDataProperties.swift in Sources */,
 				DDF1F1EC1F07AC27001A6F0C /* LiftCell.swift in Sources */,

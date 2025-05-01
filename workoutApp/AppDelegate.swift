@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let centerIcon = UIImage.xmarkIcon.rotate(radians: .pi/4)!
         let centerIcon = UIImage.close24.rotate(radians: .pi/4)!
 //        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [4])
-        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [])
+        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [4])
         window?.rootViewController = tabBar
         globalTabBar = tabBar
         
@@ -57,6 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .akLight
+            appearance.shadowColor = .clear
             appearance.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: UIColor.akDark.withAlphaComponent(.opacity.fullyFaded.rawValue),
                     NSAttributedString.Key.font: UIFont.custom(style: .bold, ofSize: .medium),
