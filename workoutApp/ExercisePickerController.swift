@@ -8,6 +8,8 @@
 
 import UIKit
 
+// FIXME: Make sure the force unwrapped types cannot be deleted
+
 /// Used to pick and return selection of any number of exercises
 class ExercisePickerController: UIViewController {
     
