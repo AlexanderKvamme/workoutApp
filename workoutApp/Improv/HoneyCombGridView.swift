@@ -30,6 +30,27 @@ class HoneycombGridView<T>: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func reset() {
+        // Clear data
+        items.removeAll()
+        
+        // Remove all hexagon views from the view hierarchy
+        subviews.forEach { $0.removeFromSuperview() }
+        
+        // Clear the dictionary of hexagon views
+        hexagonViews.removeAll()
+        
+        // Mark for layout update when new data is provided
+        needsLayout = true
+        
+        // Reset any other state if needed
+        onItemSelected = nil
+        onItemLongPressed = nil
+        
+        // Force layout update
+        setNeedsLayout()
+    }
+    
     // Configure the grid with data and selection handlers
     func configure(with items: [T],
                   onItemSelected: @escaping (T, HexagonItemView<T>) -> Void,

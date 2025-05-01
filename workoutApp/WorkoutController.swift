@@ -108,7 +108,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
+        let musclePicker = MusclePickerController(title: "SELECT", subtitle: "", withPreselectedMuscles: currentMuscles)
         musclePicker.muscleReceiver = self
 
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)

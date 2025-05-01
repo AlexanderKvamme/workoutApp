@@ -67,7 +67,7 @@ class CreatorScreen: UIViewController {
     // MARK: - Setup
     
     private func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .akLight
         navigationItem.title = "Creator"
         
         // Add subviews
@@ -113,10 +113,8 @@ class CreatorScreen: UIViewController {
     // MARK: - Actions
     
     @objc private func createWorkoutTapped() {
-//        let creatorScreen = CreatorScreen()
-//        creatorScreen.currentMuscles = []  // Initialize with empty array
-//        creatorScreen.currentWorkoutStyle = DatabaseFacade.fetchWorkoutStyles().first
-//        navigationController?.pushViewController(creatorScreen, animated: true)
+        let workoutCreator = NewWorkoutController()
+        navigationController?.pushViewController(workoutCreator, animated: true)
     }
     
     @objc private func createTypeTapped() {
@@ -130,7 +128,7 @@ class CreatorScreen: UIViewController {
     }
     
     @objc private func createExerciseTapped() {
-        let exerciseCreator = ExerciseCreatorScreen()
+        let exerciseCreator = TypeCreatorScreen()
         navigationController?.pushViewController(exerciseCreator, animated: true)
     }
 }
@@ -141,23 +139,29 @@ class CreatorScreen: UIViewController {
 class TypeCreatorScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .akLight
         navigationItem.title = "Create Type"
+        
+        styleBackButton()
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationItem.hidesBackButton = false
     }
+    
 }
 
-class MuscleCreatorScreen: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        navigationItem.title = "Create Muscle/Skill"
-    }
-}
-
-class ExerciseCreatorScreen: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        navigationItem.title = "Create Exercise"
-    }
-}
+//class MuscleCreatorScreen: UIViewController {
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        view.backgroundColor = .white
+//        navigationItem.title = "Create Muscle/Skill"
+//        navigationItem.hidesBackButton = false
+//    }
+//}
+//
+//class ExerciseCreatorScreen: UIViewController {
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        view.backgroundColor = .white
+//        navigationItem.title = "Create Exercise"
+//    }
+//}

@@ -53,6 +53,7 @@
 		DD18EA481EE7FA20002B5198 /* PickerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */; };
 		DD19A20D2DBFE92200BEC938 /* CreatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */; };
 		DD19A20F2DBFEC2100BEC938 /* CreatorScreenWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */; };
+		DD19A2112DC1522A00BEC938 /* MuscleCreatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD19A2102DC1522600BEC938 /* MuscleCreatorScreen.swift */; };
 		DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */; };
 		DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */; };
 		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
@@ -163,6 +164,7 @@
 		DDF1F1F01F07ADE0001A6F0C /* ActiveWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1EF1F07ADE0001A6F0C /* ActiveWorkoutController.swift */; };
 		DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */; };
 		DDF254071F35F75C0032ED75 /* Warningbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF254061F35F75C0032ED75 /* Warningbox.swift */; };
+		DDF34D3D2DC2AF5600597433 /* DeletePickableScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF34D3C2DC2AF5100597433 /* DeletePickableScreen.swift */; };
 		DDF95B371ECA236F009E6925 /* DiagonalLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */; };
 		DDFA50FF1F571E7E00AF28A4 /* UserDefaultsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */; };
 		DDFA51011F583AE900AF28A4 /* PreferencePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */; };
@@ -229,6 +231,7 @@
 		DD18EA471EE7FA20002B5198 /* PickerProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerProtocols.swift; sourceTree = "<group>"; };
 		DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorScreen.swift; sourceTree = "<group>"; };
 		DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorScreenWorkout.swift; sourceTree = "<group>"; };
+		DD19A2102DC1522600BEC938 /* MuscleCreatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleCreatorScreen.swift; sourceTree = "<group>"; };
 		DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
@@ -342,6 +345,7 @@
 		DDF1F1EF1F07ADE0001A6F0C /* ActiveWorkoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutController.swift; sourceTree = "<group>"; };
 		DDF1F1F51F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDF254061F35F75C0032ED75 /* Warningbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Warningbox.swift; sourceTree = "<group>"; };
+		DDF34D3C2DC2AF5100597433 /* DeletePickableScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePickableScreen.swift; sourceTree = "<group>"; };
 		DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagonalLineView.swift; sourceTree = "<group>"; };
 		DDFA50FE1F571E7E00AF28A4 /* UserDefaultsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsFacade.swift; sourceTree = "<group>"; };
 		DDFA51001F583AE900AF28A4 /* PreferencePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencePicker.swift; sourceTree = "<group>"; };
@@ -545,6 +549,7 @@
 			isa = PBXGroup;
 			children = (
 				DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */,
+				DD19A2102DC1522600BEC938 /* MuscleCreatorScreen.swift */,
 				DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */,
 			);
 			path = CreatorScreen;
@@ -792,6 +797,7 @@
 		DDA7276C1ED5BA3500068AD4 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				DDF34D3C2DC2AF5100597433 /* DeletePickableScreen.swift */,
 				DDA54AD81ED84B1B008C601C /* ModelEnums.swift */,
 				DD491B7B1ED7464E008A4619 /* DataSeeder.swift */,
 				DDA54B021EDB426D008C601C /* DatabaseFacade.swift */,
@@ -1064,6 +1070,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDF34D3D2DC2AF5600597433 /* DeletePickableScreen.swift in Sources */,
 				DDF117141F3FD1B700E677CB /* SuggestionController.swift in Sources */,
 				DD0D42D81F4DA38600502C02 /* PickerLabelStack.swift in Sources */,
 				DD4B1C0D1EC71E1100BD313B /* SelectionViewButtonStack.swift in Sources */,
@@ -1145,6 +1152,7 @@
 				DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */,
 				DDD0D54A296B63DB00CD11A5 /* AKSuperStepper.swift in Sources */,
 				1121237320835BBA005C27D2 /* Exercise+CoreDataClass.swift in Sources */,
+				DD19A2112DC1522A00BEC938 /* MuscleCreatorScreen.swift in Sources */,
 				DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */,
 				DDCF834F1F8B8B4000F87B3E /* UIResponder Extensions.swift in Sources */,
 				1121236720835BBA005C27D2 /* MeasurementStyle+CoreDataClass.swift in Sources */,

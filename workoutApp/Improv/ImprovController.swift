@@ -5,6 +5,7 @@ import AKKIT
 
 // MARK: - HoneycombViewController
 class HoneycombViewController: SelectionViewController {
+    
     private var honeycombGrid: HoneycombGridView<Muscle>!
     private var muscleGroups: [Muscle] = []
     
@@ -19,11 +20,13 @@ class HoneycombViewController: SelectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        // Get data from database
         muscleGroups = DatabaseFacade.fetchMuscles()
-        let muscleNames = muscleGroups.map { $0.name ?? "NA" }
-        
+        reset()
         setupHoneycombGrid()
     }
     
@@ -44,8 +47,16 @@ class HoneycombViewController: SelectionViewController {
         honeycombGrid?.setNeedsLayout()
     }
     
+    private func reset() {
+        if honeycombGrid != nil {
+            honeycombGrid.reset()
+            honeycombGrid.removeFromSuperview()
+        }
+    }
+    
     private func setupHoneycombGrid() {
         // Create the honeycomb grid with a text provider
+        
         honeycombGrid = HoneycombGridView<Muscle>(textProvider: { muscle in
             return muscle.name ?? "Unknown"
         })

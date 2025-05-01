@@ -13,6 +13,8 @@ class MusclePickerController: UIViewController {
     
     // MARK: - Properties
     
+    var showFooter: Bool
+    
     fileprivate lazy var table: UITableView = {
         let t = UITableView(frame: .zero)
         t.register(PickerCell.self, forCellReuseIdentifier: "cellIdentifier")
@@ -52,10 +54,11 @@ class MusclePickerController: UIViewController {
     
     // MARK: - Initializers
     
-    init(withPreselectedMuscles preselectedMuscles: [Muscle]?) {
+    init(title: String, subtitle: String, withPreselectedMuscles preselectedMuscles: [Muscle]?, showFooter: Bool = true) {
         // Setup available choices
         self.selectedMuscles = preselectedMuscles
         self.selectionChoices = DatabaseFacade.fetchMuscles(with: .name, ascending: true)
+        self.showFooter = showFooter
 
         // Preselect
         if let preselections = preselectedMuscles {
@@ -63,6 +66,9 @@ class MusclePickerController: UIViewController {
         }
         
         super.init(nibName: nil, bundle: nil)
+        
+        self.header.topLabel.text = title
+        self.header.bottomLabel.text = subtitle
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,6 +78,7 @@ class MusclePickerController: UIViewController {
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
+        styleBackButton()
         addSubViewsAndConstraints()
         view.backgroundColor = .akLight
         
@@ -97,27 +104,52 @@ class MusclePickerController: UIViewController {
     // MARK: Helper methods
     
     func addSubViewsAndConstraints() {
-        // Add views
+        // Add header and table (always present)
         view.addSubview(header)
-        view.addSubview(footer)
         view.addSubview(table)
         
-        NSLayoutConstraint.activate([
-            // Footer
-            footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            footer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            // Header
-            header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
-            header.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            // Table
-            table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),
-            table.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: -100),
-            table.leftAnchor.constraint(equalTo: view.leftAnchor),
-            table.rightAnchor.constraint(equalTo: view.rightAnchor),
+        // Create constraint arrays to activate
+        var constraints = [NSLayoutConstraint]()
+        
+        // Add header constraints
+        constraints.append(contentsOf: [
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constant.components.headers.pickerHeader.topSpacing),
+            header.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
+        // Conditionally add footer and its constraints
+        if showFooter {
+            view.addSubview(footer)
+            
+            // Add footer constraints
+            constraints.append(contentsOf: [
+                footer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                footer.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
+            
+            // Table constraints with footer
+            constraints.append(contentsOf: [
+                table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),
+                table.bottomAnchor.constraint(equalTo: footer.topAnchor, constant: -100),
+                table.leftAnchor.constraint(equalTo: view.leftAnchor),
+                table.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
+        } else {
+            // Table constraints without footer (extend to bottom of view)
+            constraints.append(contentsOf: [
+                table.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 100),
+                table.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20), // Add some bottom margin
+                table.leftAnchor.constraint(equalTo: view.leftAnchor),
+                table.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
+        }
+        
+        // Activate all constraints
+        NSLayoutConstraint.activate(constraints)
         
         updateScrollingAndInsets()
     }
+
     
     @objc func dismissView() {
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
@@ -216,11 +248,18 @@ class MusclePickerController: UIViewController {
     }
     
     @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
-        switch sender.state {
-        case .began:
-            print("TODO: - Implement muscle editor")
-        default:
-            break
+        if sender.state == .began {
+            // Get the location of the long press in the table view
+            let touchPoint = sender.location(in: table)
+            
+            // Try to get the index path of the cell that was long-pressed
+            if let indexPath = table.indexPathForRow(at: touchPoint) {
+                let longPressedMuscle = selectionChoices[indexPath.row]
+                let deleteScreen = DeletePickableScreen(pickable: longPressedMuscle, completion: {
+                    self.navigationController?.popViewController(animated: true)
+                })
+                self.present(deleteScreen, animated: true)
+            }
         }
     }
     

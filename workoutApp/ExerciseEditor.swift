@@ -155,10 +155,8 @@ final class ExerciseEditor: UIViewController {
     }
     
     @objc private func editMuscle() {
-        print("will edit muscle")
-        let musclePicker = MusclePickerController(withPreselectedMuscles: currentMuscles)
+        let musclePicker = MusclePickerController(title: "SELECT", subtitle: "", withPreselectedMuscles: currentMuscles)
         musclePicker.muscleReceiver = self
-        print("gonna show musclepicker")
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
