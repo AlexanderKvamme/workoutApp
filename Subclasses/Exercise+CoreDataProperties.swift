@@ -21,8 +21,8 @@ extension Exercise {
     @NSManaged public var loggedInstances: NSSet?
     @NSManaged public var measurementStyle: MeasurementStyle?
     @NSManaged public var musclesUsed: NSSet?
+    @NSManaged public var skillsUsed: NSSet?
     @NSManaged public var style: ExerciseStyle?
-    @NSManaged public var skillsUsed: Skill?
     @NSManaged public var usedInWorkouts: NSSet?
 
 }
@@ -58,6 +58,23 @@ extension Exercise {
 
     @objc(removeMusclesUsed:)
     @NSManaged public func removeFromMusclesUsed(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for skillsUsed
+extension Exercise {
+
+    @objc(addSkillsUsedObject:)
+    @NSManaged public func addToSkillsUsed(_ value: Skill)
+
+    @objc(removeSkillsUsedObject:)
+    @NSManaged public func removeFromSkillsUsed(_ value: Skill)
+
+    @objc(addSkillsUsed:)
+    @NSManaged public func addToSkillsUsed(_ values: NSSet)
+
+    @objc(removeSkillsUsed:)
+    @NSManaged public func removeFromSkillsUsed(_ values: NSSet)
 
 }
 

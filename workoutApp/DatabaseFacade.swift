@@ -668,7 +668,7 @@ final class DatabaseFacade {
     
     static func fetchExercises(containing skill: Skill) -> [Exercise]? {
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
-        let predicate1 = NSPredicate(format: "ANY skillsUsed CONTAINS %@", skill)
+        let predicate1 = NSPredicate(format: "ANY skillsUsed CONTAINS %@", skill.getName())
         let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
         fetchRequest.predicate = andPredicate
         

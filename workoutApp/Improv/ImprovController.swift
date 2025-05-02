@@ -93,7 +93,7 @@ class HoneycombViewController: SelectionViewController {
         
         // Configure with data and selection handler
         honeycombGrid.configure(with: skills) { [weak self] (selectedSkill, hexView: HexagonItemView) in
-            print("Selected muscle: \(selectedSkill.name ?? "Unknown")")
+            print("Selected skill: \(selectedSkill.name ?? "Unknown")")
             let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
             self?.navigationController?.pushViewController(improvWorkoutController, animated: true)
         }
