@@ -388,6 +388,28 @@ final class DatabaseFacade {
         return muscles
     }
     
+    static func fetchSkills(with sortingOption: SortingOptions, ascending: Bool) -> [Skill] {
+        
+        var muscles = [Skill]()
+        let fr = NSFetchRequest<Skill>(entityName: Entity.Muscle.rawValue)
+        
+        // Set chosen sortDescriptor
+        switch sortingOption{
+        case .name:
+            fr.sortDescriptors = [NSSortDescriptor(key: "name", ascending: ascending)]
+        case .mostRecentUse:
+            fr.sortDescriptors = [NSSortDescriptor(key: "mostRecentUse.dateEnded", ascending: ascending)]
+        }
+        
+        do {
+            let result = try context.fetch(fr)
+            muscles = result
+        } catch {
+            print("error: ", error)
+        }
+        return muscles
+    }
+    
     // Fetch all exercises
     static func fetchAllExercises() -> [Exercise] {
         var allExercises = [Exercise]()

@@ -21,10 +21,10 @@ class HoneycombViewController: SelectionViewController {
         super.viewDidLoad()
         view.backgroundColor = .akLight
         
-        let skills = DatabaseFacade.fetchSkills()
-        for skill in skills {
-            DatabaseFacade.delete(skill)
-        }
+//        let skills = DatabaseFacade.fetchSkills()
+//        for skill in skills {
+//            DatabaseFacade.delete(skill)
+//        }
 //
 //        let skill = DatabaseFacade.makeSkill()
 //        skill.name = "Caseman"
@@ -44,16 +44,6 @@ class HoneycombViewController: SelectionViewController {
         reset()
         setupHoneycombGrid()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        // Hide the navigation bar
-//        navigationController?.setNavigationBarHidden(true, animated: animated)
-//        if let customTabBarController = self.tabBarController as? CustomTabBarController {
-//            customTabBarController.hideSelectionIndicator(shouldAnimate: true)
-//            navigationController?.setNavigationBarHidden(true, animated: true)
-//        }
-//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

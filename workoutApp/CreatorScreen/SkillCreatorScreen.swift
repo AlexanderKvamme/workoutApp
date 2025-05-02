@@ -18,7 +18,10 @@ import UIKit
 import SnapKit
 
 
-class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, MuscleReceiver {
+class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, MuscleReceiver, PickableReceiver {
+    func receive(pickable: any PickableEntity) {
+        print("received ", pickable)
+    }
     
     func receive(muscles: [Muscle]) {
         print("received muscles ", muscles)
@@ -98,8 +101,8 @@ class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, Mus
     }
     
     @objc private func rightBarButtonTapped() {
-        let musclePicker = MusclePickerController(title: "HOLD", subtitle: "TO DELETE", withPreselectedMuscles: [], showFooter: false)
-        musclePicker.muscleReceiver = self
+        let musclePicker = PickerController<Muscle>()
+        musclePicker.pickableReceiver = self
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
 

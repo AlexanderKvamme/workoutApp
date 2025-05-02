@@ -19,3 +19,18 @@ extension Skill {
     }
 }
 
+
+
+extension Collection where Iterator.Element == Skill {
+
+// Returns name if only collection contains 1 muscle, or "MULTIPLE" if several muscles
+   func getName() -> String {
+       
+       if self.count == 0 {
+           return "NO NAME"
+       } else if self.count == 1 {
+           return self.first!.name!
+       }
+       return "MULTIPLE"
+   }
+}

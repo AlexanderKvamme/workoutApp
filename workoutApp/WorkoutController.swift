@@ -99,7 +99,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     @objc private func showWorkoutStyleEditor() {
         // Make and present a custom pickerView for selecting type
         let workoutStyles = DatabaseFacade.fetchWorkoutStyles()
-        let typePicker = PickerController<WorkoutStyle>(withPicksFrom: workoutStyles, withPreselection: currentWorkoutStyle)
+        let typePicker = PickerController<WorkoutStyle>(withPicksFrom: workoutStyles, withPreselection: [currentWorkoutStyle])
         
         typePicker.pickableReceiver = self
         
@@ -108,9 +108,9 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-        let musclePicker = MusclePickerController(title: "SELECT", subtitle: "", withPreselectedMuscles: currentMuscles)
-        musclePicker.muscleReceiver = self
-
+        let muscles = DatabaseFacade.fetchMuscles()
+        let musclePicker = PickerController<Muscle>(withPicksFrom: muscles, withPreselection: currentMuscles)
+        musclePicker.pickableReceiver = self
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     

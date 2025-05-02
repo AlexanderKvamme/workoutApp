@@ -118,6 +118,7 @@ class CreatorScreen: UIViewController {
     }
     
     @objc private func createMuscleTapped() {
+        
         let muscleCreator = MuscleCreatorScreen()
         navigationController?.pushViewController(muscleCreator, animated: true)
     }
@@ -128,7 +129,7 @@ class CreatorScreen: UIViewController {
     }
     
     @objc private func createExerciseTapped() {
-        let newExerciseController = NewExerciseController(withPreselectedMuscle: [], showBackButton: true)
+        let newExerciseController = ExerciseCreator(withPreselectedMuscle: [], showBackButton: true)
         newExerciseController.styleBackButton()
         
         newExerciseController.navigationController?.setNavigationBarHidden(false, animated: true)

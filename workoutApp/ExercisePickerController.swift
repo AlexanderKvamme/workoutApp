@@ -122,7 +122,7 @@ class ExercisePickerController: UIViewController {
     // MARK: Helper methods
 
     @objc private func presentNewExerciseController() {
-        let newExerciseController = NewExerciseController(withPreselectedMuscle: selectedMuscles)
+        let newExerciseController = ExerciseCreator(withPreselectedMuscle: selectedMuscles)
         newExerciseController.exercisePickerDelegate = self
         navigationController?.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }

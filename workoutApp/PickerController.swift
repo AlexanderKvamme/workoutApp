@@ -22,7 +22,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     var footer: ButtonFooter!
     var selectedIndexPath: IndexPath?
     var selectionChoices: [T]!
-    var selectedPickable: T!
+    var selectedPickable: [T]!
     let tableVerticalInset: CGFloat = 102
     var stringToSelect: String?
     let cellIdentifier = "cellIdentifier"
@@ -40,7 +40,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
 
     // MARK: - Initializers
 
-    init(withPicksFrom array: [PickableEntity], withPreselection preselection: Pickable) {
+    init(withPicksFrom array: [PickableEntity], withPreselection preselection: [Pickable]) {
         super.init(nibName: nil, bundle: nil)
         selectionChoices = array as! [T]
         selectedPickable = preselection
@@ -63,10 +63,18 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         setupTable()
         
         // Preselection
-        selectRow(withPickable: selectedPickable)
+        selectRows(withPickable: selectedPickable)
         
         table.reloadData()
         view.setNeedsLayout()
+        
+        styleBackButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        globalTabBar.hideIt()
     }
     
     // MARK: - Methods
@@ -115,7 +123,12 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
             }
             // update selection
             selectedIndexPath = indexPath
-            selectedPickable = selectionChoices[indexPath.row]
+            print("picked: ", indexPath)
+            let test = selectionChoices[indexPath.row]
+            // FIXME: append??
+            
+            selectedPickable.append(selectionChoices[indexPath.row])
+//            selectedPickable = selectedC
         }
         let selectedCell = tableView.cellForRow(at: indexPath)! as! PickerCell
         configure(selectedCell, forIndexPath: indexPath)
@@ -142,8 +155,22 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     private func setupHeader() {
-        header.frame = CGRect(x: 0, y: 50, width: Constant.UI.width, height: 100)
+        // Remove any frame setting since we'll use Auto Layout
+        header.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(header)
+        
+        // Set up constraints
+        NSLayoutConstraint.activate([
+            // Position the header 50 points below the safe area
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            
+            // Set width to match the view width
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            // Set a fixed height of 100 points
+            header.heightAnchor.constraint(equalToConstant: 100)
+        ])
     }
     
     func setHeaderTitle(_ newTitle: String) {
@@ -205,9 +232,9 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     func selectRow(withPickable pickable: Pickable) {
-        
-        guard let indexOfPickable = selectionChoices.index(where: { (element) -> Bool in
-            return element === selectedPickable
+        guard let indexOfPickable = selectionChoices.firstIndex(where: { (element) -> Bool in
+            // Use === for reference equality since we're comparing objects
+            return element === pickable
         }) else {
             preconditionFailure("Could not find index")
         }
@@ -216,6 +243,13 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         let ip = IndexPath(row: indexOfPickable, section: 0)
         table.selectRow(at: ip, animated: false, scrollPosition: .none)
         selectedIndexPath = ip
+    }
+
+    
+    func selectRows(withPickable pickables: [Pickable]) {
+        for p in pickables {
+            selectRow(withPickable: p)
+        }
     }
     
     private func drawDiagonalLineThroughTable() {
@@ -240,7 +274,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     
     @objc func confirmAndDismiss() {
         if let usersPick = selectedPickable {
-            sendBack(pickable: usersPick)
+            sendBack(pickables: usersPick)
         }
 
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
@@ -254,6 +288,10 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
 extension PickerController: PickableSender {
     func sendBack(pickable: T) {
         pickableReceiver?.receive(pickable: pickable)
+    }
+    
+    func sendBack(pickables: [T]) {
+        pickables.forEach({ sendBack(pickable: $0)})
     }
 }
 

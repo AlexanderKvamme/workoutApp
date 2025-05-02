@@ -19,3 +19,4 @@ extension ExerciseStyle: PickableEntity {}
 extension Muscle: PickableEntity {}
 extension WorkoutStyle: PickableEntity {}
 extension Exercise: PickableEntity {}
+extension Skill: PickableEntity {}

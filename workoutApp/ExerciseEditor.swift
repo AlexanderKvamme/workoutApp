@@ -155,15 +155,16 @@ final class ExerciseEditor: UIViewController {
     }
     
     @objc private func editMuscle() {
-        let musclePicker = MusclePickerController(title: "SELECT", subtitle: "", withPreselectedMuscles: currentMuscles)
-        musclePicker.muscleReceiver = self
+        print("Edit muscle")
+        let musclePicker = PickerController<Muscle>()
+        musclePicker.pickableReceiver = self
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
     
     @objc private func editExerciseStyle() {
         let allStyles = DatabaseFacade.getExerciseStyles()
         print("allStles: ", allStyles)
-        let stylePicker = PickerController(withPicksFrom: allStyles, withPreselection: exercise.style!)
+        let stylePicker = PickerController<ExerciseStyle>(withPicksFrom: allStyles, withPreselection: [exercise.style!])
         stylePicker.pickableReceiver = self
         navigationController?.pushViewController(stylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
@@ -171,7 +172,7 @@ final class ExerciseEditor: UIViewController {
     @objc private func editMeasurementStyle() {
         print("would edit MeasurementStyle")
         let allMeasurementStyles = DatabaseFacade.fetchMeasurementStyles()
-        let measurementStylePicker = PickerController(withPicksFrom: allMeasurementStyles, withPreselection: exercise.measurementStyle!)
+        let measurementStylePicker = PickerController<MeasurementStyle>(withPicksFrom: allMeasurementStyles, withPreselection: [exercise.measurementStyle!])
         measurementStylePicker.pickableReceiver = self
         
         navigationController?.pushViewController(measurementStylePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
