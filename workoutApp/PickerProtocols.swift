@@ -46,3 +46,6 @@ protocol MuscleReceiver: class {
     func receive(muscles: [Muscle])
 }
 
+protocol SkillReceiver: class {
+    func receive(skills: [Skill])
+}

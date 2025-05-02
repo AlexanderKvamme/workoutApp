@@ -37,18 +37,18 @@ class CreatorScreen: UIViewController {
         return createButton(withTitle: "Workout", action: #selector(createWorkoutTapped))
     }()
     
-//    private lazy var createTypeButton: UIButton = {
-//        return createButton(withTitle: "Type", action: #selector(createTypeTapped))
-//    }()
-    
     private lazy var createMuscleButton: UIButton = {
-        return createButton(withTitle: "Muscle/Skill", action: #selector(createMuscleTapped))
+        return createButton(withTitle: "Muscle", action: #selector(createMuscleTapped))
     }()
     
     private lazy var createExerciseButton: UIButton = {
         return createButton(withTitle: "Exercise", action: #selector(createExerciseTapped))
     }()
     
+    private lazy var createSkillButton: UIButton = {
+        return createButton(withTitle: "Skill", action: #selector(createSkillTapped))
+    }()
+
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -78,7 +78,7 @@ class CreatorScreen: UIViewController {
         stackView.addArrangedSubview(createWorkoutButton)
         stackView.addArrangedSubview(createExerciseButton)
         stackView.addArrangedSubview(createMuscleButton)
-        //        stackView.addArrangedSubview(createTypeButton)
+        stackView.addArrangedSubview(createSkillButton)
     }
     
     private func setupConstraints() {
@@ -120,6 +120,11 @@ class CreatorScreen: UIViewController {
     @objc private func createMuscleTapped() {
         let muscleCreator = MuscleCreatorScreen()
         navigationController?.pushViewController(muscleCreator, animated: true)
+    }
+    
+    @objc private func createSkillTapped() {
+        let skillCreator = SkillCreatorScreen()
+        navigationController?.pushViewController(skillCreator, animated: true)
     }
     
     @objc private func createExerciseTapped() {

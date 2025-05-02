@@ -117,6 +117,7 @@
 		DD9477B61F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */; };
 		DD9477B81F7FE79500E01F81 /* MuscleBasedWorkoutTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */; };
 		DD9838731F12717B00B876C7 /* Notification Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9838721F12717B00B876C7 /* Notification Extensions.swift */; };
+		DD9F15F02DC423730077D61D /* SkillCreatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9F15EF2DC423620077D61D /* SkillCreatorScreen.swift */; };
 		DDA169461F1E882900A82FBF /* TapAnywhere.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA169451F1E882900A82FBF /* TapAnywhere.swift */; };
 		DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA4A3A01F5EC7F40026882A /* ApproveButtonFooter.swift */; };
 		DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA54AD81ED84B1B008C601C /* ModelEnums.swift */; };
@@ -303,6 +304,7 @@
 		DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleBasedWorkoutTableController.swift; sourceTree = "<group>"; };
 		DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleBasedWorkoutTableDataSource.swift; sourceTree = "<group>"; };
 		DD9838721F12717B00B876C7 /* Notification Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification Extensions.swift"; sourceTree = "<group>"; };
+		DD9F15EF2DC423620077D61D /* SkillCreatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCreatorScreen.swift; sourceTree = "<group>"; };
 		DDA169451F1E882900A82FBF /* TapAnywhere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapAnywhere.swift; sourceTree = "<group>"; };
 		DDA4A3A01F5EC7F40026882A /* ApproveButtonFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveButtonFooter.swift; sourceTree = "<group>"; };
 		DDA54AD81ED84B1B008C601C /* ModelEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelEnums.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			children = (
 				DD19A20C2DBFE91E00BEC938 /* CreatorScreen.swift */,
 				DD19A2102DC1522600BEC938 /* MuscleCreatorScreen.swift */,
+				DD9F15EF2DC423620077D61D /* SkillCreatorScreen.swift */,
 				DD19A20E2DBFEC1D00BEC938 /* CreatorScreenWorkout.swift */,
 			);
 			path = CreatorScreen;
@@ -1102,6 +1105,7 @@
 				DD4FF0171F6D320C005040A0 /* NewWorkoutController.swift in Sources */,
 				DD19A20D2DBFE92200BEC938 /* CreatorScreen.swift in Sources */,
 				DDBFCA621F2CA43000ABB241 /* PlusButton.swift in Sources */,
+				DD9F15F02DC423730077D61D /* SkillCreatorScreen.swift in Sources */,
 				DDB5FF3B1F4B806300202705 /* PickableEntity.swift in Sources */,
 				DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */,
 				1121237720835BBA005C27D2 /* ExerciseLog+CoreDataClass.swift in Sources */,

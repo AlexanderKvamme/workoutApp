@@ -1,4 +1,12 @@
 //
+//  SkillCreator.swift
+//  workoutApp
+//
+//  Created by Alexander Kvamme on 01/05/2025.
+//  Copyright © 2025 Alexander Kvamme. All rights reserved.
+//
+
+//
 //  MuscleCreatorScreen.swift
 //  workoutApp
 //
@@ -10,10 +18,15 @@ import UIKit
 import SnapKit
 
 
-class MuscleCreatorScreen: UIViewController, isStringReceiver, MuscleReceiver {
-    // MARK:: R
+class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, MuscleReceiver {
+    
     func receive(muscles: [Muscle]) {
-        print("received muscles: ", muscles)
+        print("received muscles ", muscles)
+    }
+    
+    // MARK:: R
+    func receive(skills: [Skill]) {
+        print("received skills ", skills)
     }
     
     var stringReceivedHandler: ((String) -> Void) = { _ in
@@ -21,7 +34,7 @@ class MuscleCreatorScreen: UIViewController, isStringReceiver, MuscleReceiver {
     }
 
     lazy var header: TwoLabelStack = {
-        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "New Muscle", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "Name of new muscle", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
+        let stack = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "New skill", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(0.4), bottomText: "Name of new Skill", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: UIColor.akDark, fadedBottomLabel: false)
         stack.button.accessibilityIdentifier = "workout-name-button"
         stack.bottomLabel.adjustsFontSizeToFitWidth = true
         
