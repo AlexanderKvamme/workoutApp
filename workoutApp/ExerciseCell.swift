@@ -242,7 +242,7 @@ class ExerciseCellForWorkouts: ExerciseCellBaseClass, LiftCellManager, hasNextCe
         // make new lift value to be displayed
         let newLift = DatabaseFacade.makeLift()
         newLift.owner = self.currentCellExerciseLog
-        newLift.datePerformed = Date() as NSDate
+        newLift.datePerformed = Date() as Date
         newLift.weight = 0
         newLift.reps = 0
         

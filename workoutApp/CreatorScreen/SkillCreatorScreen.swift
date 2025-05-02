@@ -56,8 +56,7 @@ class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, Mus
         setupRightBarButtonItem()
         
         stringReceivedHandler = { [weak self] (str: String) -> Void in
-            print(str)
-            DatabaseFacade.makeMuscle(named: str)
+            let newSkill = DatabaseFacade.makeSkill(named: str)
             DatabaseFacade.saveContext()
             self?.navigationController?.popViewController(animated: true)
         }

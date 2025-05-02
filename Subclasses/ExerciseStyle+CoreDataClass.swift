@@ -1,9 +1,8 @@
 //
 //  ExerciseStyle+CoreDataClass.swift
-//  workoutApp
+//  
 //
-//  Created by Alexander K on 15/04/2018.
-//  Copyright © 2018 Alexander Kvamme. All rights reserved.
+//  Created by Alexander Kvamme on 02/05/2025.
 //
 //
 

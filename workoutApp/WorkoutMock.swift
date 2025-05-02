@@ -16,6 +16,7 @@ public struct Mock {
         let test = DatabaseFacade.makeWorkout(withName: "Mock Workout",
                                                  workoutStyle: Mock.workoutStyle,
                                                  muscles: Mock.muscles,
+                                                 skill: nil,
                                                  exercises: Mock.exercises)
         return test
     }

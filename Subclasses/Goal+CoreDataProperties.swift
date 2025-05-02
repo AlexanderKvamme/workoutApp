@@ -1,9 +1,8 @@
 //
 //  Goal+CoreDataProperties.swift
-//  workoutApp
+//  
 //
-//  Created by Alexander K on 15/04/2018.
-//  Copyright © 2018 Alexander Kvamme. All rights reserved.
+//  Created by Alexander Kvamme on 02/05/2025.
 //
 //
 
@@ -17,7 +16,7 @@ extension Goal {
         return NSFetchRequest<Goal>(entityName: "Goal")
     }
 
-    @NSManaged public var dateMade: NSDate?
+    @NSManaged public var dateMade: Date?
     @NSManaged public var text: String?
 
 }

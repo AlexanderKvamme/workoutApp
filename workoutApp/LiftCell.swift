@@ -141,7 +141,7 @@ class LiftCell: UICollectionViewCell {
         lift.hasBeenPerformed = true
         
         if lift.datePerformed == nil {
-            lift.datePerformed = NSDate()
+            lift.datePerformed = Date()
         }
     }
 }

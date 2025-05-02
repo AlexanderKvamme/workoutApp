@@ -154,7 +154,7 @@ final class DataSeeder {
     
     private func makeWarning(withMessage message: String) {
         let warningRecord = DatabaseFacade.makeWarning()
-        warningRecord.dateMade = Date() as NSDate
+        warningRecord.dateMade = Date() as Date
         warningRecord.message = message
     }
     

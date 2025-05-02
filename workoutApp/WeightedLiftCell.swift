@@ -152,7 +152,7 @@ class WeightedLiftCell: LiftCell {
         
         // Keeps lifts in order
         if superTableCell.liftsToDisplay[liftRow].datePerformed == nil {
-            superTableCell.liftsToDisplay[liftRow].datePerformed = NSDate()
+            superTableCell.liftsToDisplay[liftRow].datePerformed = Date()
         }
     }
     

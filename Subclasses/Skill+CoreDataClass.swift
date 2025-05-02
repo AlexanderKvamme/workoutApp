@@ -2,7 +2,7 @@
 //  Skill+CoreDataClass.swift
 //  
 //
-//  Created by Alexander Kvamme on 01/05/2025.
+//  Created by Alexander Kvamme on 02/05/2025.
 //
 //
 

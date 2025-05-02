@@ -101,7 +101,15 @@ class HexagonItemView<T>: UIView {
     }
     
     func configure(withMuscle muscle: Muscle) {
-        textLabel?.text = muscle.name
+        configure(name: muscle.getName(), lastPerformanceDate: muscle.lastPerformance())
+    }
+    
+    func configure(withSkill skill: Skill) {
+        configure(name: skill.getName(), lastPerformanceDate: skill.lastPerformance())
+    }
+    
+    func configure(name: String, lastPerformanceDate: Date?) {
+        textLabel?.text = name
         
         let colors: [UIColor] = [
             UIColor.white,         // 0-3 days (very recent)
@@ -110,8 +118,7 @@ class HexagonItemView<T>: UIView {
             UIColor.black          // 14+ days (needs attention)
         ]
         
-        let daysSincePerformance = muscle.lastPerformance()?.daysSinceNow() ?? Int.max
-        print("Last \(muscle.getName()) performance: \(daysSincePerformance) days ago")
+        let daysSincePerformance = lastPerformanceDate?.daysSinceNow() ?? Int.max
         
         // Select color based on days since last performance
         let selectedColor: UIColor
@@ -176,6 +183,8 @@ class HexagonItemView<T>: UIView {
     func configure(withItem item: T, log: WorkoutLog?) {
         if let item = item as? Muscle {
             configure(withMuscle: item)
+        } else if let item = item as? Skill {
+            configure(withSkill: item)
         } else if let item = item as? Exercise {
             print("configuring exercise cell: ", item.name)
             configure(withExercise: item, andLog: log)

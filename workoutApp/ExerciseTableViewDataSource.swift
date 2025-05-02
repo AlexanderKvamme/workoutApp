@@ -44,7 +44,7 @@ class ExerciseTableDataSource: NSObject {
             return
         }
         
-        dataSourceWorkoutLog.dateEnded = Date() as NSDate
+        dataSourceWorkoutLog.dateEnded = Date() as Date
         
         // Save and pop viewController
         updateLatestUseOfMuscle()
@@ -141,7 +141,7 @@ private extension ExerciseTableDataSource {
         
         // Make new WorkoutLog and make it identical to the previous one
         dataSourceWorkoutLog = DatabaseFacade.makeWorkoutLog(ofDesign: previousWorkoutLogDesign)
-        dataSourceWorkoutLog.dateStarted = Date() as NSDate
+        dataSourceWorkoutLog.dateStarted = Date() as Date
         
         addPerformedExercises(fromWorkoutLog: previousPerformance)
         addNotYetPerformedExercises(fromWorkoutLog: previousPerformance)
@@ -166,7 +166,7 @@ private extension ExerciseTableDataSource {
                 let newExerciseLog = DatabaseFacade.makeExerciseLog()
                 newExerciseLog.exerciseDesign = exercise
                 newExerciseLog.usedIn = dataSourceWorkoutLog
-                newExerciseLog.datePerformed = Date() as NSDate
+                newExerciseLog.datePerformed = Date() as Date
                 
                 var liftCopies = [Lift]()
                 
@@ -181,7 +181,7 @@ private extension ExerciseTableDataSource {
                         for lift in sortedRecentLifts {
                             let newLift = DatabaseFacade.makeLift()
                             newLift.reps = lift.reps
-                            newLift.datePerformed = Date() as NSDate
+                            newLift.datePerformed = Date() as Date
                             newLift.time = lift.time
                             newLift.weight = exercise.isWeighted() ? lift.weight : 0
                             newLift.owner = newExerciseLog
@@ -245,7 +245,7 @@ private extension ExerciseTableDataSource {
             let newExerciseLog = DatabaseFacade.makeExerciseLog()
             newExerciseLog.exerciseDesign = exerciseLog.exerciseDesign
             newExerciseLog.usedIn = dataSourceWorkoutLog
-            newExerciseLog.datePerformed = Date() as NSDate
+            newExerciseLog.datePerformed = Date() as Date
             
             // Copy values from the most recently performed ExerciseLog to the newly created one
             

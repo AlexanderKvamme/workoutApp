@@ -199,14 +199,16 @@ final class DatabaseFacade {
         return result
     }
     
-    static func makeSkill() -> Skill {
+    static func makeSkill(named name: String) -> Skill {
         let newSkill = createManagedObjectForEntity(.Skill) as! Skill
+        newSkill.name = name
         return newSkill
     }
     
     static func fetchSkills() -> [Skill] {
-        let skill = fetchManagedObjectsForEntity(.Skill) as! [Skill]
-        return skill
+        let skills = fetchManagedObjectsForEntity(.Skill) as! [Skill]
+        print("fetched skills: ", skills.count)
+        return skills
     }
     
     static func makeMuscle() -> Muscle {
@@ -299,7 +301,7 @@ final class DatabaseFacade {
     static func makeExerciseLog(forExercise design: Exercise) -> ExerciseLog {
         let newLog = makeExerciseLog()
         newLog.exerciseDesign = design
-        newLog.datePerformed = Date() as NSDate
+        newLog.datePerformed = Date() as Date
 
         return newLog
     }
@@ -318,15 +320,16 @@ final class DatabaseFacade {
         design.incrementPerformanceCount()
         style.incrementPerformanceCount()
 
-        log.dateStarted = Date() as NSDate
+        log.dateStarted = Date() as Date
         return log
     }
     
-    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], exercises: [Exercise]) -> Workout {
+    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], skill: Skill? = nil, exercises: [Exercise]) -> Workout {
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         workoutRecord.setName(workoutName)
         workoutRecord.setInitialWorkoutStyle(workoutStyle)
         workoutRecord.musclesUsed = NSSet(array: muscles)
+        if let skill = skill { workoutRecord.skillsUsed = skill }
         workoutStyle.addToUsedInWorkouts(workoutRecord)
         workoutRecord.setExercises(exercises)
         return workoutRecord
@@ -482,7 +485,7 @@ final class DatabaseFacade {
     
     @discardableResult static func makeGoal(_ str: String) -> Goal {
         let newGoal = DatabaseFacade.makeGoal()
-        newGoal.dateMade = Date() as NSDate
+        newGoal.dateMade = Date() as Date
         newGoal.text = str.uppercased()
         return newGoal
     }
@@ -652,6 +655,21 @@ final class DatabaseFacade {
         let predicate1 = NSPredicate(format: "musclesUsed CONTAINS %@", muscle)
         let predicate2 = NSPredicate(format: "isRetired == false")
         let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+        fetchRequest.predicate = andPredicate
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            return result
+        } catch let error as NSError {
+            print(" error fetching exercises using Muscle: \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
+    static func fetchExercises(containing skill: Skill) -> [Exercise]? {
+        let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
+        let predicate1 = NSPredicate(format: "ANY skillsUsed CONTAINS %@", skill)
+        let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
         fetchRequest.predicate = andPredicate
         
         do {

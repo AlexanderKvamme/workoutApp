@@ -163,7 +163,7 @@ class GoalsController: UIViewController, isStringReceiver {
     private func setupReceiveHandler() {
         stringReceivedHandler = { str in
             let goal = DatabaseFacade.makeGoal()
-            goal.dateMade = Date() as NSDate
+            goal.dateMade = Date() as Date
             goal.text = str
             
             let buttonFromGoal = self.makeGoalButton(withGoal: goal)

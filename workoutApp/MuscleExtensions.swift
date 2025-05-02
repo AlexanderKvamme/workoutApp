@@ -11,6 +11,7 @@ import Foundation
 extension Muscle {
     
     func lastPerformance() -> Date? {
+        // FIXME: Make sure this is actually set after completing an improv
         return self.mostRecentUse?.dateEnded as Date?
     }
     

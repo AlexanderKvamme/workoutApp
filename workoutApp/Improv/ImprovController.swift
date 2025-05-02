@@ -6,8 +6,8 @@ import AKKIT
 // MARK: - HoneycombViewController
 class HoneycombViewController: SelectionViewController {
     
-    private var honeycombGrid: HoneycombGridView<Muscle>!
-    private var muscleGroups: [Muscle] = []
+    private var honeycombGrid: HoneycombGridView<Skill>!
+    private var skills: [Skill] = []
     
     init() {
         super.init(header: SelectionViewHeader(header: "Improvise workout", subheader: "Select a skill"))
@@ -21,18 +21,18 @@ class HoneycombViewController: SelectionViewController {
         super.viewDidLoad()
         view.backgroundColor = .akLight
         
-        let skill = DatabaseFacade.makeSkill()
-        skill.title = "Caseman"
-        let skill2 = DatabaseFacade.makeSkill()
-        skill2.title = "The fuckening"
-        
         let skills = DatabaseFacade.fetchSkills()
-        print("shazam skills: ", skills.count)
-        print("shazam skills: ", skills.map{ $0.title })
-        
         for skill in skills {
             DatabaseFacade.delete(skill)
         }
+//
+//        let skill = DatabaseFacade.makeSkill()
+//        skill.name = "Caseman"
+//        let skill2 = DatabaseFacade.makeSkill()
+//        skill2.name = "The fuckening"
+//        
+//        print("shazam skills: ", skills.count)
+//        print("shazam skills: ", skills.map{ $0.name })
         
         DatabaseFacade.saveContext()
     }
@@ -40,7 +40,7 @@ class HoneycombViewController: SelectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        muscleGroups = DatabaseFacade.fetchMuscles()
+        skills = DatabaseFacade.fetchSkills()
         reset()
         setupHoneycombGrid()
     }
@@ -72,7 +72,7 @@ class HoneycombViewController: SelectionViewController {
     private func setupHoneycombGrid() {
         // Create the honeycomb grid with a text provider
         
-        honeycombGrid = HoneycombGridView<Muscle>(textProvider: { muscle in
+        honeycombGrid = HoneycombGridView<Skill>(textProvider: { muscle in
             return muscle.name ?? "Unknown"
         })
         
@@ -92,9 +92,9 @@ class HoneycombViewController: SelectionViewController {
         view.layoutIfNeeded()
         
         // Configure with data and selection handler
-        honeycombGrid.configure(with: muscleGroups) { [weak self] (selectedMuscle, hexView: HexagonItemView) in
-            print("Selected muscle: \(selectedMuscle.name ?? "Unknown")")
-            let improvWorkoutController = ImprovWorkoutController(muscleGroup: selectedMuscle)
+        honeycombGrid.configure(with: skills) { [weak self] (selectedSkill, hexView: HexagonItemView) in
+            print("Selected muscle: \(selectedSkill.name ?? "Unknown")")
+            let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
             self?.navigationController?.pushViewController(improvWorkoutController, animated: true)
         }
     }

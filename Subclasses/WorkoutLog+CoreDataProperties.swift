@@ -1,9 +1,8 @@
 //
 //  WorkoutLog+CoreDataProperties.swift
-//  workoutApp
+//  
 //
-//  Created by Alexander K on 15/04/2018.
-//  Copyright © 2018 Alexander Kvamme. All rights reserved.
+//  Created by Alexander Kvamme on 02/05/2025.
 //
 //
 
@@ -17,12 +16,13 @@ extension WorkoutLog {
         return NSFetchRequest<WorkoutLog>(entityName: "WorkoutLog")
     }
 
-    @NSManaged public var dateEnded: NSDate?
-    @NSManaged public var dateStarted: NSDate?
+    @NSManaged public var dateEnded: Date?
+    @NSManaged public var dateStarted: Date?
     @NSManaged public var design: Workout?
     @NSManaged public var isMostRecentUseOf: NSSet?
     @NSManaged public var latestPerformanceDesign: Workout?
     @NSManaged public var loggedExercises: NSOrderedSet?
+    @NSManaged public var isMostRecentUseOfSkill: Skill?
 
 }
 

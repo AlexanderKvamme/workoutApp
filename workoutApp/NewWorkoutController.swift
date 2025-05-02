@@ -78,7 +78,8 @@ class NewWorkoutController: WorkoutController {
             return
         }
         let workoutName = header.getBottomText()
-        DatabaseFacade.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, exercises: currentExercises)
+        // FIXME: Maybe add skill?
+        DatabaseFacade.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, skill: nil, exercises: currentExercises)
         DatabaseFacade.saveContext()
         
         navigationController?.popViewController(animated: true)

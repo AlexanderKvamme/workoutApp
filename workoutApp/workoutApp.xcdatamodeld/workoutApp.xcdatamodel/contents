@@ -6,8 +6,8 @@
         <relationship name="loggedInstances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseLog" inverseName="exerciseDesign" inverseEntity="ExerciseLog"/>
         <relationship name="measurementStyle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MeasurementStyle" inverseName="usedInExercises" inverseEntity="MeasurementStyle"/>
         <relationship name="musclesUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInExercises" inverseEntity="Muscle"/>
+        <relationship name="skillsUsed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Skill" inverseName="usedInExercises" inverseEntity="Skill"/>
         <relationship name="style" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseStyle" inverseName="usedInExercises" inverseEntity="ExerciseStyle"/>
-        <relationship name="usedInSkills" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Skill" inverseName="usedInExercises" inverseEntity="Skill"/>
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercises" inverseEntity="Workout"/>
     </entity>
     <entity name="ExerciseLog" representedClassName="ExerciseLog" syncable="YES">
@@ -44,8 +44,9 @@
         <relationship name="usedInWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="musclesUsed" inverseEntity="Workout"/>
     </entity>
     <entity name="Skill" representedClassName="Skill" syncable="YES">
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="usedInSkills" inverseEntity="Exercise"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="mostRecentUse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="isMostRecentUseOfSkill" inverseEntity="WorkoutLog"/>
+        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="skillsUsed" inverseEntity="Exercise"/>
     </entity>
     <entity name="Warning" representedClassName="Warning" syncable="YES">
         <attribute name="dateMade" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -60,6 +61,7 @@
         <relationship name="latestPerformence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="latestPerformanceDesign" inverseEntity="WorkoutLog"/>
         <relationship name="loggedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="design" inverseEntity="WorkoutLog"/>
         <relationship name="musclesUsed" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="usedInWorkouts" inverseEntity="Muscle"/>
+        <relationship name="skillsUsed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Skill"/>
         <relationship name="workoutStyle" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutStyle" inverseName="usedInWorkouts" inverseEntity="WorkoutStyle"/>
     </entity>
     <entity name="WorkoutLog" representedClassName="WorkoutLog" syncable="YES">
@@ -67,6 +69,7 @@
         <attribute name="dateStarted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="design" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="loggedWorkouts" inverseEntity="Workout"/>
         <relationship name="isMostRecentUseOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" inverseName="mostRecentUse" inverseEntity="Muscle"/>
+        <relationship name="isMostRecentUseOfSkill" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Skill" inverseName="mostRecentUse" inverseEntity="Skill"/>
         <relationship name="latestPerformanceDesign" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="latestPerformence" inverseEntity="Workout"/>
         <relationship name="loggedExercises" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ExerciseLog" inverseName="usedIn" inverseEntity="ExerciseLog"/>
     </entity>

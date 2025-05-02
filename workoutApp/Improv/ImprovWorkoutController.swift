@@ -4,7 +4,7 @@ import CoreData
 
 // MARK: - ImprovWorkoutController
 class ImprovWorkoutController: UIViewController {
-    private let muscleGroup: Muscle
+    private let skill: Skill
     private var honeycombGrid: HoneycombGridView<Exercise>?
     private var exercises: [Exercise] = []
     private var progressBar = DotProgressView()
@@ -12,24 +12,25 @@ class ImprovWorkoutController: UIViewController {
     private var timerView = TimerView()
     private var log: WorkoutLog!
 
-    init(muscleGroup: Muscle) {
-        self.muscleGroup = muscleGroup
+    init(skill: Skill) {
+        self.skill = skill
         
         super.init(nibName: nil, bundle: nil)
         
         let wStyle = DatabaseFacade.getWorkoutStyle(named: "IMPROV") ?? DatabaseFacade.makeWorkoutStyle(named: "IMPROV")
         let workout = DatabaseFacade.makeWorkout(withName: "Improv",
                                    workoutStyle: wStyle,
-                                   muscles: [muscleGroup],
+                                   muscles: [],
+                                   skill: skill,
                                    exercises: []) // FIXME: Start empty
         // FIXME: Figure out a way of how to add exercises?
         self.log = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
 
-        let dbExercises = DatabaseFacade.fetchExercises(containing: muscleGroup) ?? []
+        let dbExercises = DatabaseFacade.fetchExercises(containing: skill) ?? []
         print("exercises: ", (dbExercises ?? []).map {$0.name ?? "NA" })
         exercises = dbExercises.map { $0 }
         
-        let baseName = muscleGroup.name ?? "Exercise"
+        let baseName = skill.name ?? "Exercise"
         title = baseName
         
         let listButton = UIBarButtonItem(
