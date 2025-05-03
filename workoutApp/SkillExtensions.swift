@@ -27,7 +27,7 @@ extension Collection where Iterator.Element == Skill {
    func getName() -> String {
        
        if self.count == 0 {
-           return "NO NAME"
+           return "NONE"
        } else if self.count == 1 {
            return self.first!.name!
        }

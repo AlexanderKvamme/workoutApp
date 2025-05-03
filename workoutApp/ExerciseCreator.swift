@@ -23,7 +23,13 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
     let darkSubHeaderFont = UIFont.custom(style: .medium, ofSize: .medium)
     
     var header: TwoLabelStack = {
-        let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70), topText: "Name", topFont: UIFont.custom(style: .bold, ofSize: .medium), topColor: UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue), bottomText: "Your exercise", bottomFont: UIFont.custom(style: .bold, ofSize: .big), bottomColor: .akDark, fadedBottomLabel: false)
+        let header = TwoLabelStack(frame: CGRect(x: 0, y: 100, width: Constant.UI.width, height: 70),
+                                   topText: "Name",
+                                   topFont: UIFont.custom(style: .bold, ofSize: .medium),
+                                   topColor: UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue),
+                                   bottomText: "Your exercise",
+                                   bottomFont: UIFont.custom(style: .bold, ofSize: .big),
+                                   bottomColor: .akDark, fadedBottomLabel: false)
         header.button.accessibilityIdentifier = "exercise-name-button"
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
         header.bottomLabel.adjustsFontSizeToFitWidth = true
@@ -37,13 +43,27 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
     }()
 
     lazy var muscleSelecter: TwoLabelStack = {
-        let muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Muscle", topFont: darkHeaderFont, topColor: .dark, bottomText: currentMuscles.getName(), bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
+        let muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
+                                           topText: "Muscle",
+                                           topFont: darkHeaderFont,
+                                           topColor: .dark,
+                                           bottomText: currentMuscles.getName(),
+                                           bottomFont: darkSubHeaderFont,
+                                           bottomColor: .dark,
+                                           fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         return muscleSelecter
     }()
     
     lazy var skillSelecter: TwoLabelStack = {
-        let skillSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: muscleSelecter.frame.maxY - 40, width: halfScreenWidth, height: selecterHeight), topText: "Skill", topFont: darkHeaderFont, topColor: .dark, bottomText: currentSkills.getName(), bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
+        let skillSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: muscleSelecter.frame.maxY - 40, width: halfScreenWidth, height: selecterHeight),
+                                          topText: "Skill",
+                                          topFont: darkHeaderFont,
+                                          topColor: .dark,
+                                          bottomText: currentSkills.getName(),
+                                          bottomFont: darkSubHeaderFont,
+                                          bottomColor: .dark,
+                                          fadedBottomLabel: false)
         skillSelecter.button.addTarget(self, action: #selector(skillTapHandler), for: .touchUpInside)
         return skillSelecter
     }()
@@ -142,9 +162,8 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
     
     @objc private func muscleTapHandler() {
         // Make and present a custom pickerView for selecting muscle
-//        let musclePicker = PickerController<Muscle>(withPreselectedMuscles: currentMuscles)
         let muscles = DatabaseFacade.fetchMuscles()
-        let musclePicker = PickerController<Muscle>(withPicksFrom: muscles, withPreselection: [])
+        let musclePicker = PickerController<Muscle>(withPicksFrom: muscles, withPreselection: currentMuscles)
         musclePicker.pickableReceiver = self
         // When receiving a selection of workout musclegroup
         stringReceivedHandler = {
@@ -158,10 +177,8 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
     @objc private func skillTapHandler() {
         // Make and present a custom pickerView for selecting muscle
         let skills = DatabaseFacade.fetchSkills()
-        let picked = skills.first!
-        let skillPicker = PickerController<Skill>(withPicksFrom: skills, withPreselection: [picked])
-        skillSelecter.bottomLabel.text = picked.getName()
-        skillSelecter.bottomLabel.text = "Hello"
+        let skillPicker = PickerController<Skill>(withPicksFrom: skills, withPreselection: currentSkills)
+        skillSelecter.bottomLabel.text = currentSkills.getName()
         skillPicker.pickableReceiver = self
         // When receiving a selection of workout musclegroup
         stringReceivedHandler = {
@@ -193,7 +210,7 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
             return
         }
         
-        let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, measurementStyle: currentMeasurementStyle)
+        let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, skills: currentSkills, measurementStyle: currentMeasurementStyle)
         exercisePickerDelegate?.receiveNewExercise(newExercise)
         DatabaseFacade.saveContext()
         

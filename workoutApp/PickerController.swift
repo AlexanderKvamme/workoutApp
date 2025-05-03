@@ -11,8 +11,9 @@ import CoreData
 import UIKit
 
 /// This PickerView is used to pick workout styles/muscles. It is actually a ViewController containing a tableView. Since these are fantastically customizable.
-class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate, UITableViewDataSource, isStringSender {
-    
+class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDataSource, isStringSender
+    where T: PickableEntity, T: Equatable {
+        
     // MARK: - Properties
     var header: TwoLabelStack = {
         let labelStack = TwoLabelStack(frame: .zero, topText: "SELECT", topFont: .custom(style: .bold, ofSize: .big), topColor: .akDark, bottomText: "", bottomFont: .custom(style: .medium, ofSize: .small), bottomColor: .akDark, fadedBottomLabel: false)
@@ -22,7 +23,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     var footer: ButtonFooter!
     var selectedIndexPath: IndexPath?
     var selectionChoices: [T]!
-    var selectedPickable: [T]!
+    var selectedPickables: [T]!
     let tableVerticalInset: CGFloat = 102
     var stringToSelect: String?
     let cellIdentifier = "cellIdentifier"
@@ -43,7 +44,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     init(withPicksFrom array: [PickableEntity], withPreselection preselection: [Pickable]) {
         super.init(nibName: nil, bundle: nil)
         selectionChoices = array as! [T]
-        selectedPickable = preselection
+        selectedPickables = preselection
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -63,7 +64,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
         setupTable()
         
         // Preselection
-        selectRows(withPickable: selectedPickable)
+        selectRows(withPickable: selectedPickables)
         
         table.reloadData()
         view.setNeedsLayout()
@@ -111,9 +112,17 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Make look deselected or selected
+        let tappedPickable = selectionChoices[indexPath.row]
+        print("picked: ", indexPath)
+
         if selectedIndexPath == indexPath {
             selectedIndexPath = nil
+            // Find the index of the pickable to remove
+            if let pickableIndex = selectedPickables.firstIndex(where: { pickable in
+                pickable == tappedPickable
+            }) {
+                selectedPickables.remove(at: pickableIndex)
+            }
         } else {
             // remove previous selection
             if let previousSelectedIndexPath = selectedIndexPath {
@@ -123,12 +132,7 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
             }
             // update selection
             selectedIndexPath = indexPath
-            print("picked: ", indexPath)
-            let test = selectionChoices[indexPath.row]
-            // FIXME: append??
-            
-            selectedPickable.append(selectionChoices[indexPath.row])
-//            selectedPickable = selectedC
+            selectedPickables.append(tappedPickable)
         }
         let selectedCell = tableView.cellForRow(at: indexPath)! as! PickerCell
         configure(selectedCell, forIndexPath: indexPath)
@@ -273,9 +277,12 @@ class PickerController<T: PickableEntity>: UIViewController, UITableViewDelegate
     }
     
     @objc func confirmAndDismiss() {
-        if let usersPick = selectedPickable {
-            sendBack(pickables: usersPick)
-        }
+//        if let usersPick = selectedPickable {
+//            sendBack(pickables: usersPick)
+//        }
+        print("sending back: ", selectedPickables.map{ $0 })
+        print("sending back: ", selectedPickables.count)
+        sendBack(pickables: selectedPickables)
 
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }

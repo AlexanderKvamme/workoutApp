@@ -28,6 +28,7 @@ class NewWorkoutController: WorkoutController {
         
         currentMuscles = [DatabaseFacade.defaultMuscle]
         currentWorkoutStyle = DatabaseFacade.defaultWorkoutStyle
+        currentSkills = [DatabaseFacade.defaultSkill]
         header.button.addTarget(self, action: #selector(headerTapHandler), for: .touchUpInside)
     }
     
@@ -79,7 +80,7 @@ class NewWorkoutController: WorkoutController {
         }
         let workoutName = header.getBottomText()
         // FIXME: Maybe add skill?
-        DatabaseFacade.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, skill: nil, exercises: currentExercises)
+        DatabaseFacade.makeWorkout(withName: workoutName, workoutStyle: currentWorkoutStyle, muscles: currentMuscles, skills: currentSkills, exercises: currentExercises)
         DatabaseFacade.saveContext()
         
         navigationController?.popViewController(animated: true)

@@ -9,7 +9,6 @@
 import Foundation
 
 extension Muscle {
-    
     func lastPerformance() -> Date? {
         // FIXME: Make sure this is actually set after completing an improv
         return self.mostRecentUse?.dateEnded as Date?
@@ -23,12 +22,10 @@ extension Muscle {
  // MARK: Extension to collections of elements
  
  extension Collection where Iterator.Element == Muscle {
- 
- // Returns name if only collection contains 1 muscle, or "MULTIPLE" if several muscles
+    // Returns name if only collection contains 1 muscle, or "MULTIPLE" if several muscles
     func getName() -> String {
-        
         if self.count == 0 {
-            return "NO NAME"
+            return "NONE"
         } else if self.count == 1 {
             return self.first!.name!
         }

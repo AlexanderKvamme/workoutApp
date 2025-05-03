@@ -20,10 +20,11 @@ final class DataSeeder {
     private let context: NSManagedObjectContext
     
     // Properties for seeding to Core Data
-    private let defaultMuscles = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
+    private let defaultMuscles = ["BICEPS", "TRICEPS", "GLUTES", "CORE", "CHEST", "SHOULDERS", "BACK", "QUADS"]
     private let defaultWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
     private let defaultExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
     private let defaultMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
+    private let defaultSkills = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
     
     // MARK: - Initializer
     
@@ -35,6 +36,7 @@ final class DataSeeder {
     
     public func seedCoreData() {
         seedWithExampleMuscleGroups()
+        seedWithExampleSkillGroups()
         seedWithExampleWorkoutStyles()
         seedWithExampleExerciseStyles()
         seedWithExampleMeasurementStyles()
@@ -54,18 +56,18 @@ final class DataSeeder {
         DataSeeder.resetCounts() //
         
         // Generate exercises
-        DatabaseFacade.makeExercise(withName: "SEED FLEXERS", exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.biceps], measurementStyle: MeasurementStyles.sets)
+        DatabaseFacade.makeExercise(withName: "SEED FLEXERS", exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.biceps], skills: [Skill](), measurementStyle: MeasurementStyles.sets)
         
         // Generate workouts
-        DatabaseFacade.makeWorkout(withName: "BOOTYBUILDER", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.glutes], exercises: [Exercises.bicepFlex])
+        DatabaseFacade.makeWorkout(withName: "BOOTYBUILDER", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.glutes], skills: [Skill](), exercises: [Exercises.bicepFlex])
         DatabaseFacade.makeWorkout(withName: "HARD CORE", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.core], exercises: [Exercises.pullUp])
         DatabaseFacade.makeWorkout(withName: "MUSCLE UP", workoutStyle: WorkoutStyles.technique, muscles: [Muscles.back], exercises: [Exercises.pullUp])
         
         // Generate weighted workout
         let exercisesForPullDay: [Exercise] = [
-            DatabaseFacade.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.weightedSets),
-            DatabaseFacade.makeExercise(withName: "PULL UP", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
-            DatabaseFacade.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], measurementStyle: MeasurementStyles.sets),
+            DatabaseFacade.makeExercise(withName: "WEIGHTED PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], skills: [Skill](), measurementStyle: MeasurementStyles.weightedSets),
+            DatabaseFacade.makeExercise(withName: "PULL UP", exerciseStyle: ExerciseStyles.explosive, muscles: [Muscles.back], skills: [Skill](), measurementStyle: MeasurementStyles.sets),
+            DatabaseFacade.makeExercise(withName: "AUSTRALIAN PULL UP", exerciseStyle: ExerciseStyles.weighted, muscles: [Muscles.back], skills: [Skill](), measurementStyle: MeasurementStyles.sets),
         ]
         DatabaseFacade.makeWorkout(withName: "PULL DAY", workoutStyle: WorkoutStyles.normal, muscles: [Muscles.back], exercises: exercisesForPullDay)
         
@@ -122,6 +124,14 @@ final class DataSeeder {
         }
     }
     
+    private func seedWithExampleSkillGroups() {
+        for skill in defaultSkills {
+            if DatabaseFacade.getSkill(named: skill) == nil {
+                makeSkill(withName: skill.uppercased())
+            }
+        }
+    }
+    
     private func seedWithExampleWarning() {
         makeWarning(withMessage: "Welcome to the workout app")
     }
@@ -150,6 +160,10 @@ final class DataSeeder {
     private func makeMuscle(withName name: String) {
         let muscleRecord = DatabaseFacade.makeMuscle()
         muscleRecord.name = name.uppercased()
+    }
+    
+    private func makeSkill(withName name: String) {
+        let muscleRecord = DatabaseFacade.makeSkill(named: name.uppercased())
     }
     
     private func makeWarning(withMessage message: String) {
@@ -348,7 +362,7 @@ fileprivate final class Exercises {
     // Methods
     
     private static func getOrMakeExercise(named name: String) -> Exercise {
-        return DatabaseFacade.getExercise(named: name) ??  DatabaseFacade.makeExercise(withName: name, exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.chest], measurementStyle: MeasurementStyles.sets)
+        return DatabaseFacade.getExercise(named: name) ??  DatabaseFacade.makeExercise(withName: name, exerciseStyle: ExerciseStyles.normal, muscles: [Muscles.chest], skills: [Skill](), measurementStyle: MeasurementStyles.sets)
     }
 }
 

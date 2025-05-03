@@ -9,6 +9,7 @@ class WorkoutController: UIViewController, ExerciseReceiver, isStringReceiver {
     
     // required properties
     var currentMuscles: [Muscle]!
+    var currentSkills: [Skill]!
     var currentWorkoutStyle: WorkoutStyle!
     var receiveExercises: (([Exercise]) -> ()) = { _ in }
     var stringReceivedHandler: ((String) -> Void) = { _ in } // Receiving of time and name from pickers

@@ -56,6 +56,11 @@ final class DatabaseFacade {
         return style
     }()
     
+    static var defaultSkill: Skill = {
+        let skill = getSkill(named: "NORMAL")!
+        return skill
+    }()
+    
     static var defaultMeasurementStyle: MeasurementStyle = {
         let style = getMeasurementStyle(named: "SETS")!
         return style
@@ -281,13 +286,13 @@ final class DatabaseFacade {
         return newGoal
     }
     
-    @discardableResult static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], measurementStyle: MeasurementStyle) -> Exercise {
+    @discardableResult static func makeExercise(withName name: String, exerciseStyle: ExerciseStyle, muscles: [Muscle], skills: [Skill], measurementStyle: MeasurementStyle) -> Exercise {
         
         let newExercise = makeExercise()
-        
         newExercise.name = name.uppercased()
         newExercise.setMuscles(muscles)
         newExercise.style = exerciseStyle
+        newExercise.setSkills(skills)
         newExercise.measurementStyle = measurementStyle
         
         return newExercise
@@ -324,12 +329,14 @@ final class DatabaseFacade {
         return log
     }
     
-    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], skill: Skill? = nil, exercises: [Exercise]) -> Workout {
+    static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], skills: [Skill]? = nil, exercises: [Exercise]) -> Workout {
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         workoutRecord.setName(workoutName)
         workoutRecord.setInitialWorkoutStyle(workoutStyle)
         workoutRecord.musclesUsed = NSSet(array: muscles)
-        if let skill = skill { workoutRecord.skillsUsed = skill }
+        // FIXME: make sure this is good
+        print("FIXME only saving one")
+        if let skills = skills { workoutRecord.skillsUsed = skills.first! }
         workoutStyle.addToUsedInWorkouts(workoutRecord)
         workoutRecord.setExercises(exercises)
         return workoutRecord
@@ -672,6 +679,22 @@ final class DatabaseFacade {
         return muscle
     }
     
+    static func getSkill(named name: String) -> Skill? {
+        let name = name.uppercased()
+        var skill: Skill? = nil
+        do {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Skill.rawValue)
+            let predicate = NSPredicate(format: "name == %@", name.uppercased())
+            
+            fetchRequest.predicate = predicate
+            let result = try context.fetch(fetchRequest)
+            skill = result.first as? Skill
+        } catch let error as NSError {
+            print("error fetching \(name): \(error.localizedDescription)")
+        }
+        return skill
+    }
+    
     static func fetchExercises(containing muscle: Muscle) -> [Exercise]? { 
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
         let predicate1 = NSPredicate(format: "musclesUsed CONTAINS %@", muscle)
@@ -689,6 +712,8 @@ final class DatabaseFacade {
     }
     
     static func fetchExercises(containing skill: Skill) -> [Exercise]? {
+        print("Fetching exercises for ", skill.getName())
+        print(skill)
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
         let predicate1 = NSPredicate(format: "ANY skillsUsed CONTAINS %@", skill.getName())
         let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])

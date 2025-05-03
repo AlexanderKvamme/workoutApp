@@ -16,16 +16,17 @@ public struct Mock {
         let test = DatabaseFacade.makeWorkout(withName: "Mock Workout",
                                                  workoutStyle: Mock.workoutStyle,
                                                  muscles: Mock.muscles,
-                                                 skill: nil,
+                                              skills: nil,
                                                  exercises: Mock.exercises)
         return test
     }
     
     public static var exercise: Exercise {
        return DatabaseFacade.makeExercise(withName: "Mock exercise 1",
-                                            exerciseStyle: Mock.exerciseStyle,
-                                            muscles: Mock.muscles,
-                                            measurementStyle: Mock.measurementStyle)
+                                          exerciseStyle: Mock.exerciseStyle,
+                                          muscles: Mock.muscles,
+                                          skills: [Skill](),
+                                          measurementStyle: Mock.measurementStyle)
     }
     
     public static var exerciseStyle: ExerciseStyle {
@@ -50,6 +51,7 @@ public struct Mock {
         return [DatabaseFacade.makeExercise(withName: "Mock exercice A",
                                             exerciseStyle: Mock.exerciseStyle,
                                             muscles: Mock.muscles,
+                                            skills: [Skill](),
                                             measurementStyle: Mock.measurementStyle)]
     }
 }

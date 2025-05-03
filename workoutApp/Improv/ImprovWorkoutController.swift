@@ -21,7 +21,7 @@ class ImprovWorkoutController: UIViewController {
         let workout = DatabaseFacade.makeWorkout(withName: "Improv",
                                    workoutStyle: wStyle,
                                    muscles: [],
-                                   skill: skill,
+                                   skills: [skill], // FIXME: Is this ok?
                                    exercises: []) // FIXME: Start empty
         // FIXME: Figure out a way of how to add exercises?
         self.log = DatabaseFacade.makeWorkoutLog(ofDesign: workout)

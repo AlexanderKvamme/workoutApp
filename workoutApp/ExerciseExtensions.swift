@@ -18,6 +18,10 @@ extension Exercise {
         musclesUsed = NSSet(array: muscles)
     }
     
+    func setSkills(_ skills: [Skill]) {
+        skillsUsed = NSSet(array: skills)
+    }
+    
     func getName() -> String {
         return name ?? "NO NAME"
     }
