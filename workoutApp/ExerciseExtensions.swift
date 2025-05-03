@@ -20,6 +20,7 @@ extension Exercise {
     
     func setSkills(_ skills: [Skill]) {
         skillsUsed = NSSet(array: skills)
+        print("Exercise.skillsUsed now: ", skills)
     }
     
     func getName() -> String {

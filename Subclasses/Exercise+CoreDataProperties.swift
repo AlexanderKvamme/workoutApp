@@ -2,7 +2,7 @@
 //  Exercise+CoreDataProperties.swift
 //  
 //
-//  Created by Alexander Kvamme on 02/05/2025.
+//  Created by Alexander Kvamme on 03/05/2025.
 //
 //
 

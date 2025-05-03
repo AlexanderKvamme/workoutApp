@@ -37,7 +37,7 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
     }()
     
     lazy var typeSelecter: TwoLabelStack = {
-        let typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .dark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: UIColor.dark, fadedBottomLabel: false)
+        let typeSelecter = TwoLabelStack(frame: CGRect(x: 0, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight), topText: "Type", topFont: darkHeaderFont, topColor: .akDark, bottomText: Constant.defaultValues.exerciseType, bottomFont: darkSubHeaderFont, bottomColor: .akDark, fadedBottomLabel: false)
         typeSelecter.button.addTarget(self, action: #selector(typeTapHandler), for: .touchUpInside)
         return typeSelecter
     }()
@@ -46,10 +46,10 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
         let muscleSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: header.frame.maxY, width: halfScreenWidth, height: selecterHeight),
                                            topText: "Muscle",
                                            topFont: darkHeaderFont,
-                                           topColor: .dark,
+                                           topColor: .akDark,
                                            bottomText: currentMuscles.getName(),
                                            bottomFont: darkSubHeaderFont,
-                                           bottomColor: .dark,
+                                           bottomColor: .akDark,
                                            fadedBottomLabel: false)
         muscleSelecter.button.addTarget(self, action: #selector(muscleTapHandler), for: .touchUpInside)
         return muscleSelecter
@@ -59,17 +59,17 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
         let skillSelecter = TwoLabelStack(frame: CGRect(x: halfScreenWidth, y: muscleSelecter.frame.maxY - 40, width: halfScreenWidth, height: selecterHeight),
                                           topText: "Skill",
                                           topFont: darkHeaderFont,
-                                          topColor: .dark,
+                                          topColor: .akDark,
                                           bottomText: currentSkills.getName(),
                                           bottomFont: darkSubHeaderFont,
-                                          bottomColor: .dark,
+                                          bottomColor: .akDark,
                                           fadedBottomLabel: false)
         skillSelecter.button.addTarget(self, action: #selector(skillTapHandler), for: .touchUpInside)
         return skillSelecter
     }()
     
     lazy var measurementSelecter: TwoLabelStack = {
-        let measurementSelecter = TwoLabelStack(frame: CGRect(x: 0, y: muscleSelecter.frame.maxY - 40, width: screenWidth/2, height: selecterHeight), topText: "Measurement", topFont: darkHeaderFont, topColor: .dark, bottomText: DatabaseFacade.defaultMeasurementStyle.name!, bottomFont: darkSubHeaderFont, bottomColor: .dark, fadedBottomLabel: false)
+        let measurementSelecter = TwoLabelStack(frame: CGRect(x: 0, y: muscleSelecter.frame.maxY - 40, width: screenWidth/2, height: selecterHeight), topText: "Measurement", topFont: darkHeaderFont, topColor: .akDark, bottomText: DatabaseFacade.defaultMeasurementStyle.name!, bottomFont: darkSubHeaderFont, bottomColor: .akDark, fadedBottomLabel: false)
         measurementSelecter.button.addTarget(self, action: #selector(measurementTapHandler), for: .touchUpInside)
         return measurementSelecter
     }()
@@ -210,7 +210,12 @@ class ExerciseCreator: UIViewController, ExerciseReceiver, isStringReceiver {
             return
         }
         
-        let newExercise = DatabaseFacade.makeExercise(withName: name, exerciseStyle: currentExerciseStyle, muscles: currentMuscles, skills: currentSkills, measurementStyle: currentMeasurementStyle)
+        print("new exercise had skill: ", currentSkills)
+        let newExercise = DatabaseFacade.makeExercise(withName: name,
+                                                      exerciseStyle: currentExerciseStyle,
+                                                      muscles: currentMuscles,
+                                                      skills: currentSkills,
+                                                      measurementStyle: currentMeasurementStyle)
         exercisePickerDelegate?.receiveNewExercise(newExercise)
         DatabaseFacade.saveContext()
         

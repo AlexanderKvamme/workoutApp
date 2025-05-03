@@ -134,7 +134,6 @@ class CreatorScreen: UIViewController {
         
         newExerciseController.navigationController?.setNavigationBarHidden(false, animated: true)
         newExerciseController.navigationController?.navigationItem.hidesBackButton = false
-//        newExerciseController.navigationController?.addCustomNavBarBackButton()
         navigationController?.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
 }

@@ -46,7 +46,7 @@
     <entity name="Skill" representedClassName="Skill" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="mostRecentUse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutLog" inverseName="isMostRecentUseOfSkill" inverseEntity="WorkoutLog"/>
-        <relationship name="usedInExercises" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="skillsUsed" inverseEntity="Exercise"/>
+        <relationship name="usedInExercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="skillsUsed" inverseEntity="Exercise"/>
     </entity>
     <entity name="Warning" representedClassName="Warning" syncable="YES">
         <attribute name="dateMade" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

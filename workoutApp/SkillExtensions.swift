@@ -10,6 +10,13 @@ import Foundation
 
 extension Skill {
     
+    func getExercises() -> [Exercise] {
+        guard let exerciseSet = usedInExercises as? Set<Exercise> else {
+            return []
+        }
+        return Array(exerciseSet)
+    }
+    
     func lastPerformance() -> Date? {
         return self.mostRecentUse?.dateEnded as Date?
     }

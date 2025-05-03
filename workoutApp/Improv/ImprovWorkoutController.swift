@@ -25,9 +25,7 @@ class ImprovWorkoutController: UIViewController {
                                    exercises: []) // FIXME: Start empty
         // FIXME: Figure out a way of how to add exercises?
         self.log = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
-
-        let dbExercises = DatabaseFacade.fetchExercises(containing: skill) ?? []
-        print("exercises: ", (dbExercises ?? []).map {$0.name ?? "NA" })
+        let dbExercises = skill.getExercises()
         exercises = dbExercises.map { $0 }
         
         let baseName = skill.name ?? "Exercise"

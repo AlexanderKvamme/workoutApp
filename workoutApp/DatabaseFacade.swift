@@ -713,18 +713,19 @@ final class DatabaseFacade {
     
     static func fetchExercises(containing skill: Skill) -> [Exercise]? {
         print("Fetching exercises for ", skill.getName())
-        print(skill)
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
-        let predicate1 = NSPredicate(format: "ANY skillsUsed CONTAINS %@", skill.getName())
+        let predicate1 = NSPredicate(format: "skillsUsed CONTAINS %@", skill.getName())
         let andPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
         fetchRequest.predicate = andPredicate
         
         do {
             let result = try context.fetch(fetchRequest)
+            print("results: ", result.count)
             return result
         } catch let error as NSError {
             print(" error fetching exercises using Muscle: \(error.localizedDescription)")
         }
+        print("returning nil")
         return nil
     }
     
