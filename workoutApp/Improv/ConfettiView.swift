@@ -1,103 +1,38 @@
 import UIKit
 
 class ConfettiView: UIView {
-    // Keep track of active emitters
-    private var emitters: [CAEmitterLayer] = []
+    // Track all active confetti pieces
+    private var activeConfetti: [UIView] = []
+    // Track if animation is in progress
+    private var isAnimating = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
+        isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         backgroundColor = .clear
+        isUserInteractionEnabled = false
     }
     
-    // Create a fresh emitter each time instead of reusing
-    private func createEmitterLayer(at position: CGPoint) -> CAEmitterLayer {
-        let emitter = CAEmitterLayer()
-        emitter.emitterPosition = position
-        emitter.emitterShape = .point
-        emitter.emitterSize = CGSize(width: 20, height: 20)
-        emitter.renderMode = .additive
-        
-        // Create cells with the exact same visual properties as the original
-        let colors: [UIColor] = [
-            .systemRed,
-            .systemBlue,
-            .systemGreen,
-            .systemYellow,
-            .systemPurple,
-            .systemOrange,
-            .systemPink,
-            .systemTeal
-        ]
-        
-        var cells: [CAEmitterCell] = []
-        
-        for color in colors {
-            let cell = CAEmitterCell()
-            // Exactly the same parameters as your original code
-            cell.birthRate = 100
-            cell.lifetime = 2.0
-            cell.lifetimeRange = 1.0
-            cell.velocity = 600
-            cell.velocityRange = 200
-            cell.emissionRange = .pi * 2
-            cell.spin = 3.5
-            cell.spinRange = 4
-            cell.scale = 0.1
-            cell.scaleRange = 0.1
-            cell.scaleSpeed = -0.03
-            cell.yAcceleration = 70
-            cell.contents = createConfettiShape(color: color)
-            
-            cells.append(cell)
+    // Clean up any lingering confetti
+    func cleanup() {
+        for confetti in activeConfetti {
+            confetti.removeFromSuperview()
         }
-        
-        emitter.emitterCells = cells
-        return emitter
+        activeConfetti.removeAll()
+        isAnimating = false
     }
     
-    private func createConfettiShape(color: UIColor) -> CGImage? {
-        // Exactly the same shape creation as your original code
-        let size = CGSize(width: 24, height: 24)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        
-        guard let context = UIGraphicsGetCurrentContext() else { return nil }
-        
-        // Randomly choose between different shapes
-        let shapeType = Int.random(in: 0...2)
-        
-        context.setFillColor(color.cgColor)
-        
-        switch shapeType {
-        case 0: // Circle
-            context.fillEllipse(in: CGRect(origin: .zero, size: size))
-        case 1: // Square
-            context.fill(CGRect(origin: .zero, size: size))
-        case 2: // Triangle
-            let path = UIBezierPath()
-            path.move(to: CGPoint(x: size.width/2, y: 0))
-            path.addLine(to: CGPoint(x: size.width, y: size.height))
-            path.addLine(to: CGPoint(x: 0, y: size.height))
-            path.close()
-            
-            color.setFill()
-            path.fill()
-        default:
-            context.fill(CGRect(origin: .zero, size: size))
-        }
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image?.cgImage
+    override func removeFromSuperview() {
+        cleanup()
+        super.removeFromSuperview()
     }
     
     func startConfettiCannon(at position: CGPoint) {
-        
         // Ensure we're on the main thread
         if !Thread.isMainThread {
             DispatchQueue.main.async { [weak self] in
@@ -106,45 +41,129 @@ class ConfettiView: UIView {
             return
         }
         
-        // Create a fresh emitter for this burst
-        let emitter = createEmitterLayer(at: position)
-        layer.addSublayer(emitter)
-        emitters.append(emitter)
+        // If already animating, clean up first
+        if isAnimating {
+            cleanup()
+        }
         
-        // Start emitting - exactly like your original code
-        emitter.birthRate = 1
+        isAnimating = true
+        print("DEBUG: Starting confetti from behind at \(position)")
         
-        // Explosive animation - exactly like your original code
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(0.1)
-        emitter.beginTime = CACurrentMediaTime()
-        CATransaction.commit()
+        // Create confetti pieces
+        let colors: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow,
+                                .systemPurple, .systemOrange, .systemPink, .systemTeal]
         
-        // Stop emitting after a short duration - exactly like your original code
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            emitter.birthRate = 0
+        // Create 60 confetti pieces
+        for _ in 0..<60 {
+            // Create a confetti piece
+            let size = CGFloat.random(in: 8...16)
             
-            // Clean up after animation completes
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak self] in
-                emitter.removeFromSuperlayer()
-                if let index = self?.emitters.firstIndex(where: { $0 === emitter }) {
-                    self?.emitters.remove(at: index)
-                }
+            // Start all pieces at the same position (behind the hex)
+            let confetti = UIView(frame: CGRect(x: position.x - size/2, y: position.y - size/2,
+                                              width: size, height: size))
+            
+            // Random color
+            confetti.backgroundColor = colors.randomElement()
+            
+            // Random shape
+            let shapeType = Int.random(in: 0...3)
+            switch shapeType {
+            case 0: // Circle
+                confetti.layer.cornerRadius = size / 2
+            case 1: // Square
+                confetti.layer.cornerRadius = 0
+            case 2: // Diamond
+                confetti.transform = CGAffineTransform(rotationAngle: .pi / 4)
+            case 3: // Rectangle
+                confetti.frame = CGRect(x: position.x - size/2, y: position.y - size/4,
+                                       width: size, height: size/2)
+            default:
+                break
             }
+            
+            // Add to view and tracking array
+            addSubview(confetti)
+            activeConfetti.append(confetti)
+            
+            // Random direction - but make it burst outward from the center
+            let angle = CGFloat.random(in: 0...(2 * .pi))
+            let distance = CGFloat.random(in: 200...400)
+            
+            // Travel duration - how long it takes to reach the destination
+            let travelDuration: TimeInterval = TimeInterval.random(in: 0.7...1.0)
+            
+            // Shrink duration - how long it takes to shrink at the end
+            let shrinkDuration: TimeInterval = 0.2
+            
+            // Random initial delay to create a burst effect
+            let delay = TimeInterval.random(in: 0...0.1)
+            
+            // Calculate when to start the shrink animation
+            let shrinkDelay = delay + travelDuration
+            
+            // Initial state - start slightly smaller
+            confetti.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            
+            // Add a slight "pop" at the beginning
+            UIView.animate(withDuration: 0.05, delay: delay, options: [.beginFromCurrentState], animations: {
+                confetti.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            }, completion: nil)
+            
+            // Main travel animation
+            UIView.animate(withDuration: travelDuration, delay: delay,
+                          usingSpringWithDamping: 0.7,
+                          initialSpringVelocity: 0.5,
+                          options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+                // Move in random direction from the center
+                confetti.center = CGPoint(
+                    x: position.x + cos(angle) * distance,
+                    y: position.y + sin(angle) * distance + distance/2 // Add some gravity
+                )
+                
+                // Rotate
+                confetti.transform = confetti.transform.rotated(by: .pi * 2 * CGFloat.random(in: 1...3))
+                
+                // Scale down slightly as it moves away
+                confetti.transform = confetti.transform.scaledBy(x: 0.7, y: 0.7)
+            }, completion: nil)
+            
+            // Shrink animation at the end
+            UIView.animate(withDuration: shrinkDuration, delay: shrinkDelay,
+                          options: [.beginFromCurrentState], animations: {
+                // Shrink to nothing at the final position
+                confetti.transform = confetti.transform.scaledBy(x: 0.01, y: 0.01)
+            }, completion: { _ in
+                // Remove this specific confetti piece
+                confetti.removeFromSuperview()
+                if let index = self.activeConfetti.firstIndex(where: { $0 === confetti }) {
+                    self.activeConfetti.remove(at: index)
+                }
+                
+                // If this was the last piece, reset animation state
+                if self.activeConfetti.isEmpty {
+                    self.isAnimating = false
+                    print("DEBUG: All confetti removed naturally")
+                }
+            })
         }
+        
+        // Safety cleanup timer in case some animations don't complete
+        let maxDuration: TimeInterval = 1.5  // Maximum possible animation time
+        
+        // Cancel any previous cleanup timers
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(safetyCleanup), object: nil)
+        
+        // Schedule new safety cleanup
+        perform(#selector(safetyCleanup), with: nil, afterDelay: maxDuration)
+        
+        print("DEBUG: Created 60 confetti pieces with individual shrink animations")
     }
     
-    // Clean up method - call this when the view is about to be removed
-    func cleanup() {
-        for emitter in emitters {
-            emitter.removeFromSuperlayer()
+    @objc private func safetyCleanup() {
+        // Only run if there are still active confetti pieces
+        if !activeConfetti.isEmpty {
+            print("DEBUG: Safety cleanup triggered for \(activeConfetti.count) remaining pieces")
+            cleanup()
         }
-        emitters.removeAll()
-    }
-    
-    // Override removeFromSuperview to ensure cleanup
-    override func removeFromSuperview() {
-        cleanup()
-        super.removeFromSuperview()
     }
 }

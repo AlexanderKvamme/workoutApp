@@ -143,7 +143,7 @@ class ImprovWorkoutController: UIViewController {
             with: exercises,
             onItemSelected: { [weak self] (selectedExercise, hex) in
                 self?.addCompletedExercise(selectedExercise)
-                self?.popConfetti(on: hex)
+                self!.popConfetti(on: hex)
                 
 //                hex.bumpStripes() // Move into configure?
                 hex.bumpDots()
@@ -169,10 +169,56 @@ class ImprovWorkoutController: UIViewController {
     }
     
     private func popConfetti(on hex: HexagonItemView<Exercise>) {
-        let pos = getPositionForHex(hex)
-        confettiView.startConfettiCannon(at: pos)
+        print("DEBUG: popConfetti called for \(hex.textLabel.text ?? "unknown")")
+        
+        // Get position with additional logging
+        let hexFrame = hex.frame
+        print("DEBUG: Hex frame: \(hexFrame)")
+        
+        // Ensure we have a valid superview
+        guard let hexSuperview = hex.superview else {
+            print("DEBUG: ERROR - Hex has no superview!")
+            return
+        }
+        
+        // Convert position with detailed logging
+        let centerInSuperview = CGPoint(x: hexFrame.midX, y: hexFrame.midY)
+        print("DEBUG: Center in superview: \(centerInSuperview)")
+        
+        let convertedPoint = hexSuperview.convert(centerInSuperview, to: view)
+        print("DEBUG: Converted point: \(convertedPoint)")
+        
+        // Ensure confetti view is ready and visible
+        confettiView.isHidden = false
+        confettiView.alpha = 1.0
+        
+        // Important: Place the confetti view BEHIND the honeycomb grid
+        // This ensures the confetti appears to come from behind the hex
+        if let honeycombGrid = honeycombGrid {
+            view.insertSubview(confettiView, belowSubview: honeycombGrid)
+        } else {
+            view.addSubview(confettiView)
+        }
+        
+        // Force layout if needed
+        view.layoutIfNeeded()
+        
+        // Start the animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+            guard let self = self else { return }
+            self.confettiView.startConfettiCannon(at: convertedPoint)
+            
+            // Add a subtle "pop" animation to the hex
+            UIView.animate(withDuration: 0.15, animations: {
+                hex.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.1) {
+                    hex.transform = .identity
+                }
+            })
+        }
     }
-    
+
     private func startTimer() {
         timerView.reset()
         timerView.start()

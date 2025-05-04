@@ -7,7 +7,7 @@ class HexagonItemView<T>: UIView {
     // MARK: - Properties
     
     private var hexagonLayer: CAShapeLayer?
-    private var textLabel: UILabel?
+    var textLabel = UILabel()
     
     // Stripes view
     private var stripesView: StripesView?
@@ -95,9 +95,7 @@ class HexagonItemView<T>: UIView {
         newDotsView.configureDots(count: 0, size: 8.0, spacing: 5.0, color: .white)
         
         // Bring text label to front to ensure it's visible
-        if let textLabel = textLabel {
-            bringSubviewToFront(textLabel)
-        }
+        bringSubviewToFront(textLabel)
     }
     
     func configure(withMuscle muscle: Muscle) {
@@ -109,7 +107,7 @@ class HexagonItemView<T>: UIView {
     }
     
     func configure(name: String, lastPerformanceDate: Date?) {
-        textLabel?.text = name
+        textLabel.text = name
         
         let colors: [UIColor] = [
             UIColor.white,         // 0-3 days (very recent)
@@ -138,9 +136,9 @@ class HexagonItemView<T>: UIView {
         
         // Adjust text color for readability
         if selectedColor == UIColor.white {
-            textLabel?.textColor = UIColor.akLightGray
+            textLabel.textColor = UIColor.akLightGray
         } else {
-            textLabel?.textColor = UIColor.white
+            textLabel.textColor = UIColor.white
         }
     }
     
@@ -174,8 +172,8 @@ class HexagonItemView<T>: UIView {
             print("❌ no workout log")
         }
 
-        textLabel?.text = exercise.name
-        textLabel?.textColor = textColor
+        textLabel.text = exercise.name
+        textLabel.textColor = textColor
     }
 
     // MARK: - Public Methods
@@ -189,7 +187,7 @@ class HexagonItemView<T>: UIView {
             print("configuring exercise cell: ", item.name)
             configure(withExercise: item, andLog: log)
         } else {
-            textLabel?.text = "not muscle"
+            textLabel.text = "not muscle"
         }
     }
     
@@ -345,9 +343,7 @@ class HexagonItemView<T>: UIView {
         }
         
         // Update text label frame
-        if let textLabel = textLabel {
-            textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
-        }
+        textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
         
         // Update progress layer if needed
         if let progressShapeLayer = progressShapeLayer {
