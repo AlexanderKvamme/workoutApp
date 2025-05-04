@@ -138,6 +138,7 @@
 		DDC2A3CD2DC7492E0023724B /* HexCompletionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2A3CC2DC749230023724B /* HexCompletionScreen.swift */; };
 		DDC2A4CD2DC75A9C0023724B /* HexagonPathCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2A4CC2DC75A8E0023724B /* HexagonPathCreator.swift */; };
 		DDC2A4CF2DC75E4A0023724B /* HexTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2A4CE2DC75E450023724B /* HexTransitionAnimator.swift */; };
+		DDC2A5272DC773790023724B /* HexagonalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2A5262DC773760023724B /* HexagonalView.swift */; };
 		DDC660B11EE6BE9900122543 /* DrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC660B01EE6BE9900122543 /* DrawingMethods.swift */; };
 		DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */; };
 		DDCF834A1F8A3D8400F87B3E /* TallExerciseTableCellBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */; };
@@ -327,6 +328,7 @@
 		DDC2A3CC2DC749230023724B /* HexCompletionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexCompletionScreen.swift; sourceTree = "<group>"; };
 		DDC2A4CC2DC75A8E0023724B /* HexagonPathCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonPathCreator.swift; sourceTree = "<group>"; };
 		DDC2A4CE2DC75E450023724B /* HexTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexTransitionAnimator.swift; sourceTree = "<group>"; };
+		DDC2A5262DC773760023724B /* HexagonalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexagonalView.swift; sourceTree = "<group>"; };
 		DDC660B01EE6BE9900122543 /* DrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingMethods.swift; sourceTree = "<group>"; };
 		DDC836C01EDDCC330043DA07 /* WorkoutTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewDataSource.swift; sourceTree = "<group>"; };
 		DDCF83491F8A3D8400F87B3E /* TallExerciseTableCellBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallExerciseTableCellBox.swift; sourceTree = "<group>"; };
@@ -841,6 +843,7 @@
 			isa = PBXGroup;
 			children = (
 				DDF34D3E2DC3C30C00597433 /* UIViewControllerExtensions.swift */,
+				DDC2A5262DC773760023724B /* HexagonalView.swift */,
 				DDB5FF3A1F4B806300202705 /* PickableEntity.swift */,
 				DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */,
 				DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */,
@@ -1168,6 +1171,7 @@
 				DDE55B9B1F2FB55300ED1D15 /* WorkoutLog.swift in Sources */,
 				DDD73FC51F700681006B905D /* TimeInterval Extensions.swift in Sources */,
 				DDD0D54A296B63DB00CD11A5 /* AKSuperStepper.swift in Sources */,
+				DDC2A5272DC773790023724B /* HexagonalView.swift in Sources */,
 				DD19A2112DC1522A00BEC938 /* MuscleCreatorScreen.swift in Sources */,
 				DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */,
 				DDCF834F1F8B8B4000F87B3E /* UIResponder Extensions.swift in Sources */,

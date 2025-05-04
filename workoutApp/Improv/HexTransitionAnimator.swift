@@ -1,21 +1,20 @@
-//
-//  HexTransitionAnimator.swift
-//  workoutApp
-//
-//  Created by Alexander Kvamme on 04/05/2025.
-//  Copyright © 2025 Alexander Kvamme. All rights reserved.
-//
 import UIKit
-
 
 // MARK: - HexTransitionAnimator
 class HexTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     private let isPresenting: Bool
     private let originFrame: CGRect
+    private let startColor: UIColor
+    private let endColor: UIColor
     
-    init(isPresenting: Bool, originFrame: CGRect) {
+    init(isPresenting: Bool,
+         originFrame: CGRect,
+         startColor: UIColor = .black,
+         endColor: UIColor = .black) {
         self.isPresenting = isPresenting
         self.originFrame = originFrame
+        self.startColor = startColor
+        self.endColor = endColor
         super.init()
     }
     
@@ -42,33 +41,18 @@ class HexTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             containerView.addSubview(toView)
             toView.alpha = 0
             
-            // Create a hexagon that will animate from the origin to the center
-            let transitionHex = UIView()
-            transitionHex.backgroundColor = .cyan // Start with cyan
+            // Make a big hex that fills entire screen
+            let transitionHex = HexagonalView(frame: UIScreen.main.bounds)
+            transitionHex.fillColor = startColor
             containerView.addSubview(transitionHex)
             
-            // Create hexagon shape
-            let hexLayer = CAShapeLayer()
-            let hexPath = HexagonPathCreator.createHexagonPath(in: originFrame)
-            hexLayer.path = hexPath.cgPath
-            transitionHex.layer.mask = hexLayer
+            // Start with a zoomed-in container
+            containerView.transform = CGAffineTransform(scaleX: 10, y: 10)
             
-            // Initial position is the origin frame
-            transitionHex.frame = originFrame
-            
-            // Final position is full screen
-            let finalFrame = CGRect(x: -50, y: -50,
-                                   width: containerView.bounds.width + 100,
-                                   height: containerView.bounds.height + 100)
-            
-            // Animate the hex expanding to fill the screen
+            // Animate to normal size
             UIView.animate(withDuration: transitionDuration(using: transitionContext) * 0.5, animations: {
-                transitionHex.frame = finalFrame
-                transitionHex.backgroundColor = .green // Transition to green
-                
-                // Update the mask to match the new size
-                hexLayer.path = HexagonPathCreator.createHexagonPath(in: CGRect(origin: .zero, size: finalFrame.size)).cgPath
-                
+                containerView.transform = .identity
+                transitionHex.animateColorChange(to: self.endColor, duration: self.transitionDuration(using: transitionContext) * 0.3)
             }, completion: { _ in
                 // Fade in the destination view
                 UIView.animate(withDuration: self.transitionDuration(using: transitionContext) * 0.5, animations: {
@@ -91,41 +75,25 @@ class HexTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             containerView.insertSubview(toView, belowSubview: fromView)
             
             // Create a hexagon that will animate from center to the origin
-            let transitionHex = UIView()
-            transitionHex.backgroundColor = .green
+            let transitionHex = HexagonalView(frame: UIScreen.main.bounds)
+            transitionHex.fillColor = endColor
             containerView.addSubview(transitionHex)
-            
-            // Get the center hex from the HexCompletionScreen
-            let centerHexFrame = (fromVC as? HexCompletionScreen)?.centerHexView.frame ?? CGRect(x: containerView.bounds.midX - 100, y: containerView.bounds.midY - 100, width: 200, height: 200)
-            
-            // Create hexagon shape
-            let hexLayer = CAShapeLayer()
-            let hexPath = HexagonPathCreator.createHexagonPath(in: centerHexFrame)
-            hexLayer.path = hexPath.cgPath
-            transitionHex.layer.mask = hexLayer
-            
-            // Initial position is the center frame
-            transitionHex.frame = centerHexFrame
             
             // Fade out the source view
             UIView.animate(withDuration: transitionDuration(using: transitionContext) * 0.5, animations: {
                 fromView.alpha = 0
-                transitionHex.alpha = 1
             }, completion: { _ in
-                // Animate the hex shrinking to the origin
+                // Animate zooming out
+                containerView.transform = .identity
                 UIView.animate(withDuration: self.transitionDuration(using: transitionContext) * 0.5, animations: {
-                    transitionHex.frame = self.originFrame
-                    transitionHex.backgroundColor = .cyan // Transition back to cyan
-                    
-                    // Update the mask to match the new size
-                    hexLayer.path = HexagonPathCreator.createHexagonPath(in: CGRect(origin: .zero, size: self.originFrame.size)).cgPath
-                    
+                    containerView.transform = CGAffineTransform(scaleX: 10, y: 10)
+                    transitionHex.animateColorChange(to: self.startColor, duration: self.transitionDuration(using: transitionContext) * 0.3)
                 }, completion: { _ in
                     transitionHex.removeFromSuperview()
+                    containerView.transform = .identity
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 })
             })
         }
     }
 }
-
