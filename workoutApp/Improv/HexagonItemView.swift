@@ -35,10 +35,7 @@ class HexagonItemView<T>: UIView {
     }
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        // Create the hexagon path
-        let hexPath = createHexagonPath()
-        
-        // Check if the point is inside the hexagon path
+        let hexPath = HexagonPathCreator.createHexagonPath(in: bounds)
         return hexPath.contains(point)
     }
     
@@ -47,7 +44,7 @@ class HexagonItemView<T>: UIView {
         
         // Create hexagon shape
         let hexagonLayer = CAShapeLayer()
-        hexagonLayer.path = createHexagonPath().cgPath
+        hexagonLayer.path = HexagonPathCreator.createHexagonPath(in: bounds).cgPath
         hexagonLayer.fillColor = UIColor.red.cgColor
         layer.addSublayer(hexagonLayer)
         self.hexagonLayer = hexagonLayer
@@ -339,7 +336,7 @@ class HexagonItemView<T>: UIView {
         
         // Update hexagon layer path
         if let hexagonLayer = hexagonLayer {
-            hexagonLayer.path = createHexagonPath().cgPath
+            hexagonLayer.path = HexagonPathCreator.createHexagonPath(in: bounds).cgPath
         }
         
         // Update text label frame
@@ -347,7 +344,7 @@ class HexagonItemView<T>: UIView {
         
         // Update progress layer if needed
         if let progressShapeLayer = progressShapeLayer {
-            progressShapeLayer.path = createHexagonPath().cgPath
+            progressShapeLayer.path = HexagonPathCreator.createHexagonPath(in: bounds).cgPath
         }
     }
     
