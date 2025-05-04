@@ -41,8 +41,13 @@ class HoneycombViewController: SelectionViewController {
         super.viewWillAppear(animated)
         
         skills = DatabaseFacade.fetchSkills()
+        
         reset()
         setupHoneycombGrid()
+        
+        let skill = skills.first(where: { $0.getName() == "HANDSTAND" })!
+        let improvWorkoutController = ImprovWorkoutController(skill: skill)
+        navigationController?.pushViewController(improvWorkoutController, animated: true)
     }
     
     override func viewDidLayoutSubviews() {

@@ -177,6 +177,14 @@ class HexagonalView: UIView {
         fillColor = newColor
     }
     
+    func animateColorChangeInUIViewBlock(to newColor: UIColor, duration: TimeInterval) {
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(duration)
+        fillLayer?.fillColor = newColor.cgColor
+        fillColor = newColor
+        CATransaction.commit()
+    }
+    
     /// Updates the stroke appearance
     func updateStroke(color: UIColor?, width: CGFloat = 1.0) {
         strokeColor = color

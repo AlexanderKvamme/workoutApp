@@ -19,6 +19,13 @@ class HexCompletionScreen: UIViewController {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let doneButton = UIButton(type: .system)
+    private let checkMark: UIImageView = {
+        let configuration = UIImage.SymbolConfiguration(weight: .black)
+        let checkmarkImage = UIImage(systemName: "checkmark", withConfiguration: configuration)
+        let imageView = UIImageView(image: checkmarkImage)
+        imageView.tintColor = .white
+        return imageView
+    }()
     
     // MARK: - Initialization
     init(exercise: Exercise) {
@@ -46,44 +53,46 @@ class HexCompletionScreen: UIViewController {
         // Add the center hex view
         view.addSubview(centerHexView)
         centerHexView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(checkMark)
         
         // Size the hex to be about 60% of the screen width
-        let hexSize = UIScreen.main.bounds.width * 0.6
+        let hexSize = UIScreen.main.bounds.width * 0.75
         
-        NSLayoutConstraint.activate([
-            centerHexView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            centerHexView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            centerHexView.widthAnchor.constraint(equalToConstant: hexSize),
-            centerHexView.heightAnchor.constraint(equalToConstant: hexSize)
-        ])
+        centerHexView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(hexSize)
+        }
+        
+        checkMark.snp.makeConstraints { make in
+            make.edges.equalTo(centerHexView).inset(64)
+        }
         
         // Create a hexagon shape layer
         let hexLayer = CAShapeLayer()
         hexLayer.path = HexagonPathCreator.createHexagonPath(in: CGRect(x: 0, y: 0, width: hexSize, height: hexSize)).cgPath
-        hexLayer.fillColor = UIColor.green.cgColor
+        hexLayer.fillColor = UIColor.black.cgColor
         centerHexView.layer.addSublayer(hexLayer)
         
         // Store a reference to the shape layer for animation purposes
         centerHexView.layer.mask = hexLayer
-        centerHexView.backgroundColor = .green
+        centerHexView.backgroundColor = .black
     }
     
     private func setupLabels() {
         // Title Label
-        titleLabel.text = exercise.getName()
-        titleLabel.font = AKFont.round(.black, 24)
+        titleLabel.text = "Success!"
+        titleLabel.font = AKFont.round(.black, 48)
         titleLabel.textAlignment = .center
-        titleLabel.textColor = .white
+        titleLabel.textColor = .black
         centerHexView.addSubview(titleLabel)
-        
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.left.right.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerHexView.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: centerHexView.topAnchor, constant: 40)
-        ])
         
         // Description Label
-        descriptionLabel.text = "Completed!"
+        descriptionLabel.text = ""
         descriptionLabel.font = AKFont.round(.medium, 18)
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .white
@@ -103,7 +112,7 @@ class HexCompletionScreen: UIViewController {
         doneButton.setTitle("Done", for: .normal)
         doneButton.titleLabel?.font = AKFont.round(.bold, 18)
         doneButton.backgroundColor = .white
-        doneButton.setTitleColor(.green, for: .normal)
+        doneButton.setTitleColor(.black, for: .normal)
         doneButton.layer.cornerRadius = 20
         doneButton.addTarget(self, action: #selector(dismissScreen), for: .touchUpInside)
         
@@ -120,6 +129,7 @@ class HexCompletionScreen: UIViewController {
     
     // MARK: - Actions
     @objc private func dismissScreen() {
+        print("tryna dismiss")
         dismiss(animated: true)
     }
 }

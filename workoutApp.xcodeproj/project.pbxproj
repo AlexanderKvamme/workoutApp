@@ -843,7 +843,6 @@
 			isa = PBXGroup;
 			children = (
 				DDF34D3E2DC3C30C00597433 /* UIViewControllerExtensions.swift */,
-				DDC2A5262DC773760023724B /* HexagonalView.swift */,
 				DDB5FF3A1F4B806300202705 /* PickableEntity.swift */,
 				DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */,
 				DD4FF01C1F6E9CCB005040A0 /* ExerciseExtensions.swift */,
@@ -978,6 +977,7 @@
 				DD01CF6E2DBCED3100D63A82 /* HexagonItemView.swift */,
 				DDD5300B2DBEAF0B00CD6FFC /* DotsView.swift */,
 				DDFEA4DA2DB59EE900C4F787 /* ViewController.swift */,
+				DDC2A5262DC773760023724B /* HexagonalView.swift */,
 			);
 			path = Improv;
 			sourceTree = "<group>";

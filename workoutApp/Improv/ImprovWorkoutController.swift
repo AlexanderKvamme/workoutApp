@@ -166,7 +166,7 @@ class ImprovWorkoutController: UIViewController {
                 completionScreen.transitioningDelegate = self?.transitionDelegate
                 
                 // Present after a short delay to allow the confetti and other animations to be visible
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now()  ) {
                     self?.present(completionScreen, animated: true)
                     testView.removeFromSuperview()
                 }
