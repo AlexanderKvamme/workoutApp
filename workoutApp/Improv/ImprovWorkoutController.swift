@@ -111,6 +111,7 @@ class ImprovWorkoutController: UIViewController {
         timerView.configure(format: .minutesSeconds, textColor: .black)
     }
     
+    private var transitionDelegate: HexTransitionDelegate?
     private func setupHoneycombGrid() {
         // Adaptive sizing based on number of exercises
         let hexSize: CGFloat
@@ -151,6 +152,24 @@ class ImprovWorkoutController: UIViewController {
 //                print("bam IWC had log: ", self?.log)
                 hex.configure(withExercise: selectedExercise, andLog: self?.log)
                 self?.startTimer()
+                
+                // Get the frame of the hex in the main view's coordinate system
+                let hexFrame = hex.convert(hex.bounds, to: self?.view)
+                
+                let testView = UIView(frame: hexFrame)
+                testView.backgroundColor = .blue
+                self?.view.addSubview(testView)
+                
+                // Create and present the completion screen with custom transition
+                let completionScreen = HexCompletionScreen(exercise: selectedExercise)
+                self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
+                completionScreen.transitioningDelegate = self?.transitionDelegate
+                
+                // Present after a short delay to allow the confetti and other animations to be visible
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self?.present(completionScreen, animated: true)
+                    testView.removeFromSuperview()
+                }
             },
             onItemLongPressed: { [weak self] (selectedExercise, item) in
                 print("LONG PRESSED: \(selectedExercise)")
