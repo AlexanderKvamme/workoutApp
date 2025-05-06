@@ -5,6 +5,8 @@ class ConfettiView: UIView {
     private var activeConfetti: [UIView] = []
     // Track if animation is in progress
     private var isAnimating = false
+    // Track if confetti should remain on screen
+    private var keepConfetti = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,6 +27,7 @@ class ConfettiView: UIView {
         }
         activeConfetti.removeAll()
         isAnimating = false
+        keepConfetti = false
     }
     
     override func removeFromSuperview() {
@@ -32,14 +35,17 @@ class ConfettiView: UIView {
         super.removeFromSuperview()
     }
     
-    func startConfettiCannon(at position: CGPoint) {
+    func startConfettiCannon(at position: CGPoint, keepOnScreen: Bool = false) {
         // Ensure we're on the main thread
         if !Thread.isMainThread {
             DispatchQueue.main.async { [weak self] in
-                self?.startConfettiCannon(at: position)
+                self?.startConfettiCannon(at: position, keepOnScreen: keepOnScreen)
             }
             return
         }
+        
+        // Store the keep confetti preference
+        self.keepConfetti = keepOnScreen
         
         // If already animating, clean up first
         if isAnimating {
@@ -127,43 +133,72 @@ class ConfettiView: UIView {
                 confetti.transform = confetti.transform.scaledBy(x: 0.7, y: 0.7)
             }, completion: nil)
             
-            // Shrink animation at the end
-            UIView.animate(withDuration: shrinkDuration, delay: shrinkDelay,
-                          options: [.beginFromCurrentState], animations: {
-                // Shrink to nothing at the final position
-                confetti.transform = confetti.transform.scaledBy(x: 0.01, y: 0.01)
-            }, completion: { _ in
-                // Remove this specific confetti piece
-                confetti.removeFromSuperview()
-                if let index = self.activeConfetti.firstIndex(where: { $0 === confetti }) {
-                    self.activeConfetti.remove(at: index)
-                }
-                
-                // If this was the last piece, reset animation state
-                if self.activeConfetti.isEmpty {
-                    self.isAnimating = false
-                    print("DEBUG: All confetti removed naturally")
-                }
-            })
+            // Only add the shrink animation if we're not keeping confetti
+            if !keepOnScreen {
+                // Shrink animation at the end
+                UIView.animate(withDuration: shrinkDuration, delay: shrinkDelay,
+                              options: [.beginFromCurrentState], animations: {
+                    // Shrink to nothing at the final position
+                    confetti.transform = confetti.transform.scaledBy(x: 0.01, y: 0.01)
+                }, completion: { _ in
+                    // Remove this specific confetti piece
+                    confetti.removeFromSuperview()
+                    if let index = self.activeConfetti.firstIndex(where: { $0 === confetti }) {
+                        self.activeConfetti.remove(at: index)
+                    }
+                    
+                    // If this was the last piece, reset animation state
+                    if self.activeConfetti.isEmpty {
+                        self.isAnimating = false
+                        print("DEBUG: All confetti removed naturally")
+                    }
+                })
+            }
         }
         
         // Safety cleanup timer in case some animations don't complete
-        let maxDuration: TimeInterval = 1.5  // Maximum possible animation time
-        
-        // Cancel any previous cleanup timers
-        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(safetyCleanup), object: nil)
-        
-        // Schedule new safety cleanup
-        perform(#selector(safetyCleanup), with: nil, afterDelay: maxDuration)
-        
-        print("DEBUG: Created 60 confetti pieces with individual shrink animations")
+        // Only needed if we're not keeping confetti
+        if !keepOnScreen {
+            let maxDuration: TimeInterval = 1.5  // Maximum possible animation time
+            
+            // Cancel any previous cleanup timers
+            NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(safetyCleanup), object: nil)
+            
+            // Schedule new safety cleanup
+            perform(#selector(safetyCleanup), with: nil, afterDelay: maxDuration)
+            
+            print("DEBUG: Created 60 confetti pieces with individual shrink animations")
+        } else {
+            print("DEBUG: Created 60 confetti pieces that will remain visible")
+        }
     }
     
     @objc private func safetyCleanup() {
-        // Only run if there are still active confetti pieces
-        if !activeConfetti.isEmpty {
+        // Only run if there are still active confetti pieces and we're not keeping them
+        if !activeConfetti.isEmpty && !keepConfetti {
             print("DEBUG: Safety cleanup triggered for \(activeConfetti.count) remaining pieces")
             cleanup()
+        }
+    }
+    
+    // Method to remove confetti if needed later
+    func removeConfetti() {
+        // If we're keeping confetti, provide a way to remove it later
+        if !activeConfetti.isEmpty {
+            for confetti in activeConfetti {
+                UIView.animate(withDuration: 0.3, animations: {
+                    confetti.alpha = 0
+                }, completion: { _ in
+                    confetti.removeFromSuperview()
+                })
+            }
+            
+            // Schedule cleanup after animations complete
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                self?.activeConfetti.removeAll()
+                self?.keepConfetti = false
+                self?.isAnimating = false
+            }
         }
     }
 }

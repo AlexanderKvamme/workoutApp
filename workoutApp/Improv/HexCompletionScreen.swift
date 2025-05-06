@@ -8,29 +8,38 @@
 
 import UIKit
 import AKKIT
+import Lottie
 
 
 // MARK: - HexCompletionScreen
 class HexCompletionScreen: UIViewController {
     
+    let hex = HexagonalView(frame: HEX_FRAME)
+    let confettiView = ConfettiView(frame: UIScreen.main.bounds)
+
     // MARK: - Properties
     private let exercise: Exercise
     let centerHexView = UIView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let doneButton = UIButton(type: .system)
-    private let checkMark: UIImageView = {
-        let configuration = UIImage.SymbolConfiguration(weight: .black)
-        let checkmarkImage = UIImage(systemName: "checkmark", withConfiguration: configuration)
-        let imageView = UIImageView(image: checkmarkImage)
-        imageView.tintColor = .white
-        return imageView
+    private let checkMark: LottieAnimationView = {
+//        imageView.tintColor = .white
+        let anim = LottieAnimationView(asset: "checkmark-lottie")
+        anim.currentFrame = 0  // Set the animation to start at frame 0
+        anim.loopMode = .playOnce  // Or any other loop mode you prefer
+        anim.animationSpeed = 1.0  // Normal speed
+        anim.contentMode = .scaleAspectFit
+        return anim
     }()
+    private var subtitle = UILabel()
     
     // MARK: - Initialization
     init(exercise: Exercise) {
         self.exercise = exercise
         super.init(nibName: nil, bundle: nil)
+        hex.alpha = 0
+        hex.fillColor = .black
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .crossDissolve // This will be overridden by our custom transition
     }
@@ -48,11 +57,20 @@ class HexCompletionScreen: UIViewController {
         setupDoneButton()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        confettiView.startConfettiCannon(at: CGPoint(x: HEX_FRAME.minX+HEX_WIDTH/2, y: HEX_FRAME.minY + HEX_WIDTH/2), keepOnScreen: true)
+        checkMark.play()
+    }
+    
     // MARK: - UI Setup
     private func setupHexView() {
         // Add the center hex view
         view.addSubview(centerHexView)
         centerHexView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(confettiView)
+        view.addSubview(hex)
         view.addSubview(checkMark)
         
         // Size the hex to be about 60% of the screen width
@@ -64,18 +82,9 @@ class HexCompletionScreen: UIViewController {
         }
         
         checkMark.snp.makeConstraints { make in
-            make.edges.equalTo(centerHexView).inset(64)
+            make.edges.equalTo(hex).inset(64)
         }
         
-        // Create a hexagon shape layer
-        let hexLayer = CAShapeLayer()
-        hexLayer.path = HexagonPathCreator.createHexagonPath(in: CGRect(x: 0, y: 0, width: hexSize, height: hexSize)).cgPath
-        hexLayer.fillColor = UIColor.black.cgColor
-        centerHexView.layer.addSublayer(hexLayer)
-        
-        // Store a reference to the shape layer for animation purposes
-        centerHexView.layer.mask = hexLayer
-        centerHexView.backgroundColor = .black
     }
     
     private func setupLabels() {
@@ -84,12 +93,25 @@ class HexCompletionScreen: UIViewController {
         titleLabel.font = AKFont.round(.black, 48)
         titleLabel.textAlignment = .center
         titleLabel.textColor = .black
+        
+        subtitle.text = "That was some real nice work!"
+        subtitle.font = AKFont.round(.black, 24)
+        subtitle.textAlignment = .center
+        subtitle.textColor = .black
+        subtitle.numberOfLines = 0
+
         centerHexView.addSubview(titleLabel)
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.left.right.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(subtitle)
+        subtitle.snp.makeConstraints { make in
+            make.top.equalTo(hex.snp.bottom)
+            make.left.right.equalToSuperview().inset(24)
+        }
         
         // Description Label
         descriptionLabel.text = ""

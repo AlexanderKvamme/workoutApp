@@ -156,9 +156,9 @@ class ImprovWorkoutController: UIViewController {
                 // Get the frame of the hex in the main view's coordinate system
                 let hexFrame = hex.convert(hex.bounds, to: self?.view)
                 
-                let testView = UIView(frame: hexFrame)
-                testView.backgroundColor = .blue
-                self?.view.addSubview(testView)
+//                let testView = UIView(frame: hexFrame)
+//                testView.backgroundColor = .blue
+//                self?.view.addSubview(testView)
                 
                 // Create and present the completion screen with custom transition
                 let completionScreen = HexCompletionScreen(exercise: selectedExercise)
@@ -168,7 +168,7 @@ class ImprovWorkoutController: UIViewController {
                 // Present after a short delay to allow the confetti and other animations to be visible
                 DispatchQueue.main.asyncAfter(deadline: .now()  ) {
                     self?.present(completionScreen, animated: true)
-                    testView.removeFromSuperview()
+//                    testView.removeFromSuperview()
                 }
             },
             onItemLongPressed: { [weak self] (selectedExercise, item) in

@@ -21,6 +21,7 @@
 		DD0E1DB91F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0E1DB81F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift */; };
 		DD0EB24B1F46FE9200CDA1CF /* ExerciseCellForHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB24A1F46FE9200CDA1CF /* ExerciseCellForHistory.swift */; };
 		DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */; };
+		DD0F43512DCA6D0100C360B8 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DD0F43502DCA6D0100C360B8 /* Lottie */; };
 		DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D771F3C801A00228366 /* GoalsButton.swift */; };
 		DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D791F3CA36900228366 /* AttributedText.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
@@ -384,6 +385,7 @@
 			files = (
 				DDB3BEF62DB6646300411AC5 /* SwipeCellKit in Frameworks */,
 				DDB3BE4B2DB6606300411AC5 /* AKKIT in Frameworks */,
+				DD0F43512DCA6D0100C360B8 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1060,6 +1062,7 @@
 			packageReferences = (
 				DDB3BE492DB6606300411AC5 /* XCLocalSwiftPackageReference "../AKKIT" */,
 				DDB3BEF42DB6646300411AC5 /* XCRemoteSwiftPackageReference "SwipeCellKit" */,
+				DD0F434F2DCA6D0100C360B8 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			productRefGroup = DD585D441EC4D53900962B19 /* Products */;
 			projectDirPath = "";
@@ -1539,6 +1542,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DD0F434F2DCA6D0100C360B8 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
 		DDB3BEF42DB6646300411AC5 /* XCRemoteSwiftPackageReference "SwipeCellKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwipeCellKit/SwipeCellKit";
@@ -1550,6 +1561,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DD0F43502DCA6D0100C360B8 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD0F434F2DCA6D0100C360B8 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
 		DDB3BE4A2DB6606300411AC5 /* AKKIT */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AKKIT;
