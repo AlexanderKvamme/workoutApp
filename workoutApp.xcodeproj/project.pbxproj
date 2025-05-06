@@ -22,6 +22,10 @@
 		DD0EB24B1F46FE9200CDA1CF /* ExerciseCellForHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB24A1F46FE9200CDA1CF /* ExerciseCellForHistory.swift */; };
 		DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */; };
 		DD0F43512DCA6D0100C360B8 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DD0F43502DCA6D0100C360B8 /* Lottie */; };
+		DD0F43532DCA919800C360B8 /* GradientBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0F43522DCA918200C360B8 /* GradientBorderView.swift */; };
+		DD0F43552DCA931000C360B8 /* GradientImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0F43542DCA930D00C360B8 /* GradientImage.swift */; };
+		DD0F43572DCA94FD00C360B8 /* GradientBorderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0F43562DCA94F900C360B8 /* GradientBorderExtension.swift */; };
+		DD0F43592DCA962800C360B8 /* GradientBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0F43582DCA962500C360B8 /* GradientBorderButton.swift */; };
 		DD109D781F3C801A00228366 /* GoalsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D771F3C801A00228366 /* GoalsButton.swift */; };
 		DD109D7A1F3CA36900228366 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD109D791F3CA36900228366 /* AttributedText.swift */; };
 		DD151DFC1ED1DD5C0014DBC1 /* BoxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */; };
@@ -209,6 +213,10 @@
 		DD0E1DB81F2E8ECA00E9F1C7 /* WorkoutLogHistoryTableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutLogHistoryTableDataSource.swift; sourceTree = "<group>"; };
 		DD0EB24A1F46FE9200CDA1CF /* ExerciseCellForHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCellForHistory.swift; sourceTree = "<group>"; };
 		DD0EB2511F470D7C00CDA1CF /* ExerciseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCell.swift; sourceTree = "<group>"; };
+		DD0F43522DCA918200C360B8 /* GradientBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBorderView.swift; sourceTree = "<group>"; };
+		DD0F43542DCA930D00C360B8 /* GradientImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientImage.swift; sourceTree = "<group>"; };
+		DD0F43562DCA94F900C360B8 /* GradientBorderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBorderExtension.swift; sourceTree = "<group>"; };
+		DD0F43582DCA962500C360B8 /* GradientBorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBorderButton.swift; sourceTree = "<group>"; };
 		DD109D771F3C801A00228366 /* GoalsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalsButton.swift; sourceTree = "<group>"; };
 		DD109D791F3CA36900228366 /* AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		DD151DFB1ED1DD5C0014DBC1 /* BoxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxFactory.swift; sourceTree = "<group>"; };
@@ -965,8 +973,12 @@
 			isa = PBXGroup;
 			children = (
 				DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */,
+				DD0F43522DCA918200C360B8 /* GradientBorderView.swift */,
+				DD0F43562DCA94F900C360B8 /* GradientBorderExtension.swift */,
 				DDC2A4CE2DC75E450023724B /* HexTransitionAnimator.swift */,
 				DDC2A3CC2DC749230023724B /* HexCompletionScreen.swift */,
+				DD0F43582DCA962500C360B8 /* GradientBorderButton.swift */,
+				DD0F43542DCA930D00C360B8 /* GradientImage.swift */,
 				DDFEA4D62DB5365A00C4F787 /* ImprovController.swift */,
 				DD9005802DBD318E0010E197 /* StripesView.swift */,
 				DD9005822DBD772A0010E197 /* Timer.swift */,
@@ -1159,6 +1171,7 @@
 				DD4B1C121EC8616800BD313B /* SelectionViewController.swift in Sources */,
 				DD01CF6D2DBCEAED00D63A82 /* ConfettiView.swift in Sources */,
 				DD0D42DC1F4DB47A00502C02 /* DeletionBox.swift in Sources */,
+				DD0F43592DCA962800C360B8 /* GradientBorderButton.swift in Sources */,
 				DD49BAB51F98C29A001AFAE3 /* LiftExtensions.swift in Sources */,
 				DD41AAFC1F18F5C800CB08F5 /* ExerciseCreator.swift in Sources */,
 				DD585D5F1EC4DC3400962B19 /* Fonts.swift in Sources */,
@@ -1189,6 +1202,7 @@
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */,
 				DDC2A4CF2DC75E4A0023724B /* HexTransitionAnimator.swift in Sources */,
+				DD0F43532DCA919800C360B8 /* GradientBorderView.swift in Sources */,
 				DD19A20F2DBFEC2100BEC938 /* CreatorScreenWorkout.swift in Sources */,
 				DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */,
 				DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */,
@@ -1200,6 +1214,7 @@
 				DDE55B981F2F745F00ED1D15 /* isBoxTableViewDataSource.swift in Sources */,
 				DD151DFF1ED2DD310014DBC1 /* Box.swift in Sources */,
 				DDB539AE1F2E074800824CFC /* WorkoutSelectionViewController.swift in Sources */,
+				DD0F43572DCA94FD00C360B8 /* GradientBorderExtension.swift in Sources */,
 				DD585D691EC5B27B00962B19 /* CustomTabBarController.swift in Sources */,
 				DDC2A3C82DC663DB0023724B /* Exercise+CoreDataProperties.swift in Sources */,
 				DDC2A3C92DC663DB0023724B /* Exercise+CoreDataClass.swift in Sources */,
@@ -1234,6 +1249,7 @@
 				DD4B1C101EC8606F00BD313B /* PreferencesController.swift in Sources */,
 				DDFEA4DB2DB59EED00C4F787 /* ViewController.swift in Sources */,
 				DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */,
+				DD0F43552DCA931000C360B8 /* GradientImage.swift in Sources */,
 				DD1EA1621EEC1CBC00EBB7B7 /* Keyboard.swift in Sources */,
 				DD01CF6F2DBCED3400D63A82 /* HexagonItemView.swift in Sources */,
 				DD4FF0191F6D3A8B005040A0 /* WorkoutEditor.swift in Sources */,

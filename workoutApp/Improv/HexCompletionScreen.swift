@@ -21,7 +21,7 @@ class HexCompletionScreen: UIViewController {
     private let exercise: Exercise
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let doneButton = UIButton(type: .system)
+    private let doneButton = GradientBorderButton(type: .system)
     private let checkMark: LottieAnimationView = {
 //        imageView.tintColor = .white
         let anim = LottieAnimationView(asset: "checkmark-lottie")
@@ -32,6 +32,7 @@ class HexCompletionScreen: UIViewController {
         return anim
     }()
     private var subtitle = UILabel()
+    private var gradientBorderView = GradientBorderView()
     
     // MARK: - Initialization
     init(exercise: Exercise) {
@@ -62,6 +63,11 @@ class HexCompletionScreen: UIViewController {
         confettiView.startConfettiCannon(at: CGPoint(x: HEX_FRAME.minX+HEX_WIDTH/2, y: HEX_FRAME.minY + HEX_WIDTH/2), keepOnScreen: true)
         
         checkMark.play()
+        
+        doneButton.animateBorderInSimple(duration: 0.8) {
+            // Then start rotating the gradient
+            self.doneButton.startRotatingGradient(duration: 4.0)
+        }
     }
     
     // MARK: - UI Setup
@@ -70,9 +76,6 @@ class HexCompletionScreen: UIViewController {
         view.addSubview(confettiView)
         view.addSubview(hex)
         view.addSubview(checkMark)
-        
-        // Size the hex to be about 60% of the screen width
-        let hexSize = UIScreen.main.bounds.width * 0.75
         
         checkMark.snp.makeConstraints { make in
             make.edges.equalTo(hex).inset(64)
@@ -111,9 +114,14 @@ class HexCompletionScreen: UIViewController {
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 0
-        
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Update gradient border layout when view size changes
+        doneButton.updateGradientBorderLayout()
     }
     
     private func setupDoneButton() {
@@ -124,6 +132,10 @@ class HexCompletionScreen: UIViewController {
         doneButton.layer.cornerRadius = 20
         doneButton.addTarget(self, action: #selector(dismissScreen), for: .touchUpInside)
         
+        // Configure the gradient border
+        doneButton.borderWidth = 7.0
+        doneButton.gradientColors = [.systemPurple, .systemCyan, .systemPurple, .systemPink]
+        
         view.addSubview(doneButton)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -133,6 +145,9 @@ class HexCompletionScreen: UIViewController {
             doneButton.widthAnchor.constraint(equalToConstant: 200),
             doneButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
+        // Start the rotation animation
+        doneButton.startRotatingGradient()
     }
     
     // MARK: - Actions
