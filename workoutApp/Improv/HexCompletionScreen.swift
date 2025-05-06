@@ -19,7 +19,6 @@ class HexCompletionScreen: UIViewController {
 
     // MARK: - Properties
     private let exercise: Exercise
-    let centerHexView = UIView()
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let doneButton = UIButton(type: .system)
@@ -61,25 +60,19 @@ class HexCompletionScreen: UIViewController {
         super.viewDidAppear(animated)
         
         confettiView.startConfettiCannon(at: CGPoint(x: HEX_FRAME.minX+HEX_WIDTH/2, y: HEX_FRAME.minY + HEX_WIDTH/2), keepOnScreen: true)
+        
         checkMark.play()
     }
     
     // MARK: - UI Setup
     private func setupHexView() {
         // Add the center hex view
-        view.addSubview(centerHexView)
-        centerHexView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(confettiView)
         view.addSubview(hex)
         view.addSubview(checkMark)
         
         // Size the hex to be about 60% of the screen width
         let hexSize = UIScreen.main.bounds.width * 0.75
-        
-        centerHexView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.height.equalTo(hexSize)
-        }
         
         checkMark.snp.makeConstraints { make in
             make.edges.equalTo(hex).inset(64)
@@ -100,7 +93,6 @@ class HexCompletionScreen: UIViewController {
         subtitle.textColor = .black
         subtitle.numberOfLines = 0
 
-        centerHexView.addSubview(titleLabel)
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.left.right.equalTo(view.safeAreaLayoutGuide).inset(16)
@@ -119,15 +111,9 @@ class HexCompletionScreen: UIViewController {
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .white
         descriptionLabel.numberOfLines = 0
-        centerHexView.addSubview(descriptionLabel)
         
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            descriptionLabel.centerXAnchor.constraint(equalTo: centerHexView.centerXAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            descriptionLabel.leadingAnchor.constraint(equalTo: centerHexView.leadingAnchor, constant: 20),
-            descriptionLabel.trailingAnchor.constraint(equalTo: centerHexView.trailingAnchor, constant: -20)
-        ])
+
     }
     
     private func setupDoneButton() {
