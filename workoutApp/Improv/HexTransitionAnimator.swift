@@ -25,7 +25,7 @@ class HexTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return isPresenting ? 1.0 : 0.0
+        return isPresenting ? 0.5 : 0.0
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {

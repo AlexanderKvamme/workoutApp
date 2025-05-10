@@ -3,10 +3,9 @@ import UIKit
 class ConfettiView: UIView {
     // Track all active confetti pieces
     private var activeConfetti: [UIView] = []
-    // Track if animation is in progress
     private var isAnimating = false
-    // Track if confetti should remain on screen
     private var keepConfetti = false
+    var removalPoint: CGPoint? = CGPoint(x: 100, y: 200)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,7 +61,7 @@ class ConfettiView: UIView {
         // Create 60 confetti pieces
         for _ in 0..<60 {
             // Create a confetti piece
-            let size = CGFloat.random(in: 8...16)
+            let size = CGFloat.random(in: 10...16)
             
             // Start all pieces at the same position (behind the hex)
             let confetti = UIView(frame: CGRect(x: position.x - size/2, y: position.y - size/2,
@@ -134,7 +133,23 @@ class ConfettiView: UIView {
             }, completion: nil)
             
             // Only add the shrink animation if we're not keeping confetti
-            if !keepOnScreen {
+            if let removalPoint = removalPoint {
+                let minDelay = 1.5
+                let delay = CGFloat.random(in: minDelay+0.2...minDelay+0.45)
+                let duration = 0.3
+                UIView.animate(withDuration: duration,
+                               delay: delay,
+                               usingSpringWithDamping: 1.0,
+                               initialSpringVelocity: 1.0,
+                              options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+                    // Move in random direction from the center
+                    confetti.center = removalPoint
+                    confetti.transform = confetti.transform.rotated(by: .pi * 2 * CGFloat.random(in: 1...3))
+                    
+                    // Scale down slightly as it moves away
+                    confetti.transform = confetti.transform.scaledBy(x: 0.7, y: 0.7)
+                }, completion: nil)
+            } else if !keepOnScreen {
                 // Shrink animation at the end
                 UIView.animate(withDuration: shrinkDuration, delay: shrinkDelay,
                               options: [.beginFromCurrentState], animations: {

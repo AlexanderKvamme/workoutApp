@@ -9,6 +9,7 @@
 import UIKit
 import AKKIT
 import Lottie
+import SnapKit
 
 
 // MARK: - HexCompletionScreen
@@ -19,11 +20,10 @@ class HexCompletionScreen: UIViewController {
 
     // MARK: - Properties
     private let exercise: Exercise
-    private let titleLabel = UILabel()
+    private var animatedTitleView: AnimatedTextView!
     private let descriptionLabel = UILabel()
     private let doneButton = GradientBorderButton(type: .system)
     private let checkMark: LottieAnimationView = {
-//        imageView.tintColor = .white
         let anim = LottieAnimationView(asset: "checkmark-lottie")
         anim.currentFrame = 0  // Set the animation to start at frame 0
         anim.loopMode = .playOnce  // Or any other loop mode you prefer
@@ -53,20 +53,48 @@ class HexCompletionScreen: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .akLight
         setupHexView()
-        setupLabels()
+        setupAnimatedTitle()
+        setupSubtitleLabel()
         setupDoneButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        confettiView.removalPoint = doneButton.center
         confettiView.startConfettiCannon(at: CGPoint(x: HEX_FRAME.minX+HEX_WIDTH/2, y: HEX_FRAME.minY + HEX_WIDTH/2), keepOnScreen: true)
         
+        // Start the animations
+        animatedTitleView.animate()
         checkMark.play()
         
-        doneButton.animateBorderInSimple(duration: 0.8) {
-            // Then start rotating the gradient
-            self.doneButton.startRotatingGradient(duration: 4.0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.doneButton.animateBorderInSimple(duration: 0.8) {
+                self.pulseButton()
+                self.doneButton.startRotatingGradient(duration: 4.0)
+            }
+        }
+    }
+    
+    func pulseButton() {
+        // First animate to a larger size with spring physics
+        UIView.animate(withDuration: 0.4,
+                      delay: 0,
+                      usingSpringWithDamping: 0.5,  // Lower damping means more oscillation
+                      initialSpringVelocity: 0.5,   // Initial velocity of the spring
+                      options: [],
+                      animations: {
+            self.doneButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }) { _ in
+            // Then animate back to normal size with spring physics
+            UIView.animate(withDuration: 0.4,
+                          delay: 0,
+                          usingSpringWithDamping: 0.6,
+                          initialSpringVelocity: 0.3,
+                          options: [],
+                          animations: {
+                self.doneButton.transform = .identity
+            })
         }
     }
     
@@ -80,41 +108,41 @@ class HexCompletionScreen: UIViewController {
         checkMark.snp.makeConstraints { make in
             make.edges.equalTo(hex).inset(64)
         }
-        
     }
     
-    private func setupLabels() {
-        // Title Label
-        titleLabel.text = "Success!"
-        titleLabel.font = AKFont.round(.black, 48)
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .black
+    private func setupAnimatedTitle() {
+        // Create the animated title view with "Success!" text
+        animatedTitleView = AnimatedTextView(
+            text: "Success!",
+            font: AKFont.round(.black, 48),
+            color: .black
+        )
         
+        view.addSubview(animatedTitleView)
+        
+        // Set constraints
+        animatedTitleView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            animatedTitleView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            animatedTitleView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animatedTitleView.heightAnchor.constraint(equalToConstant: 60),
+            animatedTitleView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 16),
+            animatedTitleView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    private func setupSubtitleLabel() {
         subtitle.text = "That was some real nice work!"
         subtitle.font = AKFont.round(.black, 24)
         subtitle.textAlignment = .center
         subtitle.textColor = .black
         subtitle.numberOfLines = 0
 
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.left.right.equalTo(view.safeAreaLayoutGuide).inset(16)
-        }
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(subtitle)
         subtitle.snp.makeConstraints { make in
             make.top.equalTo(hex.snp.bottom)
             make.left.right.equalToSuperview().inset(24)
         }
-        
-        // Description Label
-        descriptionLabel.text = ""
-        descriptionLabel.font = AKFont.round(.medium, 18)
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = .white
-        descriptionLabel.numberOfLines = 0
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     override func viewDidLayoutSubviews() {

@@ -39,6 +39,7 @@
 		DD19A2112DC1522A00BEC938 /* MuscleCreatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD19A2102DC1522600BEC938 /* MuscleCreatorScreen.swift */; };
 		DD1A257D1F9F500E001F354A /* MeasurementStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */; };
 		DD1A257F1F9F5283001F354A /* ExerciseStyleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */; };
+		DD1AD5072DCD2A8C003C7694 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD5062DCD2A8A003C7694 /* Test.swift */; };
 		DD1DF75F1EDB77E100CD3426 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */; };
 		DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1EA1131EE9435A00EBB7B7 /* InputView.swift */; };
 		DD1EA1601EEC1CB200EBB7B7 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */; };
@@ -230,6 +231,7 @@
 		DD19A2102DC1522600BEC938 /* MuscleCreatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleCreatorScreen.swift; sourceTree = "<group>"; };
 		DD1A257C1F9F500E001F354A /* MeasurementStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementStyleExtensions.swift; sourceTree = "<group>"; };
 		DD1A257E1F9F5283001F354A /* ExerciseStyleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseStyleExtensions.swift; sourceTree = "<group>"; };
+		DD1AD5062DCD2A8A003C7694 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		DD1DF75E1EDB77E100CD3426 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		DD1EA1131EE9435A00EBB7B7 /* InputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		DD1EA15F1EEC1CB200EBB7B7 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
@@ -973,6 +975,7 @@
 			isa = PBXGroup;
 			children = (
 				DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */,
+				DD1AD5062DCD2A8A003C7694 /* Test.swift */,
 				DD0F43522DCA918200C360B8 /* GradientBorderView.swift */,
 				DD0F43562DCA94F900C360B8 /* GradientBorderExtension.swift */,
 				DDC2A4CE2DC75E450023724B /* HexTransitionAnimator.swift */,
@@ -1249,6 +1252,7 @@
 				DD4B1C101EC8606F00BD313B /* PreferencesController.swift in Sources */,
 				DDFEA4DB2DB59EED00C4F787 /* ViewController.swift in Sources */,
 				DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */,
+				DD1AD5072DCD2A8C003C7694 /* Test.swift in Sources */,
 				DD0F43552DCA931000C360B8 /* GradientImage.swift in Sources */,
 				DD1EA1621EEC1CBC00EBB7B7 /* Keyboard.swift in Sources */,
 				DD01CF6F2DBCED3400D63A82 /* HexagonItemView.swift in Sources */,
