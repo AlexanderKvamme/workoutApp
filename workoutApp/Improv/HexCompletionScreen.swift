@@ -32,6 +32,7 @@ class HexCompletionScreen: UIViewController {
         return anim
     }()
     private var subtitle = UILabel()
+    private var body = UITextView()
     private var gradientBorderView = GradientBorderView()
     
     // MARK: - Initialization
@@ -52,9 +53,16 @@ class HexCompletionScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
+        view.addSubview(confettiView)
+        view.addSubview(hex)
+        view.addSubview(checkMark)
+        view.addSubview(body)
+        view.addSubview(subtitle)
+        view.addSubview(doneButton)
         setupHexView()
         setupAnimatedTitle()
         setupSubtitleLabel()
+        setupBody()
         setupDoneButton()
     }
     
@@ -100,11 +108,6 @@ class HexCompletionScreen: UIViewController {
     
     // MARK: - UI Setup
     private func setupHexView() {
-        // Add the center hex view
-        view.addSubview(confettiView)
-        view.addSubview(hex)
-        view.addSubview(checkMark)
-        
         checkMark.snp.makeConstraints { make in
             make.edges.equalTo(hex).inset(64)
         }
@@ -132,16 +135,29 @@ class HexCompletionScreen: UIViewController {
     }
     
     private func setupSubtitleLabel() {
-        subtitle.text = "That was some real nice work!"
+        subtitle.text = "That was great!"
         subtitle.font = AKFont.round(.black, 24)
         subtitle.textAlignment = .center
         subtitle.textColor = .black
         subtitle.numberOfLines = 0
 
-        view.addSubview(subtitle)
         subtitle.snp.makeConstraints { make in
-            make.top.equalTo(hex.snp.bottom)
+            make.top.equalTo(hex.snp.bottom).offset(16)
             make.left.right.equalToSuperview().inset(24)
+        }
+    }
+        
+    func setupBody() {
+        body.text = "The workout is saved and you can focus on other muscles or skills for a while. Check back to see when the hex components require work."
+        body.font = AKFont.round(.medium, 20)
+        body.textColor = .lightGray
+        body.backgroundColor = .clear
+        body.textAlignment = .center
+        
+        body.snp.makeConstraints { make in
+            make.top.equalTo(subtitle.snp.bottom)
+            make.left.right.equalToSuperview().inset(24)
+            make.bottom.equalTo(doneButton.snp.top)
         }
     }
     
@@ -164,7 +180,6 @@ class HexCompletionScreen: UIViewController {
         doneButton.borderWidth = 7.0
         doneButton.gradientColors = [.systemPurple, .systemCyan, .systemPurple, .systemPink]
         
-        view.addSubview(doneButton)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -177,6 +192,7 @@ class HexCompletionScreen: UIViewController {
         // Start the rotation animation
         doneButton.startRotatingGradient()
     }
+    
     
     // MARK: - Actions
     @objc private func dismissScreen() {
