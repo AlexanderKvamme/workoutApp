@@ -194,14 +194,14 @@ class HexCompletionScreen: UIViewController {
     
     private func setupDoneButton() {
         doneButton.setTitle("See you later!", for: .normal)
-        doneButton.titleLabel?.font = AKFont.round(.bold, 18)
+        doneButton.titleLabel?.font = AKFont.round(.bold, 24)
         doneButton.backgroundColor = .black
         doneButton.setTitleColor(.white, for: .normal)
         doneButton.layer.cornerRadius = 20
         doneButton.addTarget(self, action: #selector(dismissScreen), for: .touchUpInside)
         
         // Configure the gradient border
-        doneButton.borderWidth = 7.0
+        doneButton.borderWidth = 4.0
 //        doneButton.gradientColors = [UIColor(hexString: "#B8BDFC"), UIColor(hexString: "#5474F7"), UIColor(hexString: "#4002F7")]
         doneButton.gradientColors = [UIColor(hexString: "#D8B4FE"), UIColor(hexString: "#A855F7"), UIColor(hexString: "#7E22CE")]
         doneButton.gradientColors = [UIColor(hexString: "#C8A2F5"), UIColor(hexString: "#9747FF"), UIColor(hexString: "#6B21A8")]
@@ -211,6 +211,7 @@ class HexCompletionScreen: UIViewController {
         doneButton.gradientColors = [UIColor(hexString: "#000000"), UIColor(hexString: "#222222"), UIColor(hexString: "#444444")]
         doneButton.gradientColors = [.akOrange, .akDarkOrange]
 //        doneButton.gradientColors = [UIColor(hexString: "#FFCB80"), UIColor(hexString: "#FFB54C"), UIColor(hexString: "#FF9500")]
+        doneButton.gradientColors = [.black]
 
 
 
@@ -230,8 +231,8 @@ class HexCompletionScreen: UIViewController {
     
     // MARK: - Actions
     @objc private func dismissScreen() {
-        print("tryna dismiss")
-        dismiss(animated: true)
+                dismiss(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
 }
 

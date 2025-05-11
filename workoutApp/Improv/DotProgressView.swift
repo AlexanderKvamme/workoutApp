@@ -4,8 +4,8 @@ class DotProgressView: UIView {
     
     // MARK: - Properties
     
-    private var currentStep: Int = 0
-    private var totalSteps: Int = 0
+    var currentStep: Int = 0
+    var totalSteps: Int = 0
     private let dotSize: CGFloat = 14
     private let dotSpacing: CGFloat = 16
     private var completedColor: UIColor = .black

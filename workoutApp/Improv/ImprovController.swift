@@ -45,9 +45,10 @@ class HoneycombViewController: SelectionViewController {
         reset()
         setupHoneycombGrid()
         
-        let skill = skills.first(where: { $0.getName() == "HANDSTAND" })!
-        let improvWorkoutController = ImprovWorkoutController(skill: skill)
-        navigationController?.pushViewController(improvWorkoutController, animated: true)
+        
+//        let skill = skills.first(where: { $0.getName() == "HANDSTAND" })!
+//        let improvWorkoutController = ImprovWorkoutController(skill: skill)
+//        navigationController?.pushViewController(improvWorkoutController, animated: true)
     }
     
     override func viewDidLayoutSubviews() {

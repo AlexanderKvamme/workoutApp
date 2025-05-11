@@ -72,6 +72,10 @@ class ImprovWorkoutController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if progressBar.currentStep == progressBar.totalSteps {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -160,15 +164,18 @@ class ImprovWorkoutController: UIViewController {
 //                testView.backgroundColor = .blue
 //                self?.view.addSubview(testView)
                 
-                // Create and present the completion screen with custom transition
-                let completionScreen = HexCompletionScreen(exercise: selectedExercise)
-                self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
-                completionScreen.transitioningDelegate = self?.transitionDelegate
-                
-                // Present after a short delay to allow the confetti and other animations to be visible
-                DispatchQueue.main.asyncAfter(deadline: .now()  ) {
-                    self?.present(completionScreen, animated: true)
-//                    testView.removeFromSuperview()
+                if self?.progressBar.currentStep == self?.progressBar.totalSteps {
+                    
+                    // Create and present the completion screen with custom transition
+                    let completionScreen = HexCompletionScreen(exercise: selectedExercise)
+                    self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
+                    completionScreen.transitioningDelegate = self?.transitionDelegate
+                    
+                    // Present after a short delay to allow the confetti and other animations to be visible
+                    DispatchQueue.main.asyncAfter(deadline: .now()  ) {
+                        self?.present(completionScreen, animated: true)
+    //                    testView.removeFromSuperview()
+                    }
                 }
             },
             onItemLongPressed: { [weak self] (selectedExercise, item) in
