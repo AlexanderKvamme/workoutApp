@@ -1,6 +1,7 @@
 import UIKit
-let CONFETTI_COLORS: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow,
-                        .systemPurple, .systemOrange, .systemPink, .systemTeal]
+//let CONFETTI_COLORS: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow,
+//                        .systemPurple, .systemOrange, .systemPink, .systemTeal]
+let CONFETTI_COLORS: [UIColor] = [.akRed, .akGreen, .akOrange, .akBlue, .akPurple]
 
 class ConfettiView: UIView {
     // Track all active confetti pieces
@@ -62,9 +63,7 @@ class ConfettiView: UIView {
         // Create 60 confetti pieces
         for _ in 0..<60 {
             // Create a confetti piece
-            let size = CGFloat.random(in: 10...16)
-            
-            // Start all pieces at the same position (behind the hex)
+            let size = CGFloat.random(in: 8...24)
             let confetti = UIView(frame: CGRect(x: position.x - size/2, y: position.y - size/2,
                                               width: size, height: size))
             
@@ -94,20 +93,10 @@ class ConfettiView: UIView {
             // Random direction - but make it burst outward from the center
             let angle = CGFloat.random(in: 0...(2 * .pi))
             let distance = CGFloat.random(in: 200...400)
-            
-            // Travel duration - how long it takes to reach the destination
             let travelDuration: TimeInterval = TimeInterval.random(in: 0.7...1.0)
-            
-            // Shrink duration - how long it takes to shrink at the end
             let shrinkDuration: TimeInterval = 0.2
-            
-            // Random initial delay to create a burst effect
             let delay = TimeInterval.random(in: 0...0.1)
-            
-            // Calculate when to start the shrink animation
             let shrinkDelay = delay + travelDuration
-            
-            // Initial state - start slightly smaller
             confetti.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             
             // Add a slight "pop" at the beginning
@@ -128,8 +117,6 @@ class ConfettiView: UIView {
                 
                 // Rotate
                 confetti.transform = confetti.transform.rotated(by: .pi * 2 * CGFloat.random(in: 1...3))
-                
-                // Scale down slightly as it moves away
                 confetti.transform = confetti.transform.scaledBy(x: 0.7, y: 0.7)
             }, completion: nil)
             

@@ -80,9 +80,8 @@ class HexCompletionScreen: UIViewController {
         animatedTitleView.animate()
         checkMark.play()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.doneButton.animateBorderInSimple(duration: 0.8) {
-                self.pulseButton()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.doneButton.animateBorderIn(duration: 0.8) {
                 self.doneButton.startRotatingGradient(duration: 4.0)
             }
         }
@@ -114,28 +113,6 @@ class HexCompletionScreen: UIViewController {
                            initialSpringVelocity: 0.3,
                            options: [],
                            animations: {
-                self.doneButton.transform = .identity
-            })
-        }
-    }
-    
-    func pulseButton() {
-        // First animate to a larger size with spring physics
-        UIView.animate(withDuration: 0.4,
-                      delay: 0,
-                      usingSpringWithDamping: 0.5,  // Lower damping means more oscillation
-                      initialSpringVelocity: 1,   // Initial velocity of the spring
-                      options: [],
-                      animations: {
-            self.doneButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-        }) { _ in
-            // Then animate back to normal size with spring physics
-            UIView.animate(withDuration: 0.4,
-                          delay: 0,
-                          usingSpringWithDamping: 0.6,
-                          initialSpringVelocity: 0.3,
-                          options: [],
-                          animations: {
                 self.doneButton.transform = .identity
             })
         }
@@ -181,7 +158,7 @@ class HexCompletionScreen: UIViewController {
     
     private func setupSubtitleLabel() {
         subtitle.text = "That was great!"
-        subtitle.font = AKFont.round(.black, 24)
+        subtitle.font = AKFont.round(.black, 30)
         subtitle.textAlignment = .center
         subtitle.textColor = .black
         subtitle.numberOfLines = 0
@@ -195,6 +172,8 @@ class HexCompletionScreen: UIViewController {
     func setupBody() {
         body.text = "The workout is saved and you can focus on other muscles or skills for a while. Check back to see when the hex components require work."
         body.font = AKFont.round(.medium, 20)
+        body.isEditable = false
+        body.isUserInteractionEnabled = false
         body.textColor = .lightGray
         body.backgroundColor = .clear
         body.textAlignment = .center
@@ -214,7 +193,7 @@ class HexCompletionScreen: UIViewController {
     }
     
     private func setupDoneButton() {
-        doneButton.setTitle("See you!", for: .normal)
+        doneButton.setTitle("See you later!", for: .normal)
         doneButton.titleLabel?.font = AKFont.round(.bold, 18)
         doneButton.backgroundColor = .black
         doneButton.setTitleColor(.white, for: .normal)
@@ -230,18 +209,19 @@ class HexCompletionScreen: UIViewController {
         doneButton.gradientColors = [UIColor(hexString: "#E9D5FF")  , UIColor(hexString: "#7E22CE")]
         doneButton.gradientColors = [UIColor(hexString: "#000000"), UIColor(hexString: "#1A1A1A"), UIColor(hexString: "#333333")]
         doneButton.gradientColors = [UIColor(hexString: "#000000"), UIColor(hexString: "#222222"), UIColor(hexString: "#444444")]
+        doneButton.gradientColors = [.akOrange, .akDarkOrange]
 //        doneButton.gradientColors = [UIColor(hexString: "#FFCB80"), UIColor(hexString: "#FFB54C"), UIColor(hexString: "#FF9500")]
 
 
 
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-            doneButton.widthAnchor.constraint(equalToConstant: 200),
-            doneButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
+        doneButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.height.equalTo(50)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
+        }
         
         // Start the rotation animation
         doneButton.startRotatingGradient()
