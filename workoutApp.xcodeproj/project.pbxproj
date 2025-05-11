@@ -116,6 +116,8 @@
 		DD9005812DBD318F0010E197 /* StripesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9005802DBD318E0010E197 /* StripesView.swift */; };
 		DD9005832DBD772B0010E197 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9005822DBD772A0010E197 /* Timer.swift */; };
 		DD90AF2C1EDED26800A560F0 /* RefreshControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */; };
+		DD9297B82DCF60A300E8B147 /* StarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9297B72DCF60A200E8B147 /* StarView.swift */; };
+		DD9297BA2DD081ED00E8B147 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9297B92DD081EA00E8B147 /* StarRatingView.swift */; };
 		DD9477B61F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */; };
 		DD9477B81F7FE79500E01F81 /* MuscleBasedWorkoutTableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */; };
 		DD9838731F12717B00B876C7 /* Notification Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9838721F12717B00B876C7 /* Notification Extensions.swift */; };
@@ -293,6 +295,8 @@
 		DD9005802DBD318E0010E197 /* StripesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripesView.swift; sourceTree = "<group>"; };
 		DD9005822DBD772A0010E197 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		DD90AF2B1EDED26800A560F0 /* RefreshControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlView.swift; sourceTree = "<group>"; };
+		DD9297B72DCF60A200E8B147 /* StarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarView.swift; sourceTree = "<group>"; };
+		DD9297B92DD081EA00E8B147 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
 		DD9477B51F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleBasedWorkoutTableController.swift; sourceTree = "<group>"; };
 		DD9477B71F7FE79400E01F81 /* MuscleBasedWorkoutTableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleBasedWorkoutTableDataSource.swift; sourceTree = "<group>"; };
 		DD9838721F12717B00B876C7 /* Notification Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification Extensions.swift"; sourceTree = "<group>"; };
@@ -975,11 +979,13 @@
 			isa = PBXGroup;
 			children = (
 				DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */,
+				DD9297B92DD081EA00E8B147 /* StarRatingView.swift */,
 				DD1AD5062DCD2A8A003C7694 /* Test.swift */,
 				DD0F43522DCA918200C360B8 /* GradientBorderView.swift */,
 				DD0F43562DCA94F900C360B8 /* GradientBorderExtension.swift */,
 				DDC2A4CE2DC75E450023724B /* HexTransitionAnimator.swift */,
 				DDC2A3CC2DC749230023724B /* HexCompletionScreen.swift */,
+				DD9297B72DCF60A200E8B147 /* StarView.swift */,
 				DD0F43582DCA962500C360B8 /* GradientBorderButton.swift */,
 				DD0F43542DCA930D00C360B8 /* GradientImage.swift */,
 				DDFEA4D62DB5365A00C4F787 /* ImprovController.swift */,
@@ -1125,6 +1131,7 @@
 				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
 				DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */,
 				DDFA51011F583AE900AF28A4 /* PreferencePicker.swift in Sources */,
+				DD9297B82DCF60A300E8B147 /* StarView.swift in Sources */,
 				DD642F9D1F754CD5003D1177 /* MusclePickerController.swift in Sources */,
 				DD36F5131F33D44300FD31B3 /* ProfileController.swift in Sources */,
 				DDC836C11EDDCC330043DA07 /* WorkoutTableViewDataSource.swift in Sources */,
@@ -1148,6 +1155,7 @@
 				DD2A9E741F0EED600074B46F /* Footer.swift in Sources */,
 				DDA4A3A11F5EC7F40026882A /* ApproveButtonFooter.swift in Sources */,
 				DD9477B61F7FE4F000E01F81 /* MuscleBasedWorkoutTableController.swift in Sources */,
+				DD9297BA2DD081ED00E8B147 /* StarRatingView.swift in Sources */,
 				DDD0D53E295F50F500CD11A5 /* TimerButton.swift in Sources */,
 				DD1EA1141EE9435A00EBB7B7 /* InputView.swift in Sources */,
 				DD47BAF41FBC5FFE00F75F04 /* Globals.swift in Sources */,

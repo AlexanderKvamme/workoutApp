@@ -10,7 +10,7 @@ class GradientBorderButton: UIButton {
         didSet { updateGradientBorder() }
     }
     
-    var gradientColors: [UIColor] = [.systemBlue, .systemGreen] {
+    var gradientColors: [UIColor] = [.black, .gray] {
         didSet { updateGradientBorder() }
     }
     

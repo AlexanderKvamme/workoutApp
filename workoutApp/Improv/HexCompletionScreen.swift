@@ -17,6 +17,8 @@ class HexCompletionScreen: UIViewController {
     
     let hex = HexagonalView(frame: HEX_FRAME)
     let confettiView = ConfettiView(frame: UIScreen.main.bounds)
+    let starView = StarView()
+    let starRatingView = StarRatingView(frame: CGRect(x: 0, y: 0, width: 300, height: 64))
 
     // MARK: - Properties
     private let exercise: Exercise
@@ -55,6 +57,8 @@ class HexCompletionScreen: UIViewController {
         view.backgroundColor = .akLight
         view.addSubview(confettiView)
         view.addSubview(hex)
+        view.addSubview(starRatingView)
+//        view.addSubview(starView)
         view.addSubview(checkMark)
         view.addSubview(body)
         view.addSubview(subtitle)
@@ -82,6 +86,37 @@ class HexCompletionScreen: UIViewController {
                 self.doneButton.startRotatingGradient(duration: 4.0)
             }
         }
+        
+        starRatingView.animateIn {
+            print("Stars animation completed!")
+        }
+        
+        // After some delay, set a rating (optional)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.starRatingView.setRating(5, animated: true)
+        }
+    }
+    
+    func pulseStar() {
+        // First animate to a larger size with spring physics
+        UIView.animate(withDuration: 0.4,
+                       delay: 0,
+                       usingSpringWithDamping: 0.5,  // Lower damping means more oscillation
+                       initialSpringVelocity: 1,   // Initial velocity of the spring
+                       options: [],
+                       animations: {
+            self.doneButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        }) { _ in
+            // Then animate back to normal size with spring physics
+            UIView.animate(withDuration: 0.4,
+                           delay: 0,
+                           usingSpringWithDamping: 0.6,
+                           initialSpringVelocity: 0.3,
+                           options: [],
+                           animations: {
+                self.doneButton.transform = .identity
+            })
+        }
     }
     
     func pulseButton() {
@@ -89,7 +124,7 @@ class HexCompletionScreen: UIViewController {
         UIView.animate(withDuration: 0.4,
                       delay: 0,
                       usingSpringWithDamping: 0.5,  // Lower damping means more oscillation
-                      initialSpringVelocity: 0.5,   // Initial velocity of the spring
+                      initialSpringVelocity: 1,   // Initial velocity of the spring
                       options: [],
                       animations: {
             self.doneButton.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
@@ -111,6 +146,10 @@ class HexCompletionScreen: UIViewController {
         checkMark.snp.makeConstraints { make in
             make.edges.equalTo(hex).inset(64)
         }
+        
+//        starView.snp.makeConstraints { make in
+//            make.edges.equalTo(hex).inset(42)
+//        }
     }
     
     private func setupAnimatedTitle() {
@@ -132,6 +171,12 @@ class HexCompletionScreen: UIViewController {
             animatedTitleView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 16),
             animatedTitleView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16)
         ])
+        
+        starRatingView.snp.makeConstraints { make in
+            make.top.equalTo(animatedTitleView.snp.bottom).offset(10)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(32)
+        }
     }
     
     private func setupSubtitleLabel() {
@@ -169,17 +214,26 @@ class HexCompletionScreen: UIViewController {
     }
     
     private func setupDoneButton() {
-        doneButton.setTitle("Done", for: .normal)
+        doneButton.setTitle("See you!", for: .normal)
         doneButton.titleLabel?.font = AKFont.round(.bold, 18)
-        doneButton.backgroundColor = .white
-        doneButton.setTitleColor(.black, for: .normal)
+        doneButton.backgroundColor = .black
+        doneButton.setTitleColor(.white, for: .normal)
         doneButton.layer.cornerRadius = 20
         doneButton.addTarget(self, action: #selector(dismissScreen), for: .touchUpInside)
         
         // Configure the gradient border
         doneButton.borderWidth = 7.0
-        doneButton.gradientColors = [.systemPurple, .systemCyan, .systemPurple, .systemPink]
-        
+//        doneButton.gradientColors = [UIColor(hexString: "#B8BDFC"), UIColor(hexString: "#5474F7"), UIColor(hexString: "#4002F7")]
+        doneButton.gradientColors = [UIColor(hexString: "#D8B4FE"), UIColor(hexString: "#A855F7"), UIColor(hexString: "#7E22CE")]
+        doneButton.gradientColors = [UIColor(hexString: "#C8A2F5"), UIColor(hexString: "#9747FF"), UIColor(hexString: "#6B21A8")]
+        doneButton.gradientColors = [UIColor(hexString: "#D0BFFF"), UIColor(hexString: "#8B5CF6"), UIColor(hexString: "#4C1D95")]
+        doneButton.gradientColors = [UIColor(hexString: "#E9D5FF")  , UIColor(hexString: "#7E22CE")]
+        doneButton.gradientColors = [UIColor(hexString: "#000000"), UIColor(hexString: "#1A1A1A"), UIColor(hexString: "#333333")]
+        doneButton.gradientColors = [UIColor(hexString: "#000000"), UIColor(hexString: "#222222"), UIColor(hexString: "#444444")]
+//        doneButton.gradientColors = [UIColor(hexString: "#FFCB80"), UIColor(hexString: "#FFB54C"), UIColor(hexString: "#FF9500")]
+
+
+
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

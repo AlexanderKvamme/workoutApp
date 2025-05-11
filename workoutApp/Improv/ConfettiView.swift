@@ -1,4 +1,6 @@
 import UIKit
+let CONFETTI_COLORS: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow,
+                        .systemPurple, .systemOrange, .systemPink, .systemTeal]
 
 class ConfettiView: UIView {
     // Track all active confetti pieces
@@ -55,8 +57,7 @@ class ConfettiView: UIView {
         print("DEBUG: Starting confetti from behind at \(position)")
         
         // Create confetti pieces
-        let colors: [UIColor] = [.systemRed, .systemBlue, .systemGreen, .systemYellow,
-                                .systemPurple, .systemOrange, .systemPink, .systemTeal]
+        let colors: [UIColor] = CONFETTI_COLORS
         
         // Create 60 confetti pieces
         for _ in 0..<60 {
