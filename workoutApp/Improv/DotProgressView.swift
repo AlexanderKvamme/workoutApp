@@ -93,6 +93,8 @@ class DotProgressView: UIView {
         // If already at max, do nothing
         guard nextStep > currentStep else { return }
         
+        let isdone = nextStep == totalSteps
+        
         // Update the model
         currentStep = nextStep
         
@@ -103,6 +105,9 @@ class DotProgressView: UIView {
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
         
         // Update progress layer frame with animation
+        if isdone {
+            progressLayer?.backgroundColor = UIColor.akOrange.cgColor
+        }
         updateProgressLayerFrame()
         
         // Update dot colors
@@ -115,9 +120,8 @@ class DotProgressView: UIView {
         feedbackGenerator.impactOccurred()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-            if self.currentStep == self.totalSteps {
+            if isdone {
                 onCompletion()
-//                self.delegate?.didComplete()
             }
         }
     }

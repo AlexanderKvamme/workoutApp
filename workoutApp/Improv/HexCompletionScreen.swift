@@ -191,7 +191,7 @@ class HexCompletionScreen: UIViewController {
     }
     
     private func setupDoneButton() {
-        doneButton.setTitle("See you later!".uppercased(), for: .normal)
+        doneButton.setTitle(" Dismiss ".uppercased(), for: .normal)
         doneButton.titleLabel?.font = AKFont.round(.bold, 24)
         doneButton.backgroundColor = .black
         doneButton.setTitleColor(.white, for: .normal)
