@@ -1,5 +1,10 @@
 import UIKit
 
+protocol DotProgressDelegate {
+//    func didComplete(selectedExercise: Exercise, hexFrame: CGRect)
+    func didComplete()
+}
+
 class DotProgressView: UIView {
     
     // MARK: - Properties
@@ -17,6 +22,8 @@ class DotProgressView: UIView {
     private var progressLayer: CALayer?
     private var backgroundLayer: CALayer?
     private var dotsLayer: CALayer?
+    
+    var delegate: DotProgressDelegate?
     
     // MARK: - Initialization
     
@@ -79,7 +86,7 @@ class DotProgressView: UIView {
     }
     
     /// Animates the transition to the next step with a bump animation
-    func bump() {
+    func bump(onCompletion: @escaping (() -> ())) {
         // Calculate the next step (one step up)
         let nextStep = min(currentStep + 1, totalSteps)
         
@@ -89,9 +96,10 @@ class DotProgressView: UIView {
         // Update the model
         currentStep = nextStep
         
+        let animationDuration = 0.3
         // Animate the progress layer
         CATransaction.begin()
-        CATransaction.setAnimationDuration(0.3)
+        CATransaction.setAnimationDuration(animationDuration)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
         
         // Update progress layer frame with animation
@@ -105,6 +113,13 @@ class DotProgressView: UIView {
         // Add haptic feedback
         let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         feedbackGenerator.impactOccurred()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+            if self.currentStep == self.totalSteps {
+                onCompletion()
+//                self.delegate?.didComplete()
+            }
+        }
     }
     
     // MARK: - Layout

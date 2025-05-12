@@ -147,47 +147,24 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.configure(
             with: exercises,
             onItemSelected: { [weak self] (selectedExercise, hex) in
+                let hexFrame = hex.convert(hex.bounds, to: self?.view)
                 self?.addCompletedExercise(selectedExercise)
                 self!.popConfetti(on: hex)
                 
 //                hex.bumpStripes() // Move into configure?
                 hex.bumpDots()
                 
-//                print("bam IWC had log: ", self?.log)
                 hex.configure(withExercise: selectedExercise, andLog: self?.log)
                 self?.startTimer()
                 
                 // Get the frame of the hex in the main view's coordinate system
-                let hexFrame = hex.convert(hex.bounds, to: self?.view)
-                
-//                let testView = UIView(frame: hexFrame)
-//                testView.backgroundColor = .blue
-//                self?.view.addSubview(testView)
-                
-                if self?.progressBar.currentStep == self?.progressBar.totalSteps {
-                    
+                self?.progressBar.bump(onCompletion: {
                     // Create and present the completion screen with custom transition
-                    let completionScreen = HexCompletionScreen(exercise: selectedExercise)
+                    let completionScreen = HexCompletionScreen()
                     self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
                     completionScreen.transitioningDelegate = self?.transitionDelegate
-                    
-                    // Present after a short delay to allow the confetti and other animations to be visible
-                    DispatchQueue.main.asyncAfter(deadline: .now()  ) {
-                        self?.present(completionScreen, animated: true)
-    //                    testView.removeFromSuperview()
-                    }
-                }
-            },
-            onItemLongPressed: { [weak self] (selectedExercise, item) in
-                print("LONG PRESSED: \(selectedExercise)")
-                
-                // Start the timer when long pressed
-//                self?.timerView.start()
-                
-                // You can also add other actions here
-                // self?.addCompletedExercise(selectedExercise)
-                // let pos = self?.getPositionForExercise(selectedExercise)
-                // self?.confettiView.startConfettiCannon(at: pos!)
+                    self?.present(completionScreen, animated: true)
+                })
             }
         )
         
@@ -270,7 +247,6 @@ class ImprovWorkoutController: UIViewController {
     private func addCompletedExercise(_ exercise: Exercise) {
         let eLog = DatabaseFacade.makeExerciseLog(forExercise: exercise)
         log.addToLoggedExercises(eLog)
-        progressBar.bump()
     }
     
     private func showExerciseDetails(_ exercise: String) {

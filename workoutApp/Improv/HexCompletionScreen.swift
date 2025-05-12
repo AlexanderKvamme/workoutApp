@@ -21,7 +21,6 @@ class HexCompletionScreen: UIViewController {
     let starRatingView = StarRatingView(frame: CGRect(x: 0, y: 0, width: 300, height: 64))
 
     // MARK: - Properties
-    private let exercise: Exercise
     private var animatedTitleView: AnimatedTextView!
     private let descriptionLabel = UILabel()
     private let doneButton = GradientBorderButton(type: .system)
@@ -38,8 +37,7 @@ class HexCompletionScreen: UIViewController {
     private var gradientBorderView = GradientBorderView()
     
     // MARK: - Initialization
-    init(exercise: Exercise) {
-        self.exercise = exercise
+    init() {
         super.init(nibName: nil, bundle: nil)
         hex.alpha = 0
         hex.fillColor = .black
@@ -193,7 +191,7 @@ class HexCompletionScreen: UIViewController {
     }
     
     private func setupDoneButton() {
-        doneButton.setTitle("See you later!", for: .normal)
+        doneButton.setTitle("See you later!".uppercased(), for: .normal)
         doneButton.titleLabel?.font = AKFont.round(.bold, 24)
         doneButton.backgroundColor = .black
         doneButton.setTitleColor(.white, for: .normal)
