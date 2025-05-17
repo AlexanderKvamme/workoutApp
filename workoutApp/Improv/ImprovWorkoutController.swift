@@ -160,10 +160,12 @@ class ImprovWorkoutController: UIViewController {
                 // Get the frame of the hex in the main view's coordinate system
                 self?.progressBar.bump(onCompletion: {
                     // Create and present the completion screen with custom transition
-                    let completionScreen = HexCompletionScreen()
-                    self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
-                    completionScreen.transitioningDelegate = self?.transitionDelegate
-                    self?.present(completionScreen, animated: true)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+                        let completionScreen = HexCompletionScreen()
+                        self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
+                        completionScreen.transitioningDelegate = self?.transitionDelegate
+                        self?.present(completionScreen, animated: true)
+                    }
                 })
             }
         )

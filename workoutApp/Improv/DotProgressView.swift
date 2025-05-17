@@ -106,7 +106,12 @@ class DotProgressView: UIView {
         
         // Update progress layer frame with animation
         if isdone {
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.3) // Animation duration in seconds
+            let scale = 1.1
+            progressLayer?.transform = CATransform3DMakeScale(scale,scale,scale)
             progressLayer?.backgroundColor = UIColor.akOrange.cgColor
+            CATransaction.commit()
         }
         updateProgressLayerFrame()
         
