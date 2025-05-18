@@ -113,6 +113,8 @@ class DotProgressView: UIView {
             progressLayer?.backgroundColor = UIColor.akOrange.cgColor
             CATransaction.commit()
         }
+        
+        
         updateProgressLayerFrame()
         
         // Update dot colors

@@ -11,7 +11,7 @@ import AKKIT
 import UIKit
 // Heavily inspired by: https://dribbble.com/shots/5586623-Stepper-IX
 
-final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+final class SuperStepper: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate {
 
     // MARK: - Properties
 
@@ -21,6 +21,10 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     let hScroll = UIScrollView()
     var activeColor: UIColor?
     var inactiveColor: UIColor?
+    
+    // Shadow view
+    private let shadowView = ShadowView()
+    private let contentButton = UIButton()
     
     var delegate: AKStepperDelegate?
 
@@ -44,6 +48,16 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     // MARK: - Methods
 
     func setup() {
+        // Configure shadow view
+        shadowView.frame = bounds
+        shadowView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        // Configure content button
+        contentButton.frame = bounds
+        contentButton.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentButton.layer.cornerRadius = 16
+        contentButton.clipsToBounds = true
+        
         let dataViewSize = CGRect(x: 0, y: 0, width: frame.width/3, height: frame.height)
         dataViews = data.map({ return StepperDataView(frame: dataViewSize, value: $0) })
         hScroll.contentInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
@@ -54,7 +68,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
         let totalSpacing = CGFloat(dataViews.count - 1) * dataViewStack.spacing
         let contentSize = CGSize(width: dataViewSize.width*CGFloat(dataViews.count) + totalSpacing, height: frame.height)
         dataViewStack.frame.size = contentSize
-        hScroll.frame = frame
+        hScroll.frame = contentButton.bounds
         hScroll.contentMode = .center
         hScroll.contentSize = contentSize
         hScroll.bounces = true
@@ -63,9 +77,6 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
         hScroll.delegate = self
         
         updateColors(forIdx: 0)
-        
-        layer.cornerRadius = 16
-        clipsToBounds = true
 
         let tr = UILongPressGestureRecognizer(target: self, action: #selector(tapped))
         tr.minimumPressDuration = 0
@@ -90,7 +101,7 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
             tapOrigin = sender.location(in: self)
 
             UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 5, options: []) {
-                self.transform = CGAffineTransform.init(scaleX: 0.98, y: 0.98)
+                self.contentButton.transform = CGAffineTransform.init(scaleX: 0.98, y: 0.98)
             }
         }
 
@@ -115,14 +126,29 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
             let generator = UIImpactFeedbackGenerator(style: .light)
             generator.impactOccurred()
             UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 5, initialSpringVelocity: 5, options: []) {
-                self.transform = CGAffineTransform.identity
+                self.contentButton.transform = CGAffineTransform.identity
             }
         }
     }
 
     func addSubviewsAndConstraints() {
-        addSubview(hScroll)
+        // Add shadow view first (underneath)
+        addSubview(shadowView)
+        
+        // Add content button on top of shadow
+        addSubview(contentButton)
+        
+        // Add scroll view to content button
+        contentButton.addSubview(hScroll)
         hScroll.addSubview(dataViewStack)
+        
+        // Position shadow view to be slightly offset from the content button
+        shadowView.snp.makeConstraints { make in
+            make.top.equalTo(contentButton.snp.top).offset(10)
+            make.left.equalTo(contentButton.snp.left)
+            make.right.equalTo(contentButton.snp.right)
+            make.bottom.equalTo(contentButton.snp.bottom).offset(10)
+        }
     }
 
     // MARK: - ScrollViewDelegate
@@ -154,10 +180,10 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
     func updateColors(forIdx idx: Int) {
         let hasValue = idx != 0
         if hasValue {
-            self.backgroundColor = self.activeColor
+            self.contentButton.backgroundColor = self.activeColor
             self.dataViews.forEach({ $0.label.textColor = .akLight.withAlphaComponent(0.7) })
         } else {
-            self.backgroundColor = self.activeColor?.withAlphaComponent(0.1)
+            self.contentButton.backgroundColor = self.activeColor?.withAlphaComponent(0.1)
             self.dataViews.forEach({ $0.label.textColor = .akDark })
         }
     }
@@ -183,6 +209,16 @@ final class SuperStepper: UIButton, UIScrollViewDelegate, UIGestureRecognizerDel
         let offset = hScroll.contentOffset.x
         let idx = Int(offset/dataView.frame.width + 1)
         return data[idx]
+    }
+    
+    // Override layoutSubviews to update shadow view's frame
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Update shadow view's path if needed
+        if let shadowView = shadowView as? ShadowView {
+            shadowView.updateShadowPath()
+        }
     }
 }
 
@@ -262,4 +298,63 @@ final class StepperDataView: UIView {
 
 protocol AKStepperDelegate {
     func didSelectValue(_ string: String)
+}
+
+// Add an extension to ensure ShadowView can update its shadow path
+extension ShadowView {
+    func updateShadowPath() {
+        // This method should update the shadow path based on the current bounds
+        // If ShadowView already has this functionality, you can leave this empty
+        // Otherwise, implement shadow path updating logic here
+    }
+}
+
+
+
+
+
+
+
+
+public class ShadowView: UIView {
+
+    // MARK: - Properties
+
+    var offset: CGSize = CGSize(width: 0, height: 0)
+    var radius: CGFloat = 30
+    var opacity: Float = 0.2
+    var color: UIColor = UIColor.black
+    var cornerRadius: Float = 0.0
+    var isCircle: Bool = false
+    var showOnlyOutsideBounds: Bool = false
+
+    // MARK: - Layout
+
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+
+        var cornerRadius = self.cornerRadius
+        if isCircle {
+            cornerRadius = Float(min(frame.height, frame.width) / 2.0)
+        }
+
+        if showOnlyOutsideBounds {
+            let maskLayer = CAShapeLayer()
+            let path = CGMutablePath()
+            path.addPath(UIBezierPath(roundedRect: bounds.inset(by: UIEdgeInsets.zero), cornerRadius: CGFloat(cornerRadius)).cgPath)
+            path.addPath(UIBezierPath(roundedRect: bounds.inset(by: UIEdgeInsets(top: -offset.height - radius*2, left: -offset.width - radius*2, bottom: -offset.height - radius*2, right: -offset.width - radius*2)), cornerRadius: CGFloat(cornerRadius)).cgPath)
+            maskLayer.backgroundColor = UIColor.black.cgColor
+            maskLayer.path = path;
+            maskLayer.fillRule = .evenOdd
+            self.layer.mask = maskLayer
+        } else {
+            self.layer.masksToBounds = false
+        }
+
+        self.layer.shadowOffset = self.offset
+        self.layer.shadowRadius = self.radius
+        self.layer.shadowOpacity = self.opacity
+        self.layer.shadowColor = self.color.cgColor
+        self.layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(cornerRadius)).cgPath
+    }
 }

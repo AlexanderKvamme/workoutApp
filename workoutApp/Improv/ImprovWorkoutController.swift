@@ -11,9 +11,15 @@ class ImprovWorkoutController: UIViewController {
     private var confettiView: ConfettiView!
     private var timerView = TimerView()
     private var log: WorkoutLog!
+    
+    let stepperFrame = CGRect(x: 0, y: 0, width: 222, height: 64)
+    let testOptions = ["10 s", "30 s", "45 s", "60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
+    let superStepper: SuperStepper
+    var setCount = 6
 
     init(skill: Skill) {
         self.skill = skill
+        self.superStepper = SuperStepper(frame: stepperFrame, options: testOptions, activeColor: .black, inactiveColor: .black)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -21,9 +27,8 @@ class ImprovWorkoutController: UIViewController {
         let workout = DatabaseFacade.makeWorkout(withName: "Improv",
                                    workoutStyle: wStyle,
                                    muscles: [],
-                                   skills: [skill], // FIXME: Is this ok?
-                                   exercises: []) // FIXME: Start empty
-        // FIXME: Figure out a way of how to add exercises?
+                                   skills: [skill],
+                                   exercises: [])
         self.log = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
         let dbExercises = skill.getExercises()
         exercises = dbExercises.map { $0 }
@@ -40,7 +45,6 @@ class ImprovWorkoutController: UIViewController {
 
         self.navigationItem.rightBarButtonItem = listButton
         self.navigationController?.navigationBar.tintColor = .black
-        
     }
     
     required init?(coder: NSCoder) {
@@ -61,7 +65,6 @@ class ImprovWorkoutController: UIViewController {
         setupTimerView()
         setupHoneycombGrid()
 
-//        styleBackButton()
         addExitButtonToNavBar()
         
         // Make sure navigation bar is visible
@@ -93,6 +96,8 @@ class ImprovWorkoutController: UIViewController {
     // MARK: - UI Setup Methods
     
     private func setupProgressBar() {
+        
+        
         view.addSubview(progressBar)
         progressBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
@@ -100,7 +105,16 @@ class ImprovWorkoutController: UIViewController {
             make.height.equalTo(40)
         }
         
-        progressBar.configure(current: 0, total: 9)
+        // FIXME: Adjust by y
+        progressBar.configure(current: 0, total: setCount)
+        
+        view.addSubview(superStepper)
+        
+        superStepper.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.size.equalTo(superStepper.frame.size)
+            make.top.equalTo(progressBar.snp.bottom).offset(24)
+        }
     }
     
     private func setupTimerView() {
@@ -137,7 +151,7 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            honeycombGrid.topAnchor.constraint(equalTo: timerView.bottomAnchor, constant: 20),
+            honeycombGrid.topAnchor.constraint(equalTo: superStepper.bottomAnchor, constant: 20),
             honeycombGrid.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             honeycombGrid.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             honeycombGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -151,7 +165,6 @@ class ImprovWorkoutController: UIViewController {
                 self?.addCompletedExercise(selectedExercise)
                 self!.popConfetti(on: hex)
                 
-//                hex.bumpStripes() // Move into configure?
                 hex.bumpDots()
                 
                 hex.configure(withExercise: selectedExercise, andLog: self?.log)
@@ -263,5 +276,4 @@ class ImprovWorkoutController: UIViewController {
         present(alert, animated: true)
     }
 }
-
 
