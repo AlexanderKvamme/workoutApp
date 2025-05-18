@@ -9,6 +9,10 @@
 import AKKIT
 import UIKit
 
+protocol TimerDelegate: AnyObject {
+    func alertDidTrigger()
+}
+
 class TimerView: UIView {
     
     // MARK: - Properties
@@ -19,6 +23,9 @@ class TimerView: UIView {
     private var elapsedTime: TimeInterval = 0
     private var isRunning = false
     private var timerFormat: TimerFormat = .minutesSeconds
+    private var alertTimeInSeconds: Int?
+    
+    weak var delegate: TimerDelegate?
     
     enum TimerFormat {
         case secondsOnly
@@ -81,7 +88,9 @@ class TimerView: UIView {
     }
     
     /// Start the timer from 0
-    func start() {
+    func start(withAlertIn alertTime: Int?) {
+        self.alertTimeInSeconds = alertTime
+        
         // Reset and start
         reset()
         
@@ -164,6 +173,15 @@ class TimerView: UIView {
         
         // Update display
         timeLabel.text = formatTime(elapsed)
+        
+        // Handle alert
+        if let alertTimerTarget = alertTimeInSeconds {
+            let doubled = Double(alertTimerTarget)
+            print("alert: \(Int(elapsed)) - \(Int(doubled))")
+            if Int(elapsed) == Int(doubled) {
+                delegate?.alertDidTrigger()
+            }
+        }
     }
     
     private func updateDisplay() {

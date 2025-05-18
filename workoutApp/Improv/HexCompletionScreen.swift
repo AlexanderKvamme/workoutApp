@@ -211,8 +211,6 @@ class HexCompletionScreen: UIViewController {
 //        doneButton.gradientColors = [UIColor(hexString: "#FFCB80"), UIColor(hexString: "#FFB54C"), UIColor(hexString: "#FF9500")]
         doneButton.gradientColors = [.black]
 
-
-
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
         doneButton.snp.makeConstraints { make in
@@ -226,11 +224,12 @@ class HexCompletionScreen: UIViewController {
         doneButton.startRotatingGradient()
     }
     
-    
     // MARK: - Actions
     @objc private func dismissScreen() {
-                dismiss(animated: true)
-        navigationController?.popToRootViewController(animated: true)
+        dismiss(animated: true) {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+//        navigationController?.popToRootViewController(animated: true)
     }
 }
 

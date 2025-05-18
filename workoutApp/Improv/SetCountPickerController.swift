@@ -19,20 +19,34 @@ class SetCountPickerController: UIViewController {
     private let superStepper: SuperStepper
     private let startButton = UIButton()
     private let backButton = UIButton.make(.back)
+    private let closeButton = UIButton.make(.x)
+    
+    // Flag to determine presentation style
+    private let isModal: Bool
     
     // Completion handler to execute when a set count is selected
     private let completionHandler: (Int) -> Void
     
     // MARK: - Initializers
-    init(skill: Skill, completionHandler: @escaping (Int) -> Void) {
+    init(skill: Skill, initialSelection: String = "1", isModal: Bool = false, completionHandler: @escaping (Int) -> Void) {
         self.skill = skill
+        self.isModal = isModal
         self.completionHandler = completionHandler
-        self.superStepper = SuperStepper(frame: stepperFrame, options: setOptions)
-        
+        self.superStepper = SuperStepper(frame: stepperFrame, options: setOptions, initialSelection: initialSelection)
         superStepper.activeColor = .black
-        superStepper.inactiveColor = .black
-
+        
         super.init(nibName: nil, bundle: nil)
+        
+        // Configure for modal presentation if needed
+        if isModal {
+            modalPresentationStyle = .pageSheet
+            if #available(iOS 15.0, *) {
+                if let sheet = sheetPresentationController {
+                    sheet.detents = [.medium()]
+                    sheet.prefersGrabberVisible = true
+                }
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -48,6 +62,21 @@ class SetCountPickerController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        globalTabBar.hideIt()
+        
+        if !isModal {
+            styleBackButton()
+            navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        globalTabBar.showIt()
+    }
+    
     // MARK: - Setup Methods
     private func setupUI() {
         // Configure title label
@@ -61,22 +90,29 @@ class SetCountPickerController: UIViewController {
         superStepper.layer.cornerRadius = 12
         
         // Configure start button
-        startButton.setTitle("Start Workout", for: .normal)
+        startButton.setTitle("🏁", for: .normal)
         startButton.backgroundColor = .black
         startButton.setTitleColor(.white, for: .normal)
         startButton.titleLabel?.font = AKFont.round(.bold, 18)
         startButton.layer.cornerRadius = 12
         startButton.addTarget(self, action: #selector(startWorkout), for: .touchUpInside)
         
-        // Configure back button
+        // Configure back button (for navigation)
         backButton.tintColor = .black
         backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        backButton.isHidden = isModal
+        
+        // Configure close button (for modal)
+        closeButton.tintColor = .black
+        closeButton.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
+        closeButton.isHidden = !isModal
         
         // Add subviews
         view.addSubview(titleLabel)
         view.addSubview(superStepper)
         view.addSubview(startButton)
         view.addSubview(backButton)
+        view.addSubview(closeButton)
     }
     
     private func setupConstraints() {
@@ -89,20 +125,28 @@ class SetCountPickerController: UIViewController {
         superStepper.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.size.equalTo(superStepper.frame.size)
-            make.top.equalTo(titleLabel.snp.bottom).offset(60)
+            make.bottom.equalTo(startButton.snp.top).offset(-24)
         }
         
         startButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(superStepper.snp.bottom).offset(80)
+            make.bottom.equalToSuperview().inset(64)
             make.width.equalTo(200)
             make.height.equalTo(50)
         }
         
+        // Back button for navigation
         backButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.size.equalTo(48)
+        }
+        
+        // Close button for modal
+        closeButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.size.equalTo(32)
         }
     }
     
@@ -114,19 +158,30 @@ class SetCountPickerController: UIViewController {
             return
         }
         
-        // Parse the set count (assuming format like "3 sets")
-        let components = setCountText.components(separatedBy: " ")
-        guard let setCountString = components.first, let setCount = Int(setCountString) else {
+        // Parse the set count
+        guard let setCount = Int(setCountText) else {
             print("Error: Could not parse set count from \(setCountText)")
             return
         }
         
-        // Execute the completion handler with the selected set count
-//        navigationController?.popViewController(animated: false)
-        completionHandler(setCount)
+        // Dismiss based on presentation style
+        if isModal {
+            print("dismising")
+            dismiss(animated: true) {
+                self.completionHandler(setCount)
+            }
+        } else {
+            print("popping")
+            navigationController?.popViewController(animated: true)
+            completionHandler(setCount)
+        }
     }
     
     @objc private func goBack() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func dismissModal() {
+        dismiss(animated: true)
     }
 }

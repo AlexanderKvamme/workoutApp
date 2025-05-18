@@ -491,7 +491,7 @@ final class BigButton: UIView {
         backgroundColor = .black
         label.font = UIFont.custom(style: .bold, ofSize: .mediumPlus)
         label.textAlignment = .center
-        label.text = "DISMISS"
+        label.text = "Bye!"
         label.textColor = .white
         layer.cornerCurve = .continuous
         layer.cornerRadius = 16

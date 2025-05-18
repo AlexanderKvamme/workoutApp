@@ -56,10 +56,10 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     
     // Stepper related
     // FIXME: Change color if nothing selected
-    private var currentTimerGoal: Double {
-        let current = Double(stepper.getCurrentValue() ?? "99999")!
-        return current
-    }
+//    private var currentTimerGoal: Double {
+//        let current = Double(stepper.getCurrentValue() ?? "99999")!
+//        return current
+//    }
     func didSelectValue(_ string: String) { }
     
     // MARK: - Properties
@@ -75,7 +75,11 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     private lazy var counter = CounterButton("0", timerDelegate: self)
     private var counterManager = CounterManager()
     private var akCounter = AKTimer()
-    private let stepper = SuperStepper(frame: CGRect(x: 0, y: 0, width: 120, height: 40), options: ["0", ".5", "1", "2", "3", "4", "5"], activeColor: .akDark, inactiveColor: .clear)
+    
+    private var timerTargetString = "3 m"
+    private var timerTargetDouble: Int {
+        return 180
+    }
     
     weak var presentingBoxTable: WorkoutTableViewController?
     
@@ -84,7 +88,6 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     init(withWorkout workout: Workout) {
         super.init(nibName: nil, bundle: nil)
         self.currentWorkout = workout
-        print("initial is: ", currentTimerGoal)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,10 +95,6 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     // MARK: - Lifecycle
-
-
-    
-    // MARK: - This
     
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
@@ -111,8 +110,10 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         case .ticking(let from, let to):
             akCounter.startCountUpTo(targetInSeconds: to)
         case .inactive:
-            let targetInSeconds: Int = stepper.getCurrentValue() ?? "3" == ".5" ? 30 : Int(stepper.getCurrentValue() ?? "3")!*60
-            akCounter.startCountUpTo(targetInSeconds: targetInSeconds)
+            // FIXME: Here
+//            let targetInSeconds: Int = stepper.getCurrentValue() ?? "3" == ".5" ? 30 : Int(stepper.getCurrentValue() ?? "3")!*60
+//            akCounter.startCountUpTo(targetInSeconds: targetInSeconds)
+            akCounter.startCountUpTo(targetInSeconds: 123)
         default: return
         }
     }
@@ -181,10 +182,8 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     // MARK: - Methods
     
     @objc func handleAppMovedToBackground() {
-        let targetString = stepper.getCurrentValue()
-        guard let targetString = targetString, let target = Double(targetString) else {
-            fatalError()
-        }
+        let targetString = getTimerGoalInSeconds()
+        let target = Double(targetString)
         
         switch akCounter.status {
         case .done:
@@ -204,10 +203,10 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     
     private func getTimerGoalInSeconds() -> Double {
         let targetInSeconds: Double!
-        if Double(currentTimerGoal) == 0.5 {
+        if Double(timerTargetString) == 0.5 {
             targetInSeconds = 0.5
         } else {
-            targetInSeconds = Double(currentTimerGoal)*60.0
+            targetInSeconds = (Double(timerTargetString) ?? 3)*60.0
         }
         return targetInSeconds
     }
@@ -219,8 +218,8 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         let timerItem = UIBarButtonItem(customView: counter)
         navigationItem.leftBarButtonItem = timerItem
         
-        stepper.delegate = self
-        navigationItem.titleView = stepper
+//        stepper.delegate = self
+//        navigationItem.titleView = stepper
     }
     
     private func addTimerBar(target: TimeInterval) {

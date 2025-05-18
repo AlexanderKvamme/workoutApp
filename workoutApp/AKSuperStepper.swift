@@ -20,7 +20,6 @@ final class SuperStepper: UIView, UIScrollViewDelegate, UIGestureRecognizerDeleg
     var dataViewStack = UIStackView()
     let hScroll = UIScrollView()
     var activeColor: UIColor?
-    var inactiveColor: UIColor?
     
     // Shadow view
     private let shadowView = ShadowView()
@@ -30,22 +29,48 @@ final class SuperStepper: UIView, UIScrollViewDelegate, UIGestureRecognizerDeleg
 
     // MARK: - Initializers
 
-    init(frame: CGRect, options: [String], activeColor: UIColor? = nil, inactiveColor: UIColor? = nil) {
+    init(frame: CGRect, options: [String], initialSelection: String? = nil, activeColor: UIColor? = .black, inactiveColor: UIColor? = .black) {
         self.activeColor = activeColor
-        self.inactiveColor = inactiveColor
         self.data = options
         
         super.init(frame: frame)
 
         setup()
         addSubviewsAndConstraints()
+        
+        // Set initial selection if provided
+        if let initialSelection = initialSelection {
+            setSelection(initialSelection)
+        }
     }
+    
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Methods
+    
+    func setSelection(_ value: String) {
+        // Find the index of the value in the data array
+        guard let index = data.firstIndex(of: value) else {
+            print("Selection value \(value) not found in options")
+            return
+        }
+        
+        // Calculate the position to scroll to
+        guard let dataViewWidth = dataViews.first?.frame.width else { return }
+        let newX = CGFloat(index) * dataViewWidth - dataViewWidth
+        
+        // Scroll to the position
+        hScroll.setContentOffset(CGPoint(x: newX, y: 0), animated: false)
+        
+        // Update colors for the selected index
+        handleWillGoToIndex(index)
+        
+        // Notify delegate of the selection
+        delegate?.didSelectValue(data[index])
+    }
 
     func setup() {
         // Configure shadow view
@@ -178,14 +203,14 @@ final class SuperStepper: UIView, UIScrollViewDelegate, UIGestureRecognizerDeleg
     }
     
     func updateColors(forIdx idx: Int) {
-        let hasValue = idx != 0
-        if hasValue {
+//        let hasValue = idx != 0
+//        if hasValue {
             self.contentButton.backgroundColor = self.activeColor
-            self.dataViews.forEach({ $0.label.textColor = .akLight.withAlphaComponent(0.7) })
-        } else {
-            self.contentButton.backgroundColor = self.activeColor?.withAlphaComponent(0.1)
-            self.dataViews.forEach({ $0.label.textColor = .akDark })
-        }
+            self.dataViews.forEach({ $0.label.textColor = .white})
+//        } else {
+//            self.contentButton.backgroundColor = self.activeColor?.withAlphaComponent(0.7)
+//            self.dataViews.forEach({ $0.label.textColor = .white })
+//        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

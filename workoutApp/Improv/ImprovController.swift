@@ -45,7 +45,6 @@ class HoneycombViewController: SelectionViewController {
         reset()
         setupHoneycombGrid()
         
-        
 //        let skill = skills.first(where: { $0.getName() == "HANDSTAND" })!
 //        let improvWorkoutController = ImprovWorkoutController(skill: skill)
 //        navigationController?.pushViewController(improvWorkoutController, animated: true)
@@ -91,7 +90,7 @@ class HoneycombViewController: SelectionViewController {
         honeycombGrid.configure(with: skills) { [weak self] (selectedSkill, hexView: HexagonItemView) in
             print("Selected skill: \(selectedSkill.name ?? "Unknown")")
             
-            let setCountPicker = SetCountPickerController(skill: selectedSkill) { setCount in
+            let setCountPicker = SetCountPickerController(skill: selectedSkill, isModal: true) { setCount in
                 // Create your custom view controller with the selected skill and set count
                 let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
                 improvWorkoutController.setCount = setCount
@@ -99,7 +98,7 @@ class HoneycombViewController: SelectionViewController {
                 print("Selected \(setCount) sets for skill: \(selectedSkill.name ?? "Unknown")")
             }
             
-            self?.navigationController?.pushViewController(setCountPicker, animated: true)
+            self?.present(setCountPicker, animated: true)
         }
     }
 }

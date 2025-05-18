@@ -3,7 +3,12 @@ import AKKIT
 import CoreData
 
 // MARK: - ImprovWorkoutController
-class ImprovWorkoutController: UIViewController {
+class ImprovWorkoutController: UIViewController, TimerDelegate {
+    
+    func alertDidTrigger() {
+        print("⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰")
+    }
+    
     private let skill: Skill
     private var honeycombGrid: HoneycombGridView<Exercise>?
     private var exercises: [Exercise] = []
@@ -12,17 +17,17 @@ class ImprovWorkoutController: UIViewController {
     private var timerView = TimerView()
     private var log: WorkoutLog!
     
-    let stepperFrame = CGRect(x: 0, y: 0, width: 222, height: 64)
-    let testOptions = ["10 s", "30 s", "45 s", "60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
-    let superStepper: SuperStepper
+    let testOptions = ["60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
+    var timerTargetString = "3 m"
+    var timerTargetInt = 180
     var setCount = 6
 
     init(skill: Skill) {
         self.skill = skill
-        self.superStepper = SuperStepper(frame: stepperFrame, options: testOptions, activeColor: .black, inactiveColor: .black)
-        
         super.init(nibName: nil, bundle: nil)
         
+        self.timerView.delegate = self
+
         let wStyle = DatabaseFacade.getWorkoutStyle(named: "IMPROV") ?? DatabaseFacade.makeWorkoutStyle(named: "IMPROV")
         let workout = DatabaseFacade.makeWorkout(withName: "Improv",
                                    workoutStyle: wStyle,
@@ -97,7 +102,6 @@ class ImprovWorkoutController: UIViewController {
     
     private func setupProgressBar() {
         
-        
         view.addSubview(progressBar)
         progressBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
@@ -107,14 +111,6 @@ class ImprovWorkoutController: UIViewController {
         
         // FIXME: Adjust by y
         progressBar.configure(current: 0, total: setCount)
-        
-        view.addSubview(superStepper)
-        
-        superStepper.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.size.equalTo(superStepper.frame.size)
-            make.top.equalTo(progressBar.snp.bottom).offset(24)
-        }
     }
     
     private func setupTimerView() {
@@ -127,6 +123,41 @@ class ImprovWorkoutController: UIViewController {
         }
         
         timerView.configure(format: .minutesSeconds, textColor: .black)
+        
+        let timerClickedTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTimerTap))
+        timerView.addGestureRecognizer(timerClickedTapGestureRecognizer)
+    }
+    
+    @objc func handleTimerTap() {
+        let picker = RestDurationPickerController(currentPick: timerTargetString) { str in
+            print("picked rest: ", str)
+            self.timerTargetString = str
+            
+            let components = str.split(separator: " ")
+            print("components: ", components)
+            guard components.count == 2 else {
+                print("Invalid format: expected 'number unit'")
+                return
+            }
+            
+            // Convert the first component to Int
+            guard let number = Int(components[0]) else {
+                print("Cannot convert \(components[0]) to Int")
+                return
+            }
+            
+            // Get the unit as String
+            let unit = String(components[1])
+            
+            var numberAdjustedForUnit = number
+            if unit == "m" {
+                numberAdjustedForUnit = number * 60
+            }
+            
+            self.timerTargetInt = numberAdjustedForUnit
+        }
+        
+        navigationController?.present(picker, animated: true)
     }
     
     private var transitionDelegate: HexTransitionDelegate?
@@ -151,7 +182,7 @@ class ImprovWorkoutController: UIViewController {
         honeycombGrid.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            honeycombGrid.topAnchor.constraint(equalTo: superStepper.bottomAnchor, constant: 20),
+            honeycombGrid.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 20),
             honeycombGrid.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             honeycombGrid.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             honeycombGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -239,7 +270,7 @@ class ImprovWorkoutController: UIViewController {
 
     private func startTimer() {
         timerView.reset()
-        timerView.start()
+        timerView.start(withAlertIn: timerTargetInt)
     }
     
     private func getPositionForHex(_ hex: HexagonItemView<Exercise>) -> CGPoint {
