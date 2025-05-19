@@ -169,7 +169,10 @@ class TimerView: UIView {
         
         // Calculate elapsed time
         let currentTime = Date()
-        let elapsed = currentTime.timeIntervalSince(startTime)
+        var elapsed = currentTime.timeIntervalSince(startTime)
+        if APP_IS_DEBUG {
+            elapsed = elapsed*30
+        }
         
         // Update display
         timeLabel.text = formatTime(elapsed)

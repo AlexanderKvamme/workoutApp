@@ -5,21 +5,17 @@ import CoreData
 // MARK: - ImprovWorkoutController
 class ImprovWorkoutController: UIViewController, TimerDelegate {
     
-    func alertDidTrigger() {
-        print("⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰")
-    }
-    
     private let skill: Skill
     private var honeycombGrid: HoneycombGridView<Exercise>?
     private var exercises: [Exercise] = []
     private var progressBar = DotProgressView()
     private var confettiView: ConfettiView!
-    private var timerView = TimerView()
+    var timerView = TimerView()
     private var log: WorkoutLog!
     
     let testOptions = ["60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
-    var timerTargetString = "3 m"
-    var timerTargetInt = 180
+    var timerTargetString = APP_IS_DEBUG ? "30 s" : "3 m"
+    var timerTargetInt = APP_IS_DEBUG ? 30 : 180
     var setCount = 6
 
     init(skill: Skill) {

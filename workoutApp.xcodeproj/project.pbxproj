@@ -14,6 +14,7 @@
 		DD03A19D29A2761B00D5D2AB /* SummaryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */; };
 		DD03A19F29A27C1A00D5D2AB /* SummaryAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD03A19E29A27C1A00D5D2AB /* SummaryAnimationView.swift */; };
 		DD0437411ECCF29F0016EFBB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0437401ECCF29F0016EFBB /* Modal.swift */; };
+		DD0A448A2DDB91470034E3D7 /* TimerAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0A44892DDB91440034E3D7 /* TimerAlertController.swift */; };
 		DD0CD4C61F01023C008544EE /* ExercisePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */; };
 		DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */; };
 		DD0D42D81F4DA38600502C02 /* PickerLabelStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0D42D71F4DA38600502C02 /* PickerLabelStack.swift */; };
@@ -211,6 +212,7 @@
 		DD03A19C29A2761B00D5D2AB /* SummaryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryHeader.swift; sourceTree = "<group>"; };
 		DD03A19E29A27C1A00D5D2AB /* SummaryAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryAnimationView.swift; sourceTree = "<group>"; };
 		DD0437401ECCF29F0016EFBB /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
+		DD0A44892DDB91440034E3D7 /* TimerAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAlertController.swift; sourceTree = "<group>"; };
 		DD0CD4C51F01023C008544EE /* ExercisePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExercisePickerController.swift; sourceTree = "<group>"; };
 		DD0D42D51F4CD79800502C02 /* TwoRowHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoRowHeader.swift; sourceTree = "<group>"; };
 		DD0D42D71F4DA38600502C02 /* PickerLabelStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerLabelStack.swift; sourceTree = "<group>"; };
@@ -983,6 +985,7 @@
 			isa = PBXGroup;
 			children = (
 				DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */,
+				DD0A44892DDB91440034E3D7 /* TimerAlertController.swift */,
 				DDBD72252DD9BAB600634DCA /* SetCountPickerController.swift */,
 				DDBD72272DDA0DDC00634DCA /* RestPickerController.swift */,
 				DD9297B92DD081EA00E8B147 /* StarRatingView.swift */,
@@ -1209,6 +1212,7 @@
 				DD19A2112DC1522A00BEC938 /* MuscleCreatorScreen.swift in Sources */,
 				DD0EB2521F470D7C00CDA1CF /* ExerciseCell.swift in Sources */,
 				DDCF834F1F8B8B4000F87B3E /* UIResponder Extensions.swift in Sources */,
+				DD0A448A2DDB91470034E3D7 /* TimerAlertController.swift in Sources */,
 				DD491B7C1ED7464E008A4619 /* DataSeeder.swift in Sources */,
 				DD0D42D61F4CD79800502C02 /* TwoRowHeader.swift in Sources */,
 				DD03A19F29A27C1A00D5D2AB /* SummaryAnimationView.swift in Sources */,
