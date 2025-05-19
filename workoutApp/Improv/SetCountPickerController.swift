@@ -18,35 +18,35 @@ class SetCountPickerController: UIViewController {
     private let setOptions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     private let superStepper: SuperStepper
     private let startButton = UIButton()
-    private let backButton = UIButton.make(.back)
     private let closeButton = UIButton.make(.x)
-    
-    // Flag to determine presentation style
-    private let isModal: Bool
     
     // Completion handler to execute when a set count is selected
     private let completionHandler: (Int) -> Void
     
     // MARK: - Initializers
-    init(skill: Skill, initialSelection: String = "1", isModal: Bool = false, completionHandler: @escaping (Int) -> Void) {
+    init(skill: Skill, initialSelection: String = "1", completionHandler: @escaping (Int) -> Void) {
         self.skill = skill
-        self.isModal = isModal
         self.completionHandler = completionHandler
         self.superStepper = SuperStepper(frame: stepperFrame, options: setOptions, initialSelection: initialSelection)
         superStepper.activeColor = .black
         
         super.init(nibName: nil, bundle: nil)
         
-        // Configure for modal presentation if needed
-        if isModal {
-            modalPresentationStyle = .pageSheet
-            if #available(iOS 15.0, *) {
-                if let sheet = sheetPresentationController {
-                    sheet.detents = [.medium()]
-                    sheet.prefersGrabberVisible = true
-                }
+        // Configure for modal presentation
+        modalPresentationStyle = .formSheet
+        
+        // For iOS 15+, use a smaller detent
+        if #available(iOS 15.0, *) {
+            if let sheet = sheetPresentationController {
+                // Use a smaller detent
+                sheet.detents = [.custom { _ in return 280 }]
+                sheet.prefersGrabberVisible = true
+                sheet.preferredCornerRadius = 20
             }
         }
+        
+        // Set preferred content size for older iOS versions
+        preferredContentSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 280)
     }
     
     required init?(coder: NSCoder) {
@@ -65,11 +65,6 @@ class SetCountPickerController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         globalTabBar.hideIt()
-        
-        if !isModal {
-            styleBackButton()
-            navigationController?.setNavigationBarHidden(false, animated: true)
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -81,7 +76,7 @@ class SetCountPickerController: UIViewController {
     private func setupUI() {
         // Configure title label
         titleLabel.text = "How many sets?"
-        titleLabel.font = AKFont.round(.black, 32)
+        titleLabel.font = AKFont.round(.black, 24)
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         
@@ -97,56 +92,42 @@ class SetCountPickerController: UIViewController {
         startButton.layer.cornerRadius = 12
         startButton.addTarget(self, action: #selector(startWorkout), for: .touchUpInside)
         
-        // Configure back button (for navigation)
-        backButton.tintColor = .black
-        backButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
-        backButton.isHidden = isModal
-        
-        // Configure close button (for modal)
+        // Configure close button
         closeButton.tintColor = .black
         closeButton.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
-        closeButton.isHidden = !isModal
         
         // Add subviews
         view.addSubview(titleLabel)
         view.addSubview(superStepper)
         view.addSubview(startButton)
-        view.addSubview(backButton)
         view.addSubview(closeButton)
     }
     
     private func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(80)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(64)
             make.centerX.equalToSuperview()
             make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(30)
+        }
+        
+        closeButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
+            make.right.equalTo(view.safeAreaLayoutGuide).offset(-12)
+            make.size.equalTo(24)
         }
         
         superStepper.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.size.equalTo(superStepper.frame.size)
-            make.bottom.equalTo(startButton.snp.top).offset(-24)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
         
         startButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(64)
-            make.width.equalTo(200)
-            make.height.equalTo(50)
-        }
-        
-        // Back button for navigation
-        backButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.size.equalTo(48)
-        }
-        
-        // Close button for modal
-        closeButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.size.equalTo(32)
+            make.top.equalTo(superStepper.snp.bottom).offset(20)
+            make.width.equalTo(150)
+            make.height.equalTo(44)
         }
     }
     
@@ -164,21 +145,10 @@ class SetCountPickerController: UIViewController {
             return
         }
         
-        // Dismiss based on presentation style
-        if isModal {
-            print("dismising")
-            dismiss(animated: true) {
-                self.completionHandler(setCount)
-            }
-        } else {
-            print("popping")
-            navigationController?.popViewController(animated: true)
-            completionHandler(setCount)
+        // Dismiss the modal and execute completion handler
+        dismiss(animated: true) {
+            self.completionHandler(setCount)
         }
-    }
-    
-    @objc private func goBack() {
-        navigationController?.popViewController(animated: true)
     }
     
     @objc private func dismissModal() {

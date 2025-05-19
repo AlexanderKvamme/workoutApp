@@ -90,7 +90,7 @@ class HoneycombViewController: SelectionViewController {
         honeycombGrid.configure(with: skills) { [weak self] (selectedSkill, hexView: HexagonItemView) in
             print("Selected skill: \(selectedSkill.name ?? "Unknown")")
             
-            let setCountPicker = SetCountPickerController(skill: selectedSkill, isModal: true) { setCount in
+            let setCountPicker = SetCountPickerController(skill: selectedSkill) { setCount in
                 // Create your custom view controller with the selected skill and set count
                 let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
                 improvWorkoutController.setCount = setCount

@@ -117,8 +117,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         view.addSubview(timerView)
         timerView.snp.makeConstraints { make in
             make.top.equalTo(progressBar)
-            make.left.equalTo(progressBar.snp.right).offset(-10)
-            make.right.equalToSuperview()
+            make.right.equalToSuperview().inset(24)
             make.height.equalTo(40)
         }
         
