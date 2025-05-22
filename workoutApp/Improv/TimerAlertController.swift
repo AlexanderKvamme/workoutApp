@@ -1,21 +1,38 @@
-//
-//  TimerAlertController.swift
-//  workoutApp
-//
-//  Created by Alexander Kvamme on 19/05/2025.
-//  Copyright © 2025 Alexander Kvamme. All rights reserved.
-//
-
 import UIKit
+import AKKIT
 
 class TimerAlertViewController: UIViewController {
     
     // MARK: - Properties
+    let dropsize = 100.0
+    let DROP_DURATION = 0.2
+    let GROW_DURATION = 0.5
     private let circleView = UIView()
-    private let timeLabel = UILabel()
-    private var initialCircleSize: CGFloat = 10
+    private var initialCircleSize: CGFloat = 0
     private var finalCircleSize: CGFloat = UIScreen.main.bounds.width * 3
     private var initialPosition = CGPoint.zero
+    
+    // Stack view to hold all animated text views
+    private let textStackView = UIStackView()
+    
+    // Animated text views
+    private let animatedTitleView = AnimatedTextView(
+        text: "LETS",
+        font: AKFont.gilroy(.black, 80),
+        color: .white
+    )
+    
+    private let animatedTitleView2 = AnimatedTextView(
+        text: "FRIGGEN",
+        font: AKFont.gilroy(.black, 80),
+        color: .white
+    )
+    
+    private let animatedTitleView3 = AnimatedTextView(
+        text: "GO!",
+        font: AKFont.gilroy(.black, 80),
+        color: .white
+    )
     
     // MARK: - Initializers
     init(startPosition: CGPoint) {
@@ -38,6 +55,12 @@ class TimerAlertViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animateCircle()
+        
+        // Delay animations by 0.5 seconds after the circle animation starts
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+            guard let self = self else { return }
+            self.animateTextSequentially()
+        }
     }
     
     // MARK: - Setup Methods
@@ -45,7 +68,8 @@ class TimerAlertViewController: UIViewController {
         view.backgroundColor = .clear
         
         // Setup circle view
-        circleView.backgroundColor = .systemGreen
+        circleView.backgroundColor = .akGreen
+        circleView.backgroundColor = .black
         circleView.layer.cornerRadius = initialCircleSize / 2
         circleView.frame = CGRect(
             x: initialPosition.x - initialCircleSize / 2,
@@ -55,19 +79,32 @@ class TimerAlertViewController: UIViewController {
         )
         view.addSubview(circleView)
         
-        // Setup time label
-        timeLabel.text = "Time!"
-        timeLabel.textColor = .white
-        timeLabel.font = UIFont.systemFont(ofSize: 48, weight: .bold)
-        timeLabel.textAlignment = .center
-        timeLabel.alpha = 0
-        timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(timeLabel)
+        // Configure stack view
+        textStackView.axis = .vertical
+        textStackView.alignment = .center
+        textStackView.distribution = .equalSpacing
+        textStackView.spacing = 0
+        textStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
+        
+        animatedTitleView.enableRandomColorFlash()
+        // Add animated text views to stack view
+        textStackView.addArrangedSubview(animatedTitleView)
+        textStackView.addArrangedSubview(animatedTitleView2)
+        textStackView.addArrangedSubview(animatedTitleView3)
+        
+        // Initially hide all text views
+        animatedTitleView.alpha = 0
+        animatedTitleView2.alpha = 0
+        animatedTitleView3.alpha = 0
+        
+        view.addSubview(textStackView)
+        
+        // Position the stack view in the center of the screen
+        textStackView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview().inset(40)
+        }
         
         // Add tap gesture to dismiss
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -76,21 +113,18 @@ class TimerAlertViewController: UIViewController {
     
     // MARK: - Animation Methods
     private func animateCircle() {
-        let screenHeight = UIScreen.main.bounds.height
-        let dropDistance = screenHeight * 0.6
-        
         // First animation: Small growth and drop
-        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: DROP_DURATION, delay: 0, options: .curveEaseIn, animations: {
             self.circleView.frame = CGRect(
-                x: self.initialPosition.x - 50,
-                y: self.initialPosition.y + dropDistance - 50,
-                width: 100,
-                height: 100
+                x: Double(UIScreen.main.bounds.width/2 - self.dropsize/2),
+                y: Double(UIScreen.main.bounds.height),
+                width: self.dropsize,
+                height: self.dropsize
             )
-            self.circleView.layer.cornerRadius = 50
+            self.circleView.layer.cornerRadius = self.dropsize/2
         }, completion: { _ in
             // Second animation: Dramatic growth filling the screen
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: self.GROW_DURATION, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: .curveEaseOut, animations: {
                 let newSize = self.finalCircleSize
                 self.circleView.frame = CGRect(
                     x: self.view.center.x - newSize/2,
@@ -99,27 +133,44 @@ class TimerAlertViewController: UIViewController {
                     height: newSize
                 )
                 self.circleView.layer.cornerRadius = newSize/2
-            }, completion: { _ in
-                // Final animation: Show the "Time!" text
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.timeLabel.alpha = 1.0
-                    
-                    // Add a pulse animation to the text
-                    self.timeLabel.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            })
+        })
+    }
+    
+    private func animateTextSequentially() {
+        let test = 0.1
+        // First text animation
+        UIView.animate(withDuration: test, animations: {
+            self.animatedTitleView.alpha = 1.0
+        }, completion: { _ in
+            self.animatedTitleView.animate()
+            
+            // Second text animation after a delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + test) {
+                UIView.animate(withDuration: test, animations: {
+                    self.animatedTitleView2.alpha = 1.0
                 }, completion: { _ in
-                    UIView.animate(withDuration: 0.2) {
-                        self.timeLabel.transform = CGAffineTransform.identity
+                    self.animatedTitleView2.animate()
+                    
+                    // Third text animation after another delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + test) {
+                        UIView.animate(withDuration: test, animations: {
+                            self.animatedTitleView3.alpha = 1.0
+                        }, completion: { _ in
+                            self.animatedTitleView3.animate()
+                        })
                     }
                 })
-            })
+            }
         })
     }
     
     @objc private func handleTap() {
         // Animate dismissal
         UIView.animate(withDuration: 0.4, animations: {
-            self.timeLabel.alpha = 0
-            self.timeLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.animatedTitleView.alpha = 0
+            self.animatedTitleView2.alpha = 0
+            self.animatedTitleView3.alpha = 0
             self.circleView.alpha = 0
         }, completion: { _ in
             self.dismiss(animated: false)
@@ -135,14 +186,11 @@ extension ImprovWorkoutController {
         print("⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰")
         
         // Get the center point of the timer view in the main view's coordinate system
-        let timerCenter = timerView.convert(timerView.center, to: view)
+        let timerCenter = CGPoint(x: UIScreen.main.bounds.width/2, y: 0 + UIScreen.main.bounds.height/3)
         
         // Create and present the timer alert view controller
         let timerAlertVC = TimerAlertViewController(startPosition: timerCenter)
         present(timerAlertVC, animated: false)
-        
-        // Optional: Play a sound alert
-//        AudioServicesPlaySystemSound(1005) // System sound for timer
     }
     
     // Optional: Add a method to handle timer completion in case you want to call it from elsewhere

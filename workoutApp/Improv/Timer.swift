@@ -180,7 +180,7 @@ class TimerView: UIView {
         // Handle alert
         if let alertTimerTarget = alertTimeInSeconds {
             let doubled = Double(alertTimerTarget)
-            print("alert: \(Int(elapsed)) - \(Int(doubled))")
+//            print("alert: \(Int(elapsed)) - \(Int(doubled))")
             if Int(elapsed) == Int(doubled) {
                 delegate?.alertDidTrigger()
             }
