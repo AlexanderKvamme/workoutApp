@@ -86,7 +86,6 @@ class TimerAlertViewController: UIViewController {
         textStackView.spacing = 0
         textStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        
         animatedTitleView.enableRandomColorFlash()
         // Add animated text views to stack view
         textStackView.addArrangedSubview(animatedTitleView)

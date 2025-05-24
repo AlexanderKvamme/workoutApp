@@ -43,5 +43,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>CrimsonPro-Italic-VariableFont_wght.ttf</string>
+		<string>Epilogue-Italic[wght].ttf</string>
+		<string>Faustina-Italic-VariableFont_wght.ttf</string>
+		<string>Faustina-VariableFont_wght.ttf</string>
+		<string>MartianMonoVF.ttf</string>
+		<string>ElzaRound.otf</string>
+		<string>ElzaRound-Italic.otf</string>
+		<string>SonoVariable.otf</string>
+		<string>Nunito-VariableFont_wght.ttf</string>
+	</array>
 </dict>
 </plist>
