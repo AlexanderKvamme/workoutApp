@@ -11,7 +11,7 @@ import CoreData
 import AKKIT
 
 
-var APP_IS_DEBUG = true
+var APP_IS_DEBUG = false
 var globalTabBar: WellRoundedTabBarController!
 
 @UIApplicationMain

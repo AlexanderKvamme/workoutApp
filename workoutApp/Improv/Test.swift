@@ -103,11 +103,11 @@ class AnimatedTextView: UIView {
             // Set initial state
             let scale = 0.6
             label.alpha = 0
-            label.textColor = .white
+            label.textColor = textColor
             label.transform = label.transform.scaledBy(x: scale, y: scale)
             
             // Store initial color
-            labelColors[i] = .white
+            labelColors[i] = textColor
             
             // Use CAKeyframeAnimation for smoother Y position animation
             let positionAnimation = CAKeyframeAnimation(keyPath: "transform.translation.y")
@@ -148,7 +148,7 @@ class AnimatedTextView: UIView {
                         for label in self.charLabels {
                             label.layer.removeAllAnimations()
                             label.transform = .identity
-                            label.textColor = .white
+                            label.textColor = self.textColor
                         }
                         
                         // Stop all animators
@@ -209,7 +209,7 @@ class AnimatedTextView: UIView {
             // Create and start the color animator
             let colorAnimator = ColorAnimator(
                 label: label,
-                fromColor: .white,
+                fromColor: textColor,
                 toColor: randomColor,
                 startDelay: flashStartTime,
                 duration: flashDuration,
