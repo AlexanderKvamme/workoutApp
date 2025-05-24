@@ -97,7 +97,6 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     // MARK: - UI Setup Methods
     
     private func setupProgressBar() {
-        
         view.addSubview(progressBar)
         progressBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
@@ -197,7 +196,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
                 self?.startTimer()
                 
                 // Get the frame of the hex in the main view's coordinate system
-                self?.progressBar.bump(onCompletion: {
+                self?.progressBar.bump(after: 1.8, onCompletion: {
                     // Create and present the completion screen with custom transition
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
                         let completionScreen = HexCompletionScreen()
@@ -238,11 +237,12 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         
         // Important: Place the confetti view BEHIND the honeycomb grid
         // This ensures the confetti appears to come from behind the hex
-        if let honeycombGrid = honeycombGrid {
-            view.insertSubview(confettiView, belowSubview: honeycombGrid)
-        } else {
-            view.addSubview(confettiView)
-        }
+//        if let honeycombGrid = honeycombGrid {
+//            view.insertSubview(confettiView, belowSubview: honeycombGrid)
+//        } else {
+//            view.addSubview(confettiView)
+//        }
+        view.insertSubview(confettiView, belowSubview: progressBar)
         
         // Force layout if needed
         view.layoutIfNeeded()
@@ -250,7 +250,8 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         // Start the animation
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
             guard let self = self else { return }
-            self.confettiView.startConfettiCannon(at: convertedPoint)
+            self.confettiView.removalPoint = progressBar.center
+            self.confettiView.startConfettiCannon(at: convertedPoint, keepOnScreen: true)
             
             // Add a subtle "pop" animation to the hex
             UIView.animate(withDuration: 0.15, animations: {

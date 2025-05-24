@@ -122,6 +122,7 @@ class ConfettiView: UIView {
             
             // Only add the shrink animation if we're not keeping confetti
             if let removalPoint = removalPoint {
+                print("bam removing to point: ", removalPoint)
                 let minDelay = 1.5
                 let delay = CGFloat.random(in: minDelay+0.2...minDelay+0.45)
                 let duration = 0.3
@@ -133,10 +134,15 @@ class ConfettiView: UIView {
                     // Move in random direction from the center
                     confetti.center = removalPoint
                     confetti.transform = confetti.transform.rotated(by: .pi * 2 * CGFloat.random(in: 1...3))
-                    
+                    confetti.alpha = 0.4
                     // Scale down slightly as it moves away
                     confetti.transform = confetti.transform.scaledBy(x: 0.7, y: 0.7)
-                }, completion: nil)
+                }, completion: { finished in
+                    // Remove the confetti from the view hierarchy
+                    if finished {
+                        confetti.removeFromSuperview()
+                    }
+                })
             } else if !keepOnScreen {
                 // Shrink animation at the end
                 UIView.animate(withDuration: shrinkDuration, delay: shrinkDelay,

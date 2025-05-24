@@ -14,7 +14,7 @@ class DotProgressView: UIView {
     private let dotSize: CGFloat = 14
     private let dotSpacing: CGFloat = 16
     private var completedColor: UIColor = .black
-    private var remainingColor: UIColor = .black.withAlphaComponent(0.1)
+    private var remainingColor: UIColor = UIColor(hex: "#DDDDE1")
     private let trackHeight: CGFloat = 32
     private var sidePadding: CGFloat = 12
     
@@ -86,53 +86,56 @@ class DotProgressView: UIView {
     }
     
     /// Animates the transition to the next step with a bump animation
-    func bump(onCompletion: @escaping (() -> ())) {
+    func bump(after delaySeconds: TimeInterval = 0, onCompletion: @escaping (() -> ())) {
         // Calculate the next step (one step up)
         let nextStep = min(currentStep + 1, totalSteps)
         
         // If already at max, do nothing
         guard nextStep > currentStep else { return }
         
-        let isdone = nextStep == totalSteps
+        let isDone = nextStep == totalSteps
         
         // Update the model
         currentStep = nextStep
         
-        let animationDuration = 0.3
-        // Animate the progress layer
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(animationDuration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
-        
-        // Update progress layer frame with animation
-        if isdone {
+        // Delay the animation by the specified amount
+        DispatchQueue.main.asyncAfter(deadline: .now() + delaySeconds) {
+            let animationDuration = 0.3
+            
+            // Animate the progress layer
             CATransaction.begin()
-            CATransaction.setAnimationDuration(0.3) // Animation duration in seconds
-            let scale = 1.1
-            progressLayer?.transform = CATransform3DMakeScale(scale,scale,scale)
-            progressLayer?.backgroundColor = UIColor.akOrange.cgColor
+            CATransaction.setAnimationDuration(animationDuration)
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+            
+            // Update progress layer frame with animation
+            if isDone {
+                CATransaction.begin()
+                CATransaction.setAnimationDuration(0.3) // Animation duration in seconds
+                let scale = 1.1
+                self.progressLayer?.transform = CATransform3DMakeScale(scale, scale, scale)
+                self.progressLayer?.backgroundColor = UIColor.akOrange.cgColor
+                CATransaction.commit()
+            }
+            
+            self.updateProgressLayerFrame()
+            
+            // Update dot colors
+            self.updateDotLayers()
+            
             CATransaction.commit()
-        }
-        
-        
-        updateProgressLayerFrame()
-        
-        // Update dot colors
-        updateDotLayers()
-        
-        CATransaction.commit()
-        
-        // Add haptic feedback
-        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
-        feedbackGenerator.impactOccurred()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-            if isdone {
-                onCompletion()
+            
+            // Add haptic feedback
+            let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+            feedbackGenerator.impactOccurred()
+            
+            // Call completion handler after animation finishes
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                if isDone {
+                    onCompletion()
+                }
             }
         }
     }
-    
     // MARK: - Layout
     
     override func layoutSubviews() {
