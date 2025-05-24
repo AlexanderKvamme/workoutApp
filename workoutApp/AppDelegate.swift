@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             seeder.seedCoreDataForFastlaneSnapshots()
         }
         
+        AKFont.printFonts()
+        
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
         

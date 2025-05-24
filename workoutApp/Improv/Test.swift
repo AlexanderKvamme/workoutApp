@@ -166,22 +166,20 @@ class AnimatedTextView: UIView {
     
     // MARK: - Private Methods
     private func animateFontWeightAndColor(for label: UILabel, index: Int, duration: TimeInterval, delay: TimeInterval = 0, flashColor: Bool) {
-        let steps: CGFloat = 20  // Increased for smoother animation
+        let steps: CGFloat = 50
         let stepDuration = duration / Double(steps)
         
         // Get the variable font
         let vfont = VFonts.elza(size: textFont.pointSize)
-        
+//        let vfont = VFonts.inter(size: textFont.pointSize)
+//        let vfont = VFonts.sono(monoSpaceness: textFont.pointSize)
+//        let vfont = VFonts.anyBody(size: textFont.pointSize)
+
         // Animate font weight
         for i in 0...Int(steps) {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay + stepDuration * Double(i)) {
-                // Calculate the weight for the variable font
                 let weight = CGFloat(i) / steps // Normalize to [0, 1]
-                
-                // Create font with the specified weight
                 let newFont = vfont.make(weight: weight)
-                
-                // Update the label's font
                 label.font = newFont
             }
         }
@@ -192,8 +190,8 @@ class AnimatedTextView: UIView {
             
             // Create timing for color animation
             let flashStartTime = delay + duration * 0.3  // Start flash at 30% of animation
-            let flashDuration = duration * 0.4           // Flash duration is 40% of total animation
-            let fadeOutDuration = duration * 0.3         // Fade out is 30% of total animation
+            let flashDuration = duration * 0.3          // Flash duration is 40% of total animation
+            let fadeOutDuration = duration * 0.2         // Fade out is 30% of total animation
             
             // Create and start the color animator
             let colorAnimator = ColorAnimator(
