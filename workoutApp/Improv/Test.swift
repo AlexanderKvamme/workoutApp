@@ -29,6 +29,7 @@ class AnimatedTextView: UIView {
     // Animation state tracking
     private var labelColors: [Int: UIColor] = [:]
     private var colorAnimators: [Int: ColorAnimator] = [:]
+    private var fontAnimators: [Int: FontWeightAnimator] = [:]
     
     // MARK: - Initialization
     init(text: String, font: UIFont, color: UIColor) {
@@ -66,7 +67,7 @@ class AnimatedTextView: UIView {
         updateLabelsLayout()
     }
     
-    func enableRandomColorFlash(percentage: Int = 30) {
+    func enableRandomColorFlash(percentage: Int = 10) {
         guard !charLabels.isEmpty else { return }
         
         // Calculate how many characters to animate
@@ -86,11 +87,16 @@ class AnimatedTextView: UIView {
         // Reset animation state
         labelColors.removeAll()
         
-        // Stop any existing color animators
+        // Stop any existing animators
         for animator in colorAnimators.values {
             animator.stop()
         }
         colorAnimators.removeAll()
+        
+        for animator in fontAnimators.values {
+            animator.stop()
+        }
+        fontAnimators.removeAll()
         
         // Animate each character
         for (i, label) in charLabels.enumerated() {
@@ -107,7 +113,7 @@ class AnimatedTextView: UIView {
             let positionAnimation = CAKeyframeAnimation(keyPath: "transform.translation.y")
             
             // Define the position keyframes
-            positionAnimation.values = [80.0, -20.0, 0.0]  // Start offset, overshoot, final position
+            positionAnimation.values = [50.0, -25.0, 0.0]  // Start offset, overshoot, final position
             
             // Define the timing function for each segment
             positionAnimation.timingFunctions = [
@@ -116,7 +122,7 @@ class AnimatedTextView: UIView {
             ]
             
             // Define the duration of each segment
-            positionAnimation.keyTimes = [0.0, 0.3, 1.0]
+            positionAnimation.keyTimes = [0.0, 0.4, 1.0]
             
             // Set the total duration and delay
             positionAnimation.duration = 0.8
@@ -145,11 +151,16 @@ class AnimatedTextView: UIView {
                             label.textColor = .white
                         }
                         
-                        // Stop all color animators
+                        // Stop all animators
                         for animator in self.colorAnimators.values {
                             animator.stop()
                         }
                         self.colorAnimators.removeAll()
+                        
+                        for animator in self.fontAnimators.values {
+                            animator.stop()
+                        }
+                        self.fontAnimators.removeAll()
                         
                         completion?()
                     }
@@ -157,7 +168,7 @@ class AnimatedTextView: UIView {
             })
             
             // Determine if this character should have color animation
-            let shouldFlashColor = Int.random(in: 0...100) > 70
+            let shouldFlashColor = Int.random(in: 0...100) > 75
             
             // Animate font weight and color together
             animateFontWeightAndColor(for: label, index: i, duration: 0.8, delay: Double(i) * 0.05, flashColor: shouldFlashColor)
@@ -166,23 +177,25 @@ class AnimatedTextView: UIView {
     
     // MARK: - Private Methods
     private func animateFontWeightAndColor(for label: UILabel, index: Int, duration: TimeInterval, delay: TimeInterval = 0, flashColor: Bool) {
-        let steps: CGFloat = 50
-        let stepDuration = duration / Double(steps)
-        
         // Get the variable font
         let vfont = VFonts.elza(size: textFont.pointSize)
-//        let vfont = VFonts.inter(size: textFont.pointSize)
-//        let vfont = VFonts.sono(monoSpaceness: textFont.pointSize)
-//        let vfont = VFonts.anyBody(size: textFont.pointSize)
-
-        // Animate font weight
-        for i in 0...Int(steps) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay + stepDuration * Double(i)) {
-                let weight = CGFloat(i) / steps // Normalize to [0, 1]
-                let newFont = vfont.make(weight: weight)
-                label.font = newFont
-            }
-        }
+        
+        // Create timing for font weight animation
+        let fontStartTime = delay + duration * 0.1  // Start font animation at 10% of total animation
+        let fontDuration = duration * 0.6           // Font animation duration is 60% of total animation
+        
+        // Create and start the font weight animator
+        let fontAnimator = FontWeightAnimator(
+            label: label,
+            vfont: vfont,
+            startWeight: 0.6,
+            endWeight: 1.0,
+            startDelay: fontStartTime,
+            duration: fontDuration
+        )
+        
+        fontAnimators[index] = fontAnimator
+        fontAnimator.start()
         
         // Animate color if needed
         if flashColor {
@@ -190,8 +203,8 @@ class AnimatedTextView: UIView {
             
             // Create timing for color animation
             let flashStartTime = delay + duration * 0.3  // Start flash at 30% of animation
-            let flashDuration = duration * 0.3          // Flash duration is 40% of total animation
-            let fadeOutDuration = duration * 0.2         // Fade out is 30% of total animation
+            let flashDuration = duration * 0.3           // Flash duration is 30% of total animation
+            let fadeOutDuration = duration * 0.2         // Fade out is 20% of total animation
             
             // Create and start the color animator
             let colorAnimator = ColorAnimator(
@@ -263,24 +276,6 @@ class AnimatedTextView: UIView {
         // Add padding
         size.width += horizontalPadding
         size.height += verticalPadding
-        
-        // Character-specific adjustments
-//        switch char {
-//        case "G", "g":
-//            // Reduce width for G if it's too wide
-//            size.width -= 5
-//        case "I", "i", "l", "j", "f", "t":
-//            // Increase width for narrow characters
-//            size.width += 5
-//        case "S", "s":
-//            // Extra space for S
-//            size.width += 8
-//        case "!":
-//            // Extra space for exclamation mark
-//            size.width += 5
-//        default:
-//            break
-//        }
         
         return size
     }
@@ -359,11 +354,16 @@ class AnimatedTextView: UIView {
     }
     
     private func cleanup() {
-        // Stop all color animators
+        // Stop all animators
         for animator in colorAnimators.values {
             animator.stop()
         }
         colorAnimators.removeAll()
+        
+        for animator in fontAnimators.values {
+            animator.stop()
+        }
+        fontAnimators.removeAll()
         
         // Remove all existing character labels
         for view in charLabels {
@@ -464,5 +464,79 @@ class ColorAnimator {
         let a = fromA + (toA - fromA) * progress
         
         return UIColor(red: r, green: g, blue: b, alpha: a)
+    }
+}
+
+// MARK: - FontWeightAnimator
+class FontWeightAnimator {
+    private weak var label: UILabel?
+    private let vfont: VFont
+    private let startWeight: CGFloat
+    private let endWeight: CGFloat
+    private let startTime: TimeInterval
+    private let duration: TimeInterval
+    
+    private var displayLink: CADisplayLink?
+    private var startTimestamp: TimeInterval = 0
+    
+    init(label: UILabel, vfont: VFont, startWeight: CGFloat, endWeight: CGFloat, startDelay: TimeInterval, duration: TimeInterval) {
+        self.label = label
+        self.vfont = vfont
+        self.startWeight = startWeight
+        self.endWeight = endWeight
+        self.startTime = startDelay
+        self.duration = duration
+    }
+    
+    func start() {
+        // Create a display link
+        displayLink = CADisplayLink(target: self, selector: #selector(update))
+        displayLink?.add(to: .main, forMode: .common)
+    }
+    
+    func stop() {
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
+    @objc private func update(_ displayLink: CADisplayLink) {
+        guard let label = label else {
+            stop()
+            return
+        }
+        
+        // Initialize start timestamp on first frame
+        if startTimestamp == 0 {
+            startTimestamp = CACurrentMediaTime()
+        }
+        
+        let currentTime = CACurrentMediaTime() - startTimestamp
+        
+        // Wait until start time
+        if currentTime < startTime {
+            return
+        }
+        
+        // Calculate progress
+        let progress = min(1.0, max(0.0, (currentTime - startTime) / duration))
+        
+        // Apply easing function for smoother animation
+        let easedProgress = easeInOutCubic(progress)
+        
+        // Interpolate weight
+        let weight = startWeight + (endWeight - startWeight) * easedProgress
+        
+        // Update font with new weight
+        label.font = vfont.make(weight: weight)
+        
+        // Stop the animator when animation is complete
+        if progress >= 1.0 {
+            stop()
+        }
+    }
+    
+    // Cubic easing function for smoother animation
+    private func easeInOutCubic(_ x: CGFloat) -> CGFloat {
+        return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2
     }
 }
