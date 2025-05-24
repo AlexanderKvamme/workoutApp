@@ -26,13 +26,17 @@ class AnimatedTextView: UIView {
     private let horizontalPadding: CGFloat = 0
     private let verticalPadding: CGFloat = 0
     
+    // Animation state tracking
+    private var labelColors: [Int: UIColor] = [:]
+    private var colorAnimators: [Int: ColorAnimator] = [:]
+    
     // MARK: - Initialization
     init(text: String, font: UIFont, color: UIColor) {
         self.originalText = text
         self.textFont = font
         self.textColor = color
         super.init(frame: .zero)
-        backgroundColor = .random
+        backgroundColor = .clear
         prepareAnimation()
     }
     
@@ -79,14 +83,25 @@ class AnimatedTextView: UIView {
     }
     
     func animate(completion: (() -> Void)? = nil) {
+        // Reset animation state
+        labelColors.removeAll()
+        
+        // Stop any existing color animators
+        for animator in colorAnimators.values {
+            animator.stop()
+        }
+        colorAnimators.removeAll()
+        
         // Animate each character
         for (i, label) in charLabels.enumerated() {
             // Set initial state
-            let scale = 1.0
+            let scale = 0.6
             label.alpha = 0
             label.textColor = .white
             label.transform = label.transform.scaledBy(x: scale, y: scale)
-            label.backgroundColor = .random
+            
+            // Store initial color
+            labelColors[i] = .white
             
             // Use CAKeyframeAnimation for smoother Y position animation
             let positionAnimation = CAKeyframeAnimation(keyPath: "transform.translation.y")
@@ -114,42 +129,6 @@ class AnimatedTextView: UIView {
             // Add the animation to the label's layer
             label.layer.add(positionAnimation, forKey: "positionAnimation")
             
-            // Check if this character should have color animation
-            if Int.random(in: 0...100) > 70 {
-                // Create color keyframe animation
-                let colorAnimation = CAKeyframeAnimation(keyPath: "foregroundColor")
-                
-                // Get the random color
-                let randomColor = CONFETTI_COLORS.randomElement()!
-                
-                // Define color keyframes
-                colorAnimation.values = [
-                    UIColor.white.cgColor,
-                    randomColor.cgColor,
-                    UIColor.white.cgColor
-                ]
-                
-                // Define keyframe timing
-                colorAnimation.keyTimes = [0.0, 0.3, 0.75]
-                
-                // Define timing functions
-                colorAnimation.timingFunctions = [
-                    CAMediaTimingFunction(name: .easeOut),
-                    CAMediaTimingFunction(name: .easeInEaseOut)
-                ]
-                
-                // Set duration and delay
-                colorAnimation.duration = 0.8
-                colorAnimation.beginTime = CACurrentMediaTime() + Double(i) * 0.05
-                
-                // Make sure the final state is preserved
-                colorAnimation.fillMode = .forwards
-                colorAnimation.isRemovedOnCompletion = false
-                
-                // Apply the animation to the label's layer
-                label.layer.add(colorAnimation, forKey: "colorAnimation")
-            }
-            
             // Fade in and scale with a simple animation
             UIView.animate(withDuration: 0.2, delay: Double(i) * 0.05, options: .curveLinear, animations: {
                 label.alpha = 1.0
@@ -165,18 +144,72 @@ class AnimatedTextView: UIView {
                             label.transform = .identity
                             label.textColor = .white
                         }
+                        
+                        // Stop all color animators
+                        for animator in self.colorAnimators.values {
+                            animator.stop()
+                        }
+                        self.colorAnimators.removeAll()
+                        
                         completion?()
                     }
                 }
             })
             
-            // Animate font weight if using variable font
-             let vfont = VFonts.elza(size: textFont.pointSize)
-                animateFontWeight(for: label, with: vfont, duration: 0.8, delay: Double(i) * 0.05)
+            // Determine if this character should have color animation
+            let shouldFlashColor = Int.random(in: 0...100) > 70
+            
+            // Animate font weight and color together
+            animateFontWeightAndColor(for: label, index: i, duration: 0.8, delay: Double(i) * 0.05, flashColor: shouldFlashColor)
         }
     }
     
     // MARK: - Private Methods
+    private func animateFontWeightAndColor(for label: UILabel, index: Int, duration: TimeInterval, delay: TimeInterval = 0, flashColor: Bool) {
+        let steps: CGFloat = 20  // Increased for smoother animation
+        let stepDuration = duration / Double(steps)
+        
+        // Get the variable font
+        let vfont = VFonts.elza(size: textFont.pointSize)
+        
+        // Animate font weight
+        for i in 0...Int(steps) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay + stepDuration * Double(i)) {
+                // Calculate the weight for the variable font
+                let weight = CGFloat(i) / steps // Normalize to [0, 1]
+                
+                // Create font with the specified weight
+                let newFont = vfont.make(weight: weight)
+                
+                // Update the label's font
+                label.font = newFont
+            }
+        }
+        
+        // Animate color if needed
+        if flashColor {
+            let randomColor = CONFETTI_COLORS.randomElement()!
+            
+            // Create timing for color animation
+            let flashStartTime = delay + duration * 0.3  // Start flash at 30% of animation
+            let flashDuration = duration * 0.4           // Flash duration is 40% of total animation
+            let fadeOutDuration = duration * 0.3         // Fade out is 30% of total animation
+            
+            // Create and start the color animator
+            let colorAnimator = ColorAnimator(
+                label: label,
+                fromColor: .white,
+                toColor: randomColor,
+                startDelay: flashStartTime,
+                duration: flashDuration,
+                fadeOutDuration: fadeOutDuration
+            )
+            
+            colorAnimators[index] = colorAnimator
+            colorAnimator.start()
+        }
+    }
+    
     private func prepareAnimation() {
         guard !originalText.isEmpty else { return }
         
@@ -194,11 +227,6 @@ class AnimatedTextView: UIView {
             
             // Add padding to the label
             label.frame.size = calculateSizeForCharacter(char, with: textFont)
-            
-            // Debug visualization
-            // label.backgroundColor = UIColor(red: CGFloat.random(in: 0...0.5), green: CGFloat.random(in: 0...0.5), blue: CGFloat.random(in: 0...0.5), alpha: 0.3)
-            // label.layer.borderWidth = 1
-            // label.layer.borderColor = UIColor.red.cgColor
             
             // For smoother animation
             label.layer.allowsEdgeAntialiasing = true
@@ -220,23 +248,41 @@ class AnimatedTextView: UIView {
         ).size
         
         // Pre-calculate the maximum size with bold font
-         let vfont = VFonts.elza(size: font.pointSize)
-            let boldFont = vfont.make(weight: 1.0)
-            let boldAttributes = [NSAttributedString.Key.font: boldFont]
-            let boldSize = (charString as NSString).boundingRect(
-                with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
-                options: [.usesLineFragmentOrigin, .usesFontLeading],
-                attributes: boldAttributes,
-                context: nil
-            ).size
-            
-            // Use the larger of the two sizes
-            size.width = max(size.width, boldSize.width)
-            size.height = max(size.height, boldSize.height)
+        let vfont = VFonts.elza(size: font.pointSize)
+        let boldFont = vfont.make(weight: 1.0)
+        let boldAttributes = [NSAttributedString.Key.font: boldFont]
+        let boldSize = (charString as NSString).boundingRect(
+            with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: boldAttributes,
+            context: nil
+        ).size
+        
+        // Use the larger of the two sizes
+        size.width = max(size.width, boldSize.width)
+        size.height = max(size.height, boldSize.height)
         
         // Add padding
         size.width += horizontalPadding
         size.height += verticalPadding
+        
+        // Character-specific adjustments
+//        switch char {
+//        case "G", "g":
+//            // Reduce width for G if it's too wide
+//            size.width -= 5
+//        case "I", "i", "l", "j", "f", "t":
+//            // Increase width for narrow characters
+//            size.width += 5
+//        case "S", "s":
+//            // Extra space for S
+//            size.width += 8
+//        case "!":
+//            // Extra space for exclamation mark
+//            size.width += 5
+//        default:
+//            break
+//        }
         
         return size
     }
@@ -253,21 +299,50 @@ class AnimatedTextView: UIView {
             maxHeight = max(maxHeight, label.frame.height)
         }
         
-        // Position each label
+        // Position each label with kerning adjustments
         var currentX: CGFloat = (bounds.width - totalWidth) / 2
+        var previousChar: Character? = nil
         
-        for label in charLabels {
+        for (i, label) in charLabels.enumerated() {
+            // Apply kerning adjustment based on character pairs
+            if i > 0, let prev = previousChar {
+                let current = originalText[originalText.index(originalText.startIndex, offsetBy: i)]
+                let kerningAdjustment = getKerningAdjustment(prevChar: prev, currentChar: current)
+                currentX += kerningAdjustment
+            }
+            
             label.frame = CGRect(
                 x: currentX,
                 y: (bounds.height - maxHeight) / 2,
                 width: label.frame.width,
                 height: maxHeight
             )
+            
             currentX += label.frame.width
+            
+            // Store current character for next iteration
+            if i < originalText.count {
+                previousChar = originalText[originalText.index(originalText.startIndex, offsetBy: i)]
+            }
         }
         
         // Set the intrinsic content size
         invalidateIntrinsicContentSize()
+    }
+    
+    private func getKerningAdjustment(prevChar: Character, currentChar: Character) -> CGFloat {
+        // Adjust kerning for specific character pairs
+        let pair = "\(prevChar)\(currentChar)"
+        return 0
+        
+        switch pair {
+        case "GO", "GG":
+            return -8  // Reduce space between G and O or G and G
+        case "IG", "FG":
+            return -5  // Reduce space between I and G or F and G
+        default:
+            return 0   // No adjustment for other pairs
+        }
     }
     
     override var intrinsicContentSize: CGSize {
@@ -285,30 +360,111 @@ class AnimatedTextView: UIView {
         return CGSize(width: totalWidth, height: maxHeight)
     }
     
-    private func animateFontWeight(for label: UILabel, with vfont: VFont, duration: TimeInterval, delay: TimeInterval = 0) {
-        let steps: CGFloat = 10
-        let stepDuration = duration / Double(steps)
-        
-        for i in 0...Int(steps) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay + stepDuration * Double(i)) {
-                // Calculate the weight for the variable font
-                let weight = CGFloat(i) / steps // Normalize to [0, 1]
-                
-                // Create font with the specified weight
-                let newFont = vfont.make(weight: weight)
-                
-                // Update the label's font
-                label.font = newFont
-            }
-        }
-    }
-    
     private func cleanup() {
+        // Stop all color animators
+        for animator in colorAnimators.values {
+            animator.stop()
+        }
+        colorAnimators.removeAll()
+        
         // Remove all existing character labels
         for view in charLabels {
             view.removeFromSuperview()
         }
         charLabels.removeAll()
         randomColorIndices.removeAll()
+        labelColors.removeAll()
+    }
+    
+    deinit {
+        cleanup()
+    }
+}
+
+// MARK: - ColorAnimator
+class ColorAnimator {
+    private weak var label: UILabel?
+    private let fromColor: UIColor
+    private let toColor: UIColor
+    private let startTime: TimeInterval
+    private let duration: TimeInterval
+    private let fadeOutDuration: TimeInterval
+    
+    private var displayLink: CADisplayLink?
+    private var startTimestamp: TimeInterval = 0
+    
+    init(label: UILabel, fromColor: UIColor, toColor: UIColor, startDelay: TimeInterval, duration: TimeInterval, fadeOutDuration: TimeInterval) {
+        self.label = label
+        self.fromColor = fromColor
+        self.toColor = toColor
+        self.startTime = startDelay
+        self.duration = duration
+        self.fadeOutDuration = fadeOutDuration
+    }
+    
+    func start() {
+        // Create a display link
+        displayLink = CADisplayLink(target: self, selector: #selector(update))
+        displayLink?.add(to: .main, forMode: .common)
+    }
+    
+    func stop() {
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+    
+    @objc private func update(_ displayLink: CADisplayLink) {
+        guard let label = label else {
+            stop()
+            return
+        }
+        
+        // Initialize start timestamp on first frame
+        if startTimestamp == 0 {
+            startTimestamp = CACurrentMediaTime()
+        }
+        
+        let currentTime = CACurrentMediaTime() - startTimestamp
+        
+        // Wait until start time
+        if currentTime < startTime {
+            return
+        }
+        
+        // Calculate progress for fade in
+        let fadeInProgress = min(1.0, max(0.0, (currentTime - startTime) / duration))
+        
+        // Calculate progress for fade out
+        let fadeOutStartTime = startTime + duration
+        let fadeOutProgress = min(1.0, max(0.0, (currentTime - fadeOutStartTime) / fadeOutDuration))
+        
+        // Determine the current color
+        if fadeOutProgress > 0 {
+            // We're in the fade out phase
+            label.textColor = interpolateColor(from: toColor, to: fromColor, progress: fadeOutProgress)
+            
+            // Stop the animator when fade out is complete
+            if fadeOutProgress >= 1.0 {
+                stop()
+            }
+        } else {
+            // We're in the fade in phase
+            label.textColor = interpolateColor(from: fromColor, to: toColor, progress: fadeInProgress)
+        }
+    }
+    
+    private func interpolateColor(from: UIColor, to: UIColor, progress: CGFloat) -> UIColor {
+        var fromR: CGFloat = 0, fromG: CGFloat = 0, fromB: CGFloat = 0, fromA: CGFloat = 0
+        var toR: CGFloat = 0, toG: CGFloat = 0, toB: CGFloat = 0, toA: CGFloat = 0
+        
+        from.getRed(&fromR, green: &fromG, blue: &fromB, alpha: &fromA)
+        to.getRed(&toR, green: &toG, blue: &toB, alpha: &toA)
+        
+        let r = fromR + (toR - fromR) * progress
+        let g = fromG + (toG - fromG) * progress
+        let b = fromB + (toB - fromB) * progress
+        let a = fromA + (toA - fromA) * progress
+        
+        return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }
