@@ -191,7 +191,7 @@ class AnimatedTextView: UIView {
         let fontAnimator = FontWeightAnimator(
             label: label,
             vfont: vfont,
-            startWeight: 0.6,
+            startWeight: 0.0,
             endWeight: 1.0,
             startDelay: fontStartTime,
             duration: fontDuration
