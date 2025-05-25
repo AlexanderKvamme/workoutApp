@@ -19,7 +19,7 @@ extension UIViewController {
         menuBtn.imageView?.contentMode = .scaleAspectFit
         
         // Option 1: Use template mode and set tint on the button
-        let xImage = UIImage.xmarkIcon.withRenderingMode(.alwaysTemplate)
+        let xImage = UIImage.closeFat.withRenderingMode(.alwaysTemplate)
         menuBtn.setImage(xImage, for: .normal)
         menuBtn.tintColor = .akDark  // This will tint the template image
         

@@ -32,7 +32,7 @@ class RestDurationPickerController: UIViewController {
             modalPresentationStyle = .pageSheet
             if #available(iOS 15.0, *) {
                 if let sheet = sheetPresentationController {
-                    sheet.detents = [.medium()]
+                    sheet.detents = [.custom { _ in return 250 }]  // Smaller fixed height
                     sheet.prefersGrabberVisible = true
                 }
             }
@@ -68,7 +68,7 @@ class RestDurationPickerController: UIViewController {
     private func setupUI() {
         // Configure title label
         titleLabel.text = "Rest Duration"
-        titleLabel.font = AKFont.round(.black, 32)
+        titleLabel.font = AKFont.round(.black, 28)  // Slightly smaller font
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         
@@ -100,9 +100,9 @@ class RestDurationPickerController: UIViewController {
         // Adjust title label position based on presentation style
         titleLabel.snp.makeConstraints { make in
             if isInNavigationStack {
-                make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+                make.top.equalTo(view.safeAreaLayoutGuide).offset(24)  // Reduced top offset
             } else {
-                make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+                make.top.equalTo(view.safeAreaLayoutGuide).offset(24)  // Reduced top offset
             }
             make.centerX.equalToSuperview()
             make.left.right.equalToSuperview().inset(20)
@@ -111,23 +111,24 @@ class RestDurationPickerController: UIViewController {
         // Only position close button if not in navigation stack
         if !isInNavigationStack {
             closeButton.snp.makeConstraints { make in
-                make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+                make.top.equalTo(view.safeAreaLayoutGuide).offset(12)  // Reduced top offset
                 make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
-                make.size.equalTo(32)
+                make.size.equalTo(28)  // Slightly smaller button
             }
         }
         
         superStepper.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.size.equalTo(superStepper.frame.size)
-            make.top.equalTo(titleLabel.snp.bottom).offset(40)
+            make.top.equalTo(titleLabel.snp.bottom).offset(24)  // Reduced spacing
         }
         
         confirmButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(superStepper.snp.bottom).offset(40)
-            make.width.equalTo(200)
-            make.height.equalTo(50)
+            make.top.equalTo(superStepper.snp.bottom).offset(24)  // Reduced spacing
+            make.width.equalTo(180)  // Slightly narrower button
+            make.height.equalTo(44)  // Slightly shorter button
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)  // Add bottom constraint
         }
     }
     
@@ -156,5 +157,13 @@ class RestDurationPickerController: UIViewController {
         } else {
             dismiss(animated: true)
         }
+    }
+    
+    // Override size for more compact presentation
+    override var preferredContentSize: CGSize {
+        get {
+            return CGSize(width: UIScreen.main.bounds.width, height: 250)
+        }
+        set { super.preferredContentSize = newValue }
     }
 }
