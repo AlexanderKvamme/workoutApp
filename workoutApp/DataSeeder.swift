@@ -20,11 +20,11 @@ final class DataSeeder {
     private let context: NSManagedObjectContext
     
     // Properties for seeding to Core Data
-    private let defaultMuscles = ["BICEPS", "TRICEPS", "GLUTES", "CORE", "CHEST", "SHOULDERS", "BACK", "QUADS"]
-    private let defaultWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
-    private let defaultExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
-    private let defaultMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
-    private let defaultSkills = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
+    private let seedMuscles = ["BICEPS", "TRICEPS", "GLUTES", "CORE", "CHEST", "SHOULDERS", "BACK", "QUADS", "OTHER"]
+    private let seedWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
+    private let seedExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
+    private let seedMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
+    private let seedSkills = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP", "OTHER"]
     
     // MARK: - Initializer
     
@@ -82,7 +82,7 @@ final class DataSeeder {
     public func update() {
       
         // Muscles
-        for muscleName in defaultMuscles {
+        for muscleName in seedMuscles {
             if DatabaseFacade.getMuscle(named: muscleName.uppercased()) == nil {
                 print("didnt exist so making muscle named \(muscleName)")
                 makeMuscle(withName: muscleName.uppercased())
@@ -90,7 +90,7 @@ final class DataSeeder {
         }
         
         // Workout Styles
-        for workoutStyleName in defaultWorkoutStyles {
+        for workoutStyleName in seedWorkoutStyles {
             if DatabaseFacade.getWorkoutStyle(named: workoutStyleName) == nil {
                 print("didnt exist so making workoutstyle named \(workoutStyleName)")
                 makeWorkoutStyle(withName: workoutStyleName)
@@ -98,7 +98,7 @@ final class DataSeeder {
         }
         
         // Exercise Styles
-        for exerciseStyleName in defaultExerciseStyles {
+        for exerciseStyleName in seedExerciseStyles {
             if DatabaseFacade.getExerciseStyle(named: exerciseStyleName) == nil {
                 print("didnt exist so making exercise named \(exerciseStyleName)")
                 makeExerciseStyle(withName: exerciseStyleName)
@@ -106,7 +106,7 @@ final class DataSeeder {
         }
         
         // Measurement Styles
-        for measurementStyle in defaultMeasurementStyles {
+        for measurementStyle in seedMeasurementStyles {
             if DatabaseFacade.getMeasurementStyle(named: measurementStyle) == nil {
                 print("didnt exist so making measurementStyle named \(measurementStyle)")
                 makeMeasurementStyle(withName: measurementStyle)
@@ -117,7 +117,7 @@ final class DataSeeder {
     // MARK: - Seed Methods
     
     private func seedWithExampleMuscleGroups() {
-        for muscle in defaultMuscles {
+        for muscle in seedMuscles {
             if DatabaseFacade.getMuscle(named: muscle) == nil {
                 makeMuscle(withName: muscle.uppercased())
             }
@@ -125,7 +125,8 @@ final class DataSeeder {
     }
     
     private func seedWithExampleSkillGroups() {
-        for skill in defaultSkills {
+        print("seeding skills")
+        for skill in seedSkills {
             if DatabaseFacade.getSkill(named: skill) == nil {
                 makeSkill(withName: skill.uppercased())
             }
@@ -137,20 +138,20 @@ final class DataSeeder {
     }
     
     private func seedWithExampleWorkoutStyles() {
-        for name in defaultWorkoutStyles {
+        for name in seedWorkoutStyles {
             makeWorkoutStyle(withName: name)
         }
         printWorkoutStyles()
     }
     
     private func seedWithExampleExerciseStyles() {
-        for exerciseStyleName in defaultExerciseStyles {
+        for exerciseStyleName in seedExerciseStyles {
             makeExerciseStyle(withName: exerciseStyleName)
         }
     }
 
     private func seedWithExampleMeasurementStyles() {
-        for measurementStyleName in defaultMeasurementStyles {
+        for measurementStyleName in seedMeasurementStyles {
             makeMeasurementStyle(withName: measurementStyleName)
         }
     }

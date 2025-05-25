@@ -57,7 +57,7 @@ final class DatabaseFacade {
     }()
     
     static var defaultSkill: Skill = {
-        let skill = getSkill(named: "NORMAL")!
+        let skill = getSkill(named: "OTHER")!
         return skill
     }()
     

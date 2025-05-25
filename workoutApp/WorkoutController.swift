@@ -151,7 +151,8 @@ extension WorkoutController: PickableReceiver {
         
         switch pickable {
         case is Muscle:
-            currentMuscles = pickable as! [Muscle]
+            let singular = pickable as! Muscle
+            currentMuscles = [singular]
             setMuscleName(currentMuscles)
             self.exerciseSelecter.topLabel.text = "Exercises Added".uppercased()
         case is WorkoutStyle:

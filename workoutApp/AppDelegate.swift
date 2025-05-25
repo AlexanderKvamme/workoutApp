@@ -11,7 +11,7 @@ import CoreData
 import AKKIT
 
 
-var APP_IS_DEBUG = true
+var APP_IS_DEBUG = false
 var globalTabBar: WellRoundedTabBarController!
 
 @UIApplicationMain
@@ -27,8 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let seeder = DataSeeder(context: context)
             seeder.seedCoreDataForFastlaneSnapshots()
         }
-        
-        AKFont.printFonts()
         
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
