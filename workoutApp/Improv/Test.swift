@@ -21,6 +21,7 @@ class AnimatedTextView: UIView {
     private var textFont: UIFont
     private var textColor: UIColor
     private var randomColorIndices: [Int] = []
+    private var flashPercentage: Int
     
     // Extra padding to prevent clipping
     private let horizontalPadding: CGFloat = 0
@@ -32,10 +33,11 @@ class AnimatedTextView: UIView {
     private var fontAnimators: [Int: FontWeightAnimator] = [:]
     
     // MARK: - Initialization
-    init(text: String, font: UIFont, color: UIColor) {
+    init(text: String, font: UIFont, color: UIColor, flashPercentage: Int = 100) {
         self.originalText = text
         self.textFont = font
         self.textColor = color
+        self.flashPercentage = flashPercentage
         super.init(frame: .zero)
         backgroundColor = .clear
         prepareAnimation()
@@ -44,6 +46,7 @@ class AnimatedTextView: UIView {
     required init?(coder: NSCoder) {
         self.textFont = UIFont.systemFont(ofSize: 48, weight: .black)
         self.textColor = .black
+        self.flashPercentage = 100
         super.init(coder: coder)
         backgroundColor = .clear
     }
@@ -65,22 +68,6 @@ class AnimatedTextView: UIView {
         
         prepareAnimation()
         updateLabelsLayout()
-    }
-    
-    func enableRandomColorFlash(percentage: Int = 10) {
-        guard !charLabels.isEmpty else { return }
-        
-        // Calculate how many characters to animate
-        let count = max(1, Int(Double(charLabels.count) * Double(percentage) / 100.0))
-        
-        // Generate random indices to animate
-        randomColorIndices = []
-        while randomColorIndices.count < count {
-            let randomIndex = Int.random(in: 0..<charLabels.count)
-            if !randomColorIndices.contains(randomIndex) {
-                randomColorIndices.append(randomIndex)
-            }
-        }
     }
     
     func animate(completion: (() -> Void)? = nil) {
@@ -168,7 +155,7 @@ class AnimatedTextView: UIView {
             })
             
             // Determine if this character should have color animation
-            let shouldFlashColor = Int.random(in: 0...100) > 75
+            let shouldFlashColor = Int.random(in: 0...100) >= (100-flashPercentage)
             
             // Animate font weight and color together
             animateFontWeightAndColor(for: label, index: i, duration: 0.8, delay: Double(i) * 0.05, flashColor: shouldFlashColor)

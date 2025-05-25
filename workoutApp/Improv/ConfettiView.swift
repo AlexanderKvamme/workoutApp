@@ -122,7 +122,6 @@ class ConfettiView: UIView {
             
             // Only add the shrink animation if we're not keeping confetti
             if let removalPoint = removalPoint {
-                print("bam removing to point: ", removalPoint)
                 let minDelay = 1.5
                 let delay = CGFloat.random(in: minDelay+0.2...minDelay+0.45)
                 let duration = 0.3

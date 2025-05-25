@@ -132,7 +132,8 @@ class HexCompletionScreen: UIViewController {
         animatedTitleView = AnimatedTextView(
             text: "Success!",
             font: AKFont.round(.black, 48),
-            color: .black
+            color: .black,
+            flashPercentage: 100
         )
         
         view.addSubview(animatedTitleView)
