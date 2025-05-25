@@ -98,29 +98,45 @@ class AnimatedTextView: UIView {
             
             // Use CAKeyframeAnimation for smoother Y position animation
             let positionAnimation = CAKeyframeAnimation(keyPath: "transform.translation.y")
-            
-            // Define the position keyframes
             positionAnimation.values = [50.0, -25.0, 0.0]  // Start offset, overshoot, final position
-            
-            // Define the timing function for each segment
             positionAnimation.timingFunctions = [
                 CAMediaTimingFunction(name: .easeOut),
                 CAMediaTimingFunction(name: .easeInEaseOut)
             ]
-            
-            // Define the duration of each segment
             positionAnimation.keyTimes = [0.0, 0.4, 1.0]
-            
-            // Set the total duration and delay
             positionAnimation.duration = 0.8
             positionAnimation.beginTime = CACurrentMediaTime() + Double(i) * 0.05
-            
-            // Make sure the final state is preserved
             positionAnimation.fillMode = .forwards
             positionAnimation.isRemovedOnCompletion = false
-            
-            // Add the animation to the label's layer
             label.layer.add(positionAnimation, forKey: "positionAnimation")
+            
+            // Scale animation
+            let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+            scaleAnimation.values = [0.5, 1.025, 1.0]  // Start small, overshoot (pop), final size
+            scaleAnimation.timingFunctions = [
+                CAMediaTimingFunction(name: .easeOut),
+                CAMediaTimingFunction(name: .easeInEaseOut)
+            ]
+            scaleAnimation.keyTimes = [0.0, 0.4, 1.0]  // Match timing with position animation
+            scaleAnimation.duration = 0.8
+            scaleAnimation.beginTime = CACurrentMediaTime() + Double(i) * 0.05  // Same delay as position
+            scaleAnimation.fillMode = .forwards
+            scaleAnimation.isRemovedOnCompletion = false
+            label.layer.add(scaleAnimation, forKey: "scaleAnimation")
+            
+            // Rotation animation
+            let rotationAnimation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+            rotationAnimation.values = [Double.pi * -0.1, Double.pi * 0.05, 0.0]  // Slight rotation in radians
+            rotationAnimation.timingFunctions = [
+                CAMediaTimingFunction(name: .easeOut),
+                CAMediaTimingFunction(name: .easeInEaseOut)
+            ]
+            rotationAnimation.keyTimes = [0.0, 0.5, 1.0]  // Match timing with other animations
+            rotationAnimation.duration = 0.8
+            rotationAnimation.beginTime = CACurrentMediaTime() + Double(i) * 0.05  // Same delay as others
+            rotationAnimation.fillMode = .forwards
+            rotationAnimation.isRemovedOnCompletion = false
+            label.layer.add(rotationAnimation, forKey: "rotationAnimation")
             
             // Fade in and scale with a simple animation
             UIView.animate(withDuration: 0.2, delay: Double(i) * 0.05, options: .curveLinear, animations: {

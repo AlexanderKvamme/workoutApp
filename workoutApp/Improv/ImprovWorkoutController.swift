@@ -123,12 +123,15 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     }
     
     @objc func handleTimerTap() {
+        guard !APP_IS_DEBUG else {
+            alertDidTrigger()
+            return
+        }
+        
         let picker = RestDurationPickerController(currentPick: timerTargetString) { str in
-            print("picked rest: ", str)
             self.timerTargetString = str
             
             let components = str.split(separator: " ")
-            print("components: ", components)
             guard components.count == 2 else {
                 print("Invalid format: expected 'number unit'")
                 return
@@ -142,7 +145,6 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
             
             // Get the unit as String
             let unit = String(components[1])
-            
             var numberAdjustedForUnit = number
             if unit == "m" {
                 numberAdjustedForUnit = number * 60

@@ -23,7 +23,7 @@ class TimerAlertViewController: UIViewController {
     )
     
     private let animatedTitleView2 = AnimatedTextView(
-        text: "FRIGGEN",
+        text: "FUCKING",
         font: AKFont.gilroy(.black, 80),
         color: .white
     )
