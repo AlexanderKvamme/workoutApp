@@ -101,7 +101,8 @@ class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, Mus
     }
     
     @objc private func rightBarButtonTapped() {
-        let musclePicker = PickerController<Muscle>()
+        let skills = DatabaseFacade.fetchSkills()
+        let musclePicker = PickerController<Skill>.init(withPicksFrom: skills, withPreselection: [])
         musclePicker.pickableReceiver = self
         navigationController?.pushViewController(musclePicker, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }

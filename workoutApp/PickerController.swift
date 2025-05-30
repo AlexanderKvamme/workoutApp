@@ -22,8 +22,8 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
     var table: UITableView!
     var footer: ButtonFooter!
     var selectedIndexPath: IndexPath?
-    var selectionChoices: [T]!
-    var selectedPickables: [T]!
+    var selectionChoices: [T]
+    var selectedPickables: [T]?
     let tableVerticalInset: CGFloat = 102
     var stringToSelect: String?
     let cellIdentifier = "cellIdentifier"
@@ -42,12 +42,14 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Initializers
 
     init(withPicksFrom array: [PickableEntity], withPreselection preselection: [Pickable]) {
-        super.init(nibName: nil, bundle: nil)
         selectionChoices = array as! [T]
         selectedPickables = preselection
+        super.init(nibName: nil, bundle: nil)
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        selectionChoices = [] as! [T]
+        selectedPickables = []
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -64,7 +66,9 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
         setupTable()
         
         // Preselection
-        selectRows(withPickable: selectedPickables)
+        if let prepicks = selectedPickables {
+            selectRows(withPickable: prepicks)
+        }
         
         table.reloadData()
         view.setNeedsLayout()
@@ -118,10 +122,10 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
         if selectedIndexPath == indexPath {
             selectedIndexPath = nil
             // Find the index of the pickable to remove
-            if let pickableIndex = selectedPickables.firstIndex(where: { pickable in
+            if let pickableIndex = selectedPickables?.firstIndex(where: { pickable in
                 pickable == tappedPickable
             }) {
-                selectedPickables.remove(at: pickableIndex)
+                selectedPickables?.remove(at: pickableIndex)
             }
         } else {
             // remove previous selection
@@ -132,7 +136,7 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
             }
             // update selection
             selectedIndexPath = indexPath
-            selectedPickables.append(tappedPickable)
+            selectedPickables?.append(tappedPickable)
         }
         let selectedCell = tableView.cellForRow(at: indexPath)! as! PickerCell
         configure(selectedCell, forIndexPath: indexPath)
@@ -223,6 +227,12 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
             table.isScrollEnabled = false
         }
         
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPressGesture.minimumPressDuration = 0.5 // Set the duration as needed
+        table.addGestureRecognizer(longPressGesture)
+        
+        
+        
         // Update insets
         if tableHeight > contentHeight {
             let verticalOffset = (tableHeight - contentHeight)/2
@@ -234,6 +244,52 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
             table.updateConstraints()
         }
     }
+    
+    @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            // Get the location of the long press in the table view
+            let touchPoint = sender.location(in: table)
+            
+            // Try to get the index path of the cell that was long-pressed
+            if let indexPath = table.indexPathForRow(at: touchPoint) {
+                let longPressedEntity = selectionChoices[indexPath.row]
+                
+                // Handle the long press action here
+                // For example, show an alert or action sheet
+                let alertController = UIAlertController(
+                    title: "Options for \(longPressedEntity.name)",
+                    message: nil,
+                    preferredStyle: .actionSheet
+                )
+                
+                // Add actions to the alert controller
+                alertController.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
+                    // Handle deletion
+                    // You might want to show a confirmation dialog here
+                    print("Delete action for \(longPressedEntity.name)")
+                    
+                    // If you have a DeletePickableScreen, you can present it:
+                     if let pickable = longPressedEntity as? Pickable {
+                         let deleteScreen = DeletePickableScreen(pickable: pickable, completion: {
+                             self.navigationController?.popViewController(animated: true)
+                         })
+                         self.present(deleteScreen, animated: true)
+                     }
+                })
+                
+                alertController.addAction(UIAlertAction(title: "Edit", style: .default) { _ in
+                    // Handle editing
+                    print("Edit action for \(longPressedEntity.name)")
+                })
+                
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                
+                // Present the alert controller
+                present(alertController, animated: true)
+            }
+        }
+    }
+
     
     func selectRow(withPickable pickable: Pickable) {
         guard let indexOfPickable = selectionChoices.firstIndex(where: { (element) -> Bool in
@@ -248,7 +304,8 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
         table.selectRow(at: ip, animated: false, scrollPosition: .none)
         selectedIndexPath = ip
     }
-
+    
+    
     
     func selectRows(withPickable pickables: [Pickable]) {
         for p in pickables {
@@ -280,9 +337,12 @@ class PickerController<T>: UIViewController, UITableViewDelegate, UITableViewDat
 //        if let usersPick = selectedPickable {
 //            sendBack(pickables: usersPick)
 //        }
-        print("sending back: ", selectedPickables.map{ $0 })
-        print("sending back: ", selectedPickables.count)
-        sendBack(pickables: selectedPickables)
+//        print("sending back: ", selectedPickables.map{ $0 })
+//        print("sending back: ", selectedPickables.count)
+        
+        if let selectedPickable = selectedPickables {
+            sendBack(pickables: selectedPickable)
+        }
 
         navigationController?.popViewController(animated: Constant.Animation.pickerVCsShouldAnimateOut)
     }
@@ -302,3 +362,27 @@ extension PickerController: PickableSender {
     }
 }
 
+
+
+
+
+
+//    @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+//        if sender.state == .began {
+//            // Get the location of the long press in the table view
+//            let touchPoint = sender.location(in: table)
+//
+//            // Try to get the index path of the cell that was long-pressed
+//            if let indexPath = table.indexPathForRow(at: touchPoint) {
+//                let longPressedEntity = selectionChoices[indexPath.row]
+//                // We need to cast to Pickable here since we're not requiring T to conform to Pickable
+//                print("FIXME delete")
+////                if let pickable = longPressedEntity as? Pickable {
+////                    let deleteScreen = DeletePickableScreen(pickable: pickable, completion: {
+////                        self.navigationController?.popViewController(animated: true)
+////                    })
+////                    self.present(deleteScreen, animated: true)
+////                }
+//            }
+//        }
+//    }

@@ -48,6 +48,7 @@ class HoneycombViewController: SelectionViewController {
 //        let skill = skills.first(where: { $0.getName() == "HANDSTAND" })!
 //        let improvWorkoutController = ImprovWorkoutController(skill: skill)
 //        navigationController?.pushViewController(improvWorkoutController, animated: true)
+        globalTabBar.showIt()
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,7 +67,6 @@ class HoneycombViewController: SelectionViewController {
     
     private func setupHoneycombGrid() {
         // Create the honeycomb grid with a text provider
-        
         honeycombGrid = HoneycombGridView<Skill>(textProvider: { muscle in
             return muscle.name ?? "Unknown"
         })
