@@ -37,8 +37,12 @@ class HexCompletionScreen: UIViewController {
     private var gradientBorderView = GradientBorderView()
     
     // MARK: - Initialization
-    init() {
+    init(skill: Skill) {
         super.init(nibName: nil, bundle: nil)
+        
+        let log = DatabaseFacade.makeWorkoutLog(ofSkill: skill)
+        DatabaseFacade.saveContext()
+        
         hex.alpha = 0
         hex.fillColor = .black
         modalPresentationStyle = .fullScreen

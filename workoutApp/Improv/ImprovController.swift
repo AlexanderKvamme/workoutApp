@@ -21,19 +21,6 @@ class HoneycombViewController: SelectionViewController {
         super.viewDidLoad()
         view.backgroundColor = .akLight
         
-//        let skills = DatabaseFacade.fetchSkills()
-//        for skill in skills {
-//            DatabaseFacade.delete(skill)
-//        }
-//
-//        let skill = DatabaseFacade.makeSkill()
-//        skill.name = "Caseman"
-//        let skill2 = DatabaseFacade.makeSkill()
-//        skill2.name = "The fuckening"
-//        
-//        print("shazam skills: ", skills.count)
-//        print("shazam skills: ", skills.map{ $0.name })
-        
         DatabaseFacade.saveContext()
     }
     
@@ -88,8 +75,6 @@ class HoneycombViewController: SelectionViewController {
         
         // Configure with data and selection handler
         honeycombGrid.configure(with: skills) { [weak self] (selectedSkill, hexView: HexagonItemView) in
-            print("Selected skill: \(selectedSkill.name ?? "Unknown")")
-            
             let setCountPicker = SetCountPickerController(skill: selectedSkill) { setCount in
                 // Create your custom view controller with the selected skill and set count
                 let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)

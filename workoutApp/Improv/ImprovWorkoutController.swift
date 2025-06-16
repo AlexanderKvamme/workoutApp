@@ -201,7 +201,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
                 self?.progressBar.bump(after: 1.8, onCompletion: {
                     // Create and present the completion screen with custom transition
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-                        let completionScreen = HexCompletionScreen()
+                        let completionScreen = HexCompletionScreen(skill: self!.skill)
                         self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
                         completionScreen.transitioningDelegate = self?.transitionDelegate
                         self?.present(completionScreen, animated: true)

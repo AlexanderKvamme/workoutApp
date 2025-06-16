@@ -329,6 +329,14 @@ final class DatabaseFacade {
         return log
     }
     
+    static func makeWorkoutLog(ofSkill skill: Skill) -> WorkoutLog {
+        let log = self.makeWorkoutLog()
+        log.dateStarted = Date() as Date
+        log.dateEnded = Date() as Date
+        skill.mostRecentUse = log
+        return log
+    }
+    
     static func makeWorkout(withName workoutName: String, workoutStyle: WorkoutStyle, muscles: [Muscle], skills: [Skill]? = nil, exercises: [Exercise]) -> Workout {
         let workoutRecord = createManagedObjectForEntity(.Workout) as! Workout
         workoutRecord.setName(workoutName)

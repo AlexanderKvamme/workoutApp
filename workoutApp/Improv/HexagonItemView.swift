@@ -104,6 +104,7 @@ class HexagonItemView<T>: UIView {
     }
     
     func configure(name: String, lastPerformanceDate: Date?) {
+        print("Last performance date: ", lastPerformanceDate)
         textLabel.text = name
         
         let colors: [UIColor] = [
@@ -117,7 +118,6 @@ class HexagonItemView<T>: UIView {
         
         // Select color based on days since last performance
         let selectedColor: UIColor
-        
         if daysSincePerformance >= 14 {
             selectedColor = colors[3]  // black (14+ days)
         } else if daysSincePerformance >= 8 {
