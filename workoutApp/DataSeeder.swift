@@ -22,9 +22,9 @@ final class DataSeeder {
     // Properties for seeding to Core Data
     private let seedMuscles = ["BICEPS", "TRICEPS", "GLUTES", "CORE", "CHEST", "SHOULDERS", "BACK", "QUADS", "OTHER"]
     private let seedWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
-    private let seedExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED", "INVERTED", "SLOW", "EXPLOSIVE", "INCLINED", "DECLINED"]
+    private let seedExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED"]
     private let seedMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
-    private let seedSkills = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP", "OTHER"]
+    private let seedSkills = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
     
     // MARK: - Initializer
     
@@ -114,6 +114,91 @@ final class DataSeeder {
         }
     }
     
+    // MARK: - Seed Skills with Exercises
+    
+    public func seedSkillsWithExercises() {
+        // First, make sure all skills exist
+        seedWithExampleSkillGroups()
+        
+        // Define exercises for each skill
+        let muscleUpExercises = [
+            (name: "FALSE GRIP HANG", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
+            (name: "TRANSITION PRACTICE", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.chest], measurement: MeasurementStyles.sets),
+            (name: "NEGATIVE MUSCLE UP", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.biceps, Muscles.chest], measurement: MeasurementStyles.sets),
+            (name: "BANDED MUSCLE UP", style: ExerciseStyles.assisted, muscles: [Muscles.back, Muscles.biceps, Muscles.chest], measurement: MeasurementStyles.sets)
+        ]
+        
+        let handstandExercises = [
+            (name: "WALL HANDSTAND", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
+            (name: "HANDSTAND HOLDS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
+            (name: "HANDSTAND PUSH-UP", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.triceps], measurement: MeasurementStyles.sets),
+            (name: "HANDSTAND WALK", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time)
+        ]
+        
+        let lsitExercises = [
+            (name: "TUCKED L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
+            (name: "ONE LEG L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
+            (name: "FULL L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time)
+        ]
+        
+        let pullOverExercises = [
+            (name: "NEGATIVE PULL OVER", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
+            (name: "PULL OVER PROGRESSION", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets)
+        ]
+        
+        let oneHandPushUpExercises = [
+            (name: "ARCHER PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
+            (name: "PARTIAL 1H PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
+            (name: "FULL 1H PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets)
+        ]
+        
+        // Associate exercises with skills
+        associateExercisesWithSkill(skillName: "MUSCLE UP", exercises: muscleUpExercises)
+        associateExercisesWithSkill(skillName: "HANDSTAND", exercises: handstandExercises)
+        associateExercisesWithSkill(skillName: "L-SIT", exercises: lsitExercises)
+        associateExercisesWithSkill(skillName: "PULL OVER", exercises: pullOverExercises)
+        associateExercisesWithSkill(skillName: "1H PUSH UP", exercises: oneHandPushUpExercises)
+        
+        DatabaseFacade.saveContext()
+        
+        // Print the created exercises for verification
+        printSkillsWithExercises()
+    }
+    
+    // Helper method to associate exercises with a skill
+    private func associateExercisesWithSkill(
+        skillName: String,
+        exercises: [(name: String, style: ExerciseStyle, muscles: [Muscle], measurement: MeasurementStyle)]
+    ) {
+        // Get or create the skill
+        guard let skill = DatabaseFacade.getSkill(named: skillName.uppercased()) else {
+            print("Error: Skill \(skillName) not found")
+            return
+        }
+        
+        // Create exercises and associate them with the skill
+        for exerciseInfo in exercises {
+            // Check if exercise already exists
+            if let existingExercise = DatabaseFacade.getExercise(named: exerciseInfo.name.uppercased()) {
+                // Add the skill to the existing exercise
+                existingExercise.addToSkillsUsed(skill)
+                skill.addToUsedInExercises(existingExercise)
+            } else {
+                // Create a new exercise
+                let newExercise = DatabaseFacade.makeExercise(
+                    withName: exerciseInfo.name.uppercased(),
+                    exerciseStyle: exerciseInfo.style,
+                    muscles: exerciseInfo.muscles,
+                    skills: [skill],
+                    measurementStyle: exerciseInfo.measurement
+                )
+                
+                // Explicitly set the relationship
+                skill.addToUsedInExercises(newExercise)
+            }
+        }
+    }
+    
     // MARK: - Seed Methods
     
     private func seedWithExampleMuscleGroups() {
@@ -164,7 +249,7 @@ final class DataSeeder {
     }
     
     private func makeSkill(withName name: String) {
-        let muscleRecord = DatabaseFacade.makeSkill(named: name.uppercased())
+        let skillRecord = DatabaseFacade.makeSkill(named: name.uppercased())
     }
     
     private func makeWarning(withMessage message: String) {
@@ -287,16 +372,45 @@ final class DataSeeder {
             let request = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
             let allExercises = try context.fetch(request)
             
-            print("workout count: ", allExercises.count)
+            print("Exercise count: ", allExercises.count)
             for exercise in allExercises {
                 print()
                 print("Name: ", exercise.name ?? "")
                 print("Muscle: ", exercise.getMuscles().map({ return $0.name
                 }))
                 print("Type: ", exercise.style?.name ?? "")
+                
+                // Print associated skills
+                if let skills = exercise.skillsUsed?.allObjects as? [Skill], !skills.isEmpty {
+                    print("Skills: ", skills.map({ return $0.name ?? "unknown" }))
+                }
             }
         } catch {
             print("error in printing exercises")
+        }
+    }
+    
+    private func printSkillsWithExercises() {
+        do {
+            let request = NSFetchRequest<Skill>(entityName: Entity.Skill.rawValue)
+            let allSkills = try context.fetch(request)
+            
+            print("Skill count: ", allSkills.count)
+            for skill in allSkills {
+                print()
+                print("Skill: ", skill.name ?? "")
+                print("----------------------")
+                
+                if let exercises = skill.usedInExercises?.allObjects as? [Exercise], !exercises.isEmpty {
+                    for exercise in exercises {
+                        print(" - \(exercise.name ?? "unknown")")
+                    }
+                } else {
+                    print(" No exercises associated with this skill")
+                }
+            }
+        } catch {
+            print("error in printing skills with exercises")
         }
     }
     
@@ -505,5 +619,41 @@ fileprivate final class Muscles {
     
     private static func getOrMakeMuscle(named name: String) -> Muscle {
         return DatabaseFacade.getMuscle(named: name) ?? DatabaseFacade.makeMuscle(named: name)
+    }
+}
+
+/// Easily accessible skills for quickly seeding before generating snapshots etc.
+fileprivate final class Skills {
+    
+    // Computed Properties
+    
+    static var muscleUp: Skill {
+        return getOrMakeSkill(named: "MUSCLE UP")
+    }
+    
+    static var handstand: Skill {
+        return getOrMakeSkill(named: "HANDSTAND")
+    }
+    
+    static var pullOver: Skill {
+        return getOrMakeSkill(named: "PULL OVER")
+    }
+    
+    static var lSit: Skill {
+        return getOrMakeSkill(named: "L-SIT")
+    }
+    
+    static var oneHandPushUp: Skill {
+        return getOrMakeSkill(named: "1H PUSH UP")
+    }
+    
+    static var other: Skill {
+        return getOrMakeSkill(named: "OTHER")
+    }
+    
+    // Methods
+    
+    private static func getOrMakeSkill(named name: String) -> Skill {
+        return DatabaseFacade.getSkill(named: name) ?? DatabaseFacade.makeSkill(named: name)
     }
 }

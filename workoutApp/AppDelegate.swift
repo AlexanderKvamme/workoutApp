@@ -107,6 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Seed Core data 
             let dataSeeder = DataSeeder(context: context)
             dataSeeder.seedCoreData()
+            dataSeeder.seedSkillsWithExercises()
             
             // Show Welcome message
             let modal = CustomAlertView(messageContent: "Welcome to the workout!")
