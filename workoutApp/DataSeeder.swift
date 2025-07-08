@@ -24,7 +24,7 @@ final class DataSeeder {
     private let seedWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
     private let seedExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED"]
     private let seedMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
-    private let seedSkills = ["MUSCLE UP", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
+    private let seedSkills = ["MUSCLE UP", "ZWIFT", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
     
     // MARK: - Initializer
     
@@ -122,7 +122,9 @@ final class DataSeeder {
         
         // Define exercises for each skill
         let muscleUpExercises = [
-            (name: "FALSE GRIP HANG", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
+            (name: "TRUNK SLAMMERS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
+            (name: "EXPLOSIVE PULL UPS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
+            (name: "STRAIGHT BAR DIPS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.triceps], measurement: MeasurementStyles.time),
             (name: "TRANSITION PRACTICE", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.chest], measurement: MeasurementStyles.sets),
             (name: "NEGATIVE MUSCLE UP", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.biceps, Muscles.chest], measurement: MeasurementStyles.sets),
             (name: "BANDED MUSCLE UP", style: ExerciseStyles.assisted, muscles: [Muscles.back, Muscles.biceps, Muscles.chest], measurement: MeasurementStyles.sets)
@@ -132,33 +134,46 @@ final class DataSeeder {
             (name: "WALL HANDSTAND", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
             (name: "HANDSTAND HOLDS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
             (name: "HANDSTAND PUSH-UP", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.triceps], measurement: MeasurementStyles.sets),
-            (name: "HANDSTAND WALK", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time)
+            (name: "PIKE PUSHUPS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
+            (name: "HAND STRENGTHENERS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time)
         ]
         
-        let lsitExercises = [
+        let lsitToHandstandExercises = [
             (name: "TUCKED L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
             (name: "ONE LEG L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
-            (name: "FULL L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time)
+            (name: "FULL L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
+            (name: "FOLDERS", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time)
         ]
         
         let pullOverExercises = [
-            (name: "NEGATIVE PULL OVER", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
-            (name: "PULL OVER PROGRESSION", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets)
+            (name: "BAR POUNDERS", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
+            (name: "UPSIDE DOWN ROWS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets)
         ]
         
         let oneHandPushUpExercises = [
+            (name: "PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
+            (name: "INCLINED PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
             (name: "ARCHER PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
             (name: "PARTIAL 1H PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
             (name: "FULL 1H PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets)
         ]
         
+        let bikeExercises = [
+            (name: "Pistol Squats", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
+            (name: "Lunges", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
+            (name: "Box steps", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
+            (name: "Box jump", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
+            (name: "Extreme jump", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
+        ]
+        
         // Associate exercises with skills
         associateExercisesWithSkill(skillName: "MUSCLE UP", exercises: muscleUpExercises)
         associateExercisesWithSkill(skillName: "HANDSTAND", exercises: handstandExercises)
-        associateExercisesWithSkill(skillName: "L-SIT", exercises: lsitExercises)
+        associateExercisesWithSkill(skillName: "L-SIT TO HANDSTAND", exercises: lsitToHandstandExercises)
         associateExercisesWithSkill(skillName: "PULL OVER", exercises: pullOverExercises)
         associateExercisesWithSkill(skillName: "1H PUSH UP", exercises: oneHandPushUpExercises)
-        
+        associateExercisesWithSkill(skillName: "ZWIFT", exercises: bikeExercises)
+
         DatabaseFacade.saveContext()
         
         // Print the created exercises for verification
