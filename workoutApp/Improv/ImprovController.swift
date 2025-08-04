@@ -36,6 +36,7 @@ class HoneycombViewController: SelectionViewController {
 //        let improvWorkoutController = ImprovWorkoutController(skill: skill)
 //        navigationController?.pushViewController(improvWorkoutController, animated: true)
         globalTabBar.showIt()
+        header.play()
     }
     
     override func viewDidLayoutSubviews() {

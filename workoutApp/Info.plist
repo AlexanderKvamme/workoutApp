@@ -34,6 +34,8 @@
 		<string>SonoVariable.otf</string>
 		<string>Nunito-VariableFont_wght.ttf</string>
 		<string>PirataOne-Regular.ttf</string>
+		<string>GermaniaOne-Regular.ttf</string>
+		<string>Texturina-VariableFont_opsz,wght.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Main</string>

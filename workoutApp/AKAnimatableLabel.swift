@@ -13,7 +13,7 @@ import SnapKit
 import VFont
 
 // MARK: - AnimatableLabel
-class AnimatableLabel: UIView {
+class AKAnimatableLabel: UIView {
     // Text layer for rendering text
     let textLayer = CATextLayer()
     
@@ -21,7 +21,7 @@ class AnimatableLabel: UIView {
     private let containerView = UIView()
     
     // Variable font for animation
-    var vfont: VFont? = VFonts.elza(size: 40)
+    var vfont: VFont? = AKVFonts.elza(size: 40)
     
     // Text properties
     var textString: String?

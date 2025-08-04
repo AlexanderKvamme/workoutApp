@@ -181,7 +181,7 @@ class AnimatedTextView: UIView {
     // MARK: - Private Methods
     private func animateFontWeightAndColor(for label: UILabel, index: Int, duration: TimeInterval, delay: TimeInterval = 0, flashColor: Bool) {
         // Get the variable font
-        let vfont = VFonts.elza(size: textFont.pointSize)
+        let vfont = AKVFonts.elza(size: textFont.pointSize)
         
         // Create timing for font weight animation
         let fontStartTime = delay + duration * 0.1  // Start font animation at 10% of total animation
@@ -262,7 +262,7 @@ class AnimatedTextView: UIView {
         ).size
         
         // Pre-calculate the maximum size with bold font
-        let vfont = VFonts.elza(size: font.pointSize)
+        let vfont = AKVFonts.elza(size: font.pointSize)
         let boldFont = vfont.make(weight: 1.0)
         let boldAttributes = [NSAttributedString.Key.font: boldFont]
         let boldSize = (charString as NSString).boundingRect(

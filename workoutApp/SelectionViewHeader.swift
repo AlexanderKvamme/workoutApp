@@ -17,7 +17,9 @@ class SelectionViewHeader: UIView {
     // MARK: - Properties
     
     var button = UIButton()
-    var label = UILabel()
+    let subheaderContainer = UIView()
+    let subheaderLabel = UILabel()
+    var header: AKAnimatedCharactersView!
     
     // MARK: - Initializers
     
@@ -34,18 +36,32 @@ class SelectionViewHeader: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public Methods
+    
+    func play() {
+        resetAnimation()
+        
+        header.startAnimation()
+        UIView.animate(withDuration: 1) {
+            self.subheaderContainer.transform = CGAffineTransform(translationX: 0, y: 0).scaledBy(x: 1, y: 1).rotated(by: -.pi/64)
+        }
+    }
+    
+    func resetAnimation() {
+        header.resetAnimation()
+        subheaderContainer.transform = CGAffineTransform(translationX: 0, y: 10).scaledBy(x: 1.1, y: 1.1).rotated(by: 0)
+        subheaderContainer.layoutIfNeeded()
+    }
+    
     // MARK: - Setup
     
     private func setupViews(header: String, subheader: String) {
-        let headerLabel = UILabel()
-        let subheaderContainer = UIView()
-        let subheaderLabel = UILabel()
+        self.header = AKAnimatedCharactersView(
+            text: header,
+            font: UIFont(name: "PirataOne-Regular", size: 110)!,
+            textColor: .black
+        )
         
-        // Configure header label
-        headerLabel.text = header
-        headerLabel.font = UIFont(name: "PirataOne-Regular", size: 110)
-        headerLabel.textAlignment = .center
-        headerLabel.textColor = .black
         
         // Configure subheader container with rounded background
         subheaderContainer.backgroundColor = UIColor.akBlue
@@ -59,25 +75,23 @@ class SelectionViewHeader: UIView {
         subheaderLabel.textColor = .white
         
         // Add subviews
-        addSubview(headerLabel)
+        addSubview(self.header)
         addSubview(subheaderContainer)
         subheaderContainer.addSubview(subheaderLabel)
         
         // Setup constraints with SnapKit
-        headerLabel.snp.makeConstraints { make in
+        self.header.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         subheaderContainer.snp.makeConstraints { make in
-            make.centerX.equalTo(headerLabel)
-            make.centerY.equalTo(headerLabel).offset(45)
+            make.centerX.equalTo(self.header)
+            make.centerY.equalTo(self.header).offset(45)
         }
         
         subheaderLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(2)
             make.leading.trailing.equalToSuperview().inset(16)
         }
-        
-        subheaderContainer.transform = subheaderContainer.transform.rotated(by: -.pi/64)
     }
 }

@@ -17,7 +17,7 @@ import Foundation
 import VFont
 
 
-public struct VFonts {
+public struct AKVFonts {
     
     public static let defaultFontSize: CGFloat = 24.0
     
@@ -78,6 +78,19 @@ public final class Elza : VFont {
         let name = "Elza Round Variable"
         super.init(name: name, size: size)!
         let weightAxis = 2003265652 // Standard weight axis ID
+        self.setValue(boldness, forAxisID: weightAxis)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+public final class Texturina: VFont {
+    public init(size: CGFloat, boldness: CGFloat = 400) {
+        let name = "Texturina"
+        super.init(name: name, size: size)!
+        let weightAxis = 2003265652
         self.setValue(boldness, forAxisID: weightAxis)
     }
 

@@ -38,6 +38,8 @@ class HistorySelectionViewController: SelectionViewController {
         updateStackToDisplayStylesAndAll()
         view.bringSubviewToFront(stack) // Bring above diagonal line
         view.layoutIfNeeded()
+        
+        header.play()
     }
     
     // MARK: - Methods

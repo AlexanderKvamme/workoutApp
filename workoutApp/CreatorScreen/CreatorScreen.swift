@@ -60,6 +60,7 @@ class CreatorScreen: SelectionViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         globalTabBar.showIt()
+        header.play()
     }
     
     // MARK: - Setup
@@ -81,11 +82,6 @@ class CreatorScreen: SelectionViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // Header label constraints
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            header.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
             // Stack view constraints
             stackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 60),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),

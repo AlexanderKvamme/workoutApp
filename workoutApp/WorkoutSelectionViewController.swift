@@ -40,6 +40,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         view.layoutIfNeeded()
         
         globalTabBar.showIt()
+        header.play()
     }
     
     override func viewDidLoad() {
