@@ -10,7 +10,15 @@ import AKKIT
 import UIKit
 
 /// Screen that allows the user to select what type of entity to create
-class CreatorScreen: UIViewController {
+class CreatorScreen: SelectionViewController {
+        
+    init() {
+        super.init(header: SelectionViewHeader(header: "Create", subheader: " something "))
+    }
+    
+    @MainActor required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Properties
     
@@ -21,16 +29,6 @@ class CreatorScreen: UIViewController {
         stack.distribution = .fillEqually
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
-    }()
-    
-    private let headerLabel: UILabel = {
-        let label = UILabel()
-        label.text = "CREATE NEW"
-        label.font = UIFont.custom(style: .bold, ofSize: .big)
-        label.textColor = .black
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
     private lazy var createWorkoutButton: UIButton = {
@@ -71,7 +69,7 @@ class CreatorScreen: UIViewController {
         navigationItem.title = "Creator"
         
         // Add subviews
-        view.addSubview(headerLabel)
+        view.addSubview(header)
         view.addSubview(stackView)
         
         // Add buttons to stack view
@@ -84,12 +82,12 @@ class CreatorScreen: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             // Header label constraints
-            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            headerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            header.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            header.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             // Stack view constraints
-            stackView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 60),
+            stackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 60),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40)

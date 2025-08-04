@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let context = DatabaseFacade.persistentContainer.viewContext
+        AKFont.printFonts()
         
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {

@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import AKKIT
+import SnapKit
 
 /// Header used in WorkoutSelectionView, HistorySelectionView
 class SelectionViewHeader: UIView {
@@ -24,41 +26,58 @@ class SelectionViewHeader: UIView {
     }
     
     init(header: String, subheader: String) {
-        let headerLabel = UILabel()
-        let subheaderLabel = UILabel()
-        
-        headerLabel.text = header.uppercased()
-        headerLabel.font = UIFont.custom(style: .bold, ofSize: .medium)
-        headerLabel.textAlignment = .center
-        headerLabel.textColor = UIColor.akDark.withAlphaComponent(.opacity.faded.rawValue)
-        headerLabel.sizeToFit()
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.applyCustomAttributes(.medium)
-        
-        subheaderLabel.text = subheader.uppercased()
-        subheaderLabel.font = UIFont.custom(style: .bold, ofSize: .big)
-        subheaderLabel.textAlignment = .center
-        subheaderLabel.textColor = UIColor.akDark
-        subheaderLabel.sizeToFit()
-        subheaderLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         super.init(frame: CGRect.zero)
-        
-        addSubview(headerLabel)
-        addSubview(subheaderLabel)
-        
-        headerLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        headerLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        subheaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor).isActive = true
-        subheaderLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        let combinedLabelHeight = subheaderLabel.frame.height + headerLabel.frame.height
-        heightAnchor.constraint(equalToConstant: combinedLabelHeight).isActive = true
-        widthAnchor.constraint(equalToConstant: 100).isActive = true
+        setupViews(header: header, subheader: subheader)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup
+    
+    private func setupViews(header: String, subheader: String) {
+        let headerLabel = UILabel()
+        let subheaderContainer = UIView()
+        let subheaderLabel = UILabel()
+        
+        // Configure header label
+        headerLabel.text = header
+        headerLabel.font = UIFont(name: "PirataOne-Regular", size: 110)
+        headerLabel.textAlignment = .center
+        headerLabel.textColor = .black
+        
+        // Configure subheader container with rounded background
+        subheaderContainer.backgroundColor = UIColor.akBlue
+        subheaderContainer.layer.cornerRadius = 8
+        subheaderContainer.clipsToBounds = true
+        
+        // Configure subheader label
+        subheaderLabel.text = subheader
+        subheaderLabel.font = AKFont.fulbo(24)
+        subheaderLabel.textAlignment = .center
+        subheaderLabel.textColor = .white
+        
+        // Add subviews
+        addSubview(headerLabel)
+        addSubview(subheaderContainer)
+        subheaderContainer.addSubview(subheaderLabel)
+        
+        // Setup constraints with SnapKit
+        headerLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        subheaderContainer.snp.makeConstraints { make in
+            make.centerX.equalTo(headerLabel)
+            make.centerY.equalTo(headerLabel).offset(45)
+        }
+        
+        subheaderLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(2)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        subheaderContainer.transform = subheaderContainer.transform.rotated(by: -.pi/64)
+    }
 }
-

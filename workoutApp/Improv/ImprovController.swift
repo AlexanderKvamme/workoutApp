@@ -10,7 +10,7 @@ class HoneycombViewController: SelectionViewController {
     private var skills: [Skill] = []
     
     init() {
-        super.init(header: SelectionViewHeader(header: "Improvise workout", subheader: "Select a skill"))
+        super.init(header: SelectionViewHeader(header: "Practice", subheader: " a skill "))
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
