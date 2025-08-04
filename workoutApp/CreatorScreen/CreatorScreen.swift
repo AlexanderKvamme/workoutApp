@@ -13,7 +13,7 @@ import UIKit
 class CreatorScreen: SelectionViewController {
         
     init() {
-        super.init(header: SelectionViewHeader(header: "Create", subheader: " something "))
+        super.init(header: AnimatedScreenHeader(header: "Create", subheader: " something "))
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {
@@ -22,29 +22,74 @@ class CreatorScreen: SelectionViewController {
     
     // MARK: - Properties
     
-    private let stackView: UIStackView = {
+    private let containerStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 20
-        stack.distribution = .fillEqually
+        stack.spacing = 16
+        stack.alignment = .center
+        // No distribution - let buttons size themselves
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
     
-    private lazy var createWorkoutButton: UIButton = {
-        return createButton(withTitle: "Workout", action: #selector(createWorkoutTapped))
+    private let topRowStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 16
+        stack.alignment = .center
+        // No distribution - let buttons size themselves
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
     }()
     
-    private lazy var createMuscleButton: UIButton = {
-        return createButton(withTitle: "Muscle", action: #selector(createMuscleTapped))
+    private let bottomRowStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 16
+        stack.alignment = .center
+        // No distribution - let buttons size themselves
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
     }()
     
-    private lazy var createExerciseButton: UIButton = {
-        return createButton(withTitle: "Exercise", action: #selector(createExerciseTapped))
+    private lazy var createWorkoutButton: FormFittingActionButton = {
+        return FormFittingActionButton(
+            title: "Workout",
+            icon: "",
+            color: .black,
+            font: h2,
+            action: createWorkoutTapped
+        )
     }()
     
-    private lazy var createSkillButton: UIButton = {
-        return createButton(withTitle: "Skill", action: #selector(createSkillTapped))
+    private lazy var createExerciseButton: FormFittingActionButton = {
+        return FormFittingActionButton(
+            title: "Exercise",
+            icon: "",
+            color: .black,
+            font: h2,
+            action: createExerciseTapped
+        )
+    }()
+    
+    private lazy var createMuscleButton: FormFittingActionButton = {
+        return FormFittingActionButton(
+            title: "Muscle",
+            icon: "",
+            color: .black,
+            font: h2,
+            action: createMuscleTapped
+        )
+    }()
+    
+    private lazy var createSkillButton: FormFittingActionButton = {
+        return FormFittingActionButton(
+            title: "Skill",
+            icon: "",
+            color: .black,
+            font: h2,
+            action: createSkillTapped
+        )
     }()
 
     // MARK: - Lifecycle
@@ -71,58 +116,48 @@ class CreatorScreen: SelectionViewController {
         
         // Add subviews
         view.addSubview(header)
-        view.addSubview(stackView)
+        view.addSubview(containerStackView)
         
-        // Add buttons to stack view
-        stackView.addArrangedSubview(createWorkoutButton)
-        stackView.addArrangedSubview(createExerciseButton)
-        stackView.addArrangedSubview(createMuscleButton)
-        stackView.addArrangedSubview(createSkillButton)
+        // Arrange buttons in rows (form-fitting sizes)
+        topRowStackView.addArrangedSubview(createWorkoutButton)
+        topRowStackView.addArrangedSubview(createExerciseButton)
+        
+        bottomRowStackView.addArrangedSubview(createMuscleButton)
+        bottomRowStackView.addArrangedSubview(createSkillButton)
+        
+        // Add rows to container
+        containerStackView.addArrangedSubview(topRowStackView)
+        containerStackView.addArrangedSubview(bottomRowStackView)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // Stack view constraints
-            stackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 60),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40)
+            // Container stack view constraints - positioned towards bottom
+            containerStackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
+            containerStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+            containerStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            containerStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
         ])
-    }
-    
-    private func createButton(withTitle title: String, action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont.custom(style: .bold, ofSize: .medium)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .black
-        button.layer.cornerRadius = 12
-        button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
-        button.addTarget(self, action: action, for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        return button
     }
     
     // MARK: - Actions
     
-    @objc private func createWorkoutTapped() {
+    private func createWorkoutTapped() {
         let workoutCreator = NewWorkoutController()
         navigationController?.pushViewController(workoutCreator, animated: true)
     }
     
-    @objc private func createMuscleTapped() {
-        
+    private func createMuscleTapped() {
         let muscleCreator = MuscleCreatorScreen()
         navigationController?.pushViewController(muscleCreator, animated: true)
     }
     
-    @objc private func createSkillTapped() {
+    private func createSkillTapped() {
         let skillCreator = SkillCreatorScreen()
         navigationController?.pushViewController(skillCreator, animated: true)
     }
     
-    @objc private func createExerciseTapped() {
+    private func createExerciseTapped() {
         let newExerciseController = ExerciseCreator(withPreselectedMuscle: [], showBackButton: true)
         newExerciseController.styleBackButton()
         
@@ -131,4 +166,3 @@ class CreatorScreen: SelectionViewController {
         navigationController?.pushViewController(newExerciseController, animated: Constant.Animation.pickerVCsShouldAnimateIn)
     }
 }
-

@@ -15,7 +15,7 @@ class HistorySelectionViewController: SelectionViewController {
     // MARK: - Initializers
     
     init() {
-        super.init(header: SelectionViewHeader(header: "Workout", subheader: "History"))
+        super.init(header: AnimatedScreenHeader(header: "workout", subheader: "History"))
         DatabaseFacade.clearUnfininishedWorkoutLogs() // Removes unfinished workouts
     }
     

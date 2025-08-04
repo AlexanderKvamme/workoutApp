@@ -14,7 +14,7 @@ import CoreData
 class SelectionViewController: UIViewController {
     
     var fetchRequestToDisplaySelectionsFrom: NSFetchRequest<NSFetchRequestResult>? // Fetch choice options
-    var header: SelectionViewHeader!
+    var header: AnimatedScreenHeader!
     var buttons = [SelectionViewButton]()
     var alignmentRectangle = UIView() // Used to center stack and diagonalLineView between header and tab bar
     var diagonalLineView: UIView! // yellow line through the stack to create som visual tension
@@ -24,13 +24,13 @@ class SelectionViewController: UIViewController {
     
     // MARK: - Initializers
     
-    init(header: SelectionViewHeader) {
+    init(header: AnimatedScreenHeader) {
         self.header = header
         super.init(nibName: nil, bundle: nil)
     }
     
     // Initialize with fetchRequest
-    convenience init(header: SelectionViewHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
+    convenience init(header: AnimatedScreenHeader, fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
         self.init(header: header)
         self.fetchRequestToDisplaySelectionsFrom = fetchRequest
     }

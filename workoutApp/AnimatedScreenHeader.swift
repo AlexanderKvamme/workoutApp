@@ -12,7 +12,7 @@ import AKKIT
 import SnapKit
 
 /// Header used in WorkoutSelectionView, HistorySelectionView
-class SelectionViewHeader: UIView {
+class AnimatedScreenHeader: UIView {
     
     // MARK: - Properties
     
@@ -46,14 +46,21 @@ class SelectionViewHeader: UIView {
     }
     
     func slideBadgeUp() {
-        UIView.animate(withDuration: 1) {
-            self.subheaderContainer.transform = CGAffineTransform(translationX: 0, y: 0).scaledBy(x: 1, y: 1).rotated(by: -.pi/64)
-        }
+        UIView.animate(
+            withDuration: 0.7,
+            delay: 0,
+            usingSpringWithDamping: 0.4,        // Low damping = more bounce
+            initialSpringVelocity: 1.5,         // High velocity = more dramatic
+            options: [.curveEaseOut],
+            animations: {
+                self.subheaderContainer.transform = CGAffineTransform(rotationAngle: -.pi/64).scaledBy(x: 1, y: 1).translatedBy(x: 0, y: 0)
+            }
+        )
     }
     
     func resetAnimation() {
         header.resetAnimation()
-        subheaderContainer.transform = CGAffineTransform(translationX: 0, y: 10).scaledBy(x: 1.1, y: 1.1).rotated(by: 0)
+        subheaderContainer.transform = CGAffineTransform(translationX: 0, y: 40).scaledBy(x: 1.1, y: 1.1).rotated(by: 0)
         subheaderContainer.layoutIfNeeded()
     }
     
@@ -62,7 +69,8 @@ class SelectionViewHeader: UIView {
     private func setupViews(header: String, subheader: String) {
         self.header = AKAnimatedCharactersView(
             text: header,
-            font: UIFont(name: "PirataOne-Regular", size: 110)!,
+//            font: UIFont(name: "PirataOne-Regular", size: 110)!,
+            font: Texturina(size: 80, boldness: 1200).uiFont,
             textColor: .black
         )
         

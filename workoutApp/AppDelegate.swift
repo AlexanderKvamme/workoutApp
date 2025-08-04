@@ -23,13 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let context = DatabaseFacade.persistentContainer.viewContext
         AKFont.printFonts()
         
-        
-        if let font = UIFont(name: "Texturina", size: 16) {
-            print("✅ Variable font available: \(font.fontName)")
-        } else {
-            print("❌ Variable font not found - you have static fonts only")
-        }
-        
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
             let seeder = DataSeeder(context: context)

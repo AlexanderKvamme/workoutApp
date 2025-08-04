@@ -54,6 +54,7 @@
 		DD3AF44D1EE45AB500C55453 /* PickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3AF44C1EE45AB500C55453 /* PickerController.swift */; };
 		DD3CE14A2DE1AA5400115924 /* AKAnimatableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3CE1492DE1AA5000115924 /* AKAnimatableLabel.swift */; };
 		DD3CE14C2DE1B43F00115924 /* Vfonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3CE14B2DE1B43200115924 /* Vfonts.swift */; };
+		DD3D20392E4154B3000B638E /* CTAButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3D20382E4154A3000B638E /* CTAButtons.swift */; };
 		DD4025D31F87AF4600A83D45 /* WeightedLiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4025D21F87AF4600A83D45 /* WeightedLiftCell.swift */; };
 		DD4025D51F87AF6A00A83D45 /* UnweightedLiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4025D41F87AF6A00A83D45 /* UnweightedLiftCell.swift */; };
 		DD4025D71F87DB3F00A83D45 /* ExerciseLogExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4025D61F87DB3F00A83D45 /* ExerciseLogExtensions.swift */; };
@@ -103,7 +104,7 @@
 		DD585D6B1EC5E03900962B19 /* TabBarSelectionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6A1EC5E03800962B19 /* TabBarSelectionIndicator.swift */; };
 		DD585D6D1EC5E39F00962B19 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D6C1EC5E39F00962B19 /* Constants.swift */; };
 		DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */; };
-		DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D941EC6734100962B19 /* SelectionViewHeader.swift */; };
+		DD585D951EC6734100962B19 /* AnimatedScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD585D941EC6734100962B19 /* AnimatedScreenHeader.swift */; };
 		DD59B0941EE1C1FA006443D4 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59B0931EE1C1FA006443D4 /* Typography.swift */; };
 		DD59B0961EE2B98A006443D4 /* ButtonFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD59B0951EE2B989006443D4 /* ButtonFooter.swift */; };
 		DD5CD5D01F4660A500672A1E /* ExerciseHistoryTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5CD5CF1F4660A500672A1E /* ExerciseHistoryTableController.swift */; };
@@ -253,6 +254,7 @@
 		DD3AF44C1EE45AB500C55453 /* PickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerController.swift; sourceTree = "<group>"; };
 		DD3CE1492DE1AA5000115924 /* AKAnimatableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKAnimatableLabel.swift; sourceTree = "<group>"; };
 		DD3CE14B2DE1B43200115924 /* Vfonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vfonts.swift; sourceTree = "<group>"; };
+		DD3D20382E4154A3000B638E /* CTAButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTAButtons.swift; sourceTree = "<group>"; };
 		DD4025D21F87AF4600A83D45 /* WeightedLiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedLiftCell.swift; sourceTree = "<group>"; };
 		DD4025D41F87AF6A00A83D45 /* UnweightedLiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnweightedLiftCell.swift; sourceTree = "<group>"; };
 		DD4025D61F87DB3F00A83D45 /* ExerciseLogExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLogExtensions.swift; sourceTree = "<group>"; };
@@ -284,7 +286,7 @@
 		DD585D6A1EC5E03800962B19 /* TabBarSelectionIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarSelectionIndicator.swift; sourceTree = "<group>"; };
 		DD585D6C1EC5E39F00962B19 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewButton.swift; sourceTree = "<group>"; };
-		DD585D941EC6734100962B19 /* SelectionViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionViewHeader.swift; sourceTree = "<group>"; };
+		DD585D941EC6734100962B19 /* AnimatedScreenHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedScreenHeader.swift; sourceTree = "<group>"; };
 		DD59B0931EE1C1FA006443D4 /* Typography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		DD59B0951EE2B989006443D4 /* ButtonFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonFooter.swift; sourceTree = "<group>"; };
 		DD5B9E31289ECA6500EB733E /* AKKIT.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = AKKIT.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -718,6 +720,7 @@
 				DD585D4A1EC4D53900962B19 /* Main.storyboard */,
 				DD585D521EC4D53900962B19 /* LaunchScreen.storyboard */,
 				DD585D461EC4D53900962B19 /* AppDelegate.swift */,
+				DD3D20382E4154A3000B638E /* CTAButtons.swift */,
 				DD585D6C1EC5E39F00962B19 /* Constants.swift */,
 				DD585D551EC4D53900962B19 /* Info.plist */,
 				DD585D4D1EC4D53900962B19 /* workoutApp.xcdatamodeld */,
@@ -753,7 +756,7 @@
 				DDB539AD1F2E074800824CFC /* WorkoutSelectionViewController.swift */,
 				DD468F821F2E1A8100A945A9 /* HistorySelectionViewController.swift */,
 				DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */,
-				DD585D941EC6734100962B19 /* SelectionViewHeader.swift */,
+				DD585D941EC6734100962B19 /* AnimatedScreenHeader.swift */,
 				DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */,
 				DDF95B361ECA236F009E6925 /* DiagonalLineView.swift */,
 			);
@@ -1142,7 +1145,7 @@
 				DDB5FF3D1F4CC99B00202705 /* ExerciseEditor.swift in Sources */,
 				DDA54AD91ED84B1B008C601C /* ModelEnums.swift in Sources */,
 				DDCF834D1F8A42F000F87B3E /* ShortExerciseTableCellBox.swift in Sources */,
-				DD585D951EC6734100962B19 /* SelectionViewHeader.swift in Sources */,
+				DD585D951EC6734100962B19 /* AnimatedScreenHeader.swift in Sources */,
 				DDF1F1F61F07E3C5001A6F0C /* ExerciseTableViewDataSource.swift in Sources */,
 				DDFA51011F583AE900AF28A4 /* PreferencePicker.swift in Sources */,
 				DD9297B82DCF60A300E8B147 /* StarView.swift in Sources */,
@@ -1225,6 +1228,7 @@
 				DDC2A3CD2DC7492E0023724B /* HexCompletionScreen.swift in Sources */,
 				DDC2A4CD2DC75A9C0023724B /* HexagonPathCreator.swift in Sources */,
 				DDEE8B591F8A222800176D0E /* ExerciseTableCellBox.swift in Sources */,
+				DD3D20392E4154B3000B638E /* CTAButtons.swift in Sources */,
 				DDFEA4DD2DB59F0C00C4F787 /* HexagonalButton.swift in Sources */,
 				DD585D721EC5F45E00962B19 /* SelectionViewButton.swift in Sources */,
 				DD4FF01B1F6D6504005040A0 /* WorkoutExtensions.swift in Sources */,

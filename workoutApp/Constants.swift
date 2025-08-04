@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AKKIT
 
 // MARK: - Fileprivate Properties
 
@@ -15,6 +16,10 @@ fileprivate let standardBoxWidth: CGFloat = UIScreen.main.bounds.width - 2*Const
 fileprivate let standardBoxHeight: CGFloat = 80
 
 // MARK: - Globals
+
+let h1 = Texturina(size: 80, boldness: 1200).uiFont
+let h2 = AKFont.fulbo(24)
+let h3 = AKFont.fulbo(16)
 
 enum Constant {
     
