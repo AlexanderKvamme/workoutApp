@@ -11,7 +11,7 @@ import CoreData
 import AKKIT
 
 
-var APP_IS_DEBUG = true
+var APP_IS_DEBUG = false
 var globalTabBar: WellRoundedTabBarController!
 
 @UIApplicationMain
@@ -28,27 +28,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             seeder.seedCoreDataForFastlaneSnapshots()
         }
         
+        WorkoutLog.auditWorkoutLogsForMissingDesigns()
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
         
         // Set initial viewController
         let hexagonScreen = CustomNavigationViewController(rootViewController: HoneycombViewController())
         let historyScreen = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
+        let workoutScreen = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
         let creatorScreen = CustomNavigationViewController(rootViewController: CreatorScreen())
-        let goalsScreen = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
         let profileScreen = CustomNavigationViewController(rootViewController: ProfileController())
 
         // FIXME: Make the tabbar controller actually use the images supplied here
         let tabButtonTint = UIColor.black
+        let tab3icon = UIImage(named: "create")!
         hexagonScreen.tabBarItem = UITabBarItem(title: "0", image: UIImage.hexIcon.withTintColor(tabButtonTint), tag: 0)
         historyScreen.tabBarItem = UITabBarItem(title: "1", image: UIImage.historyIcon.withTintColor(tabButtonTint), tag: 1)
-        creatorScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage.progressIcon.withTintColor(tabButtonTint), tag: 2)
-        goalsScreen.tabBarItem   = UITabBarItem(title: "3", image: UIImage.starIcon.withTintColor(tabButtonTint), tag: 3)
+//        creatorScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage.progressIcon.withTintColor(tabButtonTint), tag: 2)
+        creatorScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage.starIcon.withTintColor(tabButtonTint), tag: 2)
+        workoutScreen.tabBarItem   = UITabBarItem(title: "3", image: tab3icon.withTintColor(tabButtonTint), tag: 3)
         profileScreen.tabBarItem = UITabBarItem(title: "4", image: UIImage.profileIcon.withTintColor(tabButtonTint), tag: 4)
         
-        let screens = [hexagonScreen, historyScreen, creatorScreen, goalsScreen, profileScreen]
+        let screens = [hexagonScreen, historyScreen, workoutScreen, creatorScreen, profileScreen]
 //        let centerIcon = UIImage.xmarkIcon.rotate(radians: .pi/4)!
-        let centerIcon = UIImage.close24.rotate(radians: .pi/4)!
+//        let centerIcon = UIImage.close24.rotate(radians: .pi/4)!
+        let centerIcon = UIImage(named: "dumbbell")!
+//        let centerIcon = UIImage(named: "create")!
 //        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [4])
         let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [4])
         window?.rootViewController = tabBar

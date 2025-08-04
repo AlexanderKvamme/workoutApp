@@ -24,7 +24,7 @@ class SetCountPickerController: UIViewController {
     private let completionHandler: (Int) -> Void
     
     // MARK: - Initializers
-    init(skill: Skill, initialSelection: String = "4", completionHandler: @escaping (Int) -> Void) {
+    init(skill: Skill, initialSelection: String = "9", completionHandler: @escaping (Int) -> Void) {
         self.skill = skill
         self.completionHandler = completionHandler
         self.superStepper = SuperStepper(frame: stepperFrame, options: setOptions, initialSelection: initialSelection)

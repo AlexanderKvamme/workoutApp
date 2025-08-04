@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 extension WorkoutLog: Comparable {
@@ -59,10 +60,32 @@ extension WorkoutLog {
     
     func getDesign() -> Workout {
         guard let design = design else {
-            preconditionFailure("All workouts must have a design")
+            let context = DatabaseFacade.context // or however you access context
+            self.design = Self.createDefaultWorkoutDesign(context: context)
+            print("❌ Falling back to using a default workout.. Cuase it didnt have one...")
+            //            preconditionFailure("All workouts must have a design")
+            return design!
         }
         
         return design
+    }
+    
+    private static func createDefaultWorkoutDesign(context: NSManagedObjectContext) -> Workout {
+        // Check if default workout already exists
+        let request: NSFetchRequest<Workout> = Workout.fetchRequest()
+        request.predicate = NSPredicate(format: "name == %@", "Unknown Workout")
+        
+        if let existingDefault = try? context.fetch(request).first {
+            return existingDefault
+        }
+        
+        // Create new default workout
+        let defaultWorkout = Workout(context: context)
+        defaultWorkout.name = "Unknown Workout"
+        // Set other required properties based on your Workout model
+        // defaultWorkout.workoutStyle = ...
+        
+        return defaultWorkout
     }
     
     func getMusclesUsed() -> [Muscle] {
@@ -85,5 +108,41 @@ extension WorkoutLog {
         let time = end.timeIntervalSince(start as Date)
         
         return time.asMinimalString()
+    }
+}
+
+
+extension WorkoutLog {
+    
+    // Add this debugging function
+    static func auditWorkoutLogsForMissingDesigns() {
+        let context = DatabaseFacade.context // or however you access your context
+        let request: NSFetchRequest<WorkoutLog> = WorkoutLog.fetchRequest()
+        
+        do {
+            let allWorkoutLogs = try context.fetch(request)
+            let logsWithoutDesign = allWorkoutLogs.filter { $0.design == nil }
+            
+            print("🔍 WORKOUT LOG AUDIT:")
+            print("Total workout logs: \(allWorkoutLogs.count)")
+            print("Logs without design: \(logsWithoutDesign.count)")
+            
+            if !logsWithoutDesign.isEmpty {
+                print("\n❌ WORKOUT LOGS MISSING DESIGN:")
+                for (index, log) in logsWithoutDesign.enumerated() {
+                    print("  \(log.getName())")
+                    print("  \(index + 1). ID: \(log.objectID)")
+//                    print("     Date Started: \(log.dateS ?? "nil")")
+//                    print("     Date Ended: \(log.dateEnded ?? "nil")")
+                    print("     Logged Exercises: \(log.loggedExercises?.count ?? 0)")
+                    print("     ---")
+                }
+            } else {
+                print("✅ All workout logs have designs")
+            }
+            
+        } catch {
+            print("Error fetching workout logs: \(error)")
+        }
     }
 }

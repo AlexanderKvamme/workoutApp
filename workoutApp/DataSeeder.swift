@@ -24,7 +24,7 @@ final class DataSeeder {
     private let seedWorkoutStyles = ["NORMAL", "WEIGHTED", "IMPROV"]
     private let seedExerciseStyles = ["NORMAL", "ASSISTED", "WEIGHTED"]
     private let seedMeasurementStyles = ["TIME", "SETS", "WEIGHTED SETS"] // Add countdown
-    private let seedSkills = ["MUSCLE UP", "ZWIFT", "HANDSTAND", "PULL OVER", "L-SIT", "1H PUSH UP"]
+    private let seedSkills = ["MUSCLE UP", "ZWIFT", "HANDSTAND", "DRAGON PULL OVER", "L-SIT", "1H PUSH UP", "OTHER"]
     
     // MARK: - Initializer
     
@@ -122,6 +122,7 @@ final class DataSeeder {
         
         // Define exercises for each skill
         let muscleUpExercises = [
+            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
             (name: "TRUNK SLAMMERS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
             (name: "EXPLOSIVE PULL UPS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
             (name: "STRAIGHT BAR DIPS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.triceps], measurement: MeasurementStyles.time),
@@ -131,6 +132,7 @@ final class DataSeeder {
         ]
         
         let handstandExercises = [
+            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
             (name: "WALL HANDSTAND", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
             (name: "HANDSTAND HOLDS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
             (name: "HANDSTAND PUSH-UP", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.triceps], measurement: MeasurementStyles.sets),
@@ -139,6 +141,7 @@ final class DataSeeder {
         ]
         
         let lsitToHandstandExercises = [
+            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
             (name: "TUCKED L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
             (name: "ONE LEG L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
             (name: "FULL L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
@@ -146,11 +149,16 @@ final class DataSeeder {
         ]
         
         let pullOverExercises = [
+            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.time),
             (name: "BAR POUNDERS", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
-            (name: "UPSIDE DOWN ROWS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets)
+            (name: "UPSIDE DOWN ROWS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
+            (name: "DRAGON FLAGS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
+            (name: "TOES TO BAR", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
+            (name: "TRUNK SLAMMERS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets)
         ]
         
         let oneHandPushUpExercises = [
+            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.time),
             (name: "PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
             (name: "INCLINED PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
             (name: "ARCHER PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
@@ -159,6 +167,7 @@ final class DataSeeder {
         ]
         
         let bikeExercises = [
+            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.time),
             (name: "Pistol Squats", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
             (name: "Lunges", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
             (name: "Box steps", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
@@ -170,7 +179,7 @@ final class DataSeeder {
         associateExercisesWithSkill(skillName: "MUSCLE UP", exercises: muscleUpExercises)
         associateExercisesWithSkill(skillName: "HANDSTAND", exercises: handstandExercises)
         associateExercisesWithSkill(skillName: "L-SIT TO HANDSTAND", exercises: lsitToHandstandExercises)
-        associateExercisesWithSkill(skillName: "PULL OVER", exercises: pullOverExercises)
+        associateExercisesWithSkill(skillName: "DRAGON PULL OVER", exercises: pullOverExercises)
         associateExercisesWithSkill(skillName: "1H PUSH UP", exercises: oneHandPushUpExercises)
         associateExercisesWithSkill(skillName: "ZWIFT", exercises: bikeExercises)
 
@@ -186,10 +195,7 @@ final class DataSeeder {
         exercises: [(name: String, style: ExerciseStyle, muscles: [Muscle], measurement: MeasurementStyle)]
     ) {
         // Get or create the skill
-        guard let skill = DatabaseFacade.getSkill(named: skillName.uppercased()) else {
-            print("Error: Skill \(skillName) not found")
-            return
-        }
+        let skill = DatabaseFacade.getSkill(named: skillName.uppercased())
         
         // Create exercises and associate them with the skill
         for exerciseInfo in exercises {
@@ -651,7 +657,7 @@ fileprivate final class Skills {
     }
     
     static var pullOver: Skill {
-        return getOrMakeSkill(named: "PULL OVER")
+        return getOrMakeSkill(named: "DRAGON PULL OVER")
     }
     
     static var lSit: Skill {
@@ -672,3 +678,4 @@ fileprivate final class Skills {
         return DatabaseFacade.getSkill(named: name) ?? DatabaseFacade.makeSkill(named: name)
     }
 }
+

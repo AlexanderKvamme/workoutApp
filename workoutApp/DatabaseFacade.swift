@@ -57,7 +57,7 @@ final class DatabaseFacade {
     }()
     
     static var defaultSkill: Skill = {
-        let skill = getSkill(named: "OTHER")!
+        let skill = getSkill(named: "OTHER")
         return skill
     }()
     
@@ -687,22 +687,45 @@ final class DatabaseFacade {
         return muscle
     }
     
-    static func getSkill(named name: String) -> Skill? {
-        let name = name.uppercased()
-        var skill: Skill? = nil
+    static func getSkill(named name: String) -> Skill {
+        let upperName = name.uppercased()
+        
         do {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Entity.Skill.rawValue)
-            let predicate = NSPredicate(format: "name == %@", name.uppercased())
+            // First, try to fetch existing skill
+            let fetchRequest: NSFetchRequest<Skill> = Skill.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "name == %@", upperName)
+            fetchRequest.fetchLimit = 1
             
-            fetchRequest.predicate = predicate
-            let result = try context.fetch(fetchRequest)
-            skill = result.first as? Skill
-        } catch let error as NSError {
-            print("error fetching \(name): \(error.localizedDescription)")
+            let results = try context.fetch(fetchRequest)
+            
+            // Return existing skill if found
+            if let existingSkill = results.first {
+                return existingSkill
+            }
+            
+            // Create new skill if not found
+            print("Creating new skill: \(upperName)")
+            let newSkill = Skill(context: context)
+            newSkill.name = upperName
+            
+            // Set any other required properties for Skill
+            // newSkill.someProperty = defaultValue
+            
+            // Save the context
+            try context.save()
+            
+            return newSkill
+            
+        } catch {
+            print("Error with skill '\(upperName)': \(error.localizedDescription)")
+            
+            // Fallback: create skill without saving (risky but prevents crash)
+            let fallbackSkill = Skill(context: context)
+            fallbackSkill.name = upperName
+            return fallbackSkill
         }
-        return skill
     }
-    
+
     static func fetchExercises(containing muscle: Muscle) -> [Exercise]? { 
         let fetchRequest = NSFetchRequest<Exercise>(entityName: Entity.Exercise.rawValue)
         let predicate1 = NSPredicate(format: "musclesUsed CONTAINS %@", muscle)

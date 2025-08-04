@@ -16,7 +16,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     let testOptions = ["60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
     var timerTargetString = APP_IS_DEBUG ? "30 s" : "3 m"
     var timerTargetInt = APP_IS_DEBUG ? 30 : 180
-    var setCount = 6
+    var setCount = 10
 
     init(skill: Skill) {
         self.skill = skill
@@ -115,6 +115,13 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
             make.right.equalToSuperview().inset(24)
             make.height.equalTo(40)
         }
+//        timerView.snp.makeConstraints { make in
+//            make.top.equalTo(progressBar)
+//            make.right.equalToSuperview().inset(24)
+//            make.height.equalTo(40)
+//            // Optional: Set a fixed width if the timer should have consistent sizing
+////            make.width.equalTo(64) // Adjust based on your design
+//        }
         
         timerView.configure(format: .minutesSeconds, textColor: .black)
         
