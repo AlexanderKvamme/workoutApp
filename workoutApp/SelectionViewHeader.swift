@@ -42,6 +42,10 @@ class SelectionViewHeader: UIView {
         resetAnimation()
         
         header.startAnimation()
+        slideBadgeUp()
+    }
+    
+    func slideBadgeUp() {
         UIView.animate(withDuration: 1) {
             self.subheaderContainer.transform = CGAffineTransform(translationX: 0, y: 0).scaledBy(x: 1, y: 1).rotated(by: -.pi/64)
         }
