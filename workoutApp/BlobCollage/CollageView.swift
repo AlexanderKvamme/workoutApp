@@ -117,7 +117,7 @@ class CollageView: UIView {
         for container in shapedContainers {
             // Start exactly at the center of the main image
             container.center = center
-            container.alpha = 0.8
+            container.alpha = 0.0
             container.transform = container.transform.scaledBy(x: 0.9, y: 0.9)
         }
     }
