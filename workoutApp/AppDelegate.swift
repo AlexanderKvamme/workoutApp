@@ -34,8 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         seedIfFirstLaunch(context: context)
         
         var testScreen: UIViewController?
-        testScreen = TestScreen()
-        
+        testScreen = CollageTestScreen()
+        testScreen = WorkoutSelectionViewController()
+
         // Set initial viewController
         let hexagonScreen = testScreen ?? CustomNavigationViewController(rootViewController: HoneycombViewController())
         let historyScreen = CustomNavigationViewController(rootViewController: HistorySelectionViewController())

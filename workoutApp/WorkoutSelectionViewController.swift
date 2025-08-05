@@ -20,12 +20,16 @@ class WorkoutSelectionViewController: SelectionViewController {
     // Replace the stack with ButtonGridView
     private var buttonGrid: ButtonGridView?
     
-    // Add UIImageView between header and buttons
-    private let centerImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "collage")
-        return imageView
+    // Replace UIImageView with CollageView
+    private let collageView: CollageView = {
+        let collage = CollageView()
+        collage.images = ["md-image-1", "md-image-2", "md-image-3", "md-image-4"]
+        collage.centerShapeSize = 240
+        collage.baseDistance = 130
+        collage.borderColor = .black
+        collage.surroundingShapesCount = 5
+        collage.surroundingShapeSizeRange = (120, 140)
+        return collage
     }()
     
     // Add badge button
@@ -69,6 +73,9 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         globalTabBar.showIt()
         header.play()
+        
+        // Setup collage first, then reset animation
+        collageView.resetAnimation()
     }
     
     override func viewDidLoad() {
@@ -133,23 +140,21 @@ class WorkoutSelectionViewController: SelectionViewController {
                 make.leading.greaterThanOrEqualTo(view).offset(40)
                 make.trailing.lessThanOrEqualTo(view).offset(-40)
                 make.centerX.equalTo(view)
-                make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-200)
+                make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-160)
             }
             
-            // Update centerImageView constraints to fill remaining space
-            centerImageView.snp.remakeConstraints { make in
-                make.centerX.equalTo(view)
-                make.top.equalTo(header.snp.bottom).offset(60)
-                make.leading.greaterThanOrEqualTo(view).offset(40)
-                make.trailing.lessThanOrEqualTo(view).offset(-40)
-                make.bottom.lessThanOrEqualTo(buttonGrid.snp.top).offset(-60)
+            // Update collageView constraints to fill remaining space
+            collageView.snp.remakeConstraints { make in
+                make.top.equalTo(header.snp.bottom)
+                make.left.right.equalToSuperview()
+                make.bottom.equalTo(buttonGrid.snp.top)
             }
         }
     }
 
     private func setupLayout() {
         view.addSubview(header)
-        view.addSubview(centerImageView)
+        view.addSubview(collageView)
         view.addSubview(badgeButton)
         
         // Header constraints using SnapKit
@@ -158,8 +163,8 @@ class WorkoutSelectionViewController: SelectionViewController {
             make.top.equalTo(view).offset(Constant.components.SelectionVC.Header.spacingTop)
         }
         
-        // Initial centerImageView constraints (will be updated in updateButtonGrid)
-        centerImageView.snp.makeConstraints { make in
+        // Initial collageView constraints (will be updated in updateButtonGrid)
+        collageView.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.top.equalTo(header.snp.bottom).offset(60)
             make.leading.greaterThanOrEqualTo(view).offset(40)
