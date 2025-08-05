@@ -66,35 +66,17 @@ class HistorySelectionViewController: SelectionViewController {
         buttonGrid?.removeFromSuperview()
         buttonGrid = nil
         
-        // Create container stack view
-        let containerStack = UIStackView()
-        containerStack.axis = .vertical
-        containerStack.spacing = 16
-        containerStack.alignment = .center
-        containerStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Create top row (WEIGHTED only)
-        let topRowStack = UIStackView()
-        topRowStack.axis = .horizontal
-        topRowStack.spacing = 16
-        topRowStack.alignment = .center
-        
-        // Create bottom row (ALL + IMPROV)
-        let bottomRowStack = UIStackView()
-        bottomRowStack.axis = .horizontal
-        bottomRowStack.spacing = 16
-        bottomRowStack.alignment = .center
-        
-        // Create buttons
-        var improvButton: FormFittingActionButton?
-        var weightedButton: FormFittingActionButton?
+        // Create ButtonGridItems from workout styles
+        var gridItems: [ButtonGridItem] = []
         
         // Process workout styles
         let uniqueWorkoutTypes = Set(workoutStyles)
         for workoutStyle in uniqueWorkoutTypes where workoutStyle.getPerformanceCount() > 0 {
             let styleName = workoutStyle.getName()
+            let count = workoutStyle.getPerformanceCount()
+            let pluralEnding = count == 1 ? "LOG" : "LOGS"
             
-            let button = FormFittingActionButton(
+            let gridItem = ButtonGridItem(
                 title: styleName,
                 icon: nil,
                 color: .black,
@@ -103,18 +85,13 @@ class HistorySelectionViewController: SelectionViewController {
                 self?.showTableForWorkoutStyle(styleName: styleName)
             }
             
-            if styleName == "IMPROV" {
-                improvButton = button
-            } else if styleName == "WEIGHTED" {
-                weightedButton = button
-            }
-            
+            gridItems.append(gridItem)
             buttonNames.append(styleName)
             buttonIndex += 1
         }
         
-        // Create ALL button
-        let allButton = FormFittingActionButton(
+        // Add "All" button at the end
+        let allButtonItem = ButtonGridItem(
             title: "All",
             icon: nil,
             color: .black,
@@ -122,33 +99,23 @@ class HistorySelectionViewController: SelectionViewController {
         ) { [weak self] in
             self?.showTableOfAllWorkouts()
         }
+        gridItems.append(allButtonItem)
         
-        // Add buttons to rows - SWAPPED POSITIONS
-        if let weightedButton = weightedButton {
-            topRowStack.addArrangedSubview(weightedButton)  // WEIGHTED now in top row
+        // Create button grid with dynamic layout
+        buttonGrid = ButtonGridView(items: gridItems, buttonsPerRow: 2)
+        
+        if let buttonGrid = buttonGrid {
+            view.addSubview(buttonGrid)
+            
+            NSLayoutConstraint.activate([
+                buttonGrid.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
+                buttonGrid.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+                buttonGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                buttonGrid.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
+            ])
         }
-        
-        bottomRowStack.addArrangedSubview(allButton)
-        if let improvButton = improvButton {
-            bottomRowStack.addArrangedSubview(improvButton)  // IMPROV now in bottom row
-        }
-        
-        // Add rows to container
-        containerStack.addArrangedSubview(topRowStack)
-        containerStack.addArrangedSubview(bottomRowStack)
-        
-        // Add to view
-        view.addSubview(containerStack)
-        
-        NSLayoutConstraint.activate([
-            containerStack.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
-            containerStack.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
-            containerStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            containerStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
-        ])
     }
 
-    
     // MARK: - TapHandlers
     
     @objc func showTableOfAllWorkouts() {

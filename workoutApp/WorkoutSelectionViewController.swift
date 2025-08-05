@@ -36,7 +36,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         }
         
         let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(badgeButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -77,6 +77,63 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     // MARK: - Methods
     
+    /// Sends new fetch and updates button grid
+    private func updateButtonGridWithEntriesFromCoreData() {
+        let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
+        
+        // Clear existing data
+        buttonNames = [String]()
+        buttonIndex = 0
+        
+        // Remove existing button grid
+        buttonGrid?.removeFromSuperview()
+        buttonGrid = nil
+        
+        // Create ButtonGridItems from workout styles
+        var gridItems: [ButtonGridItem] = []
+        
+        // Process workout styles
+        for workoutStyle in workoutStyles where workoutStyle.getWorkoutDesignCount() > 0 {
+            let styleName = workoutStyle.getName()
+            
+            let subheaderString: String = {
+                let workoutsOfThisStyle = workoutStyle.getWorkoutDesignCount()
+                return workoutsOfThisStyle > 1 ? "\(workoutsOfThisStyle) WORKOUTS" : "\(workoutsOfThisStyle) WORKOUT"
+            }()
+            
+            let gridItem = ButtonGridItem(
+                title: styleName,
+                icon: nil,
+                color: .black,
+                font: h2 ?? UIFont.boldSystemFont(ofSize: 20)
+            ) { [weak self] in
+                self?.showWorkoutTable(for: styleName) // Use the existing method
+            }
+            
+            gridItems.append(gridItem)
+            buttonNames.append(styleName)
+            buttonIndex += 1
+        }
+        
+        // Create button grid with dynamic layout
+        buttonGrid = ButtonGridView(items: gridItems, buttonsPerRow: 2)
+        
+        if let buttonGrid = buttonGrid {
+            view.addSubview(buttonGrid)
+            
+            NSLayoutConstraint.activate([
+                buttonGrid.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
+                buttonGrid.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+                buttonGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                buttonGrid.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
+            ])
+        }
+        
+        addNewWorkoutButton() // Don't forget this!
+    }
+
+
+    
     private func setupLayout() {
         view.addSubview(header)
         view.addSubview(badgeButton)
@@ -100,63 +157,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     }
     
     // Button Grid methods
-    
-    /// Sends new fetch and updates button grid
-    private func updateButtonGridWithEntriesFromCoreData() {
-        let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
-        
-        // Clear existing data
-        buttonNames = [String]()
-        buttonIndex = 0
-        
-        // Create ButtonGridItems from workout styles
-        var gridItems: [ButtonGridItem] = []
-        
-        for workoutStyle in workoutStyles where workoutStyle.getWorkoutDesignCount() > 0 {
-            let styleName = workoutStyle.getName()
-            
-            let subheaderString: String = {
-                let workoutsOfThisStyle = workoutStyle.getWorkoutDesignCount()
-                return workoutsOfThisStyle > 1 ? "\(workoutsOfThisStyle) WORKOUTS" : "\(workoutsOfThisStyle) WORKOUT"
-            }()
-            
-            // Create ButtonGridItem
-            let gridItem = ButtonGridItem(
-                title: styleName,
-                icon: nil, // Add icons if you want
-                color: .black, // Customize colors
-                font: h2 ?? UIFont.boldSystemFont(ofSize: 20)
-            ) { [weak self] in
-                self?.showWorkoutTable(for: styleName)
-            }
-            
-            gridItems.append(gridItem)
-            buttonNames.append(styleName)
-            buttonIndex += 1
-        }
-        
-        // Create or update button grid
-        if let existingGrid = buttonGrid {
-            existingGrid.updateItems(gridItems)
-        } else {
-            // Create new button grid
-            buttonGrid = ButtonGridView(items: gridItems, buttonsPerRow: 1) // 1 button per row to match original layout
-            
-            if let buttonGrid = buttonGrid {
-                view.addSubview(buttonGrid)
-                
-                // Use same bottom spacing as CreatorScreen (-200)
-                NSLayoutConstraint.activate([
-                    buttonGrid.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
-                    buttonGrid.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
-                    buttonGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                    buttonGrid.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200) // Same as CreatorScreen
-                ])
-            }
-        }
-        
-        addNewWorkoutButton()
-    }
     
     private func debugEnterWorkout(_ int: Int?) {
         guard let int = int, int < buttonNames.count else { return }
