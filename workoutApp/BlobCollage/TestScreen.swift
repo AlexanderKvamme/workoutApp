@@ -21,7 +21,14 @@ enum ContainerShape: CaseIterable {
     case heavyRounded
     
     static func random() -> ContainerShape {
-        return ContainerShape.allCases.randomElement() ?? .square
+        return [
+        ContainerShape.roundedSquare,
+        ContainerShape.roundedRectangleWide,
+        ContainerShape.roundedRectangleTall,
+        ContainerShape.circle,
+//        ContainerShape.softRounded,
+//        ContainerShape.heavyRounded
+        ].randomElement() ?? .square
     }
     
     var aspectRatio: CGFloat {
@@ -38,20 +45,16 @@ enum ContainerShape: CaseIterable {
     var cornerRadius: CGFloat {
         switch self {
         case .square, .rectangleWide, .rectangleTall:
-            return 4
+            return 10
         case .roundedSquare, .roundedRectangleWide, .roundedRectangleTall:
-            return 16
+            return 20
         case .softRounded:
-            return 24
+            return 30
         case .heavyRounded:
-            return 32
+            return 40
         case .circle:
             return 0 // Will be calculated as half of min dimension
         }
-    }
-    
-    var borderWidth: CGFloat {
-        return CGFloat.random(in: 6...14)
     }
 }
 
@@ -72,7 +75,7 @@ class ShapedImageContainerView: UIView {
         }
     }
     
-    var borderWidth: CGFloat = 8 {
+    var borderWidth: CGFloat = 10 {
         didSet {
             updateShape()
         }
@@ -84,7 +87,7 @@ class ShapedImageContainerView: UIView {
         }
     }
     
-    var shadowOffset: CGSize = CGSize(width: 25, height: 25) { // Long shadow
+    var shadowOffset: CGSize = CGSize(width: -10, height: 10) { // Long shadow
         didSet {
             updateShape()
         }
@@ -157,11 +160,22 @@ class ShapedImageContainerView: UIView {
         }
         
         borderView.layer.cornerRadius = cornerRadius
-        imageView.layer.cornerRadius = max(0, cornerRadius - borderWidth)
+        
+        // Calculate inner corner radius based on the imageView's actual dimensions
+        if shapeType == .circle {
+            imageView.layer.cornerRadius = min(imageView.frame.width, imageView.frame.height) / 2
+        } else {
+            // For rounded rectangles, use the same proportion as the outer shape
+            let outerSize = min(containerWidth, containerHeight)
+            let innerSize = min(imageView.frame.width, imageView.frame.height)
+            let radiusRatio = cornerRadius / outerSize
+            imageView.layer.cornerRadius = radiusRatio * innerSize
+        }
         
         // Add long shadow using extension
         borderView.addLongShadow(offset: shadowOffset, cornerRadius: cornerRadius)
     }
+    
 }
 
 // MARK: - Main View Controller
@@ -172,7 +186,7 @@ class TestScreen: UIViewController {
     private var shapedContainers: [ShapedImageContainerView] = []
     
     internal let sampleImages = [
-        "image1", "image2", "image3", "image4", "image5", "image6"
+        "md-image-1", "md-image-2", "md-image-3", "md-image-4"
     ]
     
     override func viewDidLoad() {
@@ -220,24 +234,16 @@ class TestScreen: UIViewController {
             let container = ShapedImageContainerView()
             let shape = ContainerShape.random()
             container.shapeType = shape
-            container.borderWidth = shape.borderWidth
-            
-            // Long shadow offset (down and right)
-            container.shadowOffset = CGSize(
-                width: CGFloat.random(in: 20...35),
-                height: CGFloat.random(in: 20...35)
-            )
             
             let borderColors: [UIColor] = [
-                .black, .systemBlue, .systemPurple, .systemGreen,
-                .systemOrange, .systemRed, .systemIndigo, .darkGray
+                .black
             ]
             container.borderColor = borderColors.randomElement() ?? .black
             
             if i < sampleImages.count {
-                container.image = UIImage(named: sampleImages[i])
+                container.image = UIImage(named: sampleImages[i]) ?? createPlaceholderImage(color: UIColor.systemGray2)
             } else {
-                container.image = createPlaceholderImage(color: UIColor.systemGray2)
+                container.image = createPlaceholderImage(color: .red)
             }
             
             containerView.addSubview(container)
@@ -313,7 +319,7 @@ class TestScreen: UIViewController {
         
         let newShape = ContainerShape.random()
         container.shapeType = newShape
-        container.borderWidth = newShape.borderWidth
+//        container.borderWidth = 10.0
         
         // New long shadow on tap
         container.shadowOffset = CGSize(
