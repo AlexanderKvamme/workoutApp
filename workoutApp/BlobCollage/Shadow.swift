@@ -4,14 +4,18 @@ import CoreGraphics
 // MARK: - Hard Streaking Shadow Extension
 extension UIView {
     func addLongShadow(offset: CGSize, cornerRadius: CGFloat, steps: Int = 30) {
-        // Remove existing shadow layer
-        layer.sublayers?.removeAll { $0.name == "long_shadow" }
+        // Remove existing shadow layer from superview
+        superview?.layer.sublayers?.removeAll { $0.name == "long_shadow_\(hash)" }
         
         let shadowLayer = CALayer()
-        shadowLayer.name = "long_shadow"
+        shadowLayer.name = "long_shadow_\(hash)" // Unique name for this view
+        
+        // Convert frame to superview coordinates
+        let frameInSuperview = superview?.convert(bounds, from: self) ?? frame
+        
         shadowLayer.frame = CGRect(
-            x: min(0, offset.width),
-            y: min(0, offset.height),
+            x: frameInSuperview.minX + min(0, offset.width),
+            y: frameInSuperview.minY + min(0, offset.height),
             width: bounds.width + abs(offset.width),
             height: bounds.height + abs(offset.height)
         )
@@ -50,6 +54,11 @@ extension UIView {
         
         // Create shadow layer with the generated image
         shadowLayer.contents = shadowImage.cgImage
-        layer.insertSublayer(shadowLayer, at: 0)
+        
+        // Insert shadow into superview's layer (behind this view)
+        if let superview = superview {
+            let insertIndex = superview.layer.sublayers?.firstIndex(of: layer) ?? 0
+            superview.layer.insertSublayer(shadowLayer, at: UInt32(insertIndex))
+        }
     }
 }
