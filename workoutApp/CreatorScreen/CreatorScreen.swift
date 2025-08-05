@@ -22,81 +22,20 @@ class CreatorScreen: SelectionViewController {
     
     // MARK: - Properties
     
-    private let containerStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 16
-        stack.alignment = .center
-        // No distribution - let buttons size themselves
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-    
-    private let topRowStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 16
-        stack.alignment = .center
-        // No distribution - let buttons size themselves
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-    
-    private let bottomRowStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 16
-        stack.alignment = .center
-        // No distribution - let buttons size themselves
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-    
-    private lazy var createWorkoutButton: FormFittingActionButton = {
-        return FormFittingActionButton(
-            title: "Workout",
-            icon: "",
-            color: .black,
-            font: h2,
-            action: createWorkoutTapped
-        )
-    }()
-    
-    private lazy var createExerciseButton: FormFittingActionButton = {
-        return FormFittingActionButton(
-            title: "Exercise",
-            icon: "",
-            color: .black,
-            font: h2,
-            action: createExerciseTapped
-        )
-    }()
-    
-    private lazy var createMuscleButton: FormFittingActionButton = {
-        return FormFittingActionButton(
-            title: "Muscle",
-            icon: "",
-            color: .black,
-            font: h2,
-            action: createMuscleTapped
-        )
-    }()
-    
-    private lazy var createSkillButton: FormFittingActionButton = {
-        return FormFittingActionButton(
-            title: "Skill",
-            icon: "",
-            color: .black,
-            font: h2,
-            action: createSkillTapped
-        )
+    private lazy var buttonGrid: ButtonGridView = {
+        let items = [
+            ButtonGridItem(title: "Muscle", color: .black, font: h2, action: createMuscleTapped),
+            ButtonGridItem(title: "Exercise", color: .black, font: h2, action: createExerciseTapped),
+            ButtonGridItem(title: "Workout", color: .black, font: h2, action: createWorkoutTapped),
+            ButtonGridItem(title: "Skill", color: .black, font: h2, action: createSkillTapped)
+        ]
+        return ButtonGridView(items: items, buttonsPerRow: 2)
     }()
 
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setupConstraints()
     }
@@ -114,29 +53,16 @@ class CreatorScreen: SelectionViewController {
         view.backgroundColor = .akLight
         navigationItem.title = "Creator"
         
-        // Add subviews
         view.addSubview(header)
-        view.addSubview(containerStackView)
-        
-        // Arrange buttons in rows (form-fitting sizes)
-        topRowStackView.addArrangedSubview(createMuscleButton)
-        topRowStackView.addArrangedSubview(createExerciseButton)
-        
-        bottomRowStackView.addArrangedSubview(createWorkoutButton)
-        bottomRowStackView.addArrangedSubview(createSkillButton)
-        
-        // Add rows to container
-        containerStackView.addArrangedSubview(topRowStackView)
-        containerStackView.addArrangedSubview(bottomRowStackView)
+        view.addSubview(buttonGrid)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // Container stack view constraints - positioned towards bottom
-            containerStackView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
-            containerStackView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
-            containerStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
+            buttonGrid.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
+            buttonGrid.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+            buttonGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonGrid.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
         ])
     }
     
