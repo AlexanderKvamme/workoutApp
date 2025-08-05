@@ -119,10 +119,10 @@ class CreatorScreen: SelectionViewController {
         view.addSubview(containerStackView)
         
         // Arrange buttons in rows (form-fitting sizes)
-        topRowStackView.addArrangedSubview(createWorkoutButton)
+        topRowStackView.addArrangedSubview(createMuscleButton)
         topRowStackView.addArrangedSubview(createExerciseButton)
         
-        bottomRowStackView.addArrangedSubview(createMuscleButton)
+        bottomRowStackView.addArrangedSubview(createWorkoutButton)
         bottomRowStackView.addArrangedSubview(createSkillButton)
         
         // Add rows to container

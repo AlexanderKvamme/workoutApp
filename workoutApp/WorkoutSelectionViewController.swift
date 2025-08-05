@@ -1,5 +1,3 @@
-
-
 //
 //  WorkoutSelectionViewController.swift
 //  workoutApp
@@ -18,6 +16,27 @@ class WorkoutSelectionViewController: SelectionViewController {
 
     let plusButton = PlusButton()
     var workoutButtons = [SelectionViewButton]()
+    
+    // Add badge button
+    private lazy var badgeButton: UIButton = {
+        var hSpace = CGFloat(16)
+        var config = UIButton.Configuration.filled()
+        config.title = "new"
+        config.baseBackgroundColor = .black
+        config.baseForegroundColor = .white
+        config.cornerStyle = .large
+        config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: hSpace, bottom: 4, trailing: hSpace)
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = h3.withSize(18)
+            return outgoing
+        }
+        
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(badgeButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     // MARK: - Initializers
     
@@ -60,6 +79,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     private func setupLayout() {
         view.addSubview(header)
         view.addSubview(stack)
+        view.addSubview(badgeButton) // Add badge button to view
         
         // Header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -69,6 +89,13 @@ class WorkoutSelectionViewController: SelectionViewController {
         // Stack
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        
+        // Badge button constraints - top right corner
+        NSLayoutConstraint.activate([
+            badgeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            badgeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+//            badgeButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
         
         // Position stack
         makeAlignmentRectangle()
@@ -81,6 +108,13 @@ class WorkoutSelectionViewController: SelectionViewController {
         stack.distribution = UIStackView.Distribution.equalSpacing
         stack.alignment = UIStackView.Alignment.center
         stack.spacing = Constant.components.SelectionVC.Stack.spacing
+    }
+    
+    // MARK: - Badge Button Action
+    
+    @objc private func badgeButtonTapped() {
+        print("hello")
+        
     }
     
     // Stack methods
@@ -171,4 +205,3 @@ class WorkoutSelectionViewController: SelectionViewController {
         navigationController?.pushViewController(boxTable, animated: true)
     }
 }
-
