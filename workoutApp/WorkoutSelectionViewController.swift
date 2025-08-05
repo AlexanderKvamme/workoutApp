@@ -17,6 +17,9 @@ class WorkoutSelectionViewController: SelectionViewController {
     let plusButton = PlusButton()
     var workoutButtons = [SelectionViewButton]()
     
+    // Replace the stack with ButtonGridView
+    private var buttonGrid: ButtonGridView?
+    
     // Add badge button
     private lazy var badgeButton: UIButton = {
         var hSpace = CGFloat(16)
@@ -53,9 +56,8 @@ class WorkoutSelectionViewController: SelectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateStackWithEntriesFromCoreData()
+        updateButtonGridWithEntriesFromCoreData()
         
-        view.bringSubviewToFront(stack) // Bring it in front of diagonal line
         view.layoutIfNeeded()
         
         globalTabBar.showIt()
@@ -65,7 +67,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .akLight
-        setupStack()
         setupLayout()
     }
     
@@ -78,62 +79,40 @@ class WorkoutSelectionViewController: SelectionViewController {
     
     private func setupLayout() {
         view.addSubview(header)
-        view.addSubview(stack)
-        view.addSubview(badgeButton) // Add badge button to view
+        view.addSubview(badgeButton)
         
         // Header
         header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         header.translatesAutoresizingMaskIntoConstraints = false
         header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
         
-        // Stack
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
-        
         // Badge button constraints - top right corner
         NSLayoutConstraint.activate([
             badgeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            badgeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            badgeButton.heightAnchor.constraint(equalToConstant: 24)
+            badgeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
-        
-        // Position stack
-        makeAlignmentRectangle()
-        stack.centerYAnchor.constraint(equalTo: alignmentRectangle.centerYAnchor, constant: 0).isActive = true
-    }
-    
-    private func setupStack() {
-        stack = UIStackView(frame: CGRect.zero)
-        stack.axis = NSLayoutConstraint.Axis.vertical
-        stack.distribution = UIStackView.Distribution.equalSpacing
-        stack.alignment = UIStackView.Alignment.center
-        stack.spacing = Constant.components.SelectionVC.Stack.spacing
     }
     
     // MARK: - Badge Button Action
     
     @objc private func badgeButtonTapped() {
         print("hello")
-        
     }
     
-    // Stack methods
+    // Button Grid methods
     
-    /// Sends new fetch and updates buttons
-    private func updateStackWithEntriesFromCoreData() {
+    /// Sends new fetch and updates button grid
+    private func updateButtonGridWithEntriesFromCoreData() {
         let workoutStyles = DatabaseFacade.fetchAllWorkoutStyles()
-        workoutButtons = []
-    
+        
+        // Clear existing data
+        buttonNames = [String]()
         buttonIndex = 0
         
-        for subview in stack.subviews {
-            subview.removeFromSuperview()
-        }
+        // Create ButtonGridItems from workout styles
+        var gridItems: [ButtonGridItem] = []
         
-        // make buttons from unique workout names
-        buttonNames = [String]()
-        
-        for workoutStyle in workoutStyles where workoutStyle.getWorkoutDesignCount() > 0 { //where workoutStyle.usedInWorkoutsCount > 0 {
+        for workoutStyle in workoutStyles where workoutStyle.getWorkoutDesignCount() > 0 {
             let styleName = workoutStyle.getName()
             
             let subheaderString: String = {
@@ -141,38 +120,54 @@ class WorkoutSelectionViewController: SelectionViewController {
                 return workoutsOfThisStyle > 1 ? "\(workoutsOfThisStyle) WORKOUTS" : "\(workoutsOfThisStyle) WORKOUT"
             }()
             
-            let newButton = SelectionViewButton(header: styleName, subheader: subheaderString)
+            // Create ButtonGridItem
+            let gridItem = ButtonGridItem(
+                title: styleName,
+                icon: nil, // Add icons if you want
+                color: .black, // Customize colors
+                font: h2 ?? UIFont.boldSystemFont(ofSize: 20)
+            ) { [weak self] in
+                self?.showWorkoutTable(for: styleName)
+            }
             
-            // Set up button names etc
-            newButton.button.tag = buttonIndex
-            newButton.button.accessibilityIdentifier = "\(styleName)"
-            buttonIndex += 1
+            gridItems.append(gridItem)
             buttonNames.append(styleName)
-            
-            // Replace any default target action (Default modal presentation)
-            newButton.button.removeTarget(nil, action: nil, for: .allEvents)
-            newButton.button.addTarget(self, action: #selector(ShowWorkoutTable), for: UIControl.Event.touchUpInside)
-            workoutButtons.append(newButton)
+            buttonIndex += 1
         }
         
-        buttons = workoutButtons
+        // Create or update button grid
+        if let existingGrid = buttonGrid {
+            existingGrid.updateItems(gridItems)
+        } else {
+            // Create new button grid
+            buttonGrid = ButtonGridView(items: gridItems, buttonsPerRow: 1) // 1 button per row to match original layout
+            
+            if let buttonGrid = buttonGrid {
+                view.addSubview(buttonGrid)
+                
+                // Use same bottom spacing as CreatorScreen (-200)
+                NSLayoutConstraint.activate([
+                    buttonGrid.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
+                    buttonGrid.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+                    buttonGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    buttonGrid.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200) // Same as CreatorScreen
+                ])
+            }
+        }
         
-        // Update stack
-        stack.removeArrangedSubviews()
-        buttons.forEach(stack.addArrangedSubview(_:))
         addNewWorkoutButton()
-        
-        stack.layoutIfNeeded()
     }
     
     private func debugEnterWorkout(_ int: Int?) {
-        guard let int = int else { return }
-        workoutButtons[int].button.sendActions(for: .touchUpInside)
+        guard let int = int, int < buttonNames.count else { return }
+        showWorkoutTable(for: buttonNames[int])
     }
     
     private func addNewWorkoutButton() {
+        // Remove existing plus button
+        plusButton.removeFromSuperview()
         
-        if buttons.count > 0 {
+        if buttonNames.count > 0 {
             // Already has selection choices, so place button under the header
             let plusButtonTopSpacing = Constant.UI.headers.headerToPlusButtonSpacing
             plusButton.accessibilityIdentifier = "plus-button"
@@ -182,13 +177,19 @@ class WorkoutSelectionViewController: SelectionViewController {
             NSLayoutConstraint.activate([
                 plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 plusButton.centerYAnchor.constraint(equalTo: header.bottomAnchor, constant: plusButtonTopSpacing),
-                ])
+            ])
         } else {
-            // Add to stackView as only button
-            stack.addArrangedSubview(plusButton)
+            // Add to center if no buttons exist, but respect the same bottom spacing
+            view.addSubview(plusButton)
+            plusButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                plusButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200) // Same spacing as buttons
+            ])
         }
         
         // present newWorkoutController on tap
+        plusButton.removeTarget(nil, action: nil, for: .allEvents)
         plusButton.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
     }
     
@@ -197,11 +198,15 @@ class WorkoutSelectionViewController: SelectionViewController {
         navigationController?.pushViewController(newWorkoutController, animated: true)
     }
     
-    @objc func ShowWorkoutTable(button: UIButton) {
-        // Identifies which choice was selected and creates a BoxTableView to display
-        let tappedWorkoutStyleName = buttonNames[button.tag]
-        let boxTable = WorkoutTableViewController(workoutStyleName: tappedWorkoutStyleName)
-        
+    private func showWorkoutTable(for workoutStyleName: String) {
+        let boxTable = WorkoutTableViewController(workoutStyleName: workoutStyleName)
         navigationController?.pushViewController(boxTable, animated: true)
+    }
+    
+    // Legacy method for compatibility
+    @objc func ShowWorkoutTable(button: UIButton) {
+        guard button.tag < buttonNames.count else { return }
+        let tappedWorkoutStyleName = buttonNames[button.tag]
+        showWorkoutTable(for: tappedWorkoutStyleName)
     }
 }

@@ -33,8 +33,18 @@ class ButtonGridView: UIView {
         stack.axis = .vertical
         stack.spacing = 16
         stack.alignment = .center
+        stack.distribution = .fill // Changed to .fill for better control
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
+    }()
+    
+    // Spacer view to push buttons to bottom
+    private let topSpacer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setContentHuggingPriority(.defaultLow, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return view
     }()
     
     private var buttons: [FormFittingActionButton] = []
@@ -86,6 +96,9 @@ class ButtonGridView: UIView {
         // Clear existing arranged subviews
         containerStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
+        // Add flexible spacer at the top to push buttons to bottom
+        containerStackView.addArrangedSubview(topSpacer)
+        
         // Group buttons into rows
         let buttonRows = buttons.chunked(into: buttonsPerRow)
         
@@ -94,6 +107,7 @@ class ButtonGridView: UIView {
             rowStackView.axis = .horizontal
             rowStackView.spacing = 16
             rowStackView.alignment = .center
+            rowStackView.distribution = .fill // Let buttons size themselves
             rowStackView.translatesAutoresizingMaskIntoConstraints = false
             
             buttonRow.forEach { button in
@@ -101,6 +115,14 @@ class ButtonGridView: UIView {
             }
             
             containerStackView.addArrangedSubview(rowStackView)
+        }
+        
+        // Set priorities to ensure buttons stay at bottom
+        for arrangedSubview in containerStackView.arrangedSubviews {
+            if arrangedSubview != topSpacer {
+                arrangedSubview.setContentHuggingPriority(.required, for: .vertical)
+                arrangedSubview.setContentCompressionResistancePriority(.required, for: .vertical)
+            }
         }
     }
     
