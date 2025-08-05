@@ -8,17 +8,25 @@
 
 import UIKit
 import CoreData
+import SnapKit
 
 fileprivate var workoutToAutomaticallyEnter: Int? = nil
 
 /// WorkoutSelectionViewController is a list of buttons to provide users with the ability to pick further predicates for which workouts to show. For example when displaying workouts, it displays the different styles. Normal, drop set, etc.
 class WorkoutSelectionViewController: SelectionViewController {
 
-    let plusButton = PlusButton()
     var workoutButtons = [SelectionViewButton]()
     
     // Replace the stack with ButtonGridView
     private var buttonGrid: ButtonGridView?
+    
+    // Add UIImageView between header and buttons
+    private let centerImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "collage")
+        return imageView
+    }()
     
     // Add badge button
     private lazy var badgeButton: UIButton = {
@@ -37,7 +45,6 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -107,7 +114,7 @@ class WorkoutSelectionViewController: SelectionViewController {
                 color: .black,
                 font: h2 ?? UIFont.boldSystemFont(ofSize: 20)
             ) { [weak self] in
-                self?.showWorkoutTable(for: styleName) // Use the existing method
+                self?.showWorkoutTable(for: styleName)
             }
             
             gridItems.append(gridItem)
@@ -121,39 +128,50 @@ class WorkoutSelectionViewController: SelectionViewController {
         if let buttonGrid = buttonGrid {
             view.addSubview(buttonGrid)
             
-            NSLayoutConstraint.activate([
-                buttonGrid.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
-                buttonGrid.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
-                buttonGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                buttonGrid.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200)
-            ])
+            // Button grid constraints using SnapKit
+            buttonGrid.snp.makeConstraints { make in
+                make.leading.greaterThanOrEqualTo(view).offset(40)
+                make.trailing.lessThanOrEqualTo(view).offset(-40)
+                make.centerX.equalTo(view)
+                make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-200)
+            }
+            
+            // Update centerImageView constraints to fill remaining space
+            centerImageView.snp.remakeConstraints { make in
+                make.centerX.equalTo(view)
+                make.top.equalTo(header.snp.bottom).offset(60)
+                make.leading.greaterThanOrEqualTo(view).offset(40)
+                make.trailing.lessThanOrEqualTo(view).offset(-40)
+                make.bottom.lessThanOrEqualTo(buttonGrid.snp.top).offset(-60)
+            }
         }
-        
-        addNewWorkoutButton() // Don't forget this!
     }
 
-
-    
     private func setupLayout() {
         view.addSubview(header)
+        view.addSubview(centerImageView)
         view.addSubview(badgeButton)
         
-        // Header
-        header.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        header.translatesAutoresizingMaskIntoConstraints = false
-        header.topAnchor.constraint(equalTo: view.topAnchor, constant: Constant.components.SelectionVC.Header.spacingTop).isActive = true
+        // Header constraints using SnapKit
+        header.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.top.equalTo(view).offset(Constant.components.SelectionVC.Header.spacingTop)
+        }
         
-        // Badge button constraints - top right corner
-        NSLayoutConstraint.activate([
-            badgeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            badgeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
-    }
-    
-    // MARK: - Badge Button Action
-    
-    @objc private func badgeButtonTapped() {
-        print("hello")
+        // Initial centerImageView constraints (will be updated in updateButtonGrid)
+        centerImageView.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.top.equalTo(header.snp.bottom).offset(60)
+            make.leading.greaterThanOrEqualTo(view).offset(40)
+            make.trailing.lessThanOrEqualTo(view).offset(-40)
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).offset(-260) // Default bottom constraint
+        }
+        
+        // Badge button constraints using SnapKit
+        badgeButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.trailing.equalTo(view).offset(-20)
+        }
     }
     
     // Button Grid methods
@@ -161,36 +179,6 @@ class WorkoutSelectionViewController: SelectionViewController {
     private func debugEnterWorkout(_ int: Int?) {
         guard let int = int, int < buttonNames.count else { return }
         showWorkoutTable(for: buttonNames[int])
-    }
-    
-    private func addNewWorkoutButton() {
-        // Remove existing plus button
-        plusButton.removeFromSuperview()
-        
-        if buttonNames.count > 0 {
-            // Already has selection choices, so place button under the header
-            let plusButtonTopSpacing = Constant.UI.headers.headerToPlusButtonSpacing
-            plusButton.accessibilityIdentifier = "plus-button"
-            
-            view.addSubview(plusButton)
-            plusButton.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                plusButton.centerYAnchor.constraint(equalTo: header.bottomAnchor, constant: plusButtonTopSpacing),
-            ])
-        } else {
-            // Add to center if no buttons exist, but respect the same bottom spacing
-            view.addSubview(plusButton)
-            plusButton.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                plusButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                plusButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200) // Same spacing as buttons
-            ])
-        }
-        
-        // present newWorkoutController on tap
-        plusButton.removeTarget(nil, action: nil, for: .allEvents)
-        plusButton.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
     }
     
     @objc private func pushNewWorkoutController() {

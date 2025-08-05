@@ -33,8 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         customizeUIAppearance()
         seedIfFirstLaunch(context: context)
         
+        var testScreen: UIViewController?
+        testScreen = TestScreen()
+        
         // Set initial viewController
-        let hexagonScreen = CustomNavigationViewController(rootViewController: HoneycombViewController())
+        let hexagonScreen = testScreen ?? CustomNavigationViewController(rootViewController: HoneycombViewController())
         let historyScreen = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
         let workoutScreen = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
         let creatorScreen = CustomNavigationViewController(rootViewController: CreatorScreen())
