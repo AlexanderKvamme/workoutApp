@@ -23,7 +23,7 @@ class WorkoutSelectionViewController: SelectionViewController {
     // Replace UIImageView with CollageView
     private let collageView: CollageView = {
         let collage = CollageView()
-        collage.images = ["md-image-1", "md-image-2", "md-image-3", "md-image-4"]
+        collage.images = ["md-image-1", "md-image-2", "md-image-3", "md-image-4", "md-image-5"]
         collage.centerShapeSize = 240
         collage.baseDistance = 130
         collage.borderColor = .black
@@ -31,6 +31,8 @@ class WorkoutSelectionViewController: SelectionViewController {
         collage.surroundingShapeSizeRange = (120, 140)
         return collage
     }()
+    
+    let paintStrokeView = PaintStrokeView(frame: CGRect(x: 50, y: 100, width: 200, height: 100))
     
     // Add badge button
     private lazy var badgeButton: UIButton = {
@@ -76,6 +78,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         // Setup collage first, then reset animation
         collageView.resetAnimation()
+        paintStrokeView.play()
     }
     
     override func viewDidLoad() {
@@ -132,6 +135,7 @@ class WorkoutSelectionViewController: SelectionViewController {
         // Create button grid with dynamic layout
         buttonGrid = ButtonGridView(items: gridItems, buttonsPerRow: 2)
         
+        
         if let buttonGrid = buttonGrid {
             view.addSubview(buttonGrid)
             
@@ -149,10 +153,15 @@ class WorkoutSelectionViewController: SelectionViewController {
                 make.left.right.equalToSuperview()
                 make.bottom.equalTo(buttonGrid.snp.top)
             }
+            
+            paintStrokeView.snp.remakeConstraints { make in
+                make.edges.equalTo(collageView)
+            }
         }
     }
 
     private func setupLayout() {
+        view.addSubview(paintStrokeView)
         view.addSubview(header)
         view.addSubview(collageView)
         view.addSubview(badgeButton)

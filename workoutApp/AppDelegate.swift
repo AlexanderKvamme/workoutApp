@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         seedIfFirstLaunch(context: context)
         
         var testScreen: UIViewController?
-        testScreen = CollageTestScreen()
+//        testScreen = CollageTestScreen()
         testScreen = WorkoutSelectionViewController()
 
         // Set initial viewController
