@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var testScreen: UIViewController?
 //        testScreen = CollageTestScreen()
-        testScreen = WorkoutSelectionViewController()
+//        testScreen = WorkoutSelectionViewController()
 
         // Set initial viewController
         let hexagonScreen = testScreen ?? CustomNavigationViewController(rootViewController: HoneycombViewController())
