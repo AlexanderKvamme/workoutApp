@@ -3,9 +3,15 @@ import AKKIT
 
 // MARK: - Reusable HoneycombGridView
 class HoneycombGridView<T>: UIView {
+    enum LayoutMode {
+        case spiral
+        case horizontalScroll(rows: Int)
+    }
+    
     // Configuration
     private let hexagonSize: CGFloat
     private let spacing: CGFloat
+    private let layoutMode: LayoutMode
     private var items: [T] = []
     private var textProvider: (T) -> String
     private var onItemSelected: ((T, HexagonItemView<T>) -> Void)?
@@ -18,9 +24,11 @@ class HoneycombGridView<T>: UIView {
     // Initializer with configuration options
     init(hexagonSize: CGFloat = UIScreen.main.bounds.width/3,
          spacing: CGFloat = 2,
+         layoutMode: LayoutMode = .spiral,
          textProvider: @escaping (T) -> String) {
         self.hexagonSize = hexagonSize
         self.spacing = spacing
+        self.layoutMode = layoutMode
         self.textProvider = textProvider
         super.init(frame: .zero)
         backgroundColor = .clear
@@ -116,8 +124,13 @@ class HoneycombGridView<T>: UIView {
         let horizontalSpacing = width + spacing
         let verticalSpacing = height + spacing
         
-        // Generate spiral coordinates for a honeycomb pattern
-        let positions = generateSpiralHexCoordinates(count: items.count)
+        let positions: [(q: Int, r: Int)]
+        switch layoutMode {
+        case .spiral:
+            positions = generateSpiralHexCoordinates(count: items.count)
+        case .horizontalScroll(let rows):
+            positions = generateHorizontalHexCoordinates(count: items.count, rows: rows)
+        }
         
         // Create a container view that will hold all hexagons
         let containerView = UIView()
@@ -183,15 +196,24 @@ class HoneycombGridView<T>: UIView {
             hexagonViews[index] = hexView
         }
         
-        // Set container size and center it in the view
+        // Set container size and position it in the view.
+        // Horizontal-scroll grids must remain anchored at x=0 so the scroll
+        // view contentSize matches the actual left/right edges of the content.
         containerView.frame = CGRect(x: 0, y: 0, width: containerWidth, height: containerHeight)
         
-        // Center the container in the available space
         if bounds.width > 0 && bounds.height > 0 {
-            containerView.center = CGPoint(
-                x: bounds.width / 2,
-                y: bounds.height / 2
-            )
+            switch layoutMode {
+            case .horizontalScroll:
+                containerView.frame.origin = CGPoint(
+                    x: 0,
+                    y: max(0, (bounds.height - containerHeight) / 2)
+                )
+            case .spiral:
+                containerView.center = CGPoint(
+                    x: bounds.width / 2,
+                    y: bounds.height / 2
+                )
+            }
         } else {
             print("Warning: HoneycombGridView has zero bounds: \(bounds)")
         }
@@ -204,18 +226,55 @@ class HoneycombGridView<T>: UIView {
             scrollView.showsVerticalScrollIndicator = false
             scrollView.backgroundColor = .clear
             
+            if case .horizontalScroll = layoutMode {
+                scrollView.alwaysBounceHorizontal = true
+                scrollView.alwaysBounceVertical = false
+                scrollView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+            }
+            
             // Move container to scroll view
             containerView.removeFromSuperview()
             scrollView.addSubview(containerView)
             addSubview(scrollView)
             
-            // Set content size
-            scrollView.contentSize = containerView.frame.size
+            // Set content size. Use maxX/maxY because horizontal grids may have
+            // a vertical origin to center them in the available space.
+            scrollView.contentSize = CGSize(
+                width: containerView.frame.maxX,
+                height: max(containerView.frame.maxY, scrollView.bounds.height)
+            )
             
-            // Center content
-            let xOffset = max(0, (scrollView.contentSize.width - scrollView.bounds.width) / 2)
-            let yOffset = max(0, (scrollView.contentSize.height - scrollView.bounds.height) / 2)
+            // Center content for spiral grids. Horizontal grids should start at the left
+            // and keep their original hex size while the user scrolls sideways.
+            let xOffset: CGFloat
+            if case .horizontalScroll = layoutMode {
+                xOffset = -scrollView.contentInset.left
+            } else {
+                xOffset = max(0, (scrollView.contentSize.width - scrollView.bounds.width) / 2)
+            }
+            let yOffset: CGFloat
+            if case .horizontalScroll = layoutMode {
+                yOffset = 0
+            } else {
+                yOffset = max(0, (scrollView.contentSize.height - scrollView.bounds.height) / 2)
+            }
             scrollView.contentOffset = CGPoint(x: xOffset, y: yOffset)
+        }
+    }
+    
+    private func generateHorizontalHexCoordinates(count: Int, rows: Int) -> [(q: Int, r: Int)] {
+        guard count > 0 else { return [] }
+        let rowCount = max(1, rows)
+        
+        return (0..<count).map { index in
+            let column = index / rowCount
+            let row = index % rowCount
+            
+            // Keep a compact honeycomb rectangle instead of one long diagonal line.
+            // With the axial-to-pixel conversion used below, q affects both x and y.
+            // Offset r by half the column so rows stay visually aligned while every
+            // other column remains staggered like the original honeycomb pattern.
+            return (q: column, r: row - (column / 2))
         }
     }
     
@@ -300,6 +359,11 @@ class HoneycombGridView<T>: UIView {
     private func createHexagonView(x: CGFloat, y: CGFloat, item: T, log: WorkoutLog? = nil, text: String, index: Int) -> HexagonItemView<T> {
         let hexView = HexagonItemView<T>(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
         hexView.configure(withItem: item, log: log)
+        
+        // For custom item types, use the supplied text provider and a default style.
+        if !(item is Muscle) && !(item is Skill) && !(item is Exercise) {
+            hexView.configure(name: text, lastPerformanceDate: nil)
+        }
         
         // Add tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hexagonTapped(_:)))

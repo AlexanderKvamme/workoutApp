@@ -5,7 +5,8 @@ import CoreData
 // MARK: - ImprovWorkoutController
 class ImprovWorkoutController: UIViewController, TimerDelegate {
     
-    private let skill: Skill
+    private let completionSkill: Skill?
+    private let workoutTitle: String
     private var honeycombGrid: HoneycombGridView<Exercise>?
     private var exercises: [Exercise] = []
     private var progressBar = DotProgressView()
@@ -19,23 +20,39 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     var setCount = 10
 
     init(skill: Skill) {
-        self.skill = skill
+        self.completionSkill = skill
+        self.workoutTitle = skill.name ?? "Exercise"
+        super.init(nibName: nil, bundle: nil)
+        configureWorkout(skills: [skill], exercises: skill.getExercises().map { $0 })
+    }
+    
+    init(skills: [Skill]) {
+        self.completionSkill = skills.first
+        self.workoutTitle = "ALL"
         super.init(nibName: nil, bundle: nil)
         
+        var seenExerciseIDs = Set<NSManagedObjectID>()
+        let allExercises = skills.flatMap { $0.getExercises().map { $0 } }.filter { exercise in
+            let objectID = exercise.objectID
+            guard !seenExerciseIDs.contains(objectID) else { return false }
+            seenExerciseIDs.insert(objectID)
+            return true
+        }
+        configureWorkout(skills: skills, exercises: allExercises)
+    }
+    
+    private func configureWorkout(skills: [Skill], exercises: [Exercise]) {
         self.timerView.delegate = self
 
         let wStyle = DatabaseFacade.getWorkoutStyle(named: "IMPROV") ?? DatabaseFacade.makeWorkoutStyle(named: "IMPROV")
         let workout = DatabaseFacade.makeWorkout(withName: "Improv",
                                    workoutStyle: wStyle,
                                    muscles: [],
-                                   skills: [skill],
+                                   skills: skills,
                                    exercises: [])
         self.log = DatabaseFacade.makeWorkoutLog(ofDesign: workout)
-        let dbExercises = skill.getExercises()
-        exercises = dbExercises.map { $0 }
-        
-        let baseName = skill.name ?? "Exercise"
-        title = baseName
+        self.exercises = exercises
+        title = workoutTitle
         
         let listButton = UIBarButtonItem(
             image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
@@ -165,19 +182,14 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     
     private var transitionDelegate: HexTransitionDelegate?
     private func setupHoneycombGrid() {
-        // Adaptive sizing based on number of exercises
-        let hexSize: CGFloat
-        if exercises.count <= 6 {
-            hexSize = UIScreen.main.bounds.width/2.5  // Larger hexagons for fewer exercises
-        } else if exercises.count <= 12 {
-            hexSize = UIScreen.main.bounds.width/3    // Medium hexagons
-        } else {
-            hexSize = UIScreen.main.bounds.width/4    // Smaller hexagons for many exercises
-        }
+        // Keep hexagons unscaled. If there are many exercises, lay them out
+        // horizontally and let the user scroll left/right instead of shrinking them.
+        let hexSize: CGFloat = UIScreen.main.bounds.width/3
         
         // Create the honeycomb grid
         let honeycombGrid = HoneycombGridView<Exercise>(
             hexagonSize: hexSize,
+            layoutMode: exercises.count > 12 ? .horizontalScroll(rows: 4) : .spiral,
             textProvider: { $0.getName() }
         )
         
@@ -208,7 +220,8 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
                 self?.progressBar.bump(after: 1.8, onCompletion: {
                     // Create and present the completion screen with custom transition
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-                        let completionScreen = HexCompletionScreen(skill: self!.skill)
+                        guard let completionSkill = self?.completionSkill else { return }
+                        let completionScreen = HexCompletionScreen(skill: completionSkill)
                         self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
                         completionScreen.transitioningDelegate = self?.transitionDelegate
                         self?.present(completionScreen, animated: true)

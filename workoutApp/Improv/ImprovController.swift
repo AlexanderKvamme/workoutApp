@@ -3,10 +3,24 @@ import AKKIT
 
 
 
+private enum PracticeSkillGridItem {
+    case all
+    case skill(Skill)
+    
+    var title: String {
+        switch self {
+        case .all:
+            return "ALL"
+        case .skill(let skill):
+            return skill.name ?? "Unknown"
+        }
+    }
+}
+
 // MARK: - HoneycombViewController
 class HoneycombViewController: SelectionViewController {
     
-    private var honeycombGrid: HoneycombGridView<Skill>!
+    private var honeycombGrid: HoneycombGridView<PracticeSkillGridItem>!
     private var skills: [Skill] = []
     
     init() {
@@ -55,8 +69,8 @@ class HoneycombViewController: SelectionViewController {
     
     private func setupHoneycombGrid() {
         // Create the honeycomb grid with a text provider
-        honeycombGrid = HoneycombGridView<Skill>(textProvider: { muscle in
-            return muscle.name ?? "Unknown"
+        honeycombGrid = HoneycombGridView<PracticeSkillGridItem>(textProvider: { item in
+            return item.title
         })
         
         // Add to view and set constraints
@@ -75,16 +89,26 @@ class HoneycombViewController: SelectionViewController {
         view.layoutIfNeeded()
         
         // Configure with data and selection handler
-        honeycombGrid.configure(with: skills) { [weak self] (selectedSkill, hexView: HexagonItemView) in
-            let setCountPicker = SetCountPickerController(skill: selectedSkill) { setCount in
-                // Create your custom view controller with the selected skill and set count
-                let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
+        let gridItems: [PracticeSkillGridItem] = [.all] + skills.map { .skill($0) }
+        honeycombGrid.configure(with: gridItems) { [weak self] selectedItem, hexView in
+            guard let self else { return }
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            
+            let setCountPicker = SetCountPickerController(title: selectedItem.title) { setCount in
+                let improvWorkoutController: ImprovWorkoutController
+                switch selectedItem {
+                case .all:
+                    improvWorkoutController = ImprovWorkoutController(skills: self.skills)
+                case .skill(let selectedSkill):
+                    improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
+                }
+                
                 improvWorkoutController.setCount = setCount
-                self?.navigationController?.pushViewController(improvWorkoutController, animated: true)
-                print("Selected \(setCount) sets for skill: \(selectedSkill.name ?? "Unknown")")
+                self.navigationController?.pushViewController(improvWorkoutController, animated: true)
+                print("Selected \(setCount) sets for: \(selectedItem.title)")
             }
             
-            self?.present(setCountPicker, animated: true)
+            self.present(setCountPicker, animated: true)
         }
     }
 }
