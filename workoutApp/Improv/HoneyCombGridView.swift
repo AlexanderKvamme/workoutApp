@@ -12,12 +12,15 @@ class HoneycombGridView<T>: UIView {
     private let hexagonSize: CGFloat
     private let spacing: CGFloat
     private let layoutMode: LayoutMode
+    private let animatesPopIn: Bool
+    private let contentVerticalOffset: CGFloat
     private var items: [T] = []
     private var textProvider: (T) -> String
     private var invertExerciseColors = false
     private var onItemSelected: ((T, HexagonItemView<T>) -> Void)?
     private var onItemLongPressed: ((T, HexagonItemView<T>) -> Void)?
     private var needsLayout = true
+    private var hasAnimatedPopIn = false
     
     // Store hexagon views and their positions for lookup
     private var hexagonViews: [Int: HexagonItemView<T>] = [:]
@@ -26,10 +29,14 @@ class HoneycombGridView<T>: UIView {
     init(hexagonSize: CGFloat = UIScreen.main.bounds.width/3,
          spacing: CGFloat = 2,
          layoutMode: LayoutMode = .spiral,
+         animatesPopIn: Bool = true,
+         contentVerticalOffset: CGFloat = 0,
          textProvider: @escaping (T) -> String) {
         self.hexagonSize = hexagonSize
         self.spacing = spacing
         self.layoutMode = layoutMode
+        self.animatesPopIn = animatesPopIn
+        self.contentVerticalOffset = contentVerticalOffset
         self.textProvider = textProvider
         super.init(frame: .zero)
         backgroundColor = .clear
@@ -68,6 +75,7 @@ class HoneycombGridView<T>: UIView {
         
         // Mark for layout update when new data is provided
         needsLayout = true
+        hasAnimatedPopIn = false
         
         // Reset any other state if needed
         onItemSelected = nil
@@ -93,6 +101,7 @@ class HoneycombGridView<T>: UIView {
         
         // Mark for layout update
         needsLayout = true
+        hasAnimatedPopIn = false
         setNeedsLayout()
     }
     
@@ -210,6 +219,7 @@ class HoneycombGridView<T>: UIView {
                 index: index
             )
             
+            hexView.transform = animatesPopIn ? CGAffineTransform(scaleX: 0.9, y: 0.9) : CGAffineTransform(scaleX: 0.95, y: 0.95)
             containerView.addSubview(hexView)
             
             // Store the hexagon view for later lookup
@@ -226,12 +236,12 @@ class HoneycombGridView<T>: UIView {
             case .horizontalScroll:
                 containerView.frame.origin = CGPoint(
                     x: 0,
-                    y: max(0, (bounds.height - containerHeight) / 2)
+                    y: max(0, (bounds.height - containerHeight) / 2) + contentVerticalOffset
                 )
             case .spiral:
                 containerView.center = CGPoint(
                     x: bounds.width / 2,
-                    y: bounds.height / 2
+                    y: bounds.height / 2 + contentVerticalOffset
                 )
             }
         } else {
@@ -279,6 +289,58 @@ class HoneycombGridView<T>: UIView {
                 yOffset = max(0, (scrollView.contentSize.height - scrollView.bounds.height) / 2)
             }
             scrollView.contentOffset = CGPoint(x: xOffset, y: yOffset)
+        }
+        
+        if animatesPopIn {
+            animateHexagonsPopIn()
+        }
+    }
+    
+    func prepareHexagonsForPopIn() {
+        layoutIfNeeded()
+        let orderedHexagons = hexagonViews
+            .sorted { $0.key < $1.key }
+            .map { $0.value }
+        
+        UIView.performWithoutAnimation {
+            for hexView in orderedHexagons {
+                hexView.layer.removeAllAnimations()
+                hexView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            }
+        }
+    }
+    
+    func animateHexagonsPopIn(force: Bool = false) {
+        guard force || !hasAnimatedPopIn else { return }
+        hasAnimatedPopIn = true
+        layoutIfNeeded()
+        let orderedHexagons = hexagonViews
+            .sorted { $0.key < $1.key }
+            .map { $0.value }
+        
+        for (index, hexView) in orderedHexagons.enumerated() {
+            let delay = TimeInterval(index) * 0.045
+            hexView.layer.removeAllAnimations()
+            hexView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            
+            UIView.animate(
+                withDuration: 0.18,
+                delay: delay,
+                options: [.curveEaseOut, .beginFromCurrentState],
+                animations: {
+                    hexView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                },
+                completion: { _ in
+                    UIView.animate(
+                        withDuration: 0.14,
+                        delay: 0,
+                        options: [.curveEaseInOut, .beginFromCurrentState],
+                        animations: {
+                            hexView.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+                        }
+                    )
+                }
+            )
         }
     }
     

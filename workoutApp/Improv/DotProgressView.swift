@@ -115,6 +115,7 @@ class DotProgressView: UIView {
         // Delay the animation by the specified amount
         DispatchQueue.main.asyncAfter(deadline: .now() + delaySeconds) {
             let animationDuration = 0.3
+            self.addProgressGrowShake(duration: animationDuration)
             
             // Animate the progress layer
             CATransaction.begin()
@@ -150,6 +151,27 @@ class DotProgressView: UIView {
             }
         }
     }
+    private func addProgressGrowShake(duration: TimeInterval) {
+        guard let progressLayer = progressLayer else { return }
+        progressLayer.removeAnimation(forKey: "progressGrowShake")
+        
+        let xShake = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        xShake.values = [0, -2.5, 3.5, -3, 2, -1, 0]
+        xShake.keyTimes = [0, 0.16, 0.32, 0.5, 0.68, 0.84, 1]
+        xShake.timingFunctions = Array(repeating: CAMediaTimingFunction(name: .easeInEaseOut), count: 6)
+        
+        let yShake = CAKeyframeAnimation(keyPath: "transform.translation.y")
+        yShake.values = [0, 1.5, -2.5, 2, -1.5, 1, 0]
+        yShake.keyTimes = xShake.keyTimes
+        yShake.timingFunctions = xShake.timingFunctions
+        
+        let shakeGroup = CAAnimationGroup()
+        shakeGroup.animations = [xShake, yShake]
+        shakeGroup.duration = duration
+        shakeGroup.isRemovedOnCompletion = true
+        progressLayer.add(shakeGroup, forKey: "progressGrowShake")
+    }
+    
     // MARK: - Layout
     
     override func layoutSubviews() {

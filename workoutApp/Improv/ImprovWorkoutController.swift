@@ -24,6 +24,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     private let navTimerViewTag = 91001
     private let navExitViewTag = 91002
     private var log: WorkoutLog!
+    private var didStartEntryPopIn = false
     
     let testOptions = ["60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
     var timerTargetString = APP_IS_DEBUG ? "30 s" : "3 m"
@@ -108,6 +109,13 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         
         if progressBar.currentStep == progressBar.totalSteps {
             navigationController?.popViewController(animated: true)
+            return
+        }
+        
+        if !didStartEntryPopIn {
+            didStartEntryPopIn = true
+            view.layoutIfNeeded()
+            honeycombGrid?.animateHexagonsPopIn(force: true)
         }
     }
     
@@ -432,6 +440,8 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         let honeycombGrid = HoneycombGridView<Exercise>(
             hexagonSize: hexSize,
             layoutMode: exercises.count > 12 ? .horizontalScroll(rows: 4) : .spiral,
+            animatesPopIn: false,
+            contentVerticalOffset: -48,
             textProvider: { $0.getName() }
         )
         
