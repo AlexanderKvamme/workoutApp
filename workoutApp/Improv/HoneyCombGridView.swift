@@ -14,6 +14,7 @@ class HoneycombGridView<T>: UIView {
     private let layoutMode: LayoutMode
     private var items: [T] = []
     private var textProvider: (T) -> String
+    private var invertExerciseColors = false
     private var onItemSelected: ((T, HexagonItemView<T>) -> Void)?
     private var onItemLongPressed: ((T, HexagonItemView<T>) -> Void)?
     private var needsLayout = true
@@ -36,6 +37,23 @@ class HoneycombGridView<T>: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setItemAlpha(_ alphaProvider: (T) -> CGFloat) {
+        for (index, item) in items.enumerated() {
+            guard let hexView = hexagonViews[index] else { continue }
+            let alpha = alphaProvider(item)
+            UIView.animate(withDuration: 0.2) {
+                hexView.alpha = alpha
+            }
+        }
+    }
+    
+    func updateItemViews(_ update: (T, HexagonItemView<T>) -> Void) {
+        for (index, item) in items.enumerated() {
+            guard let hexView = hexagonViews[index] else { continue }
+            update(item, hexView)
+        }
     }
     
     func reset() {
@@ -61,9 +79,11 @@ class HoneycombGridView<T>: UIView {
     
     // Configure the grid with data and selection handlers
     func configure(with items: [T],
+                  invertExerciseColors: Bool = false,
                   onItemSelected: @escaping (T, HexagonItemView<T>) -> Void,
                   onItemLongPressed: ((T, HexagonItemView<T>) -> Void)? = nil) {
         self.items = items
+        self.invertExerciseColors = invertExerciseColors
         self.onItemSelected = onItemSelected
         self.onItemLongPressed = onItemLongPressed
         
@@ -358,7 +378,11 @@ class HoneycombGridView<T>: UIView {
     // Create a custom UIView for the hexagon that handles its own touch events
     private func createHexagonView(x: CGFloat, y: CGFloat, item: T, log: WorkoutLog? = nil, text: String, index: Int) -> HexagonItemView<T> {
         let hexView = HexagonItemView<T>(frame: CGRect(x: x, y: y, width: hexagonSize, height: hexagonSize))
-        hexView.configure(withItem: item, log: log)
+        if let exercise = item as? Exercise {
+            hexView.configure(withExercise: exercise, andLog: log, inverted: invertExerciseColors)
+        } else {
+            hexView.configure(withItem: item, log: log)
+        }
         
         // For custom item types, use the supplied text provider and a default style.
         if !(item is Muscle) && !(item is Skill) && !(item is Exercise) {

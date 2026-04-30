@@ -53,10 +53,11 @@ class HexagonItemView<T>: UIView {
         let textLabel = UILabel()
         textLabel.frame = bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15)
         textLabel.textAlignment = .center
-        textLabel.font = AKFont.round(.black, 20)
+        textLabel.font = AKFont.round(.black, 16)
         textLabel.numberOfLines = 0
+        textLabel.lineBreakMode = .byWordWrapping
         textLabel.adjustsFontSizeToFitWidth = true
-        textLabel.minimumScaleFactor = 0.5
+        textLabel.minimumScaleFactor = 0.35
         textLabel.textColor = .akLight
         addSubview(textLabel)
         self.textLabel = textLabel
@@ -105,7 +106,7 @@ class HexagonItemView<T>: UIView {
     
     func configure(name: String, lastPerformanceDate: Date?) {
         print("Last performance date: ", lastPerformanceDate)
-        textLabel.text = name
+        setText(name)
         
         let colors: [UIColor] = [
             UIColor.white,         // 0-3 days (very recent)
@@ -139,15 +140,23 @@ class HexagonItemView<T>: UIView {
         }
     }
     
-    func configure(withExercise exercise: Exercise, andLog log: WorkoutLog?) {
-        var textColor = UIColor.black
-        self.hexagonLayer?.fillColor = UIColor.white.cgColor
+    func configure(withExercise exercise: Exercise, andLog log: WorkoutLog?, inverted: Bool = false) {
+        isUserInteractionEnabled = true
+        alpha = 1.0
+        var textColor = inverted ? UIColor.white : UIColor.black
+        self.hexagonLayer?.fillColor = (inverted ? UIColor.black : UIColor.white).cgColor
 
         if let log = log {
             let sets = log.loggedExercises?.array as! [ExerciseLog]
             let filteredSets = sets.filter { $0.getName() == exercise.getName() }
             
-            let progressiveColors = [
+            let progressiveColors = inverted ? [
+                    UIColor.black,
+                    UIColor.akDarkGray,
+                    UIColor.akGray,
+                    UIColor.akLightGray,
+                    UIColor.white
+                ] : [
                     UIColor.white,         // 0-3 days (very recent)
                     UIColor.akLightGray,   // 4-7 days
                     UIColor.akGray,        // 8-13 days
@@ -157,7 +166,7 @@ class HexagonItemView<T>: UIView {
             
             let count = filteredSets.count
             if count > 0 {
-                textColor = .white
+                textColor = inverted && count >= progressiveColors.count - 1 ? .black : .white
             }
             
             if count >= progressiveColors.count {
@@ -169,8 +178,15 @@ class HexagonItemView<T>: UIView {
             print("❌ no workout log")
         }
 
-        textLabel.text = exercise.name
+        setText(exercise.name ?? "")
         textLabel.textColor = textColor
+    }
+    
+    func configureDisabledWorkoutAppearance() {
+        isUserInteractionEnabled = false
+        alpha = 1.0
+        hexagonLayer?.fillColor = UIColor.white.cgColor
+        textLabel.textColor = UIColor(hex: "#DDDDE1")
     }
 
     // MARK: - Public Methods
@@ -184,8 +200,39 @@ class HexagonItemView<T>: UIView {
             print("configuring exercise cell: ", item.name)
             configure(withExercise: item, andLog: log)
         } else {
-            textLabel.text = "not muscle"
+            setText("not muscle")
         }
+    }
+    
+    private func setText(_ text: String) {
+        textLabel.text = text
+        textLabel.lineBreakMode = .byWordWrapping
+        textLabel.adjustsFontSizeToFitWidth = true
+        
+        // Multi-line UILabel scaling is limited, so do a small manual pass too.
+        // This keeps long names readable and avoids breaking words in the middle
+        // unless a single word is physically too wide for the hexagon.
+        let availableSize = textLabel.bounds.size == .zero
+            ? bounds.insetBy(dx: bounds.width * 0.15, dy: bounds.height * 0.15).size
+            : textLabel.bounds.size
+        
+        for fontSize in stride(from: CGFloat(16), through: CGFloat(11), by: CGFloat(-1)) {
+            let font = AKFont.round(.black, fontSize)
+            let boundingSize = CGSize(width: availableSize.width, height: CGFloat.greatestFiniteMagnitude)
+            let textRect = (text as NSString).boundingRect(
+                with: boundingSize,
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: [.font: font],
+                context: nil
+            )
+            
+            if textRect.height <= availableSize.height {
+                textLabel.font = font
+                return
+            }
+        }
+        
+        textLabel.font = AKFont.round(.black, 11)
     }
     
     // MARK: - Stripes Methods

@@ -25,7 +25,7 @@ class TabBarSelectionIndicator: UIView {
     init(tabBarItemcount: Int) {
         self.tabBarCount = tabBarItemcount
         super.init(frame: CGRect.zero)
-        self.backgroundColor = UIColor.akDark
+        self.backgroundColor = UIColor.akBlue
     }
     
     required init?(coder aDecoder: NSCoder) {

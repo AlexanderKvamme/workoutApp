@@ -10,9 +10,19 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     private var honeycombGrid: HoneycombGridView<Exercise>?
     private var exercises: [Exercise] = []
     private var progressBar = DotProgressView()
+    private let badgesScrollView = UIScrollView()
+    private let badgesStackView = UIStackView()
+    private var badgeButtonsByMuscleID: [NSManagedObjectID: UIButton] = [:]
+    private weak var filtersButton: UIButton?
+    private var hasShownFilterButtonShimmer = false
+    private var selectedMuscleIDs = Set<NSManagedObjectID>()
+    private var availableMuscles: [Muscle] = []
+    private var badgesExpanded = false
     private var confettiView: ConfettiView!
     var timerView = TimerView()
     private weak var navExitView: UIView?
+    private let navTimerViewTag = 91001
+    private let navExitViewTag = 91002
     private var log: WorkoutLog!
     
     let testOptions = ["60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
@@ -82,6 +92,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         // Set up UI components
         setupTimerView()
         setupProgressBar()
+        setupBadges()
         setupHoneycombGrid()
         setupNavigationOverlay()
         
@@ -98,6 +109,11 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         if progressBar.currentStep == progressBar.totalSteps {
             navigationController?.popViewController(animated: true)
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startFilterButtonShimmer()
     }
     
     override func viewDidLayoutSubviews() {
@@ -125,13 +141,179 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     private func setupProgressBar() {
         view.addSubview(progressBar)
         progressBar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(6)
             make.left.right.equalToSuperview().inset(16)
             make.height.equalTo(40)
         }
         
         // FIXME: Adjust by y
-        progressBar.configure(current: 0, total: setCount)
+        progressBar.configure(current: 0, total: setCount, sidePadding: 16)
+    }
+    
+    private func setupBadges() {
+        availableMuscles = uniqueMuscles(from: exercises)
+        guard !availableMuscles.isEmpty else { return }
+        
+        badgesScrollView.showsHorizontalScrollIndicator = false
+        badgesScrollView.alwaysBounceHorizontal = true
+        badgesScrollView.backgroundColor = .clear
+        view.addSubview(badgesScrollView)
+        
+        badgesStackView.axis = .horizontal
+        badgesStackView.alignment = .center
+        badgesStackView.spacing = 8
+        badgesStackView.backgroundColor = .clear
+        badgesScrollView.addSubview(badgesStackView)
+        
+        badgesScrollView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
+            make.height.equalTo(34)
+        }
+        
+        badgesStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16))
+            make.height.equalToSuperview()
+        }
+        
+        rebuildBadges()
+    }
+    
+    private func rebuildBadges() {
+        badgesStackView.arrangedSubviews.forEach { view in
+            badgesStackView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+        badgeButtonsByMuscleID.removeAll()
+        filtersButton = nil
+        
+        if badgesExpanded {
+            availableMuscles.forEach { muscle in
+                let button = makeBadgeButton(title: muscle.getName())
+                button.addTarget(self, action: #selector(badgeTapped(_:)), for: .touchUpInside)
+                button.tag = availableMuscles.firstIndex(where: { $0.objectID == muscle.objectID }) ?? 0
+                badgesStackView.addArrangedSubview(button)
+                badgeButtonsByMuscleID[muscle.objectID] = button
+            }
+            updateBadgeStyles()
+        } else {
+            let filtersButton = makeBadgeButton(title: "")
+            let filterSymbolConfig = UIImage.SymbolConfiguration(pointSize: 17, weight: .black, scale: .large)
+            filtersButton.setImage(UIImage(systemName: "line.3.horizontal.decrease", withConfiguration: filterSymbolConfig)?.withRenderingMode(.alwaysTemplate), for: .normal)
+            filtersButton.tintColor = .akGray
+            filtersButton.imageView?.contentMode = .scaleAspectFit
+            filtersButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
+            filtersButton.addTarget(self, action: #selector(filtersBadgeTapped), for: .touchUpInside)
+            badgesStackView.addArrangedSubview(filtersButton)
+            self.filtersButton = filtersButton
+            DispatchQueue.main.async { [weak self] in
+                self?.startFilterButtonShimmer()
+            }
+        }
+    }
+    
+    private func startFilterButtonShimmer() {
+        guard !hasShownFilterButtonShimmer, !badgesExpanded, let filtersButton else { return }
+        filtersButton.layoutIfNeeded()
+        guard filtersButton.bounds.width > 0 else { return }
+        hasShownFilterButtonShimmer = true
+        
+        // Use a simple one-time white pulse instead of a moving gradient shimmer.
+        filtersButton.layer.sublayers?.removeAll(where: { $0.name == "filterButtonShimmer" })
+        UIView.animate(withDuration: 0.18, delay: 0.25, options: [.curveEaseOut]) {
+            filtersButton.alpha = 0.55
+        } completion: { _ in
+            UIView.animate(withDuration: 0.28, delay: 0, options: [.curveEaseIn]) {
+                filtersButton.alpha = 1.0
+            }
+        }
+    }
+    
+    private func makeBadgeButton(title: String) -> UIButton {
+        let button = UIButton(type: .custom)
+        if #available(iOS 15.0, *) {
+            button.configuration = nil
+        }
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 10
+        button.layer.cornerCurve = .continuous
+        button.clipsToBounds = true
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.akGray, for: .normal)
+        button.titleLabel?.font = AKFont.round(.black, 13)
+        button.contentEdgeInsets = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 12)
+        return button
+    }
+    
+    private func uniqueMuscles(from exercises: [Exercise]) -> [Muscle] {
+        var seenIDs = Set<NSManagedObjectID>()
+        var muscles: [Muscle] = []
+        
+        exercises.forEach { exercise in
+            exercise.getMuscles().forEach { muscle in
+                guard !seenIDs.contains(muscle.objectID) else { return }
+                seenIDs.insert(muscle.objectID)
+                muscles.append(muscle)
+            }
+        }
+        
+        return muscles.sorted { $0.getName() < $1.getName() }
+    }
+    
+    @objc private func filtersBadgeTapped() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        badgesExpanded = true
+        rebuildBadges()
+    }
+    
+    @objc private func badgeTapped(_ sender: UIButton) {
+        guard sender.tag >= 0 && sender.tag < availableMuscles.count else { return }
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        
+        let muscle = availableMuscles[sender.tag]
+        if selectedMuscleIDs.contains(muscle.objectID) {
+            selectedMuscleIDs.remove(muscle.objectID)
+        } else {
+            selectedMuscleIDs.insert(muscle.objectID)
+        }
+        
+        if selectedMuscleIDs.isEmpty {
+            badgesExpanded = false
+            rebuildBadges()
+        } else {
+            updateBadgeStyles()
+        }
+        applyExerciseFilter()
+    }
+    
+    private func updateBadgeStyles() {
+        badgeButtonsByMuscleID.forEach { muscleID, button in
+            let isSelected = selectedMuscleIDs.contains(muscleID)
+            button.backgroundColor = isSelected ? .black : .white
+            button.setTitleColor(isSelected ? .white : .akGray, for: .normal)
+        }
+    }
+    
+    private func applyExerciseFilter() {
+        honeycombGrid?.updateItemViews { [weak self] exercise, hexView in
+            guard let self else { return }
+            let isEnabled: Bool
+            if selectedMuscleIDs.isEmpty {
+                isEnabled = true
+            } else {
+                let exerciseMuscleIDs = Set(exercise.getMuscles().map { $0.objectID })
+                isEnabled = !exerciseMuscleIDs.isDisjoint(with: selectedMuscleIDs)
+            }
+            
+            UIView.transition(with: hexView, duration: 0.2, options: [.transitionCrossDissolve, .allowUserInteraction]) {
+                if isEnabled {
+                    hexView.configure(withExercise: exercise, andLog: self.log, inverted: true)
+                } else {
+                    hexView.configureDisabledWorkoutAppearance()
+                }
+            }
+        }
     }
     
     private func setupTimerView() {
@@ -149,15 +331,23 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         navExitView?.removeFromSuperview()
         timerView.removeFromSuperview()
         
-        guard let navigationContainer = navigationController?.view else { return }
+        // Remove any stale overlay views from previous layout passes/controller instances.
+        navigationController?.navigationBar.viewWithTag(navTimerViewTag)?.removeFromSuperview()
+        navigationController?.navigationBar.viewWithTag(navExitViewTag)?.removeFromSuperview()
+        navigationController?.view.viewWithTag(navTimerViewTag)?.removeFromSuperview()
+        navigationController?.view.viewWithTag(navExitViewTag)?.removeFromSuperview()
+        
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        timerView.tag = navTimerViewTag
         
         let exitView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        exitView.tag = navExitViewTag
         exitView.backgroundColor = .clear
         exitView.layer.backgroundColor = UIColor.clear.cgColor
         exitView.isOpaque = false
         exitView.isUserInteractionEnabled = true
         
-        let imageView = UIImageView(image: UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate))
+        let imageView = UIImageView(image: UIImage.closeFat.withRenderingMode(.alwaysTemplate))
         imageView.tintColor = .akDark
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .clear
@@ -168,32 +358,34 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(xButtonHandler))
         exitView.addGestureRecognizer(tapRecognizer)
         
-        navigationContainer.addSubview(timerView)
-        navigationContainer.addSubview(exitView)
+        navigationBar.addSubview(timerView)
+        navigationBar.addSubview(exitView)
         navExitView = exitView
         positionNavigationOverlay()
+        navigationBar.bringSubviewToFront(timerView)
+        navigationBar.bringSubviewToFront(exitView)
     }
     
     private func positionNavigationOverlay() {
-        guard let navigationController,
+        guard let navigationBar = navigationController?.navigationBar,
               let navExitView else { return }
         
-        let navigationBar = navigationController.navigationBar
-        let navBarFrame = navigationBar.convert(navigationBar.bounds, to: navigationController.view)
-        
         timerView.frame = CGRect(
-            x: navBarFrame.minX + 16,
-            y: navBarFrame.midY - 20,
+            x: 16,
+            y: navigationBar.bounds.midY - 20,
             width: 72,
             height: 40
         )
         
         navExitView.frame = CGRect(
-            x: navBarFrame.maxX - 60,
-            y: navBarFrame.midY - 22,
+            x: navigationBar.bounds.maxX - 60,
+            y: navigationBar.bounds.midY - 22,
             width: 44,
             height: 44
         )
+        
+        navigationBar.bringSubviewToFront(timerView)
+        navigationBar.bringSubviewToFront(navExitView)
     }
     
     @objc func handleTimerTap() {
@@ -250,12 +442,13 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
             honeycombGrid.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 20),
             honeycombGrid.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             honeycombGrid.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            honeycombGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            honeycombGrid.bottomAnchor.constraint(equalTo: badgesScrollView.topAnchor, constant: -12)
         ])
         
         // Configure with exercises
         honeycombGrid.configure(
             with: exercises,
+            invertExerciseColors: true,
             onItemSelected: { [weak self] (selectedExercise, hex) in
                 let hexFrame = hex.convert(hex.bounds, to: self?.view)
                 self?.addCompletedExercise(selectedExercise)
@@ -263,7 +456,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
                 
                 hex.bumpDots()
                 
-                hex.configure(withExercise: selectedExercise, andLog: self?.log)
+                hex.configure(withExercise: selectedExercise, andLog: self?.log, inverted: true)
                 self?.startTimer()
                 
                 // Get the frame of the hex in the main view's coordinate system
