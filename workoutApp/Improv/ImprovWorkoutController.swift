@@ -12,6 +12,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     private var progressBar = DotProgressView()
     private var confettiView: ConfettiView!
     var timerView = TimerView()
+    private weak var navExitView: UIView?
     private var log: WorkoutLog!
     
     let testOptions = ["60 s", "90 s", "2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m", "9 m"]
@@ -79,11 +80,10 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         view.addSubview(confettiView)
         
         // Set up UI components
-        setupProgressBar()
         setupTimerView()
+        setupProgressBar()
         setupHoneycombGrid()
-
-        addExitButtonToNavBar()
+        setupNavigationOverlay()
         
         // Make sure navigation bar is visible
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -93,6 +93,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationOverlay()
         
         if progressBar.currentStep == progressBar.totalSteps {
             navigationController?.popViewController(animated: true)
@@ -105,6 +106,14 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         // This ensures the honeycomb grid is laid out after the view's bounds are finalized
         honeycombGrid?.setNeedsLayout()
         confettiView.frame = view.bounds
+        positionNavigationOverlay()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navExitView?.removeFromSuperview()
+        navExitView = nil
+        timerView.removeFromSuperview()
     }
     
     @objc func showList() {
@@ -117,7 +126,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         view.addSubview(progressBar)
         progressBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.left.equalToSuperview().offset(16)
+            make.left.right.equalToSuperview().inset(16)
             make.height.equalTo(40)
         }
         
@@ -126,24 +135,65 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     }
     
     private func setupTimerView() {
-        view.addSubview(timerView)
-        timerView.snp.makeConstraints { make in
-            make.top.equalTo(progressBar)
-            make.right.equalToSuperview().inset(24)
-            make.height.equalTo(40)
-        }
-//        timerView.snp.makeConstraints { make in
-//            make.top.equalTo(progressBar)
-//            make.right.equalToSuperview().inset(24)
-//            make.height.equalTo(40)
-//            // Optional: Set a fixed width if the timer should have consistent sizing
-////            make.width.equalTo(64) // Adjust based on your design
-//        }
-        
-        timerView.configure(format: .minutesSeconds, textColor: .black)
+        timerView.frame = CGRect(x: 0, y: 0, width: 72, height: 40)
+        timerView.backgroundColor = .clear
+        timerView.configure(format: .minutesSeconds, textColor: .black, font: AKFont.round(.black, 18))
         
         let timerClickedTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTimerTap))
         timerView.addGestureRecognizer(timerClickedTapGestureRecognizer)
+    }
+    
+    private func setupNavigationOverlay() {
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItem = nil
+        navExitView?.removeFromSuperview()
+        timerView.removeFromSuperview()
+        
+        guard let navigationContainer = navigationController?.view else { return }
+        
+        let exitView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        exitView.backgroundColor = .clear
+        exitView.layer.backgroundColor = UIColor.clear.cgColor
+        exitView.isOpaque = false
+        exitView.isUserInteractionEnabled = true
+        
+        let imageView = UIImageView(image: UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = .akDark
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        imageView.isUserInteractionEnabled = false
+        imageView.frame = CGRect(x: 13.5, y: 13.5, width: 17, height: 17)
+        exitView.addSubview(imageView)
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(xButtonHandler))
+        exitView.addGestureRecognizer(tapRecognizer)
+        
+        navigationContainer.addSubview(timerView)
+        navigationContainer.addSubview(exitView)
+        navExitView = exitView
+        positionNavigationOverlay()
+    }
+    
+    private func positionNavigationOverlay() {
+        guard let navigationController,
+              let navExitView else { return }
+        
+        let navigationBar = navigationController.navigationBar
+        let navBarFrame = navigationBar.convert(navigationBar.bounds, to: navigationController.view)
+        
+        timerView.frame = CGRect(
+            x: navBarFrame.minX + 16,
+            y: navBarFrame.midY - 20,
+            width: 72,
+            height: 40
+        )
+        
+        navExitView.frame = CGRect(
+            x: navBarFrame.maxX - 60,
+            y: navBarFrame.midY - 22,
+            width: 44,
+            height: 44
+        )
     }
     
     @objc func handleTimerTap() {
