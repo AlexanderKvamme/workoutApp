@@ -85,6 +85,20 @@ class DotProgressView: UIView {
         setNeedsLayout()
     }
     
+    /// Returns the center of the dot before the one that will be filled by the next bump, converted to another view.
+    func previousDotCenterForNextBump(convertedTo targetView: UIView) -> CGPoint {
+        layoutIfNeeded()
+        let nextStep = min(currentStep + 1, totalSteps)
+        let dotIndex = max(0, nextStep - 2)
+        let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
+        let startX = (bounds.width - dotsWidth) / 2
+        let center = CGPoint(
+            x: startX + CGFloat(dotIndex) * (dotSize + dotSpacing) + dotSize / 2,
+            y: bounds.height / 2
+        )
+        return convert(center, to: targetView)
+    }
+    
     /// Animates the transition to the next step with a bump animation
     func bump(after delaySeconds: TimeInterval = 0, onCompletion: @escaping (() -> ())) {
         // Calculate the next step (one step up)
