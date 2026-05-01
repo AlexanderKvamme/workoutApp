@@ -525,7 +525,8 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         // Start the animation
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
             guard let self = self else { return }
-            self.confettiView.removalPoint = self.progressBar.previousDotCenterForNextBump(convertedTo: self.confettiView)
+            self.confettiView.removalStartPoint = self.progressBar.previousDotCenterForCurrentStep(convertedTo: self.confettiView)
+            self.confettiView.removalEndPoint = self.progressBar.currentDotCenter(convertedTo: self.confettiView)
             self.confettiView.startConfettiCannon(at: convertedPoint, keepOnScreen: true)
             
             // Add a subtle "pop" animation to the hex

@@ -95,13 +95,33 @@ class DotProgressView: UIView {
     
     /// Returns the center of the dot before the one that will be filled by the next bump, converted to another view.
     func previousDotCenterForNextBump(convertedTo targetView: UIView) -> CGPoint {
-        layoutIfNeeded()
         let nextStep = min(currentStep + 1, totalSteps)
-        let dotIndex = max(0, nextStep - 2)
+        return dotCenter(at: max(0, nextStep - 2), convertedTo: targetView)
+    }
+    
+    /// Returns the center of the dot that will be filled by the next bump, converted to another view.
+    func nextDotCenterForNextBump(convertedTo targetView: UIView) -> CGPoint {
+        let nextStep = min(currentStep + 1, totalSteps)
+        return dotCenter(at: max(0, nextStep - 1), convertedTo: targetView)
+    }
+    
+    /// Returns the center of the dot before the current filled step, converted to another view.
+    func previousDotCenterForCurrentStep(convertedTo targetView: UIView) -> CGPoint {
+        return dotCenter(at: max(0, currentStep - 2), convertedTo: targetView)
+    }
+    
+    /// Returns the center of the current filled step, converted to another view.
+    func currentDotCenter(convertedTo targetView: UIView) -> CGPoint {
+        return dotCenter(at: max(0, currentStep - 1), convertedTo: targetView)
+    }
+    
+    private func dotCenter(at dotIndex: Int, convertedTo targetView: UIView) -> CGPoint {
+        layoutIfNeeded()
+        let clampedIndex = max(0, min(dotIndex, totalSteps - 1))
         let dotsWidth = CGFloat(totalSteps) * dotSize + CGFloat(totalSteps - 1) * dotSpacing
         let startX = (bounds.width - dotsWidth) / 2
         let center = CGPoint(
-            x: startX + CGFloat(dotIndex) * (dotSize + dotSpacing) + dotSize / 2,
+            x: startX + CGFloat(clampedIndex) * (dotSize + dotSpacing) + dotSize / 2,
             y: bounds.height / 2
         )
         return convert(center, to: targetView)

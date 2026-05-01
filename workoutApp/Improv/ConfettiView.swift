@@ -3,12 +3,22 @@ import UIKit
 //                        .systemPurple, .systemOrange, .systemPink, .systemTeal]
 let CONFETTI_COLORS: [UIColor] = [.akRed, .akGreen, .akOrange, .akBlue, .akPurple]
 
+private enum ConfettiAnimation {
+    static let pieceCount = 60
+    static let landingMinDelay: CGFloat = 1.5
+    static let landingDelayRange: ClosedRange<CGFloat> = 0.2...0.45
+    static let landingDuration: TimeInterval = 0.3
+    static let landingVerticalJitter: CGFloat = 3
+}
+
 class ConfettiView: UIView {
     // Track all active confetti pieces
     private var activeConfetti: [UIView] = []
     private var isAnimating = false
     private var keepConfetti = false
     var removalPoint: CGPoint? = CGPoint(x: 100, y: 200)
+    var removalStartPoint: CGPoint?
+    var removalEndPoint: CGPoint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,8 +70,8 @@ class ConfettiView: UIView {
         // Create confetti pieces
         let colors: [UIColor] = CONFETTI_COLORS
         
-        // Create 60 confetti pieces
-        for _ in 0..<60 {
+        // Create confetti pieces
+        for index in 0..<ConfettiAnimation.pieceCount {
             // Create a confetti piece
             let size = CGFloat.random(in: 8...24)
             let confetti = UIView(frame: CGRect(x: position.x - size/2, y: position.y - size/2,
@@ -121,17 +131,15 @@ class ConfettiView: UIView {
             }, completion: nil)
             
             // Only add the shrink animation if we're not keeping confetti
-            if let removalPoint = removalPoint {
-                let minDelay = 1.5
-                let delay = CGFloat.random(in: minDelay+0.2...minDelay+0.45)
-                let duration = 0.3
-                UIView.animate(withDuration: duration,
+            if let landingPoint = landingPoint(for: index) {
+                let delay = CGFloat.random(in: ConfettiAnimation.landingMinDelay + ConfettiAnimation.landingDelayRange.lowerBound...ConfettiAnimation.landingMinDelay + ConfettiAnimation.landingDelayRange.upperBound)
+                UIView.animate(withDuration: ConfettiAnimation.landingDuration,
                                delay: delay,
                                usingSpringWithDamping: 1.0,
                                initialSpringVelocity: 1.0,
                               options: [.allowUserInteraction, .beginFromCurrentState], animations: {
                     // Move in random direction from the center
-                    confetti.center = removalPoint
+                    confetti.center = landingPoint
                     confetti.transform = confetti.transform.rotated(by: .pi * 2 * CGFloat.random(in: 1...3))
                     confetti.alpha = 0.4
                     // Scale down slightly as it moves away
@@ -175,10 +183,23 @@ class ConfettiView: UIView {
             // Schedule new safety cleanup
             perform(#selector(safetyCleanup), with: nil, afterDelay: maxDuration)
             
-            print("DEBUG: Created 60 confetti pieces with individual shrink animations")
+            print("DEBUG: Created \(ConfettiAnimation.pieceCount) confetti pieces with individual shrink animations")
         } else {
-            print("DEBUG: Created 60 confetti pieces that will remain visible")
+            print("DEBUG: Created \(ConfettiAnimation.pieceCount) confetti pieces that will remain visible")
         }
+    }
+    
+    private func landingPoint(for index: Int) -> CGPoint? {
+        if let start = removalStartPoint, let end = removalEndPoint {
+            let denominator = max(ConfettiAnimation.pieceCount - 1, 1)
+            let progress = CGFloat(index) / CGFloat(denominator)
+            return CGPoint(
+                x: start.x + (end.x - start.x) * progress,
+                y: start.y + (end.y - start.y) * progress + CGFloat.random(in: -ConfettiAnimation.landingVerticalJitter...ConfettiAnimation.landingVerticalJitter)
+            )
+        }
+        
+        return removalPoint
     }
     
     @objc private func safetyCleanup() {
