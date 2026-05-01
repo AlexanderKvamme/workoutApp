@@ -16,6 +16,19 @@ let globalTimerWidth: CGFloat = Constant.UI.width - 48 - 24
 let globalTimerHeight: CGFloat = 32
 let globalCancelTimerWidth: CGFloat = 44
 
+private enum ActiveWorkoutAnimation {
+    static let cellStartScale: CGFloat = 0.86
+    static let cellPeakScale: CGFloat = 1.12
+    static let cellStaggerDelay: TimeInterval = 0.045
+    static let cellPopDuration: TimeInterval = 0.18
+    static let cellSettleDuration: TimeInterval = 0.16
+    static let cellPopDamping: CGFloat = 0.6
+    static let cellPopVelocity: CGFloat = 0.85
+    static let cellSettleDamping: CGFloat = 0.74
+    static let cellSettleVelocity: CGFloat = 0.4
+    static let dragLiftScale: CGFloat = 1.05
+    static let dragLiftAlpha: CGFloat = 0.98
+}
 
 class CounterManager: AKTimerDelegate {
     
@@ -75,6 +88,9 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     private lazy var counter = CounterButton("0", timerDelegate: self)
     private var counterManager = CounterManager()
     private var akCounter = AKTimer()
+    private weak var plainExitView: UIView?
+    private var didAnimateInitialCells = false
+    private var animatedInitialCellSections = Set<Int>()
     
     private var timerTargetString = "3 m"
     private var timerTargetDouble: Int {
@@ -97,6 +113,8 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
+        didAnimateInitialCells = false
+        animatedInitialCellSections.removeAll()
         addObservers()
         setupNavigationBar()
         enableSwipeBackGesture(false)
@@ -121,7 +139,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addExitButtonToNavBar(withAction: #selector(xButtonHandler))
+        addPlainExitView()
     
         // Prepare notifications after breaks
         let notificationCenter = NotificationCenter.default
@@ -174,9 +192,26 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        positionPlainExitView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        animateInitialCellsIfNeeded()
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard !animatedInitialCellSections.contains(indexPath.section) else { return }
+        animatedInitialCellSections.insert(indexPath.section)
+        animateCellPopIn(cell, delay: TimeInterval(indexPath.section) * ActiveWorkoutAnimation.cellStaggerDelay)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         removeObservers()
         enableSwipeBackGesture(false)
+        removePlainExitView()
     }
     
     // MARK: - Methods
@@ -224,7 +259,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     
     private func addTimerBar(target: TimeInterval) {
         navigationItem.leftBarButtonItems = nil
-        navigationItem.rightBarButtonItem = nil
+        removePlainExitView()
         
         let timerBar = AKTimerStatusBar(time: target)
         timerBar.delegate = self
@@ -235,12 +270,61 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         navigationItem.titleView = timerBar
         timerBar.startAnimation(seconds: target) {
             self.addTimerButtons()
-            self.addExitButtonToNavBar()
+            self.addPlainExitView()
             Audioplayer.play(.congratulations)
         }
     }
     
     // MARK: setup methods
+    
+    private func animateInitialCellsIfNeeded() {
+        guard !didAnimateInitialCells else { return }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self, !self.didAnimateInitialCells else { return }
+            self.tableView.layoutIfNeeded()
+            
+            guard let indexPaths = self.tableView.indexPathsForVisibleRows?.sorted(), !indexPaths.isEmpty else { return }
+            self.didAnimateInitialCells = true
+            
+            let unanimatedIndexPaths = indexPaths.filter { !self.animatedInitialCellSections.contains($0.section) }
+            for (index, indexPath) in unanimatedIndexPaths.enumerated() {
+                guard let cell = self.tableView.cellForRow(at: indexPath) else { continue }
+                self.animatedInitialCellSections.insert(indexPath.section)
+                self.animateCellPopIn(cell, delay: TimeInterval(index) * ActiveWorkoutAnimation.cellStaggerDelay)
+            }
+        }
+    }
+    
+    private func animateCellPopIn(_ cell: UITableViewCell, delay: TimeInterval) {
+        cell.layer.removeAllAnimations()
+        cell.alpha = 0
+        cell.transform = CGAffineTransform(scaleX: ActiveWorkoutAnimation.cellStartScale, y: ActiveWorkoutAnimation.cellStartScale)
+        
+        UIView.animate(
+            withDuration: ActiveWorkoutAnimation.cellPopDuration,
+            delay: delay,
+            usingSpringWithDamping: ActiveWorkoutAnimation.cellPopDamping,
+            initialSpringVelocity: ActiveWorkoutAnimation.cellPopVelocity,
+            options: [.beginFromCurrentState],
+            animations: {
+                cell.alpha = 1
+                cell.transform = CGAffineTransform(scaleX: ActiveWorkoutAnimation.cellPeakScale, y: ActiveWorkoutAnimation.cellPeakScale)
+            },
+            completion: { _ in
+                UIView.animate(
+                    withDuration: ActiveWorkoutAnimation.cellSettleDuration,
+                    delay: 0,
+                    usingSpringWithDamping: ActiveWorkoutAnimation.cellSettleDamping,
+                    initialSpringVelocity: ActiveWorkoutAnimation.cellSettleVelocity,
+                    options: [.beginFromCurrentState],
+                    animations: {
+                        cell.transform = .identity
+                    }
+                )
+            }
+        )
+    }
     
     private func enableSwipeBackGesture(_ b: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = b
@@ -254,7 +338,55 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
         }
         
         globalTabBar?.hideIt()
-        addExitButtonToNavBar()
+        addPlainExitView()
+    }
+    
+    private func addPlainExitView() {
+        navigationItem.rightBarButtonItem = nil
+        removePlainExitView()
+        
+        guard let navigationContainer = navigationController?.view else { return }
+        
+        let tapArea = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        tapArea.backgroundColor = .clear
+        tapArea.layer.backgroundColor = UIColor.clear.cgColor
+        tapArea.isOpaque = false
+        tapArea.isUserInteractionEnabled = true
+        
+        let imageView = UIImageView(image: UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate))
+        imageView.tintColor = .akDark
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .clear
+        imageView.isUserInteractionEnabled = false
+        imageView.frame = CGRect(x: 13.5, y: 13.5, width: 17, height: 17)
+        tapArea.addSubview(imageView)
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(xButtonHandler))
+        tapArea.addGestureRecognizer(tapRecognizer)
+        
+        navigationContainer.addSubview(tapArea)
+        plainExitView = tapArea
+        positionPlainExitView()
+    }
+    
+    private func positionPlainExitView() {
+        guard let plainExitView,
+              let navigationController,
+              let navigationBar = navigationController.navigationBar as UINavigationBar? else { return }
+        
+        let navBarFrame = navigationBar.convert(navigationBar.bounds, to: navigationController.view)
+        plainExitView.frame = CGRect(
+            x: navBarFrame.maxX - 56,
+            y: navBarFrame.midY - 22,
+            width: 44,
+            height: 44
+        )
+    }
+    
+    private func removePlainExitView() {
+        navigationItem.rightBarButtonItem = nil
+        plainExitView?.removeFromSuperview()
+        plainExitView = nil
     }
     
     private func setupTable() {
@@ -325,6 +457,7 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
     }
     
     @objc override func xButtonHandler() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         let alert = UIAlertController(
             title: "Are you sure?",
             message: "The progress of this workout will be lost",
@@ -374,8 +507,8 @@ class ActiveWorkoutController: UITableViewController, AKStepperDelegate {
                 // Offset for gesture location.
                 center.y = self.location.y
                 self.snapShot?.center = center
-                self.snapShot?.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                self.snapShot?.alpha = 0.98
+                self.snapShot?.transform = CGAffineTransform(scaleX: ActiveWorkoutAnimation.dragLiftScale, y: ActiveWorkoutAnimation.dragLiftScale)
+                self.snapShot?.alpha = ActiveWorkoutAnimation.dragLiftAlpha
                 
                 cell.alpha = 0.0
                 

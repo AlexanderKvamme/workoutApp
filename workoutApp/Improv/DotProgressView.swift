@@ -1,5 +1,13 @@
 import UIKit
 
+private enum DotProgressAnimation {
+    static let bumpDuration: TimeInterval = 0.3
+    static let completedScale: CGFloat = 1.1
+    static let shakeXValues: [CGFloat] = [0, -3.5, 5, -4.5, 3.5, -2, 0]
+    static let shakeYValues: [CGFloat] = [0, 2.5, -3.5, 3, -2.5, 1.5, 0]
+    static let shakeKeyTimes: [NSNumber] = [0, 0.16, 0.32, 0.5, 0.68, 0.84, 1]
+}
+
 protocol DotProgressDelegate {
 //    func didComplete(selectedExercise: Exercise, hexFrame: CGRect)
     func didComplete()
@@ -114,7 +122,7 @@ class DotProgressView: UIView {
         
         // Delay the animation by the specified amount
         DispatchQueue.main.asyncAfter(deadline: .now() + delaySeconds) {
-            let animationDuration = 0.3
+            let animationDuration = DotProgressAnimation.bumpDuration
             self.addProgressGrowShake(duration: animationDuration)
             
             // Animate the progress layer
@@ -125,8 +133,8 @@ class DotProgressView: UIView {
             // Update progress layer frame with animation
             if isDone {
                 CATransaction.begin()
-                CATransaction.setAnimationDuration(0.3) // Animation duration in seconds
-                let scale = 1.1
+                CATransaction.setAnimationDuration(DotProgressAnimation.bumpDuration) // Animation duration in seconds
+                let scale = DotProgressAnimation.completedScale
                 self.progressLayer?.transform = CATransform3DMakeScale(scale, scale, scale)
                 self.progressLayer?.backgroundColor = UIColor.akOrange.cgColor
                 CATransaction.commit()
@@ -156,12 +164,12 @@ class DotProgressView: UIView {
         progressLayer.removeAnimation(forKey: "progressGrowShake")
         
         let xShake = CAKeyframeAnimation(keyPath: "transform.translation.x")
-        xShake.values = [0, -2.5, 3.5, -3, 2, -1, 0]
-        xShake.keyTimes = [0, 0.16, 0.32, 0.5, 0.68, 0.84, 1]
-        xShake.timingFunctions = Array(repeating: CAMediaTimingFunction(name: .easeInEaseOut), count: 6)
+        xShake.values = DotProgressAnimation.shakeXValues
+        xShake.keyTimes = DotProgressAnimation.shakeKeyTimes
+        xShake.timingFunctions = Array(repeating: CAMediaTimingFunction(name: .easeInEaseOut), count: DotProgressAnimation.shakeKeyTimes.count - 1)
         
         let yShake = CAKeyframeAnimation(keyPath: "transform.translation.y")
-        yShake.values = [0, 1.5, -2.5, 2, -1.5, 1, 0]
+        yShake.values = DotProgressAnimation.shakeYValues
         yShake.keyTimes = xShake.keyTimes
         yShake.timingFunctions = xShake.timingFunctions
         

@@ -1,6 +1,22 @@
 import UIKit
 import AKKIT
 
+private enum HexGridPopInAnimation {
+    static let startScale: CGFloat = 0.95
+    static let peakScale: CGFloat = 1.0
+    static let restingScale: CGFloat = 0.95
+    static let staggerDelay: TimeInterval = 0.032
+    static let variationDelay: TimeInterval = 0.008
+    static let diagonalSortThreshold: CGFloat = 12
+    static let rowSortThreshold: CGFloat = 8
+    static let totalDuration: TimeInterval = 0.42
+    static let alternateDurationBonus: TimeInterval = 0.035
+    static let peakStartTime: Double = 0.0
+    static let peakRelativeDuration: Double = 0.58
+    static let settleStartTime: Double = 0.58
+    static let settleRelativeDuration: Double = 0.42
+}
+
 // MARK: - Reusable HoneycombGridView
 class HoneycombGridView<T>: UIView {
     enum LayoutMode {
@@ -219,7 +235,7 @@ class HoneycombGridView<T>: UIView {
                 index: index
             )
             
-            hexView.transform = animatesPopIn ? CGAffineTransform(scaleX: 0.9, y: 0.9) : CGAffineTransform(scaleX: 0.95, y: 0.95)
+            hexView.transform = animatesPopIn ? CGAffineTransform(scaleX: HexGridPopInAnimation.startScale, y: HexGridPopInAnimation.startScale) : CGAffineTransform(scaleX: HexGridPopInAnimation.restingScale, y: HexGridPopInAnimation.restingScale)
             containerView.addSubview(hexView)
             
             // Store the hexagon view for later lookup
@@ -305,7 +321,7 @@ class HoneycombGridView<T>: UIView {
         UIView.performWithoutAnimation {
             for hexView in orderedHexagons {
                 hexView.layer.removeAllAnimations()
-                hexView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+                hexView.transform = CGAffineTransform(scaleX: HexGridPopInAnimation.startScale, y: HexGridPopInAnimation.startScale)
             }
         }
     }
@@ -315,30 +331,51 @@ class HoneycombGridView<T>: UIView {
         hasAnimatedPopIn = true
         layoutIfNeeded()
         let orderedHexagons = hexagonViews
-            .sorted { $0.key < $1.key }
+            .sorted { lhs, rhs in
+                let lhsCenter = lhs.value.center
+                let rhsCenter = rhs.value.center
+                let lhsDiagonal = lhsCenter.x + lhsCenter.y
+                let rhsDiagonal = rhsCenter.x + rhsCenter.y
+                
+                if abs(lhsDiagonal - rhsDiagonal) > HexGridPopInAnimation.diagonalSortThreshold {
+                    return lhsDiagonal < rhsDiagonal
+                }
+                
+                if abs(lhsCenter.y - rhsCenter.y) > HexGridPopInAnimation.rowSortThreshold {
+                    return lhsCenter.y < rhsCenter.y
+                }
+                
+                return lhsCenter.x < rhsCenter.x
+            }
             .map { $0.value }
         
         for (index, hexView) in orderedHexagons.enumerated() {
-            let delay = TimeInterval(index) * 0.045
-            hexView.layer.removeAllAnimations()
-            hexView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            let stagger = TimeInterval(index) * HexGridPopInAnimation.staggerDelay
+            let tinyOffset = TimeInterval((index % 3)) * HexGridPopInAnimation.variationDelay
+            let delay = stagger + tinyOffset
+            let duration = HexGridPopInAnimation.totalDuration + TimeInterval(index % 2) * HexGridPopInAnimation.alternateDurationBonus
             
-            UIView.animate(
-                withDuration: 0.18,
+            hexView.layer.removeAllAnimations()
+            hexView.transform = CGAffineTransform(scaleX: HexGridPopInAnimation.startScale, y: HexGridPopInAnimation.startScale)
+            
+            UIView.animateKeyframes(
+                withDuration: duration,
                 delay: delay,
-                options: [.curveEaseOut, .beginFromCurrentState],
+                options: [.calculationModeCubic, .beginFromCurrentState],
                 animations: {
-                    hexView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                },
-                completion: { _ in
-                    UIView.animate(
-                        withDuration: 0.14,
-                        delay: 0,
-                        options: [.curveEaseInOut, .beginFromCurrentState],
-                        animations: {
-                            hexView.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-                        }
-                    )
+                    UIView.addKeyframe(
+                        withRelativeStartTime: HexGridPopInAnimation.peakStartTime,
+                        relativeDuration: HexGridPopInAnimation.peakRelativeDuration
+                    ) {
+                        hexView.transform = CGAffineTransform(scaleX: HexGridPopInAnimation.peakScale, y: HexGridPopInAnimation.peakScale)
+                    }
+                    
+                    UIView.addKeyframe(
+                        withRelativeStartTime: HexGridPopInAnimation.settleStartTime,
+                        relativeDuration: HexGridPopInAnimation.settleRelativeDuration
+                    ) {
+                        hexView.transform = CGAffineTransform(scaleX: HexGridPopInAnimation.restingScale, y: HexGridPopInAnimation.restingScale)
+                    }
                 }
             )
         }
