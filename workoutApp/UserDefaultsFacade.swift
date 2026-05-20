@@ -14,6 +14,10 @@ enum DefaultKeys {
     static let unitOfMeasurement = "Unit of Measurement"
     static let weightIncrements = "Weight Increment Amount"
     static let userDefaultsHasBeenSeeded = "UserDefaultsHasBeenSeeded"
+    static let muscleLightGray = "Light Gray After"
+    static let muscleGray = "Gray After"
+    static let muscleDarkGray = "Dark Gray After"
+    static let muscleBlack = "Black After"
 }
 
 // MARK: - Model of Defaults
@@ -24,7 +28,11 @@ struct UserPreferenceHolder {
     
     static var preferences: [UserPreference] = {[
         UserPreference(preferenceName: DefaultKeys.unitOfMeasurement, choices: ["KG", "LBS"]),
-        UserPreference(preferenceName: DefaultKeys.weightIncrements, choices: ["0.25", "0.5", "1"])
+        UserPreference(preferenceName: DefaultKeys.weightIncrements, choices: ["0.25", "0.5", "1"]),
+        UserPreference(preferenceName: DefaultKeys.muscleLightGray, choices: ["1", "3", "5", "10"]),
+        UserPreference(preferenceName: DefaultKeys.muscleGray,      choices: ["5", "10", "15", "25"]),
+        UserPreference(preferenceName: DefaultKeys.muscleDarkGray,  choices: ["10", "20", "30", "50"]),
+        UserPreference(preferenceName: DefaultKeys.muscleBlack,     choices: ["20", "35", "50", "100"]),
     ]}()
 }
 
@@ -54,13 +62,20 @@ final class UserDefaultsFacade {
     // MARK: API
     
     static func seed() {
-        
-        let defaultIncrement = "1"
-        let defaultWeight = "KG"
-        
-        UserDefaults.standard.set(defaultIncrement, forKey: DefaultKeys.weightIncrements)
-        UserDefaults.standard.set(defaultWeight, forKey: DefaultKeys.unitOfMeasurement)
-        UserDefaults.standard.set(true, forKey: DefaultKeys.userDefaultsHasBeenSeeded)
+        UserDefaults.standard.set("1",   forKey: DefaultKeys.weightIncrements)
+        UserDefaults.standard.set("KG",  forKey: DefaultKeys.unitOfMeasurement)
+        UserDefaults.standard.set("1",   forKey: DefaultKeys.muscleLightGray)
+        UserDefaults.standard.set("10",  forKey: DefaultKeys.muscleGray)
+        UserDefaults.standard.set("25",  forKey: DefaultKeys.muscleDarkGray)
+        UserDefaults.standard.set("50",  forKey: DefaultKeys.muscleBlack)
+        UserDefaults.standard.set(true,  forKey: DefaultKeys.userDefaultsHasBeenSeeded)
+    }
+
+    static func muscleThreshold(for key: String, fallback: Int) -> Int {
+        guard let str = UserDefaults.standard.string(forKey: key), let val = Int(str) else {
+            return fallback
+        }
+        return val
     }
     
     static func getActiveSelection(for preference: UserPreference) -> String? {

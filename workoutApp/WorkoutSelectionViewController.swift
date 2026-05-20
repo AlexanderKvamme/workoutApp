@@ -48,9 +48,28 @@ class WorkoutSelectionViewController: SelectionViewController {
             outgoing.font = h3.withSize(18)
             return outgoing
         }
-        
+
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
+        return button
+    }()
+
+    private lazy var historyButton: UIButton = {
+        var hSpace = CGFloat(16)
+        var config = UIButton.Configuration.filled()
+        config.title = "history"
+        config.baseBackgroundColor = .black
+        config.baseForegroundColor = .white
+        config.cornerStyle = .large
+        config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: hSpace, bottom: 4, trailing: hSpace)
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = h3.withSize(18)
+            return outgoing
+        }
+
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(pushHistoryController), for: .touchUpInside)
         return button
     }()
     
@@ -165,26 +184,33 @@ class WorkoutSelectionViewController: SelectionViewController {
         view.addSubview(header)
         view.addSubview(collageView)
         view.addSubview(badgeButton)
-        
+        view.addSubview(historyButton)
+
         // Header constraints using SnapKit
         header.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.top.equalTo(view).offset(Constant.components.SelectionVC.Header.spacingTop)
         }
-        
+
         // Initial collageView constraints (will be updated in updateButtonGrid)
         collageView.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.top.equalTo(header.snp.bottom).offset(60)
             make.leading.greaterThanOrEqualTo(view).offset(40)
             make.trailing.lessThanOrEqualTo(view).offset(-40)
-            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).offset(-260) // Default bottom constraint
+            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).offset(-260)
         }
-        
-        // Badge button constraints using SnapKit
+
+        // Badge button (top-right)
         badgeButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view).offset(-20)
+        }
+
+        // History button (top-left)
+        historyButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.leading.equalTo(view).offset(20)
         }
     }
     
@@ -198,6 +224,11 @@ class WorkoutSelectionViewController: SelectionViewController {
     @objc private func pushNewWorkoutController() {
         let newWorkoutController = NewWorkoutController()
         navigationController?.pushViewController(newWorkoutController, animated: true)
+    }
+
+    @objc private func pushHistoryController() {
+        let historyVC = HistorySelectionViewController()
+        navigationController?.pushViewController(historyVC, animated: true)
     }
     
     private func showWorkoutTable(for workoutStyleName: String) {

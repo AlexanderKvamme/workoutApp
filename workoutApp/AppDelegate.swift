@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let context = DatabaseFacade.persistentContainer.viewContext
-        AKFont.printFonts()
         
         // Seed for Fastlane Snapshot data
         if CommandLine.arguments.contains("--fastlaneSnapshot") {
@@ -39,28 +38,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Set initial viewController
         let hexagonScreen = testScreen ?? CustomNavigationViewController(rootViewController: HoneycombViewController())
-        let historyScreen = CustomNavigationViewController(rootViewController: HistorySelectionViewController())
+        let randomWorkoutScreen = CustomNavigationViewController(rootViewController: RandomWorkoutViewController())
+        let statusScreen = CustomNavigationViewController(rootViewController: StatusViewController())
         let workoutScreen = CustomNavigationViewController(rootViewController: WorkoutSelectionViewController())
         let creatorScreen = CustomNavigationViewController(rootViewController: CreatorScreen())
-        let profileScreen = CustomNavigationViewController(rootViewController: ProfileController())
 
         // FIXME: Make the tabbar controller actually use the images supplied here
         let tabButtonTint = UIColor.black
         let tab3icon = UIImage(named: "create")!
         hexagonScreen.tabBarItem = UITabBarItem(title: "0", image: UIImage.hexIcon.withTintColor(tabButtonTint), tag: 0)
-        historyScreen.tabBarItem = UITabBarItem(title: "1", image: UIImage.historyIcon.withTintColor(tabButtonTint), tag: 1)
-//        creatorScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage.progressIcon.withTintColor(tabButtonTint), tag: 2)
-        creatorScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage.starIcon.withTintColor(tabButtonTint), tag: 2)
-        workoutScreen.tabBarItem   = UITabBarItem(title: "3", image: tab3icon.withTintColor(tabButtonTint), tag: 3)
-        profileScreen.tabBarItem = UITabBarItem(title: "4", image: UIImage.profileIcon.withTintColor(tabButtonTint), tag: 4)
-        
-        let screens = [hexagonScreen, historyScreen, workoutScreen, creatorScreen, profileScreen]
-//        let centerIcon = UIImage.xmarkIcon.rotate(radians: .pi/4)!
-//        let centerIcon = UIImage.close24.rotate(radians: .pi/4)!
-        let centerIcon = UIImage(named: "dumbbell")!
-//        let centerIcon = UIImage(named: "create")!
-//        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [4])
-        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [4])
+        randomWorkoutScreen.tabBarItem = UITabBarItem(title: "1", image: UIImage.starIcon.withTintColor(tabButtonTint), tag: 1)
+        statusScreen.tabBarItem = UITabBarItem(title: "2", image: UIImage(named: "dumbbell")!.withTintColor(tabButtonTint), tag: 2)
+        workoutScreen.tabBarItem = UITabBarItem(title: "3", image: UIImage(named: "create")!.withTintColor(tabButtonTint), tag: 3)
+        creatorScreen.tabBarItem = UITabBarItem(title: "4", image: UIImage(named: "dumbbell")!.withTintColor(tabButtonTint), tag: 4)
+
+        // Layout: [Hexagon, Random] - CENTER (Status) - [Workout, Creator]
+        // History removed from tab bar; accessible via button in WorkoutSelectionViewController
+        // Center button uses body icon — "create new" feel
+        let screens = [hexagonScreen, randomWorkoutScreen, statusScreen, workoutScreen, creatorScreen]
+        let centerIcon = UIImage.bodyIcon
+        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [])
         window?.rootViewController = tabBar
         globalTabBar = tabBar
         
