@@ -155,6 +155,7 @@
 		DDB3BEF62DB6646300411AC5 /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = DDB3BEF52DB6646300411AC5 /* SwipeCellKit */; };
 		DD2605202F000001000AA003 /* MuscleMap in Frameworks */ = {isa = PBXBuildFile; productRef = DD2605202F000001000AA002 /* MuscleMap */; };
 		DD2605202F000001000AA005 /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2605202F000001000AA004 /* StatusViewController.swift */; };
+		DD2605202F000001000AA007 /* BodySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2605202F000001000AA006 /* BodySettingsViewController.swift */; };
 		DDB3BEF82DB6874100411AC5 /* ImprovWorkoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB3BEF72DB6873D00411AC5 /* ImprovWorkoutController.swift */; };
 		DDB3BEFA2DB68A3A00411AC5 /* HoneyCombGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB3BEF92DB68A3500411AC5 /* HoneyCombGridView.swift */; };
 		DDB539AC1F2E017600824CFC /* WorkoutLogHistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB539AB1F2E017500824CFC /* WorkoutLogHistoryTableViewController.swift */; };
@@ -302,6 +303,7 @@
 		DD41AAFB1F18F5C800CB08F5 /* ExerciseCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseCreator.swift; sourceTree = "<group>"; };
 		DD468F821F2E1A8100A945A9 /* HistorySelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySelectionViewController.swift; sourceTree = "<group>"; };
 		DD2605202F000001000AA004 /* StatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
+		DD2605202F000001000AA006 /* BodySettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodySettingsViewController.swift; sourceTree = "<group>"; };
 		DD468F841F2E875000A945A9 /* WorkoutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewController.swift; sourceTree = "<group>"; };
 		DD47BAF31FBC5FFE00F75F04 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		DD491B7B1ED7464E008A4619 /* DataSeeder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSeeder.swift; sourceTree = "<group>"; };
@@ -853,6 +855,7 @@
 				DDB539AD1F2E074800824CFC /* WorkoutSelectionViewController.swift */,
 				DD468F821F2E1A8100A945A9 /* HistorySelectionViewController.swift */,
 				DD2605202F000001000AA004 /* StatusViewController.swift */,
+				DD2605202F000001000AA006 /* BodySettingsViewController.swift */,
 				DD585D711EC5F45E00962B19 /* SelectionViewButton.swift */,
 				DD585D941EC6734100962B19 /* AnimatedScreenHeader.swift */,
 				DD4B1C0C1EC71E1100BD313B /* SelectionViewButtonStack.swift */,
@@ -1373,6 +1376,7 @@
 				DDDE6E511ED4DED400A03886 /* BoxTableViewController.swift in Sources */,
 				DD468F831F2E1A8100A945A9 /* HistorySelectionViewController.swift in Sources */,
 				DD2605202F000001000AA005 /* StatusViewController.swift in Sources */,
+				DD2605202F000001000AA007 /* BodySettingsViewController.swift in Sources */,
 				DDD0D548295F746100CD11A5 /* PostWorkoutView.swift in Sources */,
 				DD585D5D1EC4D7CC00962B19 /* Colors.swift in Sources */,
 				DD9838731F12717B00B876C7 /* Notification Extensions.swift in Sources */,

@@ -42,7 +42,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         self.completionSkill = skills.first
         self.workoutTitle = "ALL"
         super.init(nibName: nil, bundle: nil)
-        
+
         var seenExerciseIDs = Set<NSManagedObjectID>()
         let allExercises = skills.flatMap { $0.getExercises().map { $0 } }.filter { exercise in
             let objectID = exercise.objectID
@@ -51,6 +51,13 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
             return true
         }
         configureWorkout(skills: skills, exercises: allExercises)
+    }
+
+    init(exercises: [Exercise], title: String) {
+        self.completionSkill = nil
+        self.workoutTitle = title
+        super.init(nibName: nil, bundle: nil)
+        configureWorkout(skills: [], exercises: exercises)
     }
     
     private func configureWorkout(skills: [Skill], exercises: [Exercise]) {
@@ -473,11 +480,11 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
                 self?.progressBar.bump(after: 1.8, onCompletion: {
                     // Create and present the completion screen with custom transition
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-                        guard let completionSkill = self?.completionSkill else { return }
-                        let completionScreen = HexCompletionScreen(skill: completionSkill)
-                        self?.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
-                        completionScreen.transitioningDelegate = self?.transitionDelegate
-                        self?.present(completionScreen, animated: true)
+                        guard let self else { return }
+                        let completionScreen = self.completionSkill.map { HexCompletionScreen(skill: $0) } ?? HexCompletionScreen()
+                        self.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
+                        completionScreen.transitioningDelegate = self.transitionDelegate
+                        self.present(completionScreen, animated: true)
                     }
                 })
             }
