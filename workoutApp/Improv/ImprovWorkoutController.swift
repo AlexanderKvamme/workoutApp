@@ -481,6 +481,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
                     // Create and present the completion screen with custom transition
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
                         guard let self else { return }
+                        DatabaseFacade.saveContext()
                         let completionScreen = self.completionSkill.map { HexCompletionScreen(skill: $0) } ?? HexCompletionScreen()
                         self.transitionDelegate = HexTransitionDelegate(originFrame: hexFrame)
                         completionScreen.transitioningDelegate = self.transitionDelegate

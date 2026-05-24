@@ -11,6 +11,7 @@ import SwiftUI
 import CoreData
 import MuscleMap
 import SnapKit
+import AKKIT
 
 private typealias MMuscle = MuscleMap.Muscle
 
@@ -58,8 +59,8 @@ private let kEnabledGroupsKey = "bodyScreen.enabledMuscleGroups"
 class StatusViewController: SelectionViewController {
 
     private var muscleMapView: MuscleMapView!
-    private var startImprovButton: UIButton!
     private var selectedMMuscles: Set<MMuscle> = []
+    private var clearSelectionOnNextAppear = false
     private var currentSide: BodySide = .front
     private var muscleCountCache: [MMuscle: Int] = [:]
     private let subtitleLabel = UILabel()
@@ -134,6 +135,12 @@ class StatusViewController: SelectionViewController {
         super.viewWillAppear(animated)
         globalTabBar.showIt()
         header.play()
+        if clearSelectionOnNextAppear {
+            clearSelectionOnNextAppear = false
+            selectedMMuscles.removeAll()
+            syncMapSelection()
+            updateMuscleListButtonStates()
+        }
         updateMuscleColors()
     }
 
@@ -184,7 +191,7 @@ class StatusViewController: SelectionViewController {
                 self.selectedMMuscles.insert(resolved)
             }
             self.syncMapSelection()
-            self.updateAutoButton()
+
             self.updateMuscleListButtonStates()
         }
 
@@ -197,9 +204,9 @@ class StatusViewController: SelectionViewController {
     }
 
     private func setupBottomButtons() {
-        // WellRoundedTabBarController doesn't update child safe-area insets for its own bar,
-        // so anchor to view.bottom and leave enough room for the custom tab bar (~83 pt).
-        let bottomInset = -150
+        // Position 20pt above the tab bar rectangle, ignoring the circle overhang.
+        // The bar top sits at view.bottom - TabBarSettings.barHeight.
+        let bottomInset = -(Int(TabBarSettings.barHeight) + 40)  // barHeight + 20px bar offset + 20px gap
 
         let flipButton = makeButton(title: "flip")
         flipButton.addTarget(self, action: #selector(flipTapped), for: .touchUpInside)
@@ -209,10 +216,10 @@ class StatusViewController: SelectionViewController {
             make.bottom.equalToSuperview().offset(bottomInset)
         }
 
-        startImprovButton = makeButton(title: "auto")
-        startImprovButton.addTarget(self, action: #selector(startImprovTapped), for: .touchUpInside)
-        view.addSubview(startImprovButton)
-        startImprovButton.snp.makeConstraints { make in
+        let spinButton = makeButton(title: "spin")
+        spinButton.addTarget(self, action: #selector(spinTapped), for: .touchUpInside)
+        view.addSubview(spinButton)
+        spinButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(bottomInset)
         }
@@ -371,7 +378,7 @@ class StatusViewController: SelectionViewController {
             selectedMMuscles.insert(muscle)
         }
         syncMapSelection()
-        updateAutoButton()
+
         updateMuscleListButtonStates()
     }
 
@@ -419,6 +426,107 @@ class StatusViewController: SelectionViewController {
         present(hostingVC, animated: true)
     }
 
+    @objc private func spinTapped() {
+        let suggestions = rankedMuscles()
+        let pool = roulettePoolNames()
+        let vc = RouletteViewController(suggestions: suggestions, pool: pool)
+        vc.onStartWorkout = { [weak self, weak vc] names in
+            guard let self else { return }
+            var muscles = Set<MMuscle>()
+            for name in names { muscles.formUnion(self.mmMusclesForDisplayName(name)) }
+            self.selectedMMuscles = muscles
+            self.syncMapSelection()
+            self.updateMuscleListButtonStates()
+
+            vc?.dismiss(animated: true) { self.startImprovTapped() }
+        }
+        present(vc, animated: true)
+    }
+
+    private func mmMusclesForDisplayName(_ name: String) -> Set<MMuscle> {
+        for option in muscleGroupOptions where enabledGroupIDs.contains(option.id) {
+            if option.groupedLabel == name { return option.absorbed.union([option.representative]) }
+        }
+        if let muscle = muscleListData.first(where: { $0.1 == name })?.0 { return [muscle] }
+        return []
+    }
+
+    // MARK: - Roulette helpers
+
+    private func rankedMuscles() -> [(name: String, days: Int?)] {
+        let lastDate = buildLastWorkoutDateMap()
+        let now = Date()
+
+        var neverTrained: [(name: String, days: Int?)] = []
+        var trained: [(muscle: MMuscle, days: Int)] = []
+
+        var seenNames = Set<String>()
+
+        for muscle in StatusViewController.allTrackedMuscles {
+            let rep = absorbedRepresentative(of: muscle)
+            let name = displayName(for: rep)
+            guard seenNames.insert(name).inserted else { continue }
+            if let date = lastDate[muscle] {
+                let days = Int(now.timeIntervalSince(date) / 86400)
+                trained.append((rep, days))
+            } else {
+                neverTrained.append((name, nil))
+            }
+        }
+
+        trained.sort { $0.days > $1.days }
+        let trainedResults = trained.map { (name: displayName(for: $0.muscle), days: Int?($0.days)) }
+        return neverTrained + trainedResults
+    }
+
+    private func absorbedRepresentative(of muscle: MMuscle) -> MMuscle {
+        for option in muscleGroupOptions where enabledGroupIDs.contains(option.id) {
+            if option.absorbed.contains(muscle) { return option.representative }
+        }
+        return muscle
+    }
+
+    private func displayName(for muscle: MMuscle) -> String {
+        for option in muscleGroupOptions where enabledGroupIDs.contains(option.id) {
+            if option.representative == muscle, let label = option.groupedLabel { return label }
+        }
+        return muscleListData.first(where: { $0.0 == muscle })?.1 ?? muscle.displayName
+    }
+
+    private func roulettePoolNames() -> [String] {
+        let absorbed = absorbedMuscles()
+        var seen = Set<String>()
+        var names: [String] = []
+        for (muscle, _) in muscleListData {
+            if absorbed.contains(muscle) { continue }
+            let name = displayName(for: muscle)
+            if seen.insert(name).inserted { names.append(name) }
+        }
+        return names
+    }
+
+    private func buildLastWorkoutDateMap() -> [MMuscle: Date] {
+        var lastDate: [MMuscle: Date] = [:]
+        let sortedLogs = DatabaseFacade.fetchAllWorkoutLogs()
+            .sorted { ($0.dateStarted as Date? ?? .distantPast) > ($1.dateStarted as Date? ?? .distantPast) }
+        for log in sortedLogs {
+            guard let logDate = log.dateStarted as Date?,
+                  let exerciseLogs = log.loggedExercises?.array as? [ExerciseLog] else { continue }
+            for exerciseLog in exerciseLogs {
+                guard let exercise = exerciseLog.exerciseDesign else { continue }
+                let storedMuscles = (exercise.musclesUsed as? Set<Muscle>)?
+                    .compactMap { mmMuscles(for: $0.getName()) }.flatMap { $0 } ?? []
+                let resolved: [MMuscle] = storedMuscles.isEmpty
+                    ? mmMusclesForExercise(named: exercise.name ?? "")
+                    : storedMuscles
+                for muscle in resolved where lastDate[muscle] == nil {
+                    lastDate[muscle] = logDate
+                }
+            }
+        }
+        return lastDate
+    }
+
     @objc private func flipTapped() {
         currentSide = currentSide == .front ? .back : .front
         muscleMapView.side = currentSide
@@ -431,7 +539,7 @@ class StatusViewController: SelectionViewController {
             selectedMMuscles.insert(randomMuscle)
             syncMapSelection()
             updateMuscleListButtonStates()
-            updateAutoButton()
+    
             return
         }
 
@@ -445,6 +553,7 @@ class StatusViewController: SelectionViewController {
             }
             let vc = ImprovWorkoutController(exercises: exercises, title: label)
             vc.setCount = setCount
+            self.clearSelectionOnNextAppear = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
         present(picker, animated: true)
@@ -452,14 +561,7 @@ class StatusViewController: SelectionViewController {
 
     // MARK: - State updates
 
-    private func updateAutoButton() {
-        let hasSelection = !selectedMMuscles.isEmpty
-        var config = startImprovButton.configuration
-        config?.title = hasSelection ? "start" : "auto"
-        startImprovButton.configuration = config
-    }
-
-    private func updateMuscleListButtonStates() {
+private func updateMuscleListButtonStates() {
         for (muscle, button) in muscleListButtons {
             let isSelected = selectedMMuscles.contains(muscle)
             var config = button.configuration
@@ -556,32 +658,13 @@ class StatusViewController: SelectionViewController {
 
         muscleMapView.clearHighlights()
 
-        // Build "days since last workout" per muscle
-        var lastDate: [MMuscle: Date] = [:]
-        let sortedLogs = DatabaseFacade.fetchAllWorkoutLogs()
-            .sorted { ($0.dateStarted as Date? ?? .distantPast) > ($1.dateStarted as Date? ?? .distantPast) }
-
-        for log in sortedLogs {
-            guard let logDate = log.dateStarted as Date?,
-                  let exerciseLogs = log.loggedExercises?.array as? [ExerciseLog] else { continue }
-            for exerciseLog in exerciseLogs {
-                guard let exercise = exerciseLog.exerciseDesign else { continue }
-                let storedMuscles = (exercise.musclesUsed as? Set<Muscle>)?
-                    .compactMap { mmMuscles(for: $0.getName()) }.flatMap { $0 } ?? []
-                let resolved: [MMuscle] = storedMuscles.isEmpty
-                    ? mmMusclesForExercise(named: exercise.name ?? "")
-                    : storedMuscles
-                for muscle in resolved where lastDate[muscle] == nil {
-                    lastDate[muscle] = logDate
-                }
-            }
-        }
+        let lastDate = buildLastWorkoutDateMap()
 
         let now = Date()
         var colorMap: [MMuscle: UIColor] = [:]
         for muscle in StatusViewController.allTrackedMuscles {
-            guard let date = lastDate[muscle] else { continue }
-            let days = Int(now.timeIntervalSince(date) / 86400)
+            // Muscles with no history are treated as maximally stale (red).
+            let days = lastDate[muscle].map { Int(now.timeIntervalSince($0) / 86400) } ?? Int.max
             let color = muscleColor(days: days, fresh: freshDays, stale: staleDays, fade: fadeDays, warning: warningDays)
             muscleMapView.highlight(muscle, color: color)
             colorMap[muscle] = color
