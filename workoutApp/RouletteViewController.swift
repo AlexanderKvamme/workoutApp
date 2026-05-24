@@ -9,6 +9,7 @@
 import UIKit
 import AKKIT
 import SnapKit
+import AVFoundation
 
 class RouletteViewController: UIViewController {
 
@@ -65,9 +66,21 @@ class RouletteViewController: UIViewController {
         setupContainer()
         setupSelectedStack()
         setupLines()
+        setupEdgeFades()
         setupSubtitle()
         setupBottomButtons()
         setupCloseButton()
+        prepareAudio()
+    }
+
+    private func prepareAudio() {
+        try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        // Silent pre-roll to eliminate first-play latency
+        clickPlayer?.volume = 0
+        clickPlayer?.play()
+        clickPlayer?.stop()
+        clickPlayer?.currentTime = 0
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -105,6 +118,27 @@ class RouletteViewController: UIViewController {
         selectedStackView.snp.makeConstraints { make in
             make.bottom.equalTo(containerView.snp.top).offset(-20)
             make.left.right.equalToSuperview().inset(32)
+        }
+    }
+
+    private func setupEdgeFades() {
+        let fadeHeight: CGFloat = 36
+        for isTop in [true, false] {
+            let fade = GradientView()
+            fade.colors = isTop
+                ? [UIColor.black, UIColor.black.withAlphaComponent(0)]
+                : [UIColor.black.withAlphaComponent(0), UIColor.black]
+            fade.isUserInteractionEnabled = false
+            containerView.addSubview(fade)
+            fade.snp.makeConstraints { make in
+                make.left.right.equalToSuperview()
+                make.height.equalTo(fadeHeight)
+                if isTop {
+                    make.top.equalToSuperview()
+                } else {
+                    make.bottom.equalToSuperview()
+                }
+            }
         }
     }
 
@@ -186,14 +220,23 @@ class RouletteViewController: UIViewController {
     // MARK: - Animation
 
     private let spinHaptic = UIImpactFeedbackGenerator(style: .rigid)
+    private var clickPlayer: AVAudioPlayer? = {
+        guard let url = Bundle.main.url(forResource: "click", withExtension: "mp3") else { return nil }
+        let player = try? AVAudioPlayer(contentsOf: url)
+        player?.prepareToPlay()
+        return player
+    }()
 
     private func spin() {
         guard !suggestions.isEmpty else { return }
         spinHaptic.prepare()
         let target = currentSuggestion.name
         let fillerPool = pool.filter { $0 != target }
-        let fillerCount = min(14, fillerPool.count)
-        let fillers = Array(fillerPool.shuffled().prefix(fillerCount))
+        var fillers: [String] = []
+        while fillers.count < 45 {
+            fillers += fillerPool.shuffled()
+        }
+        fillers = Array(fillers.prefix(45))
         let sequence = fillers + [target]
         animateSequence(sequence, index: 0)
     }
@@ -202,8 +245,12 @@ class RouletteViewController: UIViewController {
         guard index < sequence.count else { onLanded(); return }
         let name = sequence[index]
         let progress = sequence.count > 1 ? Double(index) / Double(sequence.count - 1) : 1.0
-        let interval = 0.055 + progress * 0.28
-        spinHaptic.impactOccurred(intensity: 0.45 + progress * 0.55)
+        // Roulette curve: stays fast most of the spin, then brakes hard near the end
+        let interval = 0.04 + pow(progress, 4.5) * 0.76
+        clickPlayer?.volume = Float(0.12 + progress * 0.58)
+        clickPlayer?.currentTime = 0
+        clickPlayer?.play()
+        spinHaptic.impactOccurred(intensity: 0.15 + progress * 0.85)
         animateScroll(to: name, duration: interval * 0.75) {
             DispatchQueue.main.asyncAfter(deadline: .now() + interval * 0.05) {
                 self.animateSequence(sequence, index: index + 1)
@@ -302,4 +349,22 @@ class RouletteViewController: UIViewController {
     @objc private func close() {
         dismiss(animated: true)
     }
+}
+
+// MARK: - GradientView
+
+private class GradientView: UIView {
+    var colors: [UIColor] = [] {
+        didSet { gradientLayer.colors = colors.map(\.cgColor) }
+    }
+
+    override class var layerClass: AnyClass { CAGradientLayer.self }
+    private var gradientLayer: CAGradientLayer { layer as! CAGradientLayer }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        gradientLayer.endPoint   = CGPoint(x: 0.5, y: 1)
+    }
+    required init?(coder: NSCoder) { fatalError() }
 }

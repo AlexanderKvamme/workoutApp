@@ -241,6 +241,9 @@ class StatusViewController: SelectionViewController {
             let button = makeMuscleListButton(title: name)
             button.tag = index
             button.addTarget(self, action: #selector(muscleListButtonTapped(_:)), for: .touchUpInside)
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(muscleListButtonLongPressed(_:)))
+            longPress.minimumPressDuration = 0.5
+            button.addGestureRecognizer(longPress)
             muscleListStack.addArrangedSubview(button)
             muscleListButtons.append((muscle, button))
         }
@@ -378,8 +381,19 @@ class StatusViewController: SelectionViewController {
             selectedMMuscles.insert(muscle)
         }
         syncMapSelection()
-
         updateMuscleListButtonStates()
+    }
+
+    @objc private func muscleListButtonLongPressed(_ gr: UILongPressGestureRecognizer) {
+        guard gr.state == .began,
+              let button = gr.view as? UIButton else { return }
+        let (muscle, displayName) = muscleListData[button.tag]
+        guard let cdName = cdMuscleName(for: muscle),
+              let cdMuscle = DatabaseFacade.getMuscle(named: cdName) else { return }
+        let exercises = (DatabaseFacade.fetchExercises(containing: cdMuscle) ?? [])
+            .sorted { ($0.name ?? "") < ($1.name ?? "") }
+        let vc = MuscleExerciseListViewController(muscleName: displayName, exercises: exercises)
+        present(vc, animated: true)
     }
 
     @objc private func showSettings() {
@@ -463,6 +477,7 @@ class StatusViewController: SelectionViewController {
         var seenNames = Set<String>()
 
         for muscle in StatusViewController.allTrackedMuscles {
+            guard muscleHasExercises(muscle) else { continue }
             let rep = absorbedRepresentative(of: muscle)
             let name = displayName(for: rep)
             guard seenNames.insert(name).inserted else { continue }
@@ -499,10 +514,17 @@ class StatusViewController: SelectionViewController {
         var names: [String] = []
         for (muscle, _) in muscleListData {
             if absorbed.contains(muscle) { continue }
+            guard muscleHasExercises(muscle) else { continue }
             let name = displayName(for: muscle)
             if seen.insert(name).inserted { names.append(name) }
         }
         return names
+    }
+
+    private func muscleHasExercises(_ muscle: MMuscle) -> Bool {
+        guard let cdName = cdMuscleName(for: muscle),
+              let cdMuscle = DatabaseFacade.getMuscle(named: cdName) else { return false }
+        return !(DatabaseFacade.fetchExercises(containing: cdMuscle) ?? []).isEmpty
     }
 
     private func buildLastWorkoutDateMap() -> [MMuscle: Date] {
@@ -549,6 +571,9 @@ class StatusViewController: SelectionViewController {
             let exercises = self.exercisesForSelectedMuscles()
             guard !exercises.isEmpty else {
                 globalTabBar.showIt()
+                let alert = UIAlertController(title: "No exercises", message: "No exercises found for the selected muscle(s). Add some in the Creator screen.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
                 return
             }
             let vc = ImprovWorkoutController(exercises: exercises, title: label)

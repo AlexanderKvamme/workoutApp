@@ -30,9 +30,17 @@ class SetCountPickerController: UIViewController, UIGestureRecognizerDelegate {
     
     // Completion handler to execute when a set count is selected
     private let completionHandler: (Int) -> Void
-    
+
+    private static let defaultSetCount: String = {
+        #if DEBUG
+        return "3"
+        #else
+        return "9"
+        #endif
+    }()
+
     // MARK: - Initializers
-    init(title: String = "", initialSelection: String = "9", completionHandler: @escaping (Int) -> Void) {
+    init(title: String = "", initialSelection: String = SetCountPickerController.defaultSetCount, completionHandler: @escaping (Int) -> Void) {
         self.pickerTitle = title
         self.completionHandler = completionHandler
         self.superStepper = SuperStepper(frame: stepperFrame, options: setOptions, initialSelection: initialSelection)
