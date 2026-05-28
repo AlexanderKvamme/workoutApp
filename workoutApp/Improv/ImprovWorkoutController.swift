@@ -73,14 +73,23 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         self.exercises = exercises
         title = workoutTitle
         
-        let listButton = UIBarButtonItem(
-            image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
-            style: .plain,
-            target: self,
-            action: #selector(showList)
-        )
-
-        self.navigationItem.rightBarButtonItem = listButton
+        if exercises.isEmpty, completionSkill != nil {
+            let addButton = UIBarButtonItem(
+                image: UIImage(named: "create")?.withRenderingMode(.alwaysOriginal),
+                style: .plain,
+                target: self,
+                action: #selector(addExerciseTapped)
+            )
+            self.navigationItem.rightBarButtonItem = addButton
+        } else {
+            let listButton = UIBarButtonItem(
+                image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+                style: .plain,
+                target: self,
+                action: #selector(showList)
+            )
+            self.navigationItem.rightBarButtonItem = listButton
+        }
         self.navigationController?.navigationBar.tintColor = .black
     }
     
@@ -112,8 +121,9 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshIfNeeded()
         setupNavigationOverlay()
-        
+
         if progressBar.currentStep == progressBar.totalSteps {
             navigationController?.popViewController(animated: true)
             return
@@ -437,8 +447,72 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         navigationController?.present(picker, animated: true)
     }
     
+    // MARK: - Empty state
+
+    private var isEmptyState = false
+    private let emptyStateTag = 8877
+
+    private func setupEmptyState() {
+        let container = UIView()
+        container.tag = emptyStateTag
+        view.addSubview(container)
+        container.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.left.right.equalToSuperview().inset(32)
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = "No exercises"
+        titleLabel.font = AKFont.round(.black, 28)
+        titleLabel.textColor = UIColor(white: 0.75, alpha: 1)
+        titleLabel.textAlignment = .center
+        container.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.centerX.equalToSuperview()
+        }
+
+        let sublabel = UILabel()
+        let skillName = completionSkill?.name?.capitalized ?? "this skill"
+        sublabel.text = "Create an exercise and assign it to '\(skillName)'"
+        sublabel.font = AKFont.round(.medium, 16)
+        sublabel.textColor = UIColor(white: 0.65, alpha: 1)
+        sublabel.textAlignment = .center
+        container.addSubview(sublabel)
+        sublabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+    }
+
+    @objc private func addExerciseTapped() {
+        navigationController?.popToRootViewController(animated: false)
+        globalTabBar.selectedIndex = 4
+    }
+
+    private func refreshIfNeeded() {
+        guard isEmptyState, let skill = completionSkill else { return }
+        let fresh = skill.getExercises().map { $0 }
+        guard !fresh.isEmpty else { return }
+
+        exercises = fresh
+        isEmptyState = false
+        view.viewWithTag(emptyStateTag)?.removeFromSuperview()
+        setupBadges()
+        setupHoneycombGrid()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal).withTintColor(.black),
+            style: .plain, target: self, action: #selector(showList)
+        )
+    }
+
     private var transitionDelegate: HexTransitionDelegate?
     private func setupHoneycombGrid() {
+        guard !exercises.isEmpty else {
+            isEmptyState = true
+            setupEmptyState()
+            return
+        }
         // Keep hexagons unscaled. If there are many exercises, lay them out
         // horizontally and let the user scroll left/right instead of shrinking them.
         let hexSize: CGFloat = UIScreen.main.bounds.width/3

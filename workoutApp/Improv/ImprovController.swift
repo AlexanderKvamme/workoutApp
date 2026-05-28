@@ -93,22 +93,25 @@ class HoneycombViewController: SelectionViewController {
         honeycombGrid.configure(with: gridItems) { [weak self] selectedItem, hexView in
             guard let self else { return }
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            
-            let setCountPicker = SetCountPickerController(title: selectedItem.title) { setCount in
-                let improvWorkoutController: ImprovWorkoutController
-                switch selectedItem {
-                case .all:
-                    improvWorkoutController = ImprovWorkoutController(skills: self.skills)
-                case .skill(let selectedSkill):
-                    improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
-                }
-                
-                improvWorkoutController.setCount = setCount
+
+            switch selectedItem {
+            case .skill(let selectedSkill) where selectedSkill.getExercises().isEmpty:
+                let improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
                 self.navigationController?.pushViewController(improvWorkoutController, animated: true)
-                print("Selected \(setCount) sets for: \(selectedItem.title)")
+            default:
+                let setCountPicker = SetCountPickerController(title: selectedItem.title) { setCount in
+                    let improvWorkoutController: ImprovWorkoutController
+                    switch selectedItem {
+                    case .all:
+                        improvWorkoutController = ImprovWorkoutController(skills: self.skills)
+                    case .skill(let selectedSkill):
+                        improvWorkoutController = ImprovWorkoutController(skill: selectedSkill)
+                    }
+                    improvWorkoutController.setCount = setCount
+                    self.navigationController?.pushViewController(improvWorkoutController, animated: true)
+                }
+                self.present(setCountPicker, animated: true)
             }
-            
-            self.present(setCountPicker, animated: true)
         }
     }
 }
