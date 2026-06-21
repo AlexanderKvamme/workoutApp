@@ -80,6 +80,28 @@ final class DataSeeder {
     
     /// If any new Muscles/Styles are added in code, for example in an update -> seed to core data
     public func update() {
+        // Delete removed and renamed exercises, then re-seed with corrected list
+        let obsoleteNames: Set<String> = [
+            "WARM UP", "SEED FLEXERS",
+            "TRANSITION PRACTICE", "NEGATIVE MUSCLE UP", "BANDED MUSCLE UP",
+            "HAND STRENGTHENERS", "WEIGHTED PULL UP",
+            "TUCKED L-SIT", "ONE LEG L-SIT", "FULL L-SIT", "FOLDERS",
+            "INCLINED PUSH UP", "PARTIAL 1H PUSH UP", "FULL 1H PUSH UP",
+            // Re-seeded below with corrected muscle associations:
+            "TRUNK SLAMMERS", "EXPLOSIVE PULL UPS", "STRAIGHT BAR DIPS",
+            "WALL HANDSTAND", "HANDSTAND HOLDS", "PIKE PUSHUPS",
+            "BAR POUNDERS", "UPSIDE DOWN ROWS", "DRAGON FLAGS", "TOES TO BAR",
+            // Renamed:
+            "BOX STEPS", "EXTREME JUMP",
+        ]
+        let toDelete = DatabaseFacade.fetchAllExercises().filter {
+            obsoleteNames.contains(($0.name ?? "").uppercased())
+        }
+        toDelete.forEach { DatabaseFacade.delete($0) }
+        if !toDelete.isEmpty { DatabaseFacade.saveContext() }
+
+        // Seed any exercises missing from the canonical list
+        seedSkillsWithExercises()
       
         // Muscles
         for muscleName in seedMuscles {
@@ -112,80 +134,77 @@ final class DataSeeder {
                 makeMeasurementStyle(withName: measurementStyle)
             }
         }
+
+        // Standalone ab/core exercises
+        let coreExerciseNames = ["TOES TO BAR", "DRAGON FLAG"]
+        for name in coreExerciseNames where DatabaseFacade.getExercise(named: name) == nil {
+            print("didnt exist so making exercise named \(name)")
+            DatabaseFacade.makeExercise(withName: name,
+                                        exerciseStyle: ExerciseStyles.normal,
+                                        muscles: [Muscles.core],
+                                        skills: [Skill](),
+                                        measurementStyle: MeasurementStyles.sets)
+        }
+        DatabaseFacade.saveContext()
     }
-    
+
     // MARK: - Seed Skills with Exercises
-    
+
     public func seedSkillsWithExercises() {
-        // First, make sure all skills exist
         seedWithExampleSkillGroups()
-        
-        // Define exercises for each skill
-        let muscleUpExercises = [
-            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
-            (name: "TRUNK SLAMMERS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
-            (name: "EXPLOSIVE PULL UPS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.biceps], measurement: MeasurementStyles.time),
-            (name: "STRAIGHT BAR DIPS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.triceps], measurement: MeasurementStyles.time),
-            (name: "TRANSITION PRACTICE", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.chest], measurement: MeasurementStyles.sets),
-            (name: "NEGATIVE MUSCLE UP", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.biceps, Muscles.chest], measurement: MeasurementStyles.sets),
-            (name: "BANDED MUSCLE UP", style: ExerciseStyles.assisted, muscles: [Muscles.back, Muscles.biceps, Muscles.chest], measurement: MeasurementStyles.sets)
+
+        let backExercises = [
+            (name: "PULL UP",             style: ExerciseStyles.explosive, muscles: [Muscles.back],                         measurement: MeasurementStyles.sets),
+            (name: "AUSTRALIAN PULL UP",  style: ExerciseStyles.normal,    muscles: [Muscles.back],                         measurement: MeasurementStyles.sets),
+            (name: "INVERTED DEADLIFT",   style: ExerciseStyles.normal,    muscles: [Muscles.back],                         measurement: MeasurementStyles.sets),
         ]
-        
-        let handstandExercises = [
-            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
-            (name: "WALL HANDSTAND", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
-            (name: "HANDSTAND HOLDS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
-            (name: "HANDSTAND PUSH-UP", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.triceps], measurement: MeasurementStyles.sets),
-            (name: "PIKE PUSHUPS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time),
-            (name: "HAND STRENGTHENERS", style: ExerciseStyles.normal, muscles: [Muscles.shoulders, Muscles.core], measurement: MeasurementStyles.time)
+
+        let bicepsExercises = [
+            (name: "EXPLOSIVE PULL UPS",  style: ExerciseStyles.explosive, muscles: [Muscles.biceps],                       measurement: MeasurementStyles.sets),
+            (name: "BICEP CURLS",         style: ExerciseStyles.normal,    muscles: [Muscles.biceps],                       measurement: MeasurementStyles.sets),
+            (name: "COMMANDO PULL UP",    style: ExerciseStyles.normal,    muscles: [Muscles.biceps],                       measurement: MeasurementStyles.sets),
         ]
-        
-        let lsitToHandstandExercises = [
-            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
-            (name: "TUCKED L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
-            (name: "ONE LEG L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
-            (name: "FULL L-SIT", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time),
-            (name: "FOLDERS", style: ExerciseStyles.normal, muscles: [Muscles.core, Muscles.shoulders], measurement: MeasurementStyles.time)
+
+        let chestExercises = [
+            (name: "PUSH UP",             style: ExerciseStyles.normal,    muscles: [Muscles.chest, Muscles.triceps],       measurement: MeasurementStyles.sets),
+            (name: "ARCHER PUSH UP",      style: ExerciseStyles.normal,    muscles: [Muscles.chest, Muscles.triceps],       measurement: MeasurementStyles.sets),
+            (name: "1H PUSH UP",          style: ExerciseStyles.normal,    muscles: [Muscles.chest, Muscles.triceps],       measurement: MeasurementStyles.sets),
+            (name: "STRAIGHT BAR DIPS",   style: ExerciseStyles.normal,    muscles: [Muscles.chest, Muscles.triceps],       measurement: MeasurementStyles.sets),
         ]
-        
-        let pullOverExercises = [
-            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.time),
-            (name: "BAR POUNDERS", style: ExerciseStyles.slow, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
-            (name: "UPSIDE DOWN ROWS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
-            (name: "DRAGON FLAGS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
-            (name: "TOES TO BAR", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets),
-            (name: "TRUNK SLAMMERS", style: ExerciseStyles.normal, muscles: [Muscles.back, Muscles.core], measurement: MeasurementStyles.sets)
+
+        let shoulderExercises = [
+            (name: "TRUNK SLAMMERS",      style: ExerciseStyles.normal,    muscles: [Muscles.shoulders],                    measurement: MeasurementStyles.sets),
+            (name: "WALL HANDSTAND",      style: ExerciseStyles.normal,    muscles: [Muscles.shoulders],                    measurement: MeasurementStyles.time),
+            (name: "HANDSTAND HOLDS",     style: ExerciseStyles.normal,    muscles: [Muscles.shoulders],                    measurement: MeasurementStyles.time),
+            (name: "HANDSTAND PUSH-UP",   style: ExerciseStyles.normal,    muscles: [Muscles.shoulders, Muscles.triceps],   measurement: MeasurementStyles.sets),
+            (name: "PIKE PUSHUPS",        style: ExerciseStyles.normal,    muscles: [Muscles.shoulders],                    measurement: MeasurementStyles.sets),
+            (name: "L-SIT",               style: ExerciseStyles.normal,    muscles: [Muscles.shoulders, Muscles.core],      measurement: MeasurementStyles.time),
         ]
-        
-        let oneHandPushUpExercises = [
-            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.time),
-            (name: "PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
-            (name: "INCLINED PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
-            (name: "ARCHER PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
-            (name: "PARTIAL 1H PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets),
-            (name: "FULL 1H PUSH UP", style: ExerciseStyles.normal, muscles: [Muscles.chest, Muscles.triceps], measurement: MeasurementStyles.sets)
+
+        let coreExercises = [
+            (name: "L-SIT",               style: ExerciseStyles.normal,    muscles: [Muscles.shoulders, Muscles.core],      measurement: MeasurementStyles.time),
+            (name: "BAR POUNDERS",        style: ExerciseStyles.slow,      muscles: [Muscles.core],                         measurement: MeasurementStyles.sets),
+            (name: "UPSIDE DOWN ROWS",    style: ExerciseStyles.normal,    muscles: [Muscles.core],                         measurement: MeasurementStyles.sets),
+            (name: "DRAGON FLAGS",        style: ExerciseStyles.normal,    muscles: [Muscles.core],                         measurement: MeasurementStyles.sets),
+            (name: "TOES TO BAR",         style: ExerciseStyles.normal,    muscles: [Muscles.core],                         measurement: MeasurementStyles.sets),
         ]
-        
-        let bikeExercises = [
-            (name: "WARM UP", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.time),
-            (name: "Pistol Squats", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
-            (name: "Lunges", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
-            (name: "Box steps", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
-            (name: "Box jump", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
-            (name: "Extreme jump", style: ExerciseStyles.normal, muscles: [Muscles.legs], measurement: MeasurementStyles.sets),
+
+        let legExercises = [
+            (name: "PISTOL SQUATS",       style: ExerciseStyles.normal,    muscles: [Muscles.legs],                         measurement: MeasurementStyles.sets),
+            (name: "LUNGES",              style: ExerciseStyles.normal,    muscles: [Muscles.legs],                         measurement: MeasurementStyles.sets),
+            (name: "BOX STEP UP",         style: ExerciseStyles.normal,    muscles: [Muscles.legs],                         measurement: MeasurementStyles.sets),
+            (name: "BOX JUMP",            style: ExerciseStyles.normal,    muscles: [Muscles.legs],                         measurement: MeasurementStyles.sets),
+            (name: "JUMPS",               style: ExerciseStyles.normal,    muscles: [Muscles.legs],                         measurement: MeasurementStyles.sets),
         ]
-        
-        // Associate exercises with skills
-        associateExercisesWithSkill(skillName: "MUSCLE UP", exercises: muscleUpExercises)
-        associateExercisesWithSkill(skillName: "HANDSTAND", exercises: handstandExercises)
-        associateExercisesWithSkill(skillName: "L-SIT TO HANDSTAND", exercises: lsitToHandstandExercises)
-        associateExercisesWithSkill(skillName: "DRAGON PULL OVER", exercises: pullOverExercises)
-        associateExercisesWithSkill(skillName: "1H PUSH UP", exercises: oneHandPushUpExercises)
-        associateExercisesWithSkill(skillName: "ZWIFT", exercises: bikeExercises)
+
+        associateExercisesWithSkill(skillName: "MUSCLE UP",        exercises: backExercises)
+        associateExercisesWithSkill(skillName: "DRAGON PULL OVER",  exercises: bicepsExercises)
+        associateExercisesWithSkill(skillName: "1H PUSH UP",        exercises: chestExercises)
+        associateExercisesWithSkill(skillName: "HANDSTAND",         exercises: shoulderExercises)
+        associateExercisesWithSkill(skillName: "L-SIT TO HANDSTAND",exercises: coreExercises)
+        associateExercisesWithSkill(skillName: "ZWIFT",             exercises: legExercises)
 
         DatabaseFacade.saveContext()
-        
-        // Print the created exercises for verification
         printSkillsWithExercises()
     }
     

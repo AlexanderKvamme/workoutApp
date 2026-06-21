@@ -24,7 +24,7 @@ class HoneycombViewController: SelectionViewController {
     private var skills: [Skill] = []
     
     init() {
-        super.init(header: AnimatedScreenHeader(header: "Practice", subheader: "a skill"))
+        super.init(header: AnimatedScreenHeader(header: "Skill", subheader: "practice"))
     }
     
     @MainActor required init?(coder aDecoder: NSCoder) {

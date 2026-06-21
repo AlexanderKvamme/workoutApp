@@ -63,7 +63,7 @@ class InputView: UIView {
         textField.accessibilityIdentifier = "textfield"
         addSubview(textField)
         
-        UILabel.appearance(whenContainedInInstancesOf: [UITextField.self]).textColor = UIColor.akDark.withAlphaComponent(.opacity.fullyFaded.rawValue)
+        UILabel.appearance(whenContainedInInstancesOf: [UITextField.self]).textColor = UIColor.akDark.withAlphaComponent(0.5)
 
         // Header
         header.font = UIFont.custom(style: .bold, ofSize: .medium)

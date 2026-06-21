@@ -16,7 +16,7 @@ class RandomWorkoutViewController: SelectionViewController {
     private var allButton: UIButton!
 
     init() {
-        super.init(header: AnimatedScreenHeader(header: "Random", subheader: "Workout"))
+        super.init(header: AnimatedScreenHeader(header: "Muscle", subheader: "workout"))
     }
 
     @MainActor required init?(coder aDecoder: NSCoder) {

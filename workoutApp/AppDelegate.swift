@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Center button uses body icon — "create new" feel
         let screens = [hexagonScreen, randomWorkoutScreen, statusScreen, workoutScreen, creatorScreen]
         let centerIcon = UIImage.bodyIcon
-        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 0, disabledTabs: [])
+        let tabBar = WellRoundedTabBarController(centerIcon: centerIcon, screens: screens, initalIndex: 2, disabledTabs: [])
         window?.rootViewController = tabBar
         globalTabBar = tabBar
         

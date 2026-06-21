@@ -27,9 +27,9 @@ class AnimatedScreenHeader: UIView {
         super.init(frame: CGRect.zero)
     }
     
-    init(header: String, subheader: String) {
+    init(header: String, subheader: String, headerColor: UIColor = .akDark) {
         super.init(frame: CGRect.zero)
-        setupViews(header: header, subheader: subheader)
+        setupViews(header: header, subheader: subheader, headerColor: headerColor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -66,17 +66,17 @@ class AnimatedScreenHeader: UIView {
     
     // MARK: - Setup
     
-    private func setupViews(header: String, subheader: String) {
+    private func setupViews(header: String, subheader: String, headerColor: UIColor = .akDark) {
         self.header = AKAnimatedCharactersView(
             text: header,
 //            font: UIFont(name: "PirataOne-Regular", size: 110)!,
             font: Texturina(size: 80, boldness: 1200).uiFont,
-            textColor: .black
+            textColor: headerColor
         )
         
         
         // Configure subheader container with rounded background
-        subheaderContainer.backgroundColor = UIColor.akBlue
+        subheaderContainer.backgroundColor = .black
         subheaderContainer.layer.cornerRadius = 8
         subheaderContainer.clipsToBounds = true
         

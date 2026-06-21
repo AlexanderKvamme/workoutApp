@@ -75,12 +75,12 @@ class CreatorScreen: SelectionViewController {
     
     private func createMuscleTapped() {
         let muscleCreator = MuscleCreatorScreen()
-        navigationController?.pushViewController(muscleCreator, animated: true)
+        navigationController?.pushViewController(muscleCreator, animated: false)
     }
-    
+
     private func createSkillTapped() {
         let skillCreator = SkillCreatorScreen()
-        navigationController?.pushViewController(skillCreator, animated: true)
+        navigationController?.pushViewController(skillCreator, animated: false)
     }
     
     private func createExerciseTapped() {

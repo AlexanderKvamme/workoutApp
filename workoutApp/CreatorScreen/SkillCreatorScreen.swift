@@ -84,20 +84,32 @@ class SkillCreatorScreen: UIViewController, isStringReceiver, SkillReceiver, Mus
     }
     
     private func setupRightBarButtonItem() {
-        let configuration = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-        let icon = UIImage(systemName: "book", withConfiguration: configuration)
-        let rightBarButton = UIBarButtonItem(
-            image: icon,
-            style: .plain,
-            target: self,
-            action: #selector(rightBarButtonTapped)
-        )
-        
-        // Customize the appearance if needed
-        rightBarButton.tintColor = .akDark
-        
-        // Set it as the right bar button item
-        navigationItem.rightBarButtonItem = rightBarButton
+        let menuView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        menuView.backgroundColor = .clear
+        menuView.isUserInteractionEnabled = true
+
+        let configuration = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
+        let imageView = UIImageView(image: UIImage(systemName: "book", withConfiguration: configuration))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .akDark
+        imageView.isUserInteractionEnabled = false
+        menuView.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            menuView.widthAnchor.constraint(equalToConstant: 44),
+            menuView.heightAnchor.constraint(equalToConstant: 44),
+            imageView.centerXAnchor.constraint(equalTo: menuView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: menuView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 22),
+            imageView.heightAnchor.constraint(equalToConstant: 22)
+        ])
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(rightBarButtonTapped))
+        menuView.addGestureRecognizer(tap)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: menuView)
     }
     
     @objc private func rightBarButtonTapped() {

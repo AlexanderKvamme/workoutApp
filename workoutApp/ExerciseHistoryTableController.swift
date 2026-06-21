@@ -85,9 +85,31 @@ class ExerciseHistoryTableViewController: UITableViewController {
 
 extension UIViewController {
     func styleBackButton() {
-        let btnRefresh = UIBarButtonItem(image: UIImage.chevronLeftSlim17.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(pop))
-        navigationItem.leftBarButtonItem = btnRefresh
-        navigationItem.leftBarButtonItem?.tintColor = .akDark
-        navigationItem.leftBarButtonItem?.imageInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        let menuView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        menuView.backgroundColor = .clear
+        menuView.isUserInteractionEnabled = true
+
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .akDark
+        imageView.image = UIImage.chevronLeftSlim17.withRenderingMode(.alwaysTemplate)
+        imageView.isUserInteractionEnabled = false
+        menuView.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            menuView.widthAnchor.constraint(equalToConstant: 44),
+            menuView.heightAnchor.constraint(equalToConstant: 44),
+            imageView.centerYAnchor.constraint(equalTo: menuView.centerYAnchor),
+            imageView.centerXAnchor.constraint(equalTo: menuView.centerXAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 17),
+            imageView.heightAnchor.constraint(equalToConstant: 17)
+        ])
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(xButtonHandler))
+        menuView.addGestureRecognizer(tap)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: menuView)
     }
 }

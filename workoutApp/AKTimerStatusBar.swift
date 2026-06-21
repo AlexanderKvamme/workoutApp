@@ -23,7 +23,8 @@ final class AKTimerStatusBar: UIView {
         super.init(frame: .zero)
         
         // Background view
-        backgroundColor = .akDark.withAlphaComponent(0.1)
+        // Keep the container transparent so the X does not sit on a white/glass pill.
+        backgroundColor = .clear
         layer.cornerRadius = 16
         layer.cornerCurve = .continuous
         clipsToBounds = true
@@ -36,8 +37,11 @@ final class AKTimerStatusBar: UIView {
         self.fillView.frame = CGRect(x: 0, y: 0, width: 0, height: 500)
         
         // Cancel button
-        cancelButtonBackground.backgroundColor = .akDark
-        cancelButton.image = UIImage.xmarkIcon.withTintColor(.akLight)
+        // Keep the tap target, but don't draw a separate button background over the timer.
+        cancelButtonBackground.backgroundColor = .clear
+        cancelButtonBackground.tintColor = .akLight
+        cancelButton.image = UIImage(systemName: "xmark")?.withRenderingMode(.alwaysTemplate)
+        cancelButton.tintColor = .akLight
         cancelButton.contentMode = .scaleAspectFit
         cancelButton.isUserInteractionEnabled = false
         cancelButtonBackground.addTarget(self, action: #selector(cancelTimer), for: .touchUpInside)
@@ -67,7 +71,7 @@ final class AKTimerStatusBar: UIView {
     
     func startAnimation(seconds: TimeInterval, completion: @escaping (()->())) {
          UIView.animate(withDuration: time, delay: 0, options: []) {
-            self.fillView.frame = CGRect(x: 0, y: 0, width: globalTimerWidth - globalCancelTimerWidth, height: globalTimerHeight)
+            self.fillView.frame = CGRect(x: 0, y: 0, width: globalTimerWidth, height: globalTimerHeight)
         } completion: { bool in completion() }
     }
 }

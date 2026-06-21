@@ -344,7 +344,7 @@ final class DatabaseFacade {
         workoutRecord.musclesUsed = NSSet(array: muscles)
         // FIXME: make sure this is good
         print("FIXME only saving one")
-        if let skills = skills { workoutRecord.skillsUsed = skills.first! }
+        if let skills = skills, let first = skills.first { workoutRecord.skillsUsed = first }
         workoutStyle.addToUsedInWorkouts(workoutRecord)
         workoutRecord.setExercises(exercises)
         return workoutRecord

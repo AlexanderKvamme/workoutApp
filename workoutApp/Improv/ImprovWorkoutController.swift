@@ -193,7 +193,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         badgesScrollView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(56)
             make.height.equalTo(34)
         }
         
@@ -260,14 +260,23 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
         if #available(iOS 15.0, *) {
             button.configuration = nil
         }
-        button.backgroundColor = .white
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 10
         button.layer.cornerCurve = .continuous
+        button.layer.borderColor = UIColor.white.withAlphaComponent(0.55).cgColor
+        button.layer.borderWidth = 0.5
         button.clipsToBounds = true
         button.setTitle(title, for: .normal)
         button.setTitleColor(.akGray, for: .normal)
         button.titleLabel?.font = AKFont.round(.black, 13)
         button.contentEdgeInsets = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 12)
+
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+        blur.frame = button.bounds
+        blur.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blur.isUserInteractionEnabled = false
+        button.insertSubview(blur, at: 0)
+
         return button
     }
     
@@ -315,7 +324,7 @@ class ImprovWorkoutController: UIViewController, TimerDelegate {
     private func updateBadgeStyles() {
         badgeButtonsByMuscleID.forEach { muscleID, button in
             let isSelected = selectedMuscleIDs.contains(muscleID)
-            button.backgroundColor = isSelected ? .black : .white
+            button.backgroundColor = isSelected ? UIColor.black.withAlphaComponent(0.75) : .clear
             button.setTitleColor(isSelected ? .white : .akGray, for: .normal)
         }
     }

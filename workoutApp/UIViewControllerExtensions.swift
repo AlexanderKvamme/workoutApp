@@ -10,30 +10,41 @@ import AKKIT
 
 
 extension UIViewController {
-    func addExitButtonToNavBar(withAction selector: Selector? = nil) {
+    func addExitButtonToNavBar(withAction selector: Selector? = nil, usePlainIcon: Bool = false) {
         // Right navBar button
-        let topinset = 12.0
-        let menuBtn = UIButton(type: .custom)
-        menuBtn.contentVerticalAlignment = .center
-        menuBtn.contentHorizontalAlignment = .center
-        menuBtn.imageView?.contentMode = .scaleAspectFit
+        let menuView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        menuView.backgroundColor = .clear
+        menuView.layer.backgroundColor = UIColor.clear.cgColor
+        menuView.isOpaque = false
+        menuView.isUserInteractionEnabled = true
         
-        // Option 1: Use template mode and set tint on the button
-        let xImage = UIImage.closeFat.withRenderingMode(.alwaysTemplate)
-        menuBtn.setImage(xImage, for: .normal)
-        menuBtn.tintColor = .akDark  // This will tint the template image
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .akDark
+        imageView.image = (usePlainIcon ? UIImage(systemName: "xmark")! : UIImage.closeFat).withRenderingMode(.alwaysTemplate)
+        imageView.isUserInteractionEnabled = false
+        menuView.addSubview(imageView)
         
-        // OR Option 2: Pre-tint the image (but don't use template mode)
-        // let xImage = UIImage.xmarkIcon.withTintColor(.red)
-        // menuBtn.setImage(xImage, for: .normal)
+        NSLayoutConstraint.activate([
+            menuView.widthAnchor.constraint(equalToConstant: 44),
+            menuView.heightAnchor.constraint(equalToConstant: 44),
+            
+            imageView.centerXAnchor.constraint(equalTo: menuView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: menuView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 17),
+            imageView.heightAnchor.constraint(equalToConstant: 17)
+        ])
         
-        menuBtn.contentEdgeInsets = UIEdgeInsets(top: topinset, left: 0, bottom: topinset, right: 16)
-        
-        // Use the provided selector if available, otherwise fall back to the default
+        // Use a plain UIView + tap recognizer to avoid UIButton/UIBarButtonItem
+        // native glass/background styling.
         let actionSelector = selector ?? #selector(xButtonHandler)
-        menuBtn.addTarget(self, action: actionSelector, for: UIControl.Event.touchUpInside)
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: actionSelector)
+        menuView.addGestureRecognizer(tapRecognizer)
         
-        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+        let menuBarItem = UIBarButtonItem(customView: menuView)
         // No need to set tintColor on the bar button item if you've set it on the button
         self.navigationItem.rightBarButtonItem = menuBarItem
         self.navigationItem.hidesBackButton = true

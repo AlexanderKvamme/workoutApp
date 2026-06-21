@@ -20,63 +20,40 @@ class WorkoutSelectionViewController: SelectionViewController {
     // Replace the stack with ButtonGridView
     private var buttonGrid: ButtonGridView?
     
-    // Replace UIImageView with CollageView
-    private let collageView: CollageView = {
-        let collage = CollageView()
-        collage.images = ["md-image-1", "md-image-2", "md-image-3", "md-image-4", "md-image-5"]
-        collage.centerShapeSize = 240
-        collage.baseDistance = 130
-        collage.borderColor = .black
-        collage.surroundingShapesCount = 5
-        collage.surroundingShapeSizeRange = (120, 140)
-        return collage
+    private let backgroundImageView: UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "workout-bg"))
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        return iv
     }()
     
-    let paintStrokeView = PaintStrokeView(frame: CGRect(x: 50, y: 100, width: 200, height: 100))
-    
-    // Add badge button
-    private lazy var badgeButton: UIButton = {
-        var hSpace = CGFloat(16)
-        var config = UIButton.Configuration.filled()
-        config.title = "new"
-        config.baseBackgroundColor = .black
+    private lazy var badgeButton: UIButton = makeGlassButton(title: "new", action: #selector(pushNewWorkoutController))
+    private lazy var historyButton: UIButton = makeGlassButton(title: "history", action: #selector(pushHistoryController))
+
+    private func makeGlassButton(title: String, action: Selector) -> UIButton {
+        var config = UIButton.Configuration.plain()
+        config.title = title
         config.baseForegroundColor = .white
         config.cornerStyle = .large
-        config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: hSpace, bottom: 4, trailing: hSpace)
+        config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 16, bottom: 4, trailing: 16)
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             outgoing.font = h3.withSize(18)
             return outgoing
         }
+        config.background.visualEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        config.background.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+        config.background.cornerRadius = 12
 
         let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(pushNewWorkoutController), for: .touchUpInside)
+        button.addTarget(self, action: action, for: .touchUpInside)
         return button
-    }()
-
-    private lazy var historyButton: UIButton = {
-        var hSpace = CGFloat(16)
-        var config = UIButton.Configuration.filled()
-        config.title = "history"
-        config.baseBackgroundColor = .black
-        config.baseForegroundColor = .white
-        config.cornerStyle = .large
-        config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: hSpace, bottom: 4, trailing: hSpace)
-        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = h3.withSize(18)
-            return outgoing
-        }
-
-        let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(pushHistoryController), for: .touchUpInside)
-        return button
-    }()
+    }
     
     // MARK: - Initializers
     
     init() {
-        super.init(header: AnimatedScreenHeader(header: "Start", subheader: "A workout"))
+        super.init(header: AnimatedScreenHeader(header: "Start", subheader: "A workout", headerColor: .white))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -94,10 +71,6 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         globalTabBar.showIt()
         header.play()
-        
-        // Setup collage first, then reset animation
-        collageView.resetAnimation()
-        paintStrokeView.play()
     }
     
     override func viewDidLoad() {
@@ -157,57 +130,37 @@ class WorkoutSelectionViewController: SelectionViewController {
         
         if let buttonGrid = buttonGrid {
             view.addSubview(buttonGrid)
-            
-            // Button grid constraints using SnapKit
+
             buttonGrid.snp.makeConstraints { make in
                 make.leading.greaterThanOrEqualTo(view).offset(40)
                 make.trailing.lessThanOrEqualTo(view).offset(-40)
                 make.centerX.equalTo(view)
                 make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-160)
             }
-            
-            // Update collageView constraints to fill remaining space
-            collageView.snp.remakeConstraints { make in
-                make.top.equalTo(header.snp.bottom)
-                make.left.right.equalToSuperview()
-                make.bottom.equalTo(buttonGrid.snp.top)
-            }
-            
-            paintStrokeView.snp.remakeConstraints { make in
-                make.edges.equalTo(collageView)
-            }
+
         }
     }
 
     private func setupLayout() {
-        view.addSubview(paintStrokeView)
+        view.addSubview(backgroundImageView)
         view.addSubview(header)
-        view.addSubview(collageView)
         view.addSubview(badgeButton)
         view.addSubview(historyButton)
 
-        // Header constraints using SnapKit
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         header.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.top.equalTo(view).offset(Constant.components.SelectionVC.Header.spacingTop)
         }
 
-        // Initial collageView constraints (will be updated in updateButtonGrid)
-        collageView.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
-            make.top.equalTo(header.snp.bottom).offset(60)
-            make.leading.greaterThanOrEqualTo(view).offset(40)
-            make.trailing.lessThanOrEqualTo(view).offset(-40)
-            make.bottom.lessThanOrEqualTo(view.safeAreaLayoutGuide).offset(-260)
-        }
-
-        // Badge button (top-right)
         badgeButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view).offset(-20)
         }
 
-        // History button (top-left)
         historyButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.leading.equalTo(view).offset(20)

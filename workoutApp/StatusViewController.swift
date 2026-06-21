@@ -66,6 +66,8 @@ class StatusViewController: SelectionViewController {
     private let subtitleLabel = UILabel()
     private let muscleListStack = UIStackView()
     private var muscleListButtons: [(MMuscle, UIButton)] = []
+    private var spinButton: UIButton!
+    private var goButton: UIButton!
 
     private var enabledGroupIDs: Set<String> {
         get {
@@ -112,7 +114,7 @@ class StatusViewController: SelectionViewController {
     ]
 
     init() {
-        super.init(header: AnimatedScreenHeader(header: "Body", subheader: "today"))
+        super.init(header: AnimatedScreenHeader(header: "Body", subheader: "status", headerColor: .black))
     }
 
     @MainActor required init?(coder aDecoder: NSCoder) {
@@ -158,7 +160,7 @@ class StatusViewController: SelectionViewController {
     }
 
     private func setupSubtitleLabel() {
-        subtitleLabel.text = "Pick the body parts you want to train"
+        subtitleLabel.text = "What are we training?"
         subtitleLabel.font = h3
         subtitleLabel.textColor = UIColor(white: 0.6, alpha: 1)
         subtitleLabel.textAlignment = .center
@@ -216,13 +218,29 @@ class StatusViewController: SelectionViewController {
             make.bottom.equalToSuperview().offset(bottomInset)
         }
 
-        let spinButton = makeButton(title: "spin")
+        spinButton = makeButton(title: "spin")
         spinButton.addTarget(self, action: #selector(spinTapped), for: .touchUpInside)
         view.addSubview(spinButton)
         spinButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(bottomInset)
         }
+
+        // Shown in place of "spin" once the user has selected muscles by hand.
+        goButton = makeButton(title: "go")
+        goButton.addTarget(self, action: #selector(startImprovTapped), for: .touchUpInside)
+        goButton.isHidden = true
+        view.addSubview(goButton)
+        goButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(bottomInset)
+        }
+    }
+
+    private func updateBottomButtons() {
+        let hasSelection = !selectedMMuscles.isEmpty
+        spinButton?.isHidden = hasSelection
+        goButton?.isHidden = !hasSelection
     }
 
     private func setupMuscleList() {
@@ -594,6 +612,7 @@ private func updateMuscleListButtonStates() {
             config?.baseForegroundColor = isSelected ? .white : UIColor(white: 0.42, alpha: 1)
             button.configuration = config
         }
+        updateBottomButtons()
     }
 
     private func updateMuscleListVisibility() {

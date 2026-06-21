@@ -51,52 +51,100 @@ class CustomTabBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let tabBarLift: CGFloat = 100
+    private var glossLayer: CAGradientLayer?
+    private var highlightLine: CALayer?
+
     // MARK: - Life Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = UIColor.akDark
-        
+
         delegate = self
 
         // History
         let historySelectionViewController = HistorySelectionViewController()
         let historyNavigationController = CustomNavigationViewController(rootViewController: historySelectionViewController)
-        
+
         // Workout Tab
         let workoutSelectionViewController = WorkoutSelectionViewController()
         let workoutNavigationController = CustomNavigationViewController(rootViewController: workoutSelectionViewController)
-        
+
         // Profile Tab
         let profileController = ProfileController()
         let profileNavigationController = CustomNavigationViewController(rootViewController: profileController)
-        
+
         // Set up navbar
         viewControllers = [historyNavigationController, workoutNavigationController, profileNavigationController]
         historyNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.historyIcon, tag: 0)
         workoutNavigationController.tabBarItem = UITabBarItem(title: "", image: UIImage.starIcon, tag: 1)
         profileController.tabBarItem = UITabBarItem(title: "", image: UIImage.profileIcon, tag: 2)
-        
+
         // Accessibility
         workoutNavigationController.tabBarItem.accessibilityIdentifier = "workout-tab"
         historyNavigationController.tabBarItem.accessibilityIdentifier = "history-tab"
         profileController.tabBarItem.accessibilityIdentifier = "profile-tab"
-        
+
         let tabBarItems = tabBar.items! as [UITabBarItem]
-        
         for item in tabBarItems {
             item.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         }
-        
-        tabBar.tintColor = UIColor.lightest
-        tabBar.unselectedItemTintColor = .akLight
-        tabBar.barTintColor = UIColor.akDark
-        tabBar.isTranslucent = false
+
+        tabBar.isTranslucent = true
+        tabBar.layer.cornerRadius = 24
+        tabBar.layer.cornerCurve = .continuous
+        tabBar.clipsToBounds = true
+
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
+        appearance.backgroundColor = UIColor.white.withAlphaComponent(0.14)
+
+        let itemAppearance = UITabBarItemAppearance()
+        itemAppearance.normal.iconColor = UIColor.white.withAlphaComponent(0.5)
+        itemAppearance.selected.iconColor = .white
+        appearance.stackedLayoutAppearance = itemAppearance
+        appearance.inlineLayoutAppearance = itemAppearance
+        appearance.compactInlineLayoutAppearance = itemAppearance
+
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
     }
-    
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // Float the tab bar up
+        var frame = tabBar.frame
+        frame.origin.y -= tabBarLift
+        tabBar.frame = frame
+
+        // Gloss highlight — white sheen across the top half
+        glossLayer?.removeFromSuperlayer()
+        let gloss = CAGradientLayer()
+        gloss.colors = [
+            UIColor.white.withAlphaComponent(0.22).cgColor,
+            UIColor.white.withAlphaComponent(0.0).cgColor,
+        ]
+        gloss.startPoint = CGPoint(x: 0.5, y: 0)
+        gloss.endPoint   = CGPoint(x: 0.5, y: 1)
+        gloss.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: tabBar.bounds.height * 0.5)
+        tabBar.layer.addSublayer(gloss)
+        glossLayer = gloss
+
+        // 1 pt hairline at the very top
+        highlightLine?.removeFromSuperlayer()
+        let line = CALayer()
+        line.backgroundColor = UIColor.white.withAlphaComponent(0.35).cgColor
+        line.frame = CGRect(x: 0, y: 0, width: tabBar.bounds.width, height: 0.5)
+        tabBar.layer.addSublayer(line)
+        highlightLine = line
+    }
+
     // MARK: - Methods
-    
+
     private func setupSelectionIndicatorIfiOS11() {
         // Indicator only avaiable to ios 11
         guard #available(iOS 11, *) else { return }
